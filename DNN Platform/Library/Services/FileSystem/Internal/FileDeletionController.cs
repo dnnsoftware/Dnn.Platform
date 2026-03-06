@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileDeletionController));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteFile(IFileInfo file)
         {
             string lockReason;
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             DataCache.RemoveCache("GetFileById" + file.FileId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UnlinkFile(IFileInfo file)
         {
             string lockReason;
@@ -58,14 +58,14 @@ namespace DotNetNuke.Services.FileSystem.Internal
             this.DeleteFileData(file);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteFileData(IFileInfo file)
         {
             DataProvider.Instance().DeleteFile(file.PortalId, file.FileName, file.FolderId);
             DeleteContentItem(file.ContentItemID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IFileDeletionController> GetFactory()
         {
             return () => new FileDeletionController();

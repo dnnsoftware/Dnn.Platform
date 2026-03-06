@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Tabs
             this.TrackModuleDeletion(module, moduleVersion, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabWorkflowTracker();

@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             base.GetFiles(includeSource, false);

@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.Journal
 
         public int DisplayMode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter output)
         {
             output.Write("Hello World");

@@ -20,7 +20,9 @@ namespace DotNetNuke.Entities.Controllers
     // classes listed here
 
     /// <inheritdoc cref="IHostController" />
+#pragma warning disable CS0618 // Type or member is obsolete
     public partial class HostController : ComponentBase<IHostController, HostController>, IHostController
+#pragma warning restore CS0618 // Type or member is obsolete
     {
         [Obsolete("Deprecated in DotNetNuke 9.7.1. Use DotNetNuke.Abstractions.IHostSettingsService instead. Scheduled removal in v11.0.0.")]
         public static new IHostController Instance
@@ -28,7 +30,7 @@ namespace DotNetNuke.Entities.Controllers
             get
             {
                 var newHostController = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-                return newHostController is IHostController castedController ? castedController : new HostController();
+                return newHostController as IHostController ?? new HostController();
             }
         }
 

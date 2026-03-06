@@ -41,7 +41,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>Gets or sets complete summary of import package.</summary>
         public ImportExportSummary Summary { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null)

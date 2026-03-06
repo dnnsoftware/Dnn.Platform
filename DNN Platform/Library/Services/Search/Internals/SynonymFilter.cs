@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Search.Internals
             this.posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IncrementToken()
         {
             // Pop buffered synonyms

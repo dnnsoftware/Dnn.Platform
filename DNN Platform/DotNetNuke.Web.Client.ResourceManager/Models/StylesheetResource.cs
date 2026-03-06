@@ -36,17 +36,17 @@ public class StylesheetResource : LinkResource, IStylesheetResource
     public override string Render(int crmVersion, bool useCdn, string applicationPath)
     {
         var htmlString = new StringBuilder("<link");
-        htmlString.Append($" href=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
-        if (this.Preload)
+        htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
+        if (this.Preload && !this.Attributes.ContainsKey("rel") && !this.Attributes.ContainsKey("as"))
         {
             htmlString.Append($" rel=\"preload\" as=\"style\"");
         }
-        else
+        else if (!this.Preload && !this.Attributes.ContainsKey("rel"))
         {
             htmlString.Append($" rel=\"stylesheet\"");
         }
 
-        if (this.Disabled)
+        if (this.Disabled && !this.Attributes.ContainsKey("disabled"))
         {
             htmlString.Append(" disabled");
         }

@@ -17,28 +17,28 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class ExitEditModeMenu : BaseMenuItem
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => "ExitEditMode";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => "ExitEditMode";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent => Constants.RightMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader => "ExitEditMode";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order => 100;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible()
         {
             return Personalization.GetUserMode() == PortalSettings.Mode.Edit;

@@ -12,16 +12,34 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API which gets event log details.</summary>
     [DnnAuthorize]
     public class EventLogServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventLogServiceController));
+        private readonly IEventLogService eventLogService;
+
+        /// <summary>Initializes a new instance of the <see cref="EventLogServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogService. Scheduled removal in v12.0.0.")]
+        public EventLogServiceController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EventLogServiceController"/> class.</summary>
+        /// <param name="eventLogService">The event log service.</param>
+        public EventLogServiceController(IEventLogService eventLogService)
+        {
+            this.eventLogService = eventLogService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogService>();
+        }
 
         /// <summary>Gets event log details.</summary>
         /// <param name="guid">The event log GUID.</param>
@@ -31,15 +49,14 @@ namespace DotNetNuke.Web.InternalServices
         [SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", Justification = "Breaking change")]
         public HttpResponseMessage GetLogDetails(string guid)
         {
-            Guid logId;
-            if (string.IsNullOrEmpty(guid) || !Guid.TryParse(guid, out logId))
+            if (string.IsNullOrEmpty(guid) || !Guid.TryParse(guid, out _))
             {
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
             try
             {
-                if (!(EventLogController.Instance.GetLog(guid) is LogInfo logInfo))
+                if (this.eventLogService.GetLog(guid) is not ILogInfo logInfo)
                 {
                     return this.Request.CreateResponse(HttpStatusCode.BadRequest);
                 }
@@ -57,26 +74,23 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static string GetPropertiesText(LogInfo logInfo)
+        private static string GetPropertiesText(ILogInfo logInfo)
         {
-            var objLogProperties = logInfo.LogProperties;
             var str = new StringBuilder();
-            int i;
-            for (i = 0; i <= objLogProperties.Count - 1; i++)
+            foreach (var ldi in logInfo.LogProperties)
             {
                 // display the values in the Panel child controls.
-                var ldi = (LogDetailInfo)objLogProperties[i];
                 if (ldi.PropertyName == "Message")
                 {
-                    str.Append("<p><strong>" + ldi.PropertyName + "</strong>:</br><pre>" + HttpUtility.HtmlEncode(ldi.PropertyValue) + "</pre></p>");
+                    str.Append($"<p><strong>{ldi.PropertyName}</strong>:</br><pre>{HttpUtility.HtmlEncode(ldi.PropertyValue)}</pre></p>");
                 }
                 else
                 {
-                    str.Append("<p><strong>" + ldi.PropertyName + "</strong>:" + HttpUtility.HtmlEncode(ldi.PropertyValue) + "</p>");
+                    str.Append($"<p><strong>{ldi.PropertyName}</strong>:{HttpUtility.HtmlEncode(ldi.PropertyValue)}</p>");
                 }
             }
 
-            str.Append("<p><b>Server Name</b>: " + HttpUtility.HtmlEncode(logInfo.LogServerName) + "</p>");
+            str.Append($"<p><b>Server Name</b>: {HttpUtility.HtmlEncode(logInfo.LogServerName)}</p>");
             return str.ToString();
         }
     }

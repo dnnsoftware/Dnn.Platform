@@ -9,13 +9,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckHiddenSystemFiles : IAuditCheck
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id => "CheckHiddenSystemFiles";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LazyLoad => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);

@@ -32,11 +32,9 @@ class MiddleActions extends Component {
             { "Key": Localization.get("ThemeLevelGlobal"), "Value": 4 },
             { "Key": Localization.get("ThemeLevelSite"), "Value": 2 }
         ];
-        let themeFilterOptions = [];
-        themeFilterOptions = levelFilters.map((levelFilter) => {
+        return levelFilters.map((levelFilter) => {
             return { label: levelFilter.Key, value: levelFilter.Value };
         });
-        return themeFilterOptions;
     }
 
     onSelect(option) {

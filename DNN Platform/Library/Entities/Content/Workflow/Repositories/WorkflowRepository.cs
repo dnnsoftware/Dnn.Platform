@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             this.stateRepository = WorkflowStateRepository.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
             using (var context = DataContext.Instance())
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Entities.Workflow> GetSystemWorkflows(int portalId)
         {
             using (var context = DataContext.Instance())
@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetWorkflow(int workflowId)
         {
             return CBO.GetCachedObject<Entities.Workflow>(
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetWorkflow(ContentItem item)
         {
             var state = this.stateRepository.GetWorkflowStateByID(item.StateID);
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         // TODO: validation
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflow(Entities.Workflow workflow)
         {
             using (var context = DataContext.Instance())
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         // TODO: validation
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
             using (var context = DataContext.Instance())
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             CacheWorkflow(workflow);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
             using (var context = DataContext.Instance())
@@ -152,7 +152,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return string.Format(CultureInfo.InvariantCulture, DataCache.ContentWorkflowCacheKey, workflowId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowRepository> GetFactory()
         {
             return () => new WorkflowRepository();

@@ -8,7 +8,7 @@ const portalAliasUsageType = {
 
 const toBackEndUrl = function (url, tabId, primaryAliasId) {
     const id = url.id  ? url.id : -1;
-    let siteAliasUsage = "";
+    let siteAliasUsage;
     if (url.siteAlias.Key === primaryAliasId) {
         siteAliasUsage = portalAliasUsageType.Default;
     } else if (url.siteAliasUsage === portalAliasUsageType.Default) {

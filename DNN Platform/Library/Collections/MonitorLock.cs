@@ -20,7 +20,7 @@ namespace DotNetNuke.Collections.Internal
             this.lockStrategy = lockStrategy;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             // Do not change this code.  Put cleanup code in Dispose(bool disposing) below.

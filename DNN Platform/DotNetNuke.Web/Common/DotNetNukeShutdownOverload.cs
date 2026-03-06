@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.Common.Internal
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
 
@@ -26,7 +27,8 @@ namespace DotNetNuke.Web.Common.Internal
         private static string binFolder = string.Empty;
 
         /// <summary>Initializes the File Change Notification settings.</summary>
-        internal static void InitializeFcnSettings()
+        /// <param name="appStatus">The application status.</param>
+        internal static void InitializeFcnSettings(IApplicationStatusInfo appStatus)
         {
             // any error/message logged below should be informational only
             try
@@ -40,7 +42,7 @@ namespace DotNetNuke.Web.Common.Internal
                 {
                     Logger.Info("fileChangesMonitor is null");
 
-                    // AddSiteFilesMonitoring(true);
+                    ////AddSiteFilesMonitoring(true);
                 }
                 else
                 {
@@ -62,11 +64,11 @@ namespace DotNetNuke.Web.Common.Internal
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
 
                     // enable our monitor only when fcnMode="Disabled"
-                    // AddSiteFilesMonitoring(fcnVal.ToString() == "1");
+                    ////AddSiteFilesMonitoring(fcnVal.ToString() == "1");
                 }
 
                 // just monitor the root folder but don't interfere
-                AddSiteFilesMonitoring(false);
+                AddSiteFilesMonitoring(appStatus, false);
             }
             catch (Exception e)
             {
@@ -74,7 +76,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
         }
 
-        private static void AddSiteFilesMonitoring(bool handleShutdowns)
+        private static void AddSiteFilesMonitoring(IApplicationStatusInfo appStatus, bool handleShutdowns)
         {
             if (binOrRootWatcher == null)
             {
@@ -90,11 +92,11 @@ namespace DotNetNuke.Web.Common.Internal
                                 shutDownDelayTimer = new Timer(InitiateShutdown);
                             }
 
-                            binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLowerInvariant();
+                            binFolder = Path.Combine(appStatus.ApplicationMapPath, "bin").ToLowerInvariant();
                             binOrRootWatcher = new FileSystemWatcher
                             {
                                 Filter = "*.*",
-                                Path = handleShutdowns ? binFolder : Globals.ApplicationMapPath,
+                                Path = handleShutdowns ? binFolder : appStatus.ApplicationMapPath,
                                 NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
                                 IncludeSubdirectories = true,
                             };

@@ -467,9 +467,9 @@ namespace DotNetNuke.Entities.Portals
             {
                 this.ProcessorPassword = string.IsNullOrEmpty(p)
                     ? p
-                    : Security.FIPSCompliant.DecryptAES(p, Config.GetDecryptionkey(), Host.Host.GUID);
+                    : Security.FIPSCompliant.DecryptAES(HashAlgorithmName.SHA1, p, Config.GetDecryptionkey(), Host.Host.GUID);
             }
-            catch (Exception ex) when (ex is FormatException || ex is CryptographicException)
+            catch (Exception ex) when (ex is FormatException or CryptographicException)
             {
                 // for backward compatibility
                 this.ProcessorPassword = p;

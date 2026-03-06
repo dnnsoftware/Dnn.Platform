@@ -47,7 +47,7 @@ namespace DotNetNuke.Services.Journal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get { return CacheLevel.fullyCacheable; }
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Journal
 
         public string Avatar { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;

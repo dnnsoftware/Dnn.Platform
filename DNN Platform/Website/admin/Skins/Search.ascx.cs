@@ -13,6 +13,7 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
@@ -29,6 +30,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private readonly INavigationManager navigationManager;
         private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
 
         private bool enableWildSearch = true;
         private string siteIconURL;
@@ -41,6 +43,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private string webURL;
 
         /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Search()
             : this(null, null)
         {
@@ -49,10 +52,21 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public Search(INavigationManager navigationManager, IClientResourceController clientResourceController)
+            : this(navigationManager, clientResourceController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Search"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public Search(INavigationManager navigationManager, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
         {
             this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         }
 
         public string SeeMoreText
@@ -385,7 +399,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
 
-            Framework.ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             this.clientResourceController.RegisterStylesheet("~/Resources/Search/SearchSkinObjectPreview.css", FileOrder.Css.ModuleCss);
             this.clientResourceController.RegisterScript("~/Resources/Search/SearchSkinObjectPreview.js");
 

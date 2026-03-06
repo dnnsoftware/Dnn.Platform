@@ -19,7 +19,7 @@ namespace DotNetNuke.HttpModules.Compression
             this.stream = new DeflateStream(baseStream, CompressionMode.Compress);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ContentEncoding
         {
             get
@@ -28,7 +28,7 @@ namespace DotNetNuke.HttpModules.Compression
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Write(byte[] buffer, int offset, int count)
         {
             if (!this.HasWrittenHeaders)
@@ -39,13 +39,13 @@ namespace DotNetNuke.HttpModules.Compression
             this.stream.Write(buffer, offset, count);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Close()
         {
             this.stream.Close();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Flush()
         {
             this.stream.Flush();

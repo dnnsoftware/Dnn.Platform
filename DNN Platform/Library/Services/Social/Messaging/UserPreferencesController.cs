@@ -32,19 +32,19 @@ namespace DotNetNuke.Services.Social.Messaging
             this.dataService = dataService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetUserPreference(UserPreference userPreference)
         {
             this.dataService.SetUserPreference(userPreference.PortalId, userPreference.UserId, (int)userPreference.MessagesEmailFrequency, (int)userPreference.NotificationsEmailFrequency);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public UserPreference GetUserPreference(UserInfo userinfo)
         {
             return CBO.FillObject<UserPreference>(this.dataService.GetUserPreference(userinfo.PortalID, userinfo.UserID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IUserPreferencesController> GetFactory()
         {
             return () => new UserPreferencesController();

@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Analytics.Config
     using System.Xml.Serialization;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
@@ -118,7 +119,7 @@ namespace DotNetNuke.Services.Analytics.Config
             catch (Exception ex)
             {
                 // log it
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.ADMIN_ALERT) };
                 log.AddProperty("Analytics.AnalyticsConfiguration", "GetConfig Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);

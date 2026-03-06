@@ -86,13 +86,13 @@ namespace DotNetNuke.Security.Roles
                 typeof(RoleInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
         {
             return CBO.FillCollection<RoleInfo>(this.dataProvider.GetRolesBasicSearch(portalID, -1, pageSize, filterBy));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDictionary<string, string> GetRoleSettings(int roleId)
         {
             var settings = new Dictionary<string, string> { };
@@ -269,7 +269,7 @@ namespace DotNetNuke.Security.Roles
             return this.GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupID == roleGroupId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {

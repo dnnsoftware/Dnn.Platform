@@ -4,22 +4,47 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A web API controller for module information.</summary>
     [DnnAuthorize]
     public class ModuleServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleServiceController));
+        private readonly IHostSettings hostSettings;
+        private readonly DataProvider dataProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ModuleServiceController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleServiceController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public ModuleServiceController(IHostSettings hostSettings, DataProvider dataProvider)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        }
 
         /// <summary>Gets a value determining whether a module is shareable.</summary>
         /// <param name="moduleId">The module ID.</param>
@@ -33,7 +58,7 @@ namespace DotNetNuke.Web.InternalServices
             var requiresWarning = false;
             if (portalId <= -1)
             {
-                var portalDict = PortalController.GetPortalDictionary();
+                var portalDict = PortalController.GetPortalDictionary(this.hostSettings, this.dataProvider);
                 portalId = portalDict[tabId];
             }
             else
@@ -110,8 +135,9 @@ namespace DotNetNuke.Web.InternalServices
 
         private int FixPortalId(int portalId)
         {
-            return this.UserInfo.IsSuperUser && this.PortalSettings.PortalId != portalId && PortalController.Instance.GetPortals()
-                .OfType<PortalInfo>().Any(x => x.PortalID == portalId)
+            return this.UserInfo.IsSuperUser &&
+                   this.PortalSettings.PortalId != portalId &&
+                   PortalController.Instance.GetPortals().OfType<IPortalInfo>().Any(x => x.PortalId == portalId)
                 ? portalId
                 : this.PortalSettings.PortalId;
         }

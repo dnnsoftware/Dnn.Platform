@@ -283,7 +283,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -297,7 +297,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Fill(IDataReader dr)
         {
             this.TermId = Null.SetNullInteger(dr["TermID"]);

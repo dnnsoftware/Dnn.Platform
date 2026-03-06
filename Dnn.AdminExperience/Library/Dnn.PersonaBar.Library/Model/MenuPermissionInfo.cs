@@ -7,6 +7,7 @@ namespace Dnn.PersonaBar.Library.Model
     using System.Data;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Security.Permissions;
@@ -21,27 +22,21 @@ namespace Dnn.PersonaBar.Library.Model
         // local property declarations
         private int menuPermissionId;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
-        /// Constructs a new MenuPermissionInfo.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.</summary>
         public MenuPermissionInfo()
         {
             this.menuPermissionId = Null.NullInteger;
             this.menuId = Null.NullInteger;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
-        /// Constructs a new MenuPermissionInfo.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.</summary>
         /// <param name="permission">A PermissionInfo object.</param>
         public MenuPermissionInfo(PermissionInfo permission)
             : this()
         {
-            this.ModuleDefID = Null.NullInteger;
+            ((IPermissionInfo)this).ModuleDefId = Null.NullInteger;
             this.PermissionCode = "PERSONABAR_MENU";
-            this.PermissionID = permission.PermissionId;
+            ((IPermissionInfo)this).PermissionId = permission.PermissionId;
             this.PermissionKey = permission.PermissionKey;
             this.PermissionName = permission.PermissionName;
         }
@@ -51,15 +46,8 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("menupermissionid")]
         public int MenuPermissionId
         {
-            get
-            {
-                return this.menuPermissionId;
-            }
-
-            set
-            {
-                this.menuPermissionId = value;
-            }
+            get => this.menuPermissionId;
+            set => this.menuPermissionId = value;
         }
 
         /// <summary>Gets or sets the Module ID.</summary>
@@ -67,15 +55,8 @@ namespace Dnn.PersonaBar.Library.Model
         [XmlElement("menuid")]
         public int MenuId
         {
-            get
-            {
-                return this.menuId;
-            }
-
-            set
-            {
-                this.menuId = value;
-            }
+            get => this.menuId;
+            set => this.menuId = value;
         }
 
         [XmlElement("portalid")]
@@ -87,15 +68,8 @@ namespace Dnn.PersonaBar.Library.Model
         [JsonIgnore]
         public int KeyID
         {
-            get
-            {
-                return this.MenuPermissionId;
-            }
-
-            set
-            {
-                this.MenuPermissionId = value;
-            }
+            get => this.MenuPermissionId;
+            set => this.MenuPermissionId = value;
         }
 
         /// <summary>Fills a MenuPermissionInfo from a Data Reader.</summary>
@@ -119,6 +93,19 @@ namespace Dnn.PersonaBar.Library.Model
         /// is already included in the collection.
         /// </remarks>
         public bool Equals(MenuPermissionInfo other)
+            => this.Equals((IPermissionInfo)other);
+
+        /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
+        /// <param name="other">a ModulePermissionObject.</param>
+        /// <returns>true if the permissions being passed represents the same permission
+        /// in the current object.
+        /// </returns>
+        /// <remarks>
+        /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
+        /// ModulePermissionCollection.Contains will use this method to check if a given permission
+        /// is already included in the collection.
+        /// </remarks>
+        public bool Equals(IPermissionInfo other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -130,7 +117,15 @@ namespace Dnn.PersonaBar.Library.Model
                 return true;
             }
 
-            return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
+            if (other is not MenuPermissionInfo menuPermission)
+            {
+                return false;
+            }
+
+            return (this.AllowAccess == other.AllowAccess) &&
+                   (this.MenuId == menuPermission.MenuId) &&
+                   (((IPermissionInfo)this).RoleId == other.RoleId) &&
+                   (((IPermissionInfo)this).PermissionId == other.PermissionId);
         }
 
         /// <summary>Compares if two MenuPermissionInfo objects are equivalent/equal.</summary>
@@ -163,7 +158,7 @@ namespace Dnn.PersonaBar.Library.Model
             return this.Equals((MenuPermissionInfo)obj);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked

@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Mvc.Framework
     using System.Collections.Generic;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
     using DotNetNuke.Web.Mvc.Framework.Modules;
     using DotNetNuke.Web.Mvc.Routing;
@@ -14,26 +15,37 @@ namespace DotNetNuke.Web.Mvc.Framework
     /// <summary>A View Engine that will delegate to whatever ViewEngine(s) the module application defines.</summary>
     public class ModuleDelegatingViewEngine : IViewEngine
     {
+        private readonly IHostSettings hostSettings;
         private readonly Dictionary<IView, IViewEngine> viewEngineMappings = new Dictionary<IView, IViewEngine>();
 
+        /// <summary>Initializes a new instance of the <see cref="ModuleDelegatingViewEngine"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ModuleDelegatingViewEngine()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleDelegatingViewEngine"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public ModuleDelegatingViewEngine(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings;
+        }
+
         /// <summary>Finds the specified partial view by using the specified controller context.</summary>
-        /// <returns>
-        /// The partial view.
-        /// </returns>
+        /// <returns>The partial view.</returns>
         /// <param name="controllerContext">The controller context.</param><param name="partialViewName">The name of the partial view.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
         {
-            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(controllerContext, partialViewName, useCache));
+            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindPartialView(this.hostSettings, controllerContext, partialViewName, useCache));
         }
 
         /// <summary>Finds the specified view by using the specified controller context.</summary>
-        /// <returns>
-        /// The page view.
-        /// </returns>
+        /// <returns>The page view.</returns>
         /// <param name="controllerContext">The controller context.</param><param name="viewName">The name of the view.</param><param name="masterName">The name of the master.</param><param name="useCache">true to specify that the view engine returns the cached view, if a cached view exists; otherwise, false.</param>
         public ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
-            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindView(controllerContext, viewName, masterName, useCache));
+            return this.RunAgainstModuleViewEngines(controllerContext, e => e.FindView(this.hostSettings, controllerContext, viewName, masterName, useCache));
         }
 
         /// <summary>Releases the specified view by using the specified controller context.</summary>

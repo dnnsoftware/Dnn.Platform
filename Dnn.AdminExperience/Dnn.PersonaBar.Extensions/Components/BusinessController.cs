@@ -20,7 +20,7 @@ namespace Dnn.PersonaBar.Extensions.Components
 
     public class BusinessController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                     Config.BackupConfig();
 
                     // create a random Telerik encryption key and add it under <appSettings>
-                    var newKey = new PortalSecurity().CreateKey(32);
+                    var newKey = PortalSecurity.Instance.CreateKey(32);
                     newKey = Convert.ToBase64String(Encoding.ASCII.GetBytes(newKey));
                     Config.AddAppSetting(xmlConfig, keyName, newKey);
 

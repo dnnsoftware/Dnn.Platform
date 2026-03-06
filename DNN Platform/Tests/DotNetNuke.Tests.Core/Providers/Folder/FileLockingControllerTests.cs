@@ -63,12 +63,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someReason;
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result, Is.True);
                 Assert.That(someReason, Is.EqualTo("FileLockedOutOfPublishPeriodError"));
-            });
+            }
         }
 
         [Test]
@@ -88,12 +88,12 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someReason;
             var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result, Is.True);
                 Assert.That(someReason, Is.EqualTo("FileLockedRunningWorkflowError"));
-            });
+            }
         }
 
         [Test]

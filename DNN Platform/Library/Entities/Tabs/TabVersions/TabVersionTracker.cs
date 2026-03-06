@@ -153,7 +153,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITabChangeTracker> GetFactory()
         {
             return () => new TabVersionTracker();

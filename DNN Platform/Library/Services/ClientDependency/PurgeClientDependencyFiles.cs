@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.ClientDependency
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try

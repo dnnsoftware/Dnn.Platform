@@ -7,10 +7,10 @@ namespace DotNetNuke.Authentication.Facebook
 
     using DotNetNuke.Services.Authentication.OAuth;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public partial class Settings : OAuthSettingsBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string AuthSystemApplicationName
         {
             get { return "Facebook"; }

@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Search.Internals
             this.useStemmingFilter = useStemmingFilter;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override TokenStream TokenStream(string fieldName, TextReader reader)
         {
             var wordLengthMinMax = SearchHelper.Instance.GetSearchMinMaxLength();

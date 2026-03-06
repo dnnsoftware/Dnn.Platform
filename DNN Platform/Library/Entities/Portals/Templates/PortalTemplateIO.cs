@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Portals.Internal
     [DnnDeprecated(9, 11, 1, "No replacement")]
     public partial class PortalTemplateIO : ServiceLocator<IPortalTemplateIO, PortalTemplateIO>, IPortalTemplateIO
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> EnumerateTemplates()
         {
             string path = Globals.HostMapPath;
@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Portals.Internal
             return [];
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<string> EnumerateLanguageFiles()
         {
             string path = Globals.HostMapPath;
@@ -43,19 +43,19 @@ namespace DotNetNuke.Entities.Portals.Internal
             return [];
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetResourceFilePath(string templateFilePath)
         {
             return CheckFilePath(templateFilePath + ".resources");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetLanguageFilePath(string templateFilePath, string cultureCode)
         {
             return CheckFilePath($"{templateFilePath}.{cultureCode}.resx");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TextReader OpenTextReader(string filePath)
         {
             StreamReader reader = null;
@@ -71,7 +71,7 @@ namespace DotNetNuke.Entities.Portals.Internal
             return reader;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public (string, List<string>) GetTemplateLanguages(string templateFilePath)
         {
             var defaultLanguage = string.Empty;
@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Portals.Internal
             return (defaultLanguage, locales);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPortalTemplateIO> GetFactory()
         {
             return () => new PortalTemplateIO();

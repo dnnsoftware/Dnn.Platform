@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

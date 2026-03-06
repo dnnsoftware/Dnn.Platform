@@ -37,19 +37,19 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(applicationStatusInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string RelativePath { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string SearchPattern { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public SearchOption SearchOption { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             var count = 0;

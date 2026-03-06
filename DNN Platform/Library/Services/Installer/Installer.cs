@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Installer
     using System.Xml;
     using System.Xml.XPath;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
@@ -450,11 +451,11 @@ namespace DotNetNuke.Services.Installer
         {
             try
             {
-                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT) };
 
                 if (this.InstallerInfo.ManifestFile != null)
                 {
-                    log.LogProperties.Add(new LogDetailInfo(eventType + " " + package + ":", this.InstallerInfo.ManifestFile.Name.Replace(".dnn", string.Empty)));
+                    log.LogProperties.Add(new LogDetailInfo($"{eventType} {package}:", this.InstallerInfo.ManifestFile.Name.Replace(".dnn", string.Empty)));
                 }
 
                 foreach (LogEntry objLogEntry in this.InstallerInfo.Log.Logs)

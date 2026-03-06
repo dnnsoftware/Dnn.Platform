@@ -452,7 +452,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             catch (Exception)
             {
                 // suppress for now - need to decide what to do when webservice is unreachable
-                // throw;
+                ////throw;
                 // same problem happens in InstallWizard.aspx.cs in BindLanguageList method
             }
         }

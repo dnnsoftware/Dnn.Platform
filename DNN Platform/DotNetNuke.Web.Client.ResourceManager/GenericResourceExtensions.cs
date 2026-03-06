@@ -183,7 +183,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
 
             if (!string.IsNullOrEmpty(attributeName))
             {
-                input.Attributes[attributeName] = attributeValue;
+                input.Attributes[attributeName.ToLowerInvariant()] = attributeValue;
             }
 
             return input;

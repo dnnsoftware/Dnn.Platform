@@ -12,13 +12,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckBiography : IAuditCheck
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id => "CheckBiography";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LazyLoad => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);

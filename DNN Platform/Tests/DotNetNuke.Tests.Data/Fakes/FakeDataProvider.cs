@@ -7,11 +7,15 @@ namespace DotNetNuke.Tests.Data.Fakes
     using System.Collections.Generic;
     using System.Data;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Data;
+
+    using Moq;
 
     internal class FakeDataProvider : DataProvider
     {
         public FakeDataProvider(Dictionary<string, string> settings)
+            : base(Mock.Of<IApplicationStatusInfo>())
         {
             this.Settings = settings;
         }

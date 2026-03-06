@@ -39,21 +39,54 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <inheritdoc cref="ILinkResource.Preload" />
         public bool Preload { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
-            var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
-                .SetMedia(this.CssMedia);
-            if (this.Preload)
+            var filePath = this.FilePath;
+            if (filePath.IndexOf('?') > 0)
             {
-                stylesheet.SetPreload();
+                filePath = filePath.Substring(0, filePath.IndexOf('?'));
             }
 
-            this.RegisterResource(stylesheet);
+            var extension = ".css";
+            var hit = filePath.LastIndexOf('.');
+            if (hit > 0)
+            {
+                extension = filePath.Substring(hit).ToLowerInvariant();
+            }
+
+            switch (extension)
+            {
+                case ".eot":
+                case ".woff":
+                case ".woff2":
+                case ".ttf":
+                case ".svg":
+                case ".otf":
+                    var font = this.clientResourceController.CreateFont(this.FilePath, this.PathNameAlias);
+                    if (this.Preload)
+                    {
+                        font.SetPreload();
+                    }
+
+                    this.RegisterResource(font);
+                    break;
+                default:
+                    var stylesheet = this.clientResourceController.CreateStylesheet(this.FilePath, this.PathNameAlias)
+                        .SetMedia(this.CssMedia);
+                    if (this.Preload)
+                    {
+                        stylesheet.SetPreload();
+                    }
+
+                    this.RegisterResource(stylesheet);
+                    break;
+            }
+
             base.OnLoad(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (this.AddTag || this.Context.IsDebuggingEnabled)

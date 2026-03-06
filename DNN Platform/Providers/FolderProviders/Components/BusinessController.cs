@@ -17,7 +17,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
     public class BusinessController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)

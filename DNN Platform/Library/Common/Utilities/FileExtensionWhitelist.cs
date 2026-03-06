@@ -63,7 +63,7 @@ namespace DotNetNuke.Common.Utilities
             return allExtensions.Contains(extension);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return this.ToDisplayString();

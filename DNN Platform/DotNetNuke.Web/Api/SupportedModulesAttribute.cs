@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Api
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var module = this.FindModuleInfo(context.ActionContext.Request);
@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Api
             return request.FindModuleInfo();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool SkipAuthorization(HttpActionContext actionContext)
         {
             return false;

@@ -7,6 +7,9 @@ namespace DotNetNuke.Modules.Journal
     using System.Diagnostics.CodeAnalysis;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -16,6 +19,7 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Modules.Journal.Components;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
@@ -59,30 +63,52 @@ namespace DotNetNuke.Modules.Journal
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public int Pid = -1;
-
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
-        public long MaxUploadSize = Config.GetMaxUploadSize();
+        public long MaxUploadSize;
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public bool IsPublicGroup;
-        private readonly INavigationManager navigationManager;
 
+        private readonly INavigationManager navigationManager;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public View()
+            : this(null, null, null, null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="View"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public View(INavigationManager navigationManager, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IServicesFramework servicesFramework)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.servicesFramework = servicesFramework ?? this.DependencyProvider.GetRequiredService<IServicesFramework>();
+            this.MaxUploadSize = Config.GetMaxUploadSize(this.appStatus);
         }
 
         protected override void OnInit(EventArgs e)
         {
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.Knockout);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.jQueryFileUpload);
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.Knockout);
 
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/journal.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/journalcomments.js");
-            ClientResourceManager.RegisterScript(this.Page, "~/DesktopModules/Journal/Scripts/mentionsInput.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Journal/Scripts/journal.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Journal/Scripts/journalcomments.js");
+            this.clientResourceController.RegisterScript("~/DesktopModules/Journal/Scripts/mentionsInput.js");
 
             var isAdmin = this.UserInfo.IsInRole(RoleController.Instance.GetRoleById(this.PortalId, this.PortalSettings.AdministratorRoleId).RoleName);
             if (!this.Request.IsAuthenticated || (!this.UserInfo.IsSuperUser && !isAdmin && this.UserInfo.IsInRole("Unverified Users")))

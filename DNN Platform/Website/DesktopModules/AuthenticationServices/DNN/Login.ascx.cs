@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -31,11 +32,12 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         private readonly IHostSettings hostSettings;
         private readonly IPortalGroupController portalGroupController;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly ICryptographyProvider cryptographyProvider;
 
         /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
         public Login()
-            : this(null, null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -45,13 +47,27 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="portalGroupController">The portal group controller.</param>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public Login(INavigationManager navigationManager, IPortalController portalController, IHostSettings hostSettings, IPortalGroupController portalGroupController, IApplicationStatusInfo appStatus)
+            : this(navigationManager, portalController, hostSettings, portalGroupController, appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Login"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public Login(INavigationManager navigationManager, IPortalController portalController, IHostSettings hostSettings, IPortalGroupController portalGroupController, IApplicationStatusInfo appStatus, ICryptographyProvider cryptographyProvider)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.portalGroupController = portalGroupController ?? this.DependencyProvider.GetRequiredService<IPortalGroupController>();
             this.appStatus = appStatus ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.cryptographyProvider = cryptographyProvider ?? this.DependencyProvider.GetRequiredService<ICryptographyProvider>();
         }
 
         /// <summary>Gets a value indicating whether check if the Auth System is Enabled (for the Portal).</summary>
@@ -62,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
         private IPortalAliasInfo CurrentPortalAlias => this.PortalSettings.PortalAlias;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -142,7 +158,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                     try
                     {
-                        UserController.VerifyUser(verificationCode.Replace(".", "+").Replace("-", "/").Replace("_", "="));
+                        UserController.VerifyUser(this.cryptographyProvider, verificationCode.Replace(".", "+").Replace("-", "/").Replace("_", "="));
 
                         var redirectTabId = this.PortalSettings.Registration.RedirectAfterRegistration;
 

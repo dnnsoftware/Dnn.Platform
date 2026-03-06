@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Urls
         public bool CanGenerateNonStandardPath
         {
             // replaces statements like this
-            // if ((settings.ReplaceSpaceWith != null && settings.ReplaceSpaceWith.Length > 0) || settings.ReplaceCharWithCharDict != null && settings.ReplaceCharWithCharDict.Count > 0)
+            ////if ((settings.ReplaceSpaceWith != null && settings.ReplaceSpaceWith.Length > 0) || settings.ReplaceCharWithCharDict != null && settings.ReplaceCharWithCharDict.Count > 0)
             get
             {
                 bool result = false;

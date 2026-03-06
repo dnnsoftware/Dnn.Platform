@@ -11,7 +11,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     /// <summary>A settings control for DNN authentication.</summary>
     public partial class Settings : AuthenticationSettingsBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

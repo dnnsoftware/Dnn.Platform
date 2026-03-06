@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Cache
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Insert(string cacheKey, object itemToCache, DNNCacheDependency dependency, DateTime absoluteExpiration, TimeSpan slidingExpiration, CacheItemPriority priority,                                    CacheItemRemovedCallback onRemoveCallback)
         {
             // initialize cache dependency
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Cache
             base.Insert(cacheKey, itemToCache, d, absoluteExpiration, slidingExpiration, priority, onRemoveCallback);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsWebFarm()
         {
             bool isWebFarm = Null.NullBoolean;
@@ -74,14 +74,14 @@ namespace DotNetNuke.Services.Cache
             return isWebFarm;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string PurgeCache()
         {
             // called by scheduled job to remove cache files which are no longer active
             return PurgeCacheFiles(Globals.HostMapPath + CachingDirectory);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override void Remove(string key)
         {

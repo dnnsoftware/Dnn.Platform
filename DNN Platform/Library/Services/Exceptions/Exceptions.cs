@@ -12,6 +12,8 @@ namespace DotNetNuke.Services.Exceptions
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -227,7 +229,6 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             try
             {
                 if (!Host.UseCustomErrorMessages)
@@ -274,12 +275,12 @@ namespace DotNetNuke.Services.Exceptions
                             // hide the module
                             ctrl.Visible = false;
                             errorPlaceholder.Visible = true;
-                            errorPlaceholder.Controls.Add(new ErrorContainer(portalSettings, friendlyMessage, lex).Container);
+                            errorPlaceholder.Controls.Add(new ErrorContainer(friendlyMessage, lex).Container);
                         }
                         else
                         {
                             // there's no ErrorPlaceholder, add it to the module's control collection
-                            ctrl.Controls.Add(new ErrorContainer(portalSettings, friendlyMessage, lex).Container);
+                            ctrl.Controls.Add(new ErrorContainer(friendlyMessage, lex).Container);
                         }
                     }
                 }
@@ -297,7 +298,6 @@ namespace DotNetNuke.Services.Exceptions
         /// <param name="exc">The exception.</param>
         public static void ProcessPageLoadException(Exception exc)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             string appURL = Globals.ApplicationURL();
             if (appURL.IndexOf("?", StringComparison.Ordinal) == Null.NullInteger)
             {
@@ -322,7 +322,6 @@ namespace DotNetNuke.Services.Exceptions
                 return;
             }
 
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!Host.UseCustomErrorMessages)
             {
                 throw new PageLoadException(exc == null ? string.Empty : exc.Message, exc);
@@ -437,7 +436,7 @@ namespace DotNetNuke.Services.Exceptions
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                LogTypeKey = nameof(EventLogType.HOST_ALERT),
             };
             log.LogProperties.Add(new LogDetailInfo(notFoundErrorString, "URL"));
             var context = HttpContext.Current;

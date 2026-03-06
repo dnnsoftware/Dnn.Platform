@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>Gets or sets the file name.</summary>
         public string FileName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderControl(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text/javascript");

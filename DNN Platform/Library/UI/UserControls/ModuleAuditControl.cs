@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.UserControls
             get { return this.ViewState["Entity"] as EntityInfo; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     // contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.CreatedByUser, CultureInfo.CurrentCulture));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentSettings().PortalId, int.Parse(this.CreatedByUser, CultureInfo.CurrentCulture));
                     if (userInfo != null)
                     {
                         this.CreatedByUser = userInfo.DisplayName;
@@ -153,7 +153,7 @@ namespace DotNetNuke.UI.UserControls
                 else
                 {
                     // contains a UserID
-                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.LastModifiedByUser, CultureInfo.CurrentCulture));
+                    UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentSettings().PortalId, int.Parse(this.LastModifiedByUser, CultureInfo.CurrentCulture));
                     if (userInfo != null)
                     {
                         this.LastModifiedByUser = userInfo.DisplayName;

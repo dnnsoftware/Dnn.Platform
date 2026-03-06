@@ -11,28 +11,28 @@ namespace DotNetNuke.Authentication.LiveConnect
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public partial class Login : OAuthLoginBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsRegistration
         {
             get { return true; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string AuthSystemApplicationName
         {
             get { return "Live"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override UserData GetCurrentUser()
         {
             return this.OAuthClient.GetCurrentUser<LiveUserData>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

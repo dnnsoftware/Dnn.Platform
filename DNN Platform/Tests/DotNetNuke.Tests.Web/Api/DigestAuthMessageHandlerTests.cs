@@ -34,12 +34,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Digest"));
                 Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Does.Contain("realm=\"DNNAPI\""));
-            });
+            }
         }
 
         [Test]
@@ -68,12 +68,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Digest"));
                 Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Does.Contain("realm=\"DNNAPI\""));
-            });
+            }
         }
 
         [Test]
@@ -86,12 +86,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Digest"));
                 Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Does.Contain("realm=\"DNNAPI\""));
-            });
+            }
         }
 
         // todo unit test actual authentication code

@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Razor
 
         protected internal UrlHelper Url { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ConfigurePage(WebPageBase parentPage)
         {
             base.ConfigurePage(parentPage);

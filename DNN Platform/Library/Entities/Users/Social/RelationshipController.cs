@@ -10,7 +10,7 @@ namespace DotNetNuke.Entities.Users.Social
     /// <summary>Business Layer to manage Relationships. Also contains CRUD methods.</summary>
     public class RelationshipController : ServiceLocator<IRelationshipController, RelationshipController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IRelationshipController> GetFactory()
         {
             return () => new RelationshipControllerImpl();

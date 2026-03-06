@@ -9,18 +9,37 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Linq;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.UI.Skins;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     [ToolboxData("<{0}:DnnSkinComboBox runat='server'></{0}:DnnSkinComboBox>")]
     public class DnnSkinComboBox : DnnComboBox
     {
         /// <summary>Initializes a new instance of the <see cref="DnnSkinComboBox"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnSkinComboBox()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnSkinComboBox"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public DnnSkinComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
+            : base(
+                appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
         {
             this.PortalId = Null.NullInteger;
         }
@@ -40,12 +59,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <summary>Gets or sets the text of the "None Specified" item.</summary>
         public string NoneSpecificText { get; set; }
 
-        private PortalInfo Portal
-        {
-            get { return this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId); }
-        }
+        private PortalInfo Portal => this.PortalId == Null.NullInteger ? null : PortalController.Instance.GetPortal(this.PortalId);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -76,7 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.AttachEvents();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
             // do not select item during data binding, item will select later

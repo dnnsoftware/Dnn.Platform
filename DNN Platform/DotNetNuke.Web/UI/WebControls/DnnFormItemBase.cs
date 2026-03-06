@@ -15,31 +15,46 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A base class for a control that is an item in a form.</summary>
     public abstract class DnnFormItemBase : WebControl, INamingContainer
     {
         private object value;
-        private string requiredMessageSuffix = ".Required";
-        private string validationMessageSuffix = ".RegExError";
 
         /// <summary>Initializes a new instance of the <see cref="DnnFormItemBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         protected DnnFormItemBase()
+            : this(null, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormItemBase"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        protected DnnFormItemBase(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.AppStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.EventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+
             this.FormMode = DnnFormMode.Inherit;
             this.IsValid = true;
 
-            this.Validators = new List<IValidator>();
+            this.Validators = [];
         }
 
         /// <summary>Gets or sets the value.</summary>
         public object Value
         {
-            get { return this.value; }
-            set { this.value = value; }
+            get => this.value;
+            set => this.value = value;
         }
 
         /// <summary>Gets or sets the data field.</summary>
@@ -67,32 +82,10 @@ namespace DotNetNuke.Web.UI.WebControls
         public string ResourceKey { get; set; }
 
         /// <summary>Gets or sets the suffix to the message indicating the field is required.</summary>
-        public string RequiredMessageSuffix
-        {
-            get
-            {
-                return this.requiredMessageSuffix;
-            }
-
-            set
-            {
-                this.requiredMessageSuffix = value;
-            }
-        }
+        public string RequiredMessageSuffix { get; set; } = ".Required";
 
         /// <summary>Gets or sets the suffix to the validation message.</summary>
-        public string ValidationMessageSuffix
-        {
-            get
-            {
-                return this.validationMessageSuffix;
-            }
-
-            set
-            {
-                this.validationMessageSuffix = value;
-            }
-        }
+        public string ValidationMessageSuffix { get; set; } = ".RegExError";
 
         /// <summary>Gets the validators.</summary>
         [Category("Behavior")]
@@ -105,6 +98,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Gets or sets the data source.</summary>
         internal object DataSource { get; set; }
+
+        /// <summary>Gets the application status.</summary>
+        protected IApplicationStatusInfo AppStatus { get; }
+
+        /// <summary>Gets the event logger.</summary>
+        protected IEventLogger EventLogger { get; }
 
         /// <summary>Gets the property of <see cref="Property"/> specified by <see cref="DataField"/>.</summary>
         protected PropertyInfo ChildProperty
@@ -119,7 +118,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Gets the current portal settings.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Gets the property from the <see cref="DataSource"/> matching the <see cref="DataMember"/> (or falling back to <see cref="DataField"/>).</summary>
         protected PropertyInfo Property
@@ -134,14 +133,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
-        protected override HtmlTextWriterTag TagKey
-        {
-            get
-            {
-                return HtmlTextWriterTag.Div;
-            }
-        }
+        /// <inheritdoc />
+        protected override HtmlTextWriterTag TagKey => HtmlTextWriterTag.Div;
 
         /// <summary>Checks whether this item is valid, setting <see cref="IsValid"/>.</summary>
         public void CheckIsValid()
@@ -196,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             // Add Label
-            var label = new DnnFormLabel
+            var label = new DnnFormLabel(this.AppStatus, this.EventLogger)
             {
                 LocalResourceFile = this.LocalResourceFile,
                 ResourceKey = this.ResourceKey + ".Text",
@@ -224,7 +217,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -299,7 +292,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.UpdateDataSourceInternal(oldValue, newValue, dataField);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
@@ -314,14 +307,14 @@ namespace DotNetNuke.Web.UI.WebControls
             return Localization.GetString(key, this.LocalResourceFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveControlState()
         {
             return this.value;

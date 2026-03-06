@@ -7,8 +7,9 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Framework;
     using DotNetNuke.UI.WebControls;
 
@@ -23,21 +24,32 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Initializes a new instance of the <see cref="DnnFormEditControlItem"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
         public DnnFormEditControlItem()
-            : this(Globals.GetCurrentServiceProvider())
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnFormEditControlItem"/> class.</summary>
         /// <param name="serviceProvider">The DI container scope.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnFormEditControlItem(IServiceProvider serviceProvider)
+            : this(null, null, serviceProvider)
         {
-            this.serviceProvider = serviceProvider;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormEditControlItem"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="serviceProvider">The DI container scope.</param>
+        public DnnFormEditControlItem(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IServiceProvider serviceProvider)
+            : base(appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
+        {
+            this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
         }
 
         /// <summary>Gets or sets the control type.</summary>
         public string ControlType { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
             this.control = ActivatorUtilities.CreateInstance(this.serviceProvider, Reflection.CreateType(this.ControlType)) as EditControl;

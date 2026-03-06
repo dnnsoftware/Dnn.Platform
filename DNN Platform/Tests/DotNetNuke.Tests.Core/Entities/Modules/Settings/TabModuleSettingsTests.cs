@@ -257,7 +257,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             // Act
             var settings = settingsRepository.GetSettings(moduleInfo);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(settings.StringProperty, Is.EqualTo(stringValue), "The retrieved string property value is not equal to the stored one");
@@ -268,7 +268,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
                 Assert.That(settings.TimeSpanProperty, Is.EqualTo(timeSpanValue), "The retrieved timespan property value is not equal to the stored one");
                 Assert.That(settings.EnumProperty, Is.EqualTo(enumValue), "The retrieved enum property value is not equal to the stored one");
                 Assert.That(settings.ComplexProperty, Is.EqualTo(complexValue), "The retrieved complex property value is not equal to the stored one");
-            });
+            }
             this.MockRepository.VerifyAll();
         }
 

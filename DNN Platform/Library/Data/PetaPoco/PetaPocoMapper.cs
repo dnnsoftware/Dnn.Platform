@@ -43,7 +43,7 @@ namespace DotNetNuke.Data.PetaPoco
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
 #pragma warning disable CS3002 // Return type is not CLS-compliant
         public ColumnInfo GetColumnInfo(PropertyInfo pocoProperty)
 #pragma warning restore CS3002
@@ -81,7 +81,7 @@ namespace DotNetNuke.Data.PetaPoco
             return ci;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
 #pragma warning disable CS3002 // Return type is not CLS-compliant
         public TableInfo GetTableInfo(Type pocoType)
 #pragma warning restore CS3002
@@ -101,14 +101,14 @@ namespace DotNetNuke.Data.PetaPoco
             return ti;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public Func<object, object> GetFromDbConverter(PropertyInfo pi, Type sourceType)
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Func<object, object> GetToDbConverter(PropertyInfo sourceProperty)
         {
             return null;

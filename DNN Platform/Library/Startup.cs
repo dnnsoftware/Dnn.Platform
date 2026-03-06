@@ -5,9 +5,11 @@ namespace DotNetNuke
 {
     using System;
     using System.Linq;
+    using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Pages;
@@ -24,6 +26,7 @@ namespace DotNetNuke
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -33,6 +36,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
@@ -40,7 +44,9 @@ namespace DotNetNuke
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Journal;
@@ -58,6 +64,8 @@ namespace DotNetNuke
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
+
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
     /// <inheritdoc />
     public class Startup : IDnnStartup
@@ -102,6 +110,7 @@ namespace DotNetNuke
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
             services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
+            services.AddTransient<IServicesFramework, ServicesFrameworkImpl>(ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>);
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
             services.AddTransient<ILocalizationProvider, LocalizationProvider>();
@@ -118,8 +127,11 @@ namespace DotNetNuke
             services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
             services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
             services.AddTransient<IPortalSettingsController, PortalSettingsController>();
+#pragma warning disable CS0618 // Type or member is obsolete
             services.AddTransient<IPortalAliasController, PortalAliasController>();
+#pragma warning restore CS0618 // Type or member is obsolete
             services.AddTransient<IPortalGroupController, PortalGroupController>();
+            services.AddTransient<DotNetNuke.Entities.Portals.Data.IDataService, DotNetNuke.Entities.Portals.Data.DataService>();
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();
@@ -130,18 +142,32 @@ namespace DotNetNuke
             services.AddTransient<IJournalDataService, JournalDataServiceImpl>();
             services.AddTransient<IFileContentTypeManager, FileContentTypeManager>();
             services.AddTransient<ISearchHelper, SearchHelperImpl>();
+            services.AddTransient<IFile, FileWrapper>();
+            services.AddTransient<IDirectory, DirectoryWrapper>();
+            services.AddTransient<ILogController, LogController>();
+            services.AddTransient<ITabPublishingController, TabPublishingController>();
+            services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
+            services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
+            if (CryptoConfig.AllowOnlyFipsAlgorithms)
+            {
+                services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();
+            }
+            else
+            {
+                services.AddTransient<ICryptographyProvider, CoreCryptographyProvider>();
+            }
 
             services.AddTransient<IDataContext>(serviceProvider =>
             {
                 var dataProvider = serviceProvider.GetRequiredService<DataProvider>();
                 var defaultConnectionStringName = dataProvider.Settings["connectionStringName"];
 
-                return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+                return new PetaPocoDataContext(defaultConnectionStringName, dataProvider.ObjectQualifier);
             });
 
             services.AddTransient<ModuleInjectionManager>();
             services.AddTransient<PersonalizationController>();
-            services.AddTransient(_ => PortalSecurity.Instance);
+            services.AddTransient<PortalSecurity>();
             RegisterModuleInjectionFilters(services);
         }
 

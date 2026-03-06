@@ -43,18 +43,18 @@ public class ScriptResource : ResourceBase, IScriptResource
     public override string Render(int crmVersion, bool useCdn, string applicationPath)
     {
         var htmlString = new StringBuilder("<script");
-        htmlString.Append($" src=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
-        if (this.Async)
+        htmlString.Append($" src=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
+        if (this.Async && !this.Attributes.ContainsKey("async"))
         {
             htmlString.Append(" async");
         }
 
-        if (this.Defer)
+        if (this.Defer && !this.Attributes.ContainsKey("defer"))
         {
             htmlString.Append(" defer");
         }
 
-        if (this.NoModule)
+        if (this.NoModule && !this.Attributes.ContainsKey("nomodule"))
         {
             htmlString.Append(" nomodule");
         }

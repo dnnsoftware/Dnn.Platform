@@ -23,7 +23,7 @@ namespace Dnn.ContactList.SpaReact.Components
             this.security = new SecurityContext(moduleContext.Configuration, user);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             switch (propertyName.ToUpperInvariant())

@@ -668,7 +668,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         Status = MessageStatusType.Unread,
                     };
 
-                    // _messagingController.SaveMessage(_message);
+                    ////_messagingController.SaveMessage(_message);
                     Mail.SendEmail(this.PortalSettings.Email, this.PortalSettings.Email, message.Subject, message.Body);
                     break;
                 case UserLoginStatus.LOGIN_FAILURE:

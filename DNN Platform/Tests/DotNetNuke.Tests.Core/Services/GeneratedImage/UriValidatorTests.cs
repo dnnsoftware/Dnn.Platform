@@ -5,6 +5,9 @@
 namespace DotNetNuke.Tests.Core.Services.GeneratedImage
 {
     using System;
+    using System.Collections.Generic;
+
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.GeneratedImage;
     using Moq;
@@ -32,13 +35,14 @@ namespace DotNetNuke.Tests.Core.Services.GeneratedImage
         public void UriBelongsToSite_MultipleScenarios(string uriString, bool expected)
         {
             // Arrange
-            var mockPortalAliasController = new Mock<IPortalAliasController>();
-            var portalAliases = new PortalAliasCollection();
-            portalAliases.Add("mysite", new PortalAliasInfo { HTTPAlias = "mysite.com" });
-            portalAliases.Add("siteB", new PortalAliasInfo { HTTPAlias = "mysite.com/siteB" });
+            var mockPortalAliasController = new Mock<IPortalAliasService>();
             mockPortalAliasController
                 .Setup(controller => controller.GetPortalAliases())
-                .Returns(portalAliases);
+                .Returns(new Dictionary<string, IPortalAliasInfo>
+                {
+                    { "mysite", new PortalAliasInfo { HTTPAlias = "mysite.com", } },
+                    { "siteB", new PortalAliasInfo { HTTPAlias = "mysite.com/siteB", } },
+                });
 
             var validator = new UriValidator(mockPortalAliasController.Object);
 

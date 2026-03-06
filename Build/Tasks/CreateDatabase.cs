@@ -19,7 +19,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private string connectionString = @"server=(localdb)\MSSQLLocalDB";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             const string deleteScript = "if db_id('Dnn_Platform') is not null DROP DATABASE Dnn_Platform;";

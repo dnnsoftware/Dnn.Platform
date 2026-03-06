@@ -16,7 +16,7 @@ namespace Dnn.EditBar.UI.Services
     {
         private static readonly string[] Namespaces = ["Dnn.EditBar.UI.Services",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void RegisterRoutes(IMapRoute routeManager)
         {

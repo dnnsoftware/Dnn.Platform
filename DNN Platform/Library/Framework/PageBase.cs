@@ -37,10 +37,6 @@ namespace DotNetNuke.Framework
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private readonly ILog traceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private readonly ArrayList localizedControls = [];
-        private readonly IPortalController portalController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IHostSettings hostSettings;
-        private readonly IUserController userController;
 
         private PageStatePersister persister;
         private CultureInfo pageCulture;
@@ -70,13 +66,13 @@ namespace DotNetNuke.Framework
         /// <param name="userController">The user controller.</param>
         protected PageBase(IPortalController portalController, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IUserController userController)
         {
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+            this.PortalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.AppStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.UserController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
         }
 
-        public PortalSettings PortalSettings => this.portalController.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings => this.PortalController.GetCurrentPortalSettings();
 
         public NameValueCollection HtmlAttributes { get; } = [];
 
@@ -111,6 +107,18 @@ namespace DotNetNuke.Framework
         /// <summary>Gets a value indicating whether HTTP headers has been sent to client.</summary>
         public bool HeaderIsWritten { get; internal set; }
 
+        /// <summary>Gets the portal controller.</summary>
+        protected IPortalController PortalController { get; }
+
+        /// <summary>Gets the application status.</summary>
+        protected IApplicationStatusInfo AppStatus { get; }
+
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
+
+        /// <summary>Gets the user controller.</summary>
+        protected IUserController UserController { get; }
+
         /// <summary>Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.</summary>
         /// <returns>A System.Web.UI.PageStatePersister.</returns>
         protected override PageStatePersister PageStatePersister
@@ -122,9 +130,9 @@ namespace DotNetNuke.Framework
                 {
                     this.persister = base.PageStatePersister;
 
-                    if (this.appStatus.Status == UpgradeStatus.None)
+                    if (this.AppStatus.Status == UpgradeStatus.None)
                     {
-                        switch (this.hostSettings.PageStatePersister)
+                        switch (this.HostSettings.PageStatePersister)
                         {
                             case "M":
                                 this.persister = new CachePageStatePersister(this);
@@ -368,7 +376,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnError(EventArgs e)
         {
             base.OnError(e);
@@ -410,7 +418,7 @@ namespace DotNetNuke.Framework
             Exceptions.ProcessPageLoadException(exc, strURL);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             var isInstallPage = HttpContext.Current.Request.Url.LocalPath.ToLowerInvariant().Contains("installwizard.aspx");
@@ -425,12 +433,12 @@ namespace DotNetNuke.Framework
 
             ClientResourceManager.RegisterScript(this, dnncoreFilePath);
 
-            this.ViewStateUserKey = this.userController.GetCurrentUserInfo().Username;
+            this.ViewStateUserKey = this.UserController.GetCurrentUserInfo().Username;
 
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -439,22 +447,22 @@ namespace DotNetNuke.Framework
             // Modules can override the standard behavior by including their own script on the page.
             // The module must register the script with the "jQuery" key and should notify user
             // of potential version conflicts with core jQuery support.
-            // if (jQuery.IsRequested)
-            // {
-            //    jQuery.RegisterJQuery(Page);
-            // }
-            // if (jQuery.IsUIRequested)
-            // {
-            //    jQuery.RegisterJQueryUI(Page);
-            // }
-            // if (jQuery.AreDnnPluginsRequested)
-            // {
-            //    jQuery.RegisterDnnJQueryPlugins(Page);
-            // }
-            // if (jQuery.IsHoverIntentRequested)
-            // {
-            //    jQuery.RegisterHoverIntent(Page);
-            // }
+            ////if (jQuery.IsRequested)
+            ////{
+            ////   jQuery.RegisterJQuery(Page);
+            ////}
+            ////if (jQuery.IsUIRequested)
+            ////{
+            ////   jQuery.RegisterJQueryUI(Page);
+            ////}
+            ////if (jQuery.AreDnnPluginsRequested)
+            ////{
+            ////   jQuery.RegisterDnnJQueryPlugins(Page);
+            ////}
+            ////if (jQuery.IsHoverIntentRequested)
+            ////{
+            ////   jQuery.RegisterHoverIntent(Page);
+            ////}
             if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
                 ServicesFrameworkInternal.Instance.RegisterAjaxAntiForgery(this.Page);
@@ -463,7 +471,7 @@ namespace DotNetNuke.Framework
             this.RegisterAjaxScript();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.LogDnnTrace("PageBase.Render", "Start", $"{this.Page.Request.Url.AbsoluteUri}");
@@ -484,7 +492,7 @@ namespace DotNetNuke.Framework
                 return $"{url}{separator}error=terminate";
             }
 
-            var user = UserController.Instance.GetCurrentUserInfo();
+            var user = this.UserController.GetCurrentUserInfo();
             var errorMessage = exc == null || user is not { IsSuperUser: true }
                     ? "An unexpected error has occurred"
                     : exc.Message;

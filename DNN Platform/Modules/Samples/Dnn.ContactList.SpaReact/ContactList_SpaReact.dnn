@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_SpaReact" type="Module" version="10.01.02">
+    <package name="Dnn.ContactList_SpaReact" type="Module" version="10.02.03">
       <friendlyName>Contact List Spa React</friendlyName>
       <description>DNN Contact List SPA+React module</description>
       <owner>
@@ -36,14 +36,14 @@
             <moduleName>Dnn.ContactList.SpaReact</moduleName>
             <foldername>Dnn/ContactListSpaReact</foldername>
             <businessControllerClass>Dnn.ContactList.SpaReact.Components.BusinessController</businessControllerClass>
-            <supportedFeatures />
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Contact List</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/Dnn/ContactListSpaReact/ContactList.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlType>View</controlType>

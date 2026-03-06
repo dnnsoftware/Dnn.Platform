@@ -13,8 +13,11 @@ namespace Dnn.EditBar.UI.Services
     using System.Web.Http;
 
     using Dnn.EditBar.UI.Controllers;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Instrumentation;
@@ -24,6 +27,8 @@ namespace Dnn.EditBar.UI.Services
     using DotNetNuke.Web.Api.Internal;
     using DotNetNuke.Web.InternalServices;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [DnnAuthorize]
     [DnnPageEditor]
     public class ContentEditorController : DnnApiController
@@ -31,6 +36,20 @@ namespace Dnn.EditBar.UI.Services
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
+        private readonly IApplicationStatusInfo appSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
+        public ContentEditorController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ContentEditorController"/> class.</summary>
+        /// <param name="appSettings">The application status.</param>
+        public ContentEditorController(IApplicationStatusInfo appSettings)
+        {
+            this.appSettings = appSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+        }
 
         private static string LocalResourcesFile => Path.Combine(ContentEditorManager.ControlFolder, "ContentEditorManager/App_LocalResources/SharedResources.resx");
 
@@ -101,7 +120,7 @@ namespace Dnn.EditBar.UI.Services
                 throw new ArgumentException("Can't find the desktop module");
             }
 
-            var moduleScriptPath = $"{Globals.ApplicationMapPath}/DesktopModules/{desktopModule.FolderName}/ClientScripts/ModuleEditor.js";
+            var moduleScriptPath = $"{this.appSettings.ApplicationMapPath}/DesktopModules/{desktopModule.FolderName}/ClientScripts/ModuleEditor.js";
             var moduleScriptContent = string.Empty;
             if (File.Exists(moduleScriptPath))
             {
@@ -109,7 +128,7 @@ namespace Dnn.EditBar.UI.Services
             }
 
             var moduleStylePath = $"/DesktopModules/{desktopModule.FolderName}/Css/ModuleEditor.css";
-            if (File.Exists(Globals.ApplicationMapPath + moduleStylePath))
+            if (File.Exists(this.appSettings.ApplicationMapPath + moduleStylePath))
             {
                 moduleStylePath = Globals.ApplicationPath + moduleStylePath;
             }

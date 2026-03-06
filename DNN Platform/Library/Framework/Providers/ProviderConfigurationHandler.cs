@@ -12,7 +12,7 @@ namespace DotNetNuke.Framework.Providers
     [DnnDeprecated(7, 0, 0, "It is no longer used to load provider configurations, as there are medium trust issues", RemovalVersion = 10)]
     internal partial class ProviderConfigurationHandler : IConfigurationSectionHandler
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual object Create(object parent, object context, XmlNode node)
         {
             var objProviderConfiguration = new ProviderConfiguration();

@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.UI.WebControls
     /// <summary>A tab strip control.</summary>
     public class DnnFormTabStrip : ListControl
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);

@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Api
         /// <summary>Gets or sets an access level to verify the user has.</summary>
         public SecurityAccessLevel AccessLevel { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var activeModule = this.FindModuleInfo(context.ActionContext.Request);

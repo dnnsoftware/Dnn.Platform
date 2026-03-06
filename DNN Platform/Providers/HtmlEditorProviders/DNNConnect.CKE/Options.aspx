@@ -8,6 +8,8 @@
     <meta name="language" content="en" />
     <title>CKEditor Options</title>
     <asp:PlaceHolder id="favicon" runat="server"></asp:PlaceHolder>
+
+    <dnncrm:DnnResources runat="server" Provider="DnnPageHeaderProvider" />
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss" />
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs" />
     <script type="text/javascript">
@@ -25,17 +27,14 @@
   </head>
   <body>
     <form id="ckOptionsForm" runat="server">
+      <dnncrm:DnnResources runat="server" Provider="DnnBodyProvider" />
       <asp:PlaceHolder ID="BodySCRIPTS" runat="server" />
       <asp:PlaceHolder id="phControls" runat="server" />
+      
+      <dnncrm:DnnResources runat="server" Provider="DnnFormBottomProvider" />
       <asp:PlaceHolder runat="server" ID="ClientResourcesFormBottom" />
     </form>
   
     <asp:PlaceHolder runat="server" id="ClientResourceIncludes" />
-
-    <dnncrm:ClientResourceLoader runat="server" id="ClientResourceLoader">
-      <Paths>
-        <dnncrm:ClientResourcePath Name="SharedScripts" Path="~/Resources/Shared/Scripts/" />
-      </Paths>
-    </dnncrm:ClientResourceLoader>
   </body>
 </html>

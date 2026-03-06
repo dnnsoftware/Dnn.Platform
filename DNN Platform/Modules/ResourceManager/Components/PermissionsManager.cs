@@ -29,13 +29,13 @@ namespace Dnn.Modules.ResourceManager.Components
             this.userController = UserController.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasFolderContentPermission(int folderId, int moduleMode)
         {
             return this.HasGroupFolderPublicOrMemberPermission(folderId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasGetFileContentPermission(int folderId)
         {
             if (!this.HasGroupFolderPublicOrMemberPermission(folderId))
@@ -47,7 +47,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return HasPermission(folder, "READ");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasAddFilesPermission(int moduleMode, int folderId)
         {
             if (!this.HasGroupFolderMemberPermission(folderId))
@@ -64,7 +64,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return folder != null && HasPermission(folder, "ADD");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasAddFoldersPermission(int moduleMode, int folderId)
         {
             if (!this.HasGroupFolderOwnerPermission(folderId))
@@ -81,7 +81,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return folder != null && HasPermission(folder, "ADD");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasDeletePermission(int moduleMode, int folderId)
         {
             if (!this.HasGroupFolderOwnerPermission(folderId))
@@ -98,7 +98,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return FolderPermissionController.CanDeleteFolder((FolderInfo)folder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasManagePermission(int moduleMode, int folderId)
         {
             if (!this.HasGroupFolderOwnerPermission(folderId))
@@ -129,7 +129,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return this.UserIsGroupMember(groupId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPermissionsManager> GetFactory()
         {
             return () => new PermissionsManager();

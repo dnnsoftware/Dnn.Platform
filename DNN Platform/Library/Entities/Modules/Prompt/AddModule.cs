@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         [ConsoleCommandParameter("name", "Prompt_AddModule_FlagModuleName", true)]
@@ -41,14 +41,14 @@ namespace DotNetNuke.Entities.Modules.Prompt
         [ConsoleCommandParameter("title", "Prompt_AddModule_FlagModuleTitle")]
         public string ModuleTitle { get; set; } // title for the new module. defaults to friendly name
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
             this.ParseParameters(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IConsoleResultModel Run()
         {
             try

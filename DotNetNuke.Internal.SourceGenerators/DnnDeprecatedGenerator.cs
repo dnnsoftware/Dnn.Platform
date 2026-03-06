@@ -17,7 +17,7 @@ public class DnnDeprecatedGenerator : IIncrementalGenerator
 {
     private const string DnnDeprecatedTypeName = "DotNetNuke.Internal.SourceGenerators.DnnDeprecatedAttribute";
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         var classes = context.SyntaxProvider.CreateSyntaxProvider(

@@ -4,36 +4,13 @@
 namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
 {
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel;
     using DotNetNuke.Services.Cryptography;
-    using DotNetNuke.Tests.Utilities.Fakes;
-
-    using Microsoft.Extensions.DependencyInjection;
 
     using NUnit.Framework;
 
     [TestFixture]
     public class CoreCryptographyProviderTests
     {
-        private static CryptographyProvider provider;
-        private FakeServiceProvider serviceProvider;
-
-        [SetUp]
-        public void Setup()
-        {
-            ComponentFactory.InstallComponents(new ProviderInstaller("cryptography", typeof(CryptographyProvider), typeof(CoreCryptographyProvider)));
-
-            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton<CryptographyProvider, CoreCryptographyProvider>());
-
-            provider = ComponentFactory.GetComponent<CryptographyProvider>("CoreCryptographyProvider");
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            this.serviceProvider.Dispose();
-        }
-
         [Test]
         public void EncryptData_Should_Return_Encrypted_String()
         {
@@ -41,6 +18,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
             var encryptionKey = Config.GetDecryptionkey();
 
             // Arrange
+            var provider = new CoreCryptographyProvider();
 
             // Act
             var encryptedValue = provider.EncryptParameter(message, encryptionKey);
@@ -50,12 +28,13 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         }
 
         [Test]
-        public void DecryptData_Should_Return_Empty_String_If_Data_Is_Not_Encypted()
+        public void DecryptData_Should_Return_Empty_String_If_Data_Is_Not_Encrypted()
         {
             var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
 
             // Arrange
+            var provider = new CoreCryptographyProvider();
 
             // Act
             var decryptedValue = provider.DecryptParameter(message, encryptionKey);

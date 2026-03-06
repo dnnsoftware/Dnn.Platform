@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool DisplayModule
         {
             get
@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
         private IPortalAliasInfo CurrentPortalAlias => PortalSettings.Current.PortalAlias;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

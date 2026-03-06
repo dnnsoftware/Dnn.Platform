@@ -18,13 +18,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
     [SuppressMessage("Microsoft.Naming", "CA1716:IdentifiersShouldNotMatchKeywords", Justification = "Breaking change")]
     public class Exit : IConsoleCommand
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ResultHtml => Localization.GetString("Prompt_Exit_ResultHtml", this.LocalResourceFile);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ValidationMessage
         {
             get
@@ -33,19 +33,19 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Client
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsValid()
         {
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ConsoleResultModel Run()
         {
             throw new NotImplementedException();

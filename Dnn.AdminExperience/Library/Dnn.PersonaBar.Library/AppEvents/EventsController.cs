@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
         private static readonly object LockThis = new object();
         private static bool isInitialized;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ApplicationStartEvent()
         {
             lock (LockThis)
@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ApplicationEndEvent()
         {
             GetEventsImplements<IAppEvents>().ForEach(instance =>
@@ -76,7 +76,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IEventsController> GetFactory()
         {
             return () => new EventsController();

@@ -32,12 +32,12 @@ public class FontResource : LinkResource, IFontResource
     public override string Render(int crmVersion, bool useCdn, string applicationPath)
     {
         var htmlString = new StringBuilder("<link");
-        htmlString.Append($" href=\"{WebUtility.HtmlEncode(this.GetVersionedPath(crmVersion, useCdn, applicationPath))}\"");
-        if (this.Preload)
+        htmlString.Append($" href=\"{this.GetVersionedPath(crmVersion, useCdn, applicationPath)}\"");
+        if (this.Preload && !this.Attributes.ContainsKey("rel") && !this.Attributes.ContainsKey("as"))
         {
             htmlString.Append($" rel=\"preload\" as=\"font\"");
         }
-        else
+        else if (!this.Preload && !this.Attributes.ContainsKey("rel"))
         {
             htmlString.Append($" rel=\"font\"");
         }

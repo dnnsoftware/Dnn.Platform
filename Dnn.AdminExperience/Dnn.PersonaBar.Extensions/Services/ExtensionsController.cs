@@ -203,9 +203,9 @@ namespace Dnn.PersonaBar.Extensions.Services
 
             controlFolders.Insert(0, Path.Combine(Globals.ApplicationMapPath, @"Admin\Skins"));
 
-            // var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
-            // var currentControlFolder = moduleControl == null ? "" :
-            //    (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
+            ////var moduleControl = ModuleControlController.GetModuleControl(moduleControlId);
+            ////var currentControlFolder = moduleControl == null ? "" :
+            ////   (Path.GetDirectoryName(moduleControl.ControlSrc.ToLower()) ?? "").Replace('\\', '/');
             var response = new List<KeyValuePair<string, string>>();
             var appPathLen = Globals.ApplicationMapPath.Length + 1;
             foreach (var folder in controlFolders)
@@ -789,7 +789,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         SkinController.AddSkinPackage(skinPackage);
                         break;
                     case PackageTypes.CoreLanguagePack:
-                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
                             PackageID = package.PackageID,
@@ -799,7 +799,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                         LanguagePackController.SaveLanguagePack(languagePack);
                         break;
                     case PackageTypes.ExtensionLanguagePack:
-                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentPortalSettings().DefaultLanguage);
+                        locale = LocaleController.Instance.GetLocale(PortalController.Instance.GetCurrentSettings().DefaultLanguage);
                         languagePack = new LanguagePackInfo
                         {
                             PackageID = package.PackageID,
@@ -1534,7 +1534,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                                     fileName = Path.GetFileName(fileName);
                                 }
 
-                                if (!Globals.FileEscapingRegex.Match(fileName).Success)
+                                if (!Globals.FileEscapingRegex.IsMatch(fileName))
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }

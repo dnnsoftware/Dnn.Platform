@@ -6,7 +6,7 @@ namespace DotNetNuke.ExtensionPoints.Filters
 {
     public class NoFilter : IExtensionPointFilter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Condition(IExtensionPointData m)
         {
             return true;

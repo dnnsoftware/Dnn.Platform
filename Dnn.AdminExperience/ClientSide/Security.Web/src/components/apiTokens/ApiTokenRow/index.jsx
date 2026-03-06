@@ -73,7 +73,7 @@ class ApiTokenRow extends Component {
 
     render() {
         const { props, state } = this;
-        let status = "";
+        let status;
         let statusClass = "inactive";
         if (utils.dateInPast(new Date(props.apiToken.ExpiresOn), new Date())) {
             status = resx.get("Expired");

@@ -13,6 +13,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections.Internal;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -376,10 +377,23 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        public static void ClearModuleCache(int tabId)
+        /// <summary>Clear the module cache.</summary>
+        /// <param name="tabId">The tab ID.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettings")]
+        public static partial void ClearModuleCache(int tabId)
+            => ClearModuleCache(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>(),
+                tabId);
+
+        /// <summary>Clear the module cache.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="tabId">The tab ID.</param>
+        public static void ClearModuleCache(IHostSettings hostSettings, DataProvider dataProvider, int tabId)
         {
             CachingProvider.Instance().Clear("Module", tabId.ToString(CultureInfo.InvariantCulture));
-            var portals = PortalController.GetPortalDictionary();
+            var portals = PortalController.GetPortalDictionary(hostSettings, dataProvider);
             if (portals.TryGetValue(tabId, out var portalId))
             {
                 var tabSettings = TabController.Instance.GetTabSettings(tabId);
@@ -561,16 +575,16 @@ namespace DotNetNuke.Common.Utilities
                     switch (removedReason)
                     {
                         case CacheItemRemovedReason.Removed:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_REMOVED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_REMOVED);
                             break;
                         case CacheItemRemovedReason.Expired:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_EXPIRED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_EXPIRED);
                             break;
                         case CacheItemRemovedReason.Underused:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_UNDERUSED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_UNDERUSED);
                             break;
                         case CacheItemRemovedReason.DependencyChanged:
-                            log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
+                            log.LogTypeKey = nameof(EventLogType.CACHE_DEPENDENCYCHANGED);
                             break;
                     }
 
@@ -660,7 +674,7 @@ namespace DotNetNuke.Common.Utilities
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )
-                                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
+                                var log = new LogInfo { LogTypeKey = nameof(EventLogType.CACHE_OVERFLOW) };
                                 log.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
                                 LogController.Instance.AddLog(log);
                             }

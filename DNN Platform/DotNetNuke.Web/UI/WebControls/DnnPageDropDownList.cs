@@ -12,17 +12,37 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.UI.WebControls.Extensions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A page dropdown control.</summary>
     [ToolboxData("<{0}:DnnPageDropDownList runat='server'></{0}:DnnPageDropDownList>")]
     public class DnnPageDropDownList : DnnDropDownList
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnPageDropDownList"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public DnnPageDropDownList()
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnPageDropDownList"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnPageDropDownList(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
+            : base(clientResourceController, servicesFramework)
+        {
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether disabled pages are not selectable
         /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
@@ -93,7 +113,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -109,7 +129,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Services.SortTreeMethod = "ItemListService/SortPages";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("page");

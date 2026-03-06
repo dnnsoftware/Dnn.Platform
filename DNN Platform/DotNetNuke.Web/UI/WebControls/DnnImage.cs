@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets the icon style.</summary>
         public string IconStyle { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

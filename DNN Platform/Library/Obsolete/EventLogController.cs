@@ -664,7 +664,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public virtual partial void UpdateLogType(LogTypeInfo logType) =>
             this.EventLogConfigService.UpdateLogType(logType);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IEventLogController> GetFactory() => () => new EventLogController();
     }
 #pragma warning restore SA1601 // Partial elements should be documented

@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreateLinkMenu(TabInfo tab)
         {
             if (!this.ValidateTab(tab))
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteLinkMenu(TabInfo tab)
         {
             var portalId = tab.PortalID;
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             PersonaBarRepository.Instance.DeleteMenuItem(identifier);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IAdminMenuController> GetFactory()
         {
             return () => Globals.GetCurrentServiceProvider().GetRequiredService<IAdminMenuController>();

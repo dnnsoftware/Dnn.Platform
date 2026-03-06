@@ -55,11 +55,13 @@ namespace Dnn.PersonaBar.Library.Permissions
                 bool isMatch = false;
                 foreach (MenuPermissionInfo permission in this.List)
                 {
-                    if (permission.PortalId == value.PortalId
-                            && permission.MenuId == value.MenuId
-                            && permission.PermissionID == value.PermissionID
-                            && permission.UserID == value.UserID
-                            && permission.RoleID == value.RoleID)
+                    IPermissionInfo existingPermission = permission;
+                    IPermissionInfo newPermission = value;
+                    if (permission.PortalId == value.PortalId &&
+                        permission.MenuId == value.MenuId &&
+                        existingPermission.PermissionId == newPermission.PermissionId &&
+                        existingPermission.UserId == newPermission.UserId &&
+                        existingPermission.RoleId == newPermission.RoleId)
                     {
                         isMatch = true;
                         break;

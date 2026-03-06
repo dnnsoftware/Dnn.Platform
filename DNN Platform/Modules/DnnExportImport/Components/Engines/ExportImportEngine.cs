@@ -25,11 +25,10 @@ namespace Dnn.ExportImport.Components.Engines
     using Dnn.ExportImport.Dto.Portal;
     using Dnn.ExportImport.Dto.ProfileProperties;
     using Dnn.ExportImport.Dto.Users;
-    using Dnn.ExportImport.Interfaces;
     using Dnn.ExportImport.Repository;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
@@ -53,11 +52,11 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static readonly Tuple<string, Type>[] DatasetColumns =
         {
-            new Tuple<string, Type>("JobId", typeof(int)),
-            new Tuple<string, Type>("Name", typeof(string)),
-            new Tuple<string, Type>("Value", typeof(string)),
-            new Tuple<string, Type>("Level", typeof(int)),
-            new Tuple<string, Type>("CreatedOnDate", typeof(DateTime)),
+            Tuple.Create("JobId", typeof(int)),
+            Tuple.Create("Name", typeof(string)),
+            Tuple.Create("Value", typeof(string)),
+            Tuple.Create("Level", typeof(int)),
+            Tuple.Create("CreatedOnDate", typeof(DateTime)),
         };
 
         private readonly Stopwatch stopWatch = Stopwatch.StartNew();
@@ -67,7 +66,8 @@ namespace Dnn.ExportImport.Components.Engines
 
         static ExportImportEngine()
         {
-            ExportFolder = Globals.ApplicationMapPath + Constants.ExportFolder;
+            var appStatus = Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            ExportFolder = appStatus.ApplicationMapPath + Constants.ExportFolder;
             if (!Directory.Exists(ExportFolder))
             {
                 Directory.CreateDirectory(ExportFolder);

@@ -14,7 +14,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(Build))]
     public sealed class RunUnitTests : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.NUnit3(

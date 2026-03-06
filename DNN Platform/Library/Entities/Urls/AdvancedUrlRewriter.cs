@@ -198,7 +198,7 @@ namespace DotNetNuke.Entities.Urls
             return destUrl;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             Guid parentTraceId = Guid.Empty;
@@ -1792,8 +1792,8 @@ namespace DotNetNuke.Entities.Urls
                             // 819 : leaving /do301/check in Url because not using cleanPath to remove from
                             string cleanPath = RedirectTokens.RemoveAnyRedirectTokensAndReasons(rewritePathOnly);
 
-                            // string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
-                            // cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
+                            ////string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
+                            ////cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
                             cleanPath = cleanPath.Replace("&_aumdebug=true", string.Empty); // remove debug parameter if it exists
 
                             Match match = RewritePathRx.Match(rewritePathOnly ?? string.Empty);
@@ -1837,7 +1837,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 string rawUrlWithHost = StripDebugParameter(urlDecode.ToLowerInvariant());
 
-                                // string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
+                                ////string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
                                 string rawUrlWithHostNoScheme = StripDebugParameter(rawUrlWithHost.Replace(scheme, string.Empty));
                                 string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLowerInvariant().Replace(scheme, string.Empty));
                                 string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, string.Empty).ToLowerInvariant());
@@ -2188,7 +2188,7 @@ namespace DotNetNuke.Entities.Urls
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
             var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
-            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
+            if (UrlSlashesRegex.IsMatch(strURL) || UrlSlashesRegex.IsMatch(strDoubleDecodeURL))
             {
                 throw new HttpException(404, "Not Found");
             }
@@ -2742,7 +2742,7 @@ namespace DotNetNuke.Entities.Urls
                             pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                         }
 
-                        if (!pathWithNoQs.AsSpan(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
+                        if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
                         {
                             // no page extension, output a 404 if the Url is not found
                             // 766 : check for physical path before passing off as a 404 error

@@ -65,7 +65,7 @@ public partial class Create : GroupsModuleBase
         this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void OnInit(EventArgs e)
     {
         this.Load += this.Page_Load;
@@ -90,11 +90,13 @@ public partial class Create : GroupsModuleBase
     private void Create_Click(object sender, EventArgs e)
     {
         var ps = Security.PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
         this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
         this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 
         this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
         this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         if (this.roleController.GetRoleByName(this.PortalId, this.txtGroupName.Text) != null)
         {
             this.lblInvalidGroupName.Visible = true;

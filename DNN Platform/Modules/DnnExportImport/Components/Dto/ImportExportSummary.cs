@@ -57,7 +57,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>Gets or sets exported file information.</summary>
         public ExportFileInfo ExportFileInfo { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null)

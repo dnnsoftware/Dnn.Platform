@@ -108,7 +108,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderControl(HtmlTextWriter writer)
         {
             // Render Outer Div
@@ -219,7 +219,7 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.RenderEndTag();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this.tags = postCollection[postDataKey];
@@ -227,12 +227,12 @@ namespace DotNetNuke.Web.UI.WebControls
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostDataChangedEvent()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             switch (eventArgument)
@@ -262,7 +262,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

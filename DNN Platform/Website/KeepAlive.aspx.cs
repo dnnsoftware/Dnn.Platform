@@ -9,7 +9,7 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>A page which does minimal work but keeps the site's application pool active.</summary>
     public partial class KeepAlive : Page
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -19,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
             this.InitializeComponent();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

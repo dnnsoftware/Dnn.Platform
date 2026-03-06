@@ -123,14 +123,14 @@ namespace Dnn.PersonaBar.Library.Model
         [DataMember]
         public IList<MenuItem> Children { get; set; } = new List<MenuItem>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get { return this.MenuId; }
             set { this.MenuId = value; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.MenuId = Convert.ToInt32(dr["MenuId"], CultureInfo.InvariantCulture);

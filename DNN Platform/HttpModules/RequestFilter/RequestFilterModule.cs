@@ -43,7 +43,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Init(HttpApplication context)
         {
             context.BeginRequest += this.FilterRequest;

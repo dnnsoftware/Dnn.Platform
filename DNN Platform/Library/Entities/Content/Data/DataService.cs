@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Content.Data
             this.provider.ExecuteNonQuery("AddMetaData", contentItem.ContentItemId, name, value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SynchronizeMetaData(ContentItem contentItem, IEnumerable<KeyValuePair<string, string>> added, IEnumerable<KeyValuePair<string, string>> deleted)
         {
 #if false
@@ -219,7 +219,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteScalar<int>("AddContentType", contentType.ContentType);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteContentType(ContentType contentType)
         {
             this.provider.ExecuteNonQuery("DeleteContentType", contentType.ContentTypeId);
@@ -286,7 +286,7 @@ namespace DotNetNuke.Entities.Content.Data
             return this.provider.ExecuteScalar<int>("AddSimpleTerm", term.VocabularyId, term.Name, term.Description, term.Weight, createdByUserId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddTermToContent(Term term, ContentItem contentItem)
         {
             this.provider.ExecuteNonQuery("AddTermToContent", term.TermId, contentItem.ContentItemId);

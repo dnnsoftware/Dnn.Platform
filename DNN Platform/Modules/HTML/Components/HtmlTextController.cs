@@ -15,6 +15,9 @@ namespace DotNetNuke.Modules.Html
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Taxonomy;
@@ -41,21 +44,40 @@ namespace DotNetNuke.Modules.Html
     {
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1310:FieldNamesMustNotContainUnderscore", Justification = "Breaking Change")]
         public const int MAX_DESCRIPTION_LENGTH = 100;
+
         private const string PortalRootToken = "{{PortalRoot}}";
 
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
 
         /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public HtmlTextController()
-            : this(Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>())
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
         /// <param name="navigationManager">A navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public HtmlTextController(INavigationManager navigationManager)
+            : this(navigationManager, null, null, null)
         {
-            this.NavigationManager = navigationManager;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HtmlTextController"/> class.</summary>
+        /// <param name="navigationManager">A navigation manager.</param>
+        /// <param name="portalAliasService">A portal alias service.</param>
+        /// <param name="portalController">A portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        public HtmlTextController(INavigationManager navigationManager, IPortalAliasService portalAliasService, IPortalController portalController, IApplicationStatusInfo appStatus)
+        {
+            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
         protected INavigationManager NavigationManager { get; }
@@ -190,8 +212,8 @@ namespace DotNetNuke.Modules.Html
                 return PortalRootToken;
             }
 
-            var aliases = PortalAliasController.Instance.GetPortalAliases();
-            if (!aliases.Contains(domain))
+            var aliases = this.portalAliasService.GetPortalAliases();
+            if (!aliases.ContainsKey(domain))
             {
                 // this is no not a portal url so even if it contains /portals/..
                 // we do not need to replace it with a token
@@ -371,7 +393,7 @@ namespace DotNetNuke.Modules.Html
             int intMaximumVersionHistory = -1;
 
             // get from portal settings
-            intMaximumVersionHistory = int.Parse(PortalController.GetPortalSetting("MaximumVersionHistory", portalID, "-1"));
+            intMaximumVersionHistory = int.Parse(PortalController.GetPortalSetting(this.portalController, "MaximumVersionHistory", portalID, "-1"));
 
             // if undefined at portal level, set portal default
             if (intMaximumVersionHistory == -1)
@@ -399,7 +421,7 @@ namespace DotNetNuke.Modules.Html
             }
 
             // save portal setting
-            PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var objPortalSettings = PortalController.Instance.GetCurrentSettings();
             if (PortalSecurity.IsInRole(objPortalSettings.AdministratorRoleName))
             {
                 PortalController.UpdatePortalSetting(portalID, "MaximumVersionHistory", maximumVersionHistory.ToString());
@@ -486,7 +508,7 @@ namespace DotNetNuke.Modules.Html
             this.UpdateHtmlText(htmlContent, this.GetMaximumVersionHistory(module.PortalID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo modInfo, DateTime beginDateUtc)
         {
             var workflowId = this.GetWorkflow(modInfo.ModuleID, modInfo.TabID, modInfo.PortalID).Value;
@@ -525,19 +547,19 @@ namespace DotNetNuke.Modules.Html
             return searchDocuments;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)
             {
                 case "05.01.02":
                     // remove the Code SubDirectory
-                    Config.RemoveCodeSubDirectory("HTML");
+                    Config.RemoveCodeSubDirectory(this.appStatus, "HTML");
 
                     // Once the web.config entry is done we can safely remove the HTML folder
                     var arrPaths = new string[1];
                     arrPaths[0] = "App_Code\\HTML\\";
-                    FileSystemUtils.DeleteFiles(arrPaths);
+                    FileSystemUtils.DeleteFiles(this.appStatus, arrPaths);
                     break;
                 case "06.00.00":
                     DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModuleByModuleName("DNN_HTML", Null.NullInteger);
@@ -560,7 +582,7 @@ namespace DotNetNuke.Modules.Html
         private static void AddHtmlNotification(string subject, string body, UserInfo user)
         {
             var notificationType = NotificationsController.Instance.GetNotificationType("HtmlNotification");
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var sender = UserController.GetUserById(portalSettings.PortalId, portalSettings.AdministratorId);
 
             var notification = new Notification { NotificationTypeID = notificationType.NotificationTypeId, Subject = subject, Body = body, IncludeDismissAction = true, SenderUserID = sender.UserID };
@@ -606,8 +628,6 @@ namespace DotNetNuke.Modules.Html
         private void CreateUserNotifications(HtmlTextInfo objHtmlText)
         {
             var htmlTextUserController = new HtmlTextUserController();
-            HtmlTextUserInfo htmlTextUser = null;
-            UserInfo user = null;
 
             // clean up old user notification records
             htmlTextUserController.DeleteHtmlTextUsers();
@@ -619,7 +639,7 @@ namespace DotNetNuke.Modules.Html
             var arrUsers = new ArrayList();
 
             // if not published
-            if (objHtmlText.IsPublished == false)
+            if (!objHtmlText.IsPublished)
             {
                 arrUsers.Add(objHtmlText.CreatedByUserID); // include content owner
             }
@@ -628,13 +648,13 @@ namespace DotNetNuke.Modules.Html
             if (objHtmlText.StateID != this.workflowManager.GetWorkflow(objHtmlText.WorkflowID).FirstState.StateID && objHtmlText.IsPublished == false)
             {
                 // get users from permissions for state
-                foreach (var permission in WorkflowStatePermissionsRepository.Instance.GetWorkflowStatePermissionByState(objHtmlText.StateID))
+                foreach (IPermissionInfo permission in WorkflowStatePermissionsRepository.Instance.GetWorkflowStatePermissionByState(objHtmlText.StateID))
                 {
                     if (permission.AllowAccess)
                     {
-                        if (Null.IsNull(permission.UserID))
+                        if (Null.IsNull(permission.UserId))
                         {
-                            int roleId = permission.RoleID;
+                            int roleId = permission.RoleId;
                             RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
                             if (objRole != null)
                             {
@@ -649,9 +669,9 @@ namespace DotNetNuke.Modules.Html
                         }
                         else
                         {
-                            if (!arrUsers.Contains(permission.UserID))
+                            if (!arrUsers.Contains(permission.UserId))
                             {
-                                arrUsers.Add(permission.UserID);
+                                arrUsers.Add(permission.UserId);
                             }
                         }
                     }
@@ -664,30 +684,29 @@ namespace DotNetNuke.Modules.Html
                 // get tabid from module
                 ModuleInfo objModule = ModuleController.Instance.GetModule(objHtmlText.ModuleID, Null.NullInteger, true);
 
-                PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var objPortalSettings = PortalController.Instance.GetCurrentSettings();
                 if (objPortalSettings != null)
                 {
-                    string strResourceFile = string.Format(
-                        "{0}/DesktopModules/{1}/{2}/{3}",
-                        Globals.ApplicationPath,
-                        objModule.DesktopModule.FolderName,
-                        Localization.LocalResourceDirectory,
-                        Localization.LocalSharedResourceFile);
+                    string strResourceFile =
+                        $"{Globals.ApplicationPath}/DesktopModules/{objModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{Localization.LocalSharedResourceFile}";
                     string strSubject = Localization.GetString("NotificationSubject", strResourceFile);
                     string strBody = Localization.GetString("NotificationBody", strResourceFile);
                     strBody = strBody.Replace("[URL]", this.NavigationManager.NavigateURL(objModule.TabID));
                     strBody = strBody.Replace("[STATE]", objHtmlText.StateName);
 
                     // process user notification collection
+                    UserInfo user;
                     foreach (int intUserID in arrUsers)
                     {
                         // create user notification record
-                        htmlTextUser = new HtmlTextUserInfo();
-                        htmlTextUser.ItemID = objHtmlText.ItemID;
-                        htmlTextUser.StateID = objHtmlText.StateID;
-                        htmlTextUser.ModuleID = objHtmlText.ModuleID;
-                        htmlTextUser.TabID = objModule.TabID;
-                        htmlTextUser.UserID = intUserID;
+                        var htmlTextUser = new HtmlTextUserInfo
+                        {
+                            ItemID = objHtmlText.ItemID,
+                            StateID = objHtmlText.StateID,
+                            ModuleID = objHtmlText.ModuleID,
+                            TabID = objModule.TabID,
+                            UserID = intUserID,
+                        };
                         htmlTextUserController.AddHtmlTextUser(htmlTextUser);
 
                         // send an email notification to a user if the state indicates to do so

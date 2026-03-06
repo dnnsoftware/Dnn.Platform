@@ -57,8 +57,7 @@ class RolesEditor extends Component {
 
     onDropDownChange(key, option) {
         if (key === "groupId" && option.value === -3) {
-            let { createGroupVisible } = this.state;
-            createGroupVisible = true;
+            let createGroupVisible = true;
             this.setState({
                 createGroupVisible
             });
@@ -76,8 +75,7 @@ class RolesEditor extends Component {
                 roleDetails
             });
         } else {
-            let { assignToUsers } = this.state;
-            assignToUsers = value;
+            let assignToUsers = value;
             this.setState({
                 assignToUsers
             });
@@ -173,8 +171,7 @@ class RolesEditor extends Component {
         return groupOptions;
     }
     CloseCreateGroup() {
-        let { createGroupVisible } = this.state;
-        createGroupVisible = false;
+        let createGroupVisible = false;
         this.setState({
             createGroupVisible
         });

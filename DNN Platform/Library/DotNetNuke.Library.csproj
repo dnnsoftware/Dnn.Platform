@@ -14,7 +14,7 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,CA5350,CA5351</WarningsNotAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -23,15 +23,12 @@
     <PackageReference Include="AngleSharp" />
     <PackageReference Include="AngleSharp.Css" />
     <PackageReference Include="BouncyCastle.Cryptography" />
+    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-j92c-7v7g-gj3f" />
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="MailKit" />
     <PackageReference Include="Microsoft.AspNet.WebPages" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Web.Infrastructure" />
     <PackageReference Include="MimeKit" />
     <PackageReference Include="Newtonsoft.Json" />
@@ -39,10 +36,6 @@
     <PackageReference Include="Portable.BouncyCastle" />
     <PackageReference Include="QuickIO.NET" />
     <PackageReference Include="SharpZipLib" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="System.Collections.Immutable" />
   </ItemGroup>
 
@@ -60,10 +53,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="DotNetNuke.WebControls">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Controls\DotNetNuke.WebControls\bin\DotNetNuke.WebControls.dll</HintPath>
-    </Reference>
     <Reference Include="Lucene.Net">
       <HintPath>..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
     </Reference>
@@ -80,6 +69,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj" />
+    <ProjectReference Include="..\Controls\DotNetNuke.WebControls\DotNetNuke.WebControls.vbproj" />
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
     <ProjectReference Include="..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj" />
     <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
@@ -95,5 +85,7 @@
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
   </ItemGroup>
+
+  <Import Project="Library.build" Condition="Exists('Library.build')" />
 
 </Project>

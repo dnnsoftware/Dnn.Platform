@@ -3,23 +3,43 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Modules.Definitions
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Search.Entities;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>ModuleDefinitionController provides the Business Layer for Module Definitions.</summary>
-    public class ModuleDefinitionController
+    public partial class ModuleDefinitionController
     {
         private const string Key = "ModuleDefID";
         private static readonly DataProvider DataProvider = DataProvider.Instance();
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleDefinitionController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
+        public ModuleDefinitionController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ModuleDefinitionController"/> class.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public ModuleDefinitionController(IPermissionDefinitionService permissionDefinitionService)
+        {
+            this.permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        }
 
         /// <summary>GetModuleDefinitionByID gets a Module Definition by its ID.</summary>
         /// <param name="moduleDefID">The ID of the Module Definition.</param>
@@ -101,13 +121,23 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <param name="saveChildren">A flag that determines whether the child objects are also saved.</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
         /// <returns>The module definition ID.</returns>
-        public static int SaveModuleDefinition(ModuleDefinitionInfo moduleDefinition, bool saveChildren, bool clearCache)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial int SaveModuleDefinition(ModuleDefinitionInfo moduleDefinition, bool saveChildren, bool clearCache)
+            => SaveModuleDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), moduleDefinition, saveChildren, clearCache);
+
+        /// <summary>SaveModuleDefinition saves the Module Definition to the database.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="moduleDefinition">The Module Definition to save.</param>
+        /// <param name="saveChildren">A flag that determines whether the child objects are also saved.</param>
+        /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
+        /// <returns>The module definition ID.</returns>
+        public static int SaveModuleDefinition(IPermissionDefinitionService permissionDefinitionService, ModuleDefinitionInfo moduleDefinition, bool saveChildren, bool clearCache)
         {
-            int moduleDefinitionID = moduleDefinition.ModuleDefID;
-            if (moduleDefinitionID == Null.NullInteger)
+            int moduleDefinitionId = moduleDefinition.ModuleDefID;
+            if (moduleDefinitionId == Null.NullInteger)
             {
                 // Add new Module Definition
-                moduleDefinitionID = DataProvider.AddModuleDefinition(
+                moduleDefinitionId = DataProvider.AddModuleDefinition(
                     moduleDefinition.DesktopModuleID,
                     moduleDefinition.FriendlyName,
                     moduleDefinition.DefinitionName,
@@ -124,26 +154,25 @@ namespace DotNetNuke.Entities.Modules.Definitions
             {
                 foreach (KeyValuePair<string, PermissionInfo> kvp in moduleDefinition.Permissions)
                 {
-                    kvp.Value.ModuleDefID = moduleDefinitionID;
+                    kvp.Value.ModuleDefID = moduleDefinitionId;
 
                     // check if permission exists
-                    var permissionController = new PermissionController();
-                    ArrayList permissions = permissionController.GetPermissionByCodeAndKey(kvp.Value.PermissionCode, kvp.Value.PermissionKey);
-                    if (permissions != null && permissions.Count == 1)
+                    var permissions = permissionDefinitionService.GetDefinitionsByCodeAndKey(kvp.Value.PermissionCode, kvp.Value.PermissionKey);
+                    var permission = permissions.FirstOrDefault();
+                    if (permission is not null)
                     {
-                        var permission = (PermissionInfo)permissions[0];
-                        kvp.Value.PermissionID = permission.PermissionID;
-                        permissionController.UpdatePermission(kvp.Value);
+                        ((IPermissionDefinitionInfo)kvp.Value).PermissionId = permission.PermissionId;
+                        permissionDefinitionService.UpdateDefinition(kvp.Value);
                     }
                     else
                     {
-                        permissionController.AddPermission(kvp.Value);
+                        permissionDefinitionService.AddDefinition(kvp.Value);
                     }
                 }
 
                 foreach (KeyValuePair<string, ModuleControlInfo> kvp in moduleDefinition.ModuleControls)
                 {
-                    kvp.Value.ModuleDefID = moduleDefinitionID;
+                    kvp.Value.ModuleDefID = moduleDefinitionId;
 
                     // check if definition exists
                     ModuleControlInfo moduleControl = ModuleControlController.GetModuleControlByControlKey(kvp.Value.ControlKey, kvp.Value.ModuleDefID);
@@ -161,7 +190,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 DataCache.ClearHostCache(true);
             }
 
-            return moduleDefinitionID;
+            return moduleDefinitionId;
         }
 
         /// <summary>GetModuleDefinitionByID gets a Module Definition by its ID.</summary>
@@ -177,10 +206,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
         public void DeleteModuleDefinition(int moduleDefinitionId)
         {
             // Delete associated permissions
-            var permissionController = new PermissionController();
-            foreach (PermissionInfo permission in permissionController.GetPermissionsByModuleDefID(moduleDefinitionId))
+            foreach (var permission in this.permissionDefinitionService.GetDefinitionsByModuleDefId(moduleDefinitionId))
             {
-                permissionController.DeletePermission(permission.PermissionID);
+                this.permissionDefinitionService.DeleteDefinition(permission);
             }
 
             DataProvider.DeleteModuleDefinition(moduleDefinitionId);

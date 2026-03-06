@@ -12,18 +12,18 @@ namespace Dnn.PersonaBar.AdminLogs.MenuControllers
     /// <summary>Controls the admin logs menu.</summary>
     public class AdminLogsMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             var settings = new Dictionary<string, object>();

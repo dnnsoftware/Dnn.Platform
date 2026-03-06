@@ -29,20 +29,8 @@ class DefaultPagesSettingsPanelBody extends Component {
     componentDidUpdate() {
         let { props} = this;
         if (props.defaultPagesSettings) {
-            let portalIdChanged = false;
-            let cultureCodeChanged = false;            
-            if (props.portalId === undefined || props.defaultPagesSettings.PortalId === props.portalId) {
-                portalIdChanged = false;
-            }
-            else {
-                portalIdChanged = true;
-            }
-            if (props.cultureCode === undefined || props.defaultPagesSettings.CultureCode === props.cultureCode) {
-                cultureCodeChanged = false;
-            }
-            else {
-                cultureCodeChanged = true;
-            }
+            let portalIdChanged = props.portalId !== undefined && props.defaultPagesSettings.PortalId !== props.portalId;
+            let cultureCodeChanged = props.cultureCode !== undefined && props.defaultPagesSettings.CultureCode !== props.cultureCode;
 
             if (portalIdChanged || cultureCodeChanged) {
                 this.loadData();

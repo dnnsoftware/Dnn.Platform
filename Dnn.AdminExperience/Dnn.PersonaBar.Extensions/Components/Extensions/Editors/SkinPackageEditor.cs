@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinPackageEditor));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var isHostUser = UserController.Instance.GetCurrentUserInfo().IsSuperUser;
@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;

@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.FileSystem
     using System.Web;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -47,15 +48,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("uniqueid")]
         public Guid UniqueId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("versionguid")]
         public Guid VersionGuid { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("foldername")]
         public string FolderName
         {
@@ -89,17 +90,17 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("parentid")]
         public int ParentID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("physicalpath")]
         public string PhysicalPath
         {
             get
             {
                 string physicalPath;
-                PortalSettings portalSettings = null;
+                IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
-                    portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                    portalSettings = PortalController.Instance.GetCurrentSettings();
                 }
 
                 if (this.PortalID == Null.NullInteger)
@@ -125,15 +126,15 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("portalid")]
         public int PortalID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("storagelocation")]
         public int StorageLocation { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("folderpermissions")]
         public FolderPermissionCollection FolderPermissions
         {
@@ -143,7 +144,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsStorageSecure
         {
             get
@@ -153,11 +154,11 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("folderid")]
         public int FolderID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("displayname")]
         public string DisplayName
         {
@@ -177,11 +178,11 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("folderpath")]
         public string FolderPath { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("displaypath")]
         public string DisplayPath
         {
@@ -201,11 +202,11 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("iscached")]
         public bool IsCached { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlElement("isprotected")]
         public bool IsProtected { get; set; }
 
@@ -217,12 +218,12 @@ namespace DotNetNuke.Services.FileSystem
         [XmlElement("mappedpath")]
         public string MappedPath { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [XmlIgnore]
         [JsonIgnore]
         public DateTime LastUpdated { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int FolderMappingID
         {
             get

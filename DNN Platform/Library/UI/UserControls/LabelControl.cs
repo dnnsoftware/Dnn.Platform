@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -162,13 +162,13 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this.Text = localText + this.Suffix;
 
-                    // NoHelpLabelText = Text;
+                    ////NoHelpLabelText = Text;
                 }
                 else
                 {
                     this.Text += this.Suffix;
 
-                    // NoHelpLabelText = Text;
+                    ////NoHelpLabelText = Text;
                 }
             }
 
@@ -188,8 +188,8 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.pnlHelp.Visible = this.cmdHelp.Visible = false;
 
-                // lblHelp.Visible = false;
-                // lblNoHelpLabel.Visible = true;
+                ////lblHelp.Visible = false;
+                ////lblNoHelpLabel.Visible = true;
             }
 
             if (!string.IsNullOrEmpty(this.CssClass))
@@ -221,7 +221,7 @@ namespace DotNetNuke.UI.UserControls
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
+            ////ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
         }
     }
 }

@@ -20,7 +20,7 @@ namespace DotNetNuke.Maintenance.Shims
             this.installer = new Installer(package, physicalSitePath);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool UnInstall(bool deleteFiles)
         {
             return this.installer.UnInstall(deleteFiles);

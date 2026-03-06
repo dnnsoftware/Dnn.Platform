@@ -7,23 +7,32 @@ namespace DotNetNuke.Tests.Data
     using System.Collections.Generic;
     using System.Configuration;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.Tests.Utilities;
+
+    using Moq;
+
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
     using NUnit.Framework;
     using PetaPoco;
 
     [TestFixture]
     public class DataContextTests
     {
-        // ReSharper disable InconsistentNaming
+        private FakeServiceProvider serviceProvider;
+
         [SetUp]
         public void SetUp()
         {
+            this.serviceProvider = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<IApplicationStatusInfo>()));
             ComponentFactory.Container = new SimpleContainer();
-            ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
-            ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
+            ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider(Mock.Of<IApplicationStatusInfo>()));
+            ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>
             {
                 { "name", "SqlDataProvider" },
                 { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke" },
@@ -36,6 +45,7 @@ namespace DotNetNuke.Tests.Data
         [TearDown]
         public void TearDown()
         {
+            this.serviceProvider.Dispose();
         }
 
         [Test]
@@ -44,7 +54,7 @@ namespace DotNetNuke.Tests.Data
             // Arrange
 
             // Act
-            var context = DataContext.Instance();
+            var context = DataContext.Instance(Mock.Of<IHostSettings>());
 
             // Assert
             Assert.That(context, Is.InstanceOf<IDataContext>());
@@ -58,7 +68,7 @@ namespace DotNetNuke.Tests.Data
             var connectionString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
 
             // Act
-            var context = (PetaPocoDataContext)DataContext.Instance();
+            var context = (PetaPocoDataContext)DataContext.Instance(Mock.Of<IHostSettings>());
 
             // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
@@ -74,13 +84,11 @@ namespace DotNetNuke.Tests.Data
             var connectionString = ConfigurationManager.ConnectionStrings[name].ConnectionString;
 
             // Act
-            var context = (PetaPocoDataContext)DataContext.Instance(name);
+            var context = (PetaPocoDataContext)DataContext.Instance(Mock.Of<IHostSettings>(), name);
 
             // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "database");
             Assert.That(Util.GetPrivateMember<Database, string>(db, "_connectionString"), Is.EqualTo(connectionString));
         }
-
-        // ReSharper restore InconsistentNaming
     }
 }

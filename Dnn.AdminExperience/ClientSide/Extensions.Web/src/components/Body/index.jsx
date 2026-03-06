@@ -71,10 +71,10 @@ class Body extends Component {
     createExtension() {
         const { props } = this;
         let _newExtension = Object.assign(newExtension, ModuleCustomSettings);
-        _newExtension = Object.assign(newExtension, CoreLanguagePack);
-        _newExtension = Object.assign(newExtension, ExtensionLanguagePack);
-        _newExtension = Object.assign(newExtension, { locales: props.locales });
-        _newExtension = Object.assign(newExtension, { packages: props.localePackages });
+        _newExtension = Object.assign(_newExtension, CoreLanguagePack);
+        _newExtension = Object.assign(_newExtension, ExtensionLanguagePack);
+        _newExtension = Object.assign(_newExtension, { locales: props.locales });
+        _newExtension = Object.assign(_newExtension, { packages: props.localePackages });
         props.dispatch(ExtensionActions.addExtension(validationMapExtensionBeingEdited(_newExtension), () => {
             this.selectPanel(2);
         }));

@@ -17,6 +17,7 @@ namespace DotNetNuke.Data
     using System.Text;
     using System.Web.Hosting;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -27,15 +28,31 @@ namespace DotNetNuke.Data
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Base implementation of a provider of core database activities.</summary>
     public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
+        private readonly IApplicationStatusInfo appStatus;
+
+        /// <summary>Initializes a new instance of the <see cref="DataProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IA. Scheduled removal in v12.0.0.")]
+        protected DataProvider()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DataProvider"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        protected DataProvider(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
 
         public virtual string ConnectionString
         {
@@ -412,7 +429,9 @@ namespace DotNetNuke.Data
             return
                 this.ExecuteScalar<int>(
                     "AddPortalInfo",
+#pragma warning disable CS0618 // Type or member is obsolete
                     PortalSecurity.Instance.InputFilter(portalname, PortalSecurity.FilterFlag.NoMarkup),
+#pragma warning restore CS0618 // Type or member is obsolete
                     currency,
                     this.GetNull(expiryDate),
                     hostFee,
@@ -448,7 +467,7 @@ namespace DotNetNuke.Data
         public virtual IDataReader GetPortals(string cultureCode)
         {
             IDataReader reader;
-            if (Globals.Status == Globals.UpgradeStatus.Upgrade && Globals.DataBaseVersion < new Version(6, 1, 0))
+            if (this.appStatus.Status == UpgradeStatus.Upgrade && this.appStatus.DatabaseVersion < new Version(6, 1, 0))
             {
                 reader = this.ExecuteReader("GetPortals");
             }
@@ -527,7 +546,9 @@ namespace DotNetNuke.Data
                 "UpdatePortalInfo",
                 portalId,
                 portalGroupId,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.Instance.InputFilter(portalName, PortalSecurity.FilterFlag.NoMarkup),
+#pragma warning restore CS0618 // Type or member is obsolete
                 this.GetNull(logoFile),
                 this.GetNull(footerText),
                 this.GetNull(expiryDate),
@@ -3479,6 +3500,86 @@ namespace DotNetNuke.Data
                 mailToAddress);
         }
 
+        /// <summary>Add a new scheduled task.</summary>
+        /// <param name="typeFullName">The full name of the <see cref="SchedulerClient"/> implementation.</param>
+        /// <param name="timeLapse">The amount of time between runs of the task (in the unit specified by <paramref name="timeLapseMeasurement"/>).</param>
+        /// <param name="timeLapseMeasurement">
+        /// The time unit of <paramref name="timeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retryTimeLapse">The amount of time between retries after a task failure (in the unit specified by <paramref name="retryTimeLapseMeasurement"/>).</param>
+        /// <param name="retryTimeLapseMeasurement">
+        /// The time unit of <paramref name="retryTimeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retainHistoryNum">The number of log entries to retain.</param>
+        /// <param name="attachToEvent">The name of an event which should trigger the task to run.</param>
+        /// <param name="catchUpEnabled">Whether to catch up on task runs that were missed.</param>
+        /// <param name="enabled">Whether the task is enabled.</param>
+        /// <param name="objectDependencies">The name of objects (e.g. database tables) that the task depends on.</param>
+        /// <param name="servers">A comma-delimited list of server names on which the task should run, or <see cref="string.Empty"/> to run on all servers.</param>
+        /// <param name="createdByUserID">The ID of the user creating the task.</param>
+        /// <param name="friendlyName">The friendly name of the task.</param>
+        /// <param name="scheduleStartDate">The date/time on which the task should start running.</param>
+        /// <returns>The schedule ID.</returns>
         public virtual int AddSchedule(string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, int createdByUserID, string friendlyName, DateTime scheduleStartDate)
         {
             return this.ExecuteScalar<int>(
@@ -3559,6 +3660,86 @@ namespace DotNetNuke.Data
             this.ExecuteNonQuery(90, "PurgeScheduleHistory");
         }
 
+        /// <summary>Updates the scheduled task.</summary>
+        /// <param name="scheduleID">The ID of the scheduled task.</param>
+        /// <param name="typeFullName">The full name of the <see cref="SchedulerClient"/> implementation.</param>
+        /// <param name="timeLapse">The amount of time between runs of the task (in the unit specified by <paramref name="timeLapseMeasurement"/>).</param>
+        /// <param name="timeLapseMeasurement">
+        /// The time unit of <paramref name="timeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retryTimeLapse">The amount of time between retries after a task failure (in the unit specified by <paramref name="retryTimeLapseMeasurement"/>).</param>
+        /// <param name="retryTimeLapseMeasurement">
+        /// The time unit of <paramref name="retryTimeLapse"/>. Options include the following:
+        /// <list type="table">
+        ///     <listheader>
+        ///         <term>Value</term>
+        ///         <description>Meaning</description>
+        ///     </listheader>
+        ///     <item>
+        ///         <term><c>"s"</c></term>
+        ///         <description>Seconds</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"m"</c></term>
+        ///         <description>Minutes</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"h"</c></term>
+        ///         <description>Hours</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"d"</c></term>
+        ///         <description>Days</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"mo"</c></term>
+        ///         <description>Months</description>
+        ///     </item>
+        ///     <item>
+        ///         <term><c>"y"</c></term>
+        ///         <description>Years</description>
+        ///     </item>
+        /// </list>
+        /// </param>
+        /// <param name="retainHistoryNum">The number of log entries to retain.</param>
+        /// <param name="attachToEvent">The name of an event which should trigger the task to run.</param>
+        /// <param name="catchUpEnabled">Whether to catch up on task runs that were missed.</param>
+        /// <param name="enabled">Whether the task is enabled.</param>
+        /// <param name="objectDependencies">The name of objects (e.g. database tables) that the task depends on.</param>
+        /// <param name="servers">A comma-delimited list of server names on which the task should run, or <see cref="string.Empty"/> to run on all servers.</param>
+        /// <param name="lastModifiedByUserID">The ID of the user modifying the task.</param>
+        /// <param name="friendlyName">The friendly name of the task.</param>
+        /// <param name="scheduleStartDate">The date/time on which the task should start running.</param>
         public virtual void UpdateSchedule(int scheduleID, string typeFullName, int timeLapse, string timeLapseMeasurement, int retryTimeLapse, string retryTimeLapseMeasurement, int retainHistoryNum, string attachToEvent, bool catchUpEnabled, bool enabled, string objectDependencies, string servers, int lastModifiedByUserID, string friendlyName, DateTime scheduleStartDate)
         {
             this.ExecuteNonQuery(

@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.objParent = parent;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
                                 else
                                 {
-                                    // if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
+                                    ////if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
                                     string[] arrValues = queryStringCollection.GetValues(i);
                                     if (arrValues != null)
                                     {

@@ -14,7 +14,11 @@ namespace DotNetNuke.Web.InternalServices
     using System.Runtime.Serialization;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.DataStructures;
     using DotNetNuke.Entities.Portals;
@@ -27,14 +31,44 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Common;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// <summary>A web API controller for lists of items.</summary>
     [DnnAuthorize]
     public class ItemListServiceController : DnnApiController
     {
         private const string PortalPrefix = "P-";
         private const string RootKey = "Root";
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
+        private readonly IHostSettings hostSettings;
+        private readonly DataProvider dataProvider;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
+
+        /// <summary>Initializes a new instance of the <see cref="ItemListServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ItemListServiceController()
+            : this(null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ItemListServiceController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public ItemListServiceController(IHostSettings hostSettings, DataProvider dataProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        }
 
         /// <summary>Gets a list of page descendants.</summary>
         /// <param name="parentId">The parent ID.</param>
@@ -421,7 +455,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalSettings.PortalId);
                 const int numResults = 5;
 
                 // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
@@ -547,8 +581,8 @@ namespace DotNetNuke.Web.InternalServices
                 filterTabs.AddRange(
                     tabs.Where(
                             t =>
-                                t.TabPermissions.Cast<TabPermissionInfo>()
-                                    .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
+                                t.TabPermissions.Cast<IPermissionInfo>()
+                                    .Any(p => roleList.Contains(p.RoleId) && p.UserId == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
                         .Where(t => !disabledNotSelectable || !t.DisableLink)
                         .Select(t => t.TabID));
             }
@@ -587,10 +621,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
         {
-            var mygroup = this.GetMyPortalGroup();
-            var portals = mygroup.Select(p => new ItemDto
+            var myGroup = this.GetMyPortalGroup().Cast<IPortalInfo>();
+            var portals = myGroup.Select(p => new ItemDto
             {
-                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
+                Key = PortalPrefix + p.PortalId.ToString(CultureInfo.InvariantCulture),
                 Value = p.PortalName,
                 HasChildren = true,
                 Selectable = false,
@@ -598,22 +632,21 @@ namespace DotNetNuke.Web.InternalServices
             return ApplySort(portals, sortOrder);
         }
 
-        private IEnumerable<PortalInfo> GetMyPortalGroup()
+        private IEnumerable<IPortalInfo> GetMyPortalGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
             if (groups.Length != 0)
             {
-                var mygroup = (from @group in groups
-                               select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                    into portals
-                               where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                               select portals.ToArray()).FirstOrDefault();
-                return mygroup;
+                return (
+                    from @group in groups
+                    select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+                    where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+                    select portals.ToArray())
+                    .FirstOrDefault();
             }
 
-            var currentPortal = new List<PortalInfo>();
-            currentPortal.Add(PortalController.Instance.GetPortal(this.PortalSettings.PortalId));
-            return currentPortal;
+            var currentPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
+            return new List<PortalInfo> { currentPortal, };
         }
 
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
@@ -997,7 +1030,7 @@ namespace DotNetNuke.Web.InternalServices
                 return tree;
             }
 
-            var portals = PortalController.GetPortalDictionary();
+            var portals = PortalController.GetPortalDictionary(this.hostSettings, this.dataProvider);
             int portalId;
             if (portals.TryGetValue(itemIdAsInt, out var pid))
             {
@@ -1104,7 +1137,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         Data = new ItemDto
                         {
-                            Key = PortalPrefix + portal.PortalID.ToString(CultureInfo.InvariantCulture),
+                            Key = PortalPrefix + portal.PortalId.ToString(CultureInfo.InvariantCulture),
                             Value = portal.PortalName,
                             HasChildren = true,
                             Selectable = false,
@@ -1507,7 +1540,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var mygroup = this.GetMyPortalGroup();
-            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
+            return mygroup != null && mygroup.Any(p => p.PortalId == portalId);
         }
 
         private int GetActivePortalId(int pageId)

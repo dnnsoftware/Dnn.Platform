@@ -10,11 +10,36 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
     public class DnnFormComboBoxItem : DnnFormListItemBase
     {
+        private readonly IClientResourceController clientResourceController;
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormComboBoxItem"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public DnnFormComboBoxItem()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormComboBoxItem"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public DnnFormComboBoxItem(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
+            : base(appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
+        {
+            this.clientResourceController = clientResourceController;
+        }
+
         ////public DropDownList ComboBox { get; set; }
 
         /// <summary>Gets or sets the combobox.</summary>
@@ -54,24 +79,21 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 // Reset SelectedValue
                 // comboBox.Select(selectedValue);
                 var selectedItem = comboBox.FindItemByValue(selectedValue);
-                if (selectedItem != null)
-                {
-                    selectedItem.Selected = true;
-                }
+                selectedItem?.Selected = true;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void BindList()
         {
             BindListInternal(this.ComboBox, this.Value, this.ListSource, this.ListTextField, this.ListValueField);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override WebControl CreateControlInternal(Control container)
         {
-            // ComboBox = new DropDownList { ID = ID + "_ComboBox" };
-            this.ComboBox = new DnnComboBox { ID = this.ID + "_ComboBox" };
+            ////ComboBox = new DropDownList { ID = ID + "_ComboBox" };
+            this.ComboBox = new DnnComboBox(this.AppStatus, this.EventLogger, this.clientResourceController) { ID = this.ID + "_ComboBox", };
             this.ComboBox.SelectedIndexChanged += this.IndexChanged;
             container.Controls.Add(this.ComboBox);
 

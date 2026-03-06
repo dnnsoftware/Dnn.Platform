@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Installer.Installers
             base.ProcessFile(file, nav);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void UnInstallFile(InstallFile scriptFile)
         {

@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Api
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
 
-    /// <summary>Defines properties and methods for Dnn specific API controllers.</summary>
+    /// <summary>Defines properties and methods for DNN-specific API controllers.</summary>
     [DnnExceptionFilter]
     public abstract class DnnApiController : ApiController
     {
@@ -26,15 +26,13 @@ namespace DotNetNuke.Web.Api
 
         /// <summary>Gets portalSettings for the current portal.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        public PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Gets userInfo for the current user.</summary>
         public UserInfo UserInfo => this.PortalSettings.UserInfo;
 
-        /// <summary>
-        /// Gets moduleInfo for the current module.
-        /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
-        /// </summary>
+        /// <summary>Gets moduleInfo for the current module.</summary>
+        /// <remarks>Will be <see langword="null"/> unless a valid pair of module and tab IDs were provided in the request.</remarks>
         public ModuleInfo ActiveModule => this.activeModule.Value;
 
         private ModuleInfo InitModuleInfo()

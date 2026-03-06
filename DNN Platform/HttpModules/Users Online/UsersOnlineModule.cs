@@ -18,14 +18,14 @@ namespace DotNetNuke.HttpModules.UsersOnline
         /// <summary>Gets the HttpModule module name.</summary>
         public string ModuleName => "UsersOnlineModule";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.AuthorizeRequest += this.OnAuthorizeRequest;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
         }

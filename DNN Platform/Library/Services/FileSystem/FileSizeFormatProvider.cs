@@ -15,13 +15,13 @@ namespace DotNetNuke.Services.FileSystem
         private const decimal OneMegaByte = OneKiloByte * 1024;
         private const decimal OneGigaByte = OneMegaByte * 1024;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object GetFormat(Type formatType)
         {
             return formatType == typeof(ICustomFormatter) ? this : null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
             if (format == null || !format.StartsWith(FileSizeFormat, StringComparison.Ordinal))

@@ -13,7 +13,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
     public class JournalControl : IPropertyAccess
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.Journal.Components
 
         public string AuthorNameLink { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;

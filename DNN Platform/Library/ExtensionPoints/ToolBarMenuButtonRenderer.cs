@@ -13,7 +13,7 @@ namespace DotNetNuke.ExtensionPoints
 
     public class ToolBarMenuButtonRenderer : IExtensionControlRenderer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetOutput(IExtensionPoint extensionPoint)
         {

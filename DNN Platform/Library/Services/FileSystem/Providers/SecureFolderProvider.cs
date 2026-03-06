@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>Gets a value indicating whether the provider ensures the files/folders it manages are secure from outside access.</summary>
         public override bool IsStorageSecure => true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string[] GetFiles(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -54,31 +54,31 @@ namespace DotNetNuke.Services.FileSystem
             return fileNames;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetFileUrl(IFileInfo file)
         {
             return FileLinkClickController.Instance.GetFileLinkClick(file);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetFolderProviderIconPath()
         {
             return IconControllerWrapper.Instance.IconURL("FolderSecure", "32x32");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
         {
             return base.GetActualPath(folderMapping, folderPath, fileName) + this.ProtectedExtension;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string GetActualPath(IFileInfo file)
         {
             return base.GetActualPath(file) + this.ProtectedExtension;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string GetActualPath(IFolderInfo folder, string fileName)
         {
             return base.GetActualPath(folder, fileName) + this.ProtectedExtension;

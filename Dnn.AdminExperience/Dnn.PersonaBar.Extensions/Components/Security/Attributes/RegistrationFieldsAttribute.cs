@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Security.Attributes
 
         public string DisplayNameFormatPropertyName { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var registrationFormTypeValue = string.Empty;

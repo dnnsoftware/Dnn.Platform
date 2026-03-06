@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_Spa" type="Module" version="10.01.02">
+    <package name="Dnn.ContactList_Spa" type="Module" version="10.02.03">
       <friendlyName>Contact List Spa</friendlyName>
       <description>DNN Contact List SPA</description>
       <owner>
@@ -36,14 +36,14 @@
             <moduleName>Dnn.ContactList.Spa</moduleName>
             <foldername>Dnn/ContactList</foldername>
             <businessControllerClass>Dnn.ContactList.Spa.Components.BusinessController</businessControllerClass>
-            <supportedFeatures />
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Contact List</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>DesktopModules/Dnn/ContactList/ContactList.html</controlSrc>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlType>View</controlType>
@@ -56,8 +56,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Edit Content</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                     <supportsPopUps>True</supportsPopUps>
                   </moduleControl>
@@ -67,8 +67,8 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>DnnSpaModule Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
-                    <helpUrl />
+                    <iconFile/>
+                    <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>
                 </moduleControls>

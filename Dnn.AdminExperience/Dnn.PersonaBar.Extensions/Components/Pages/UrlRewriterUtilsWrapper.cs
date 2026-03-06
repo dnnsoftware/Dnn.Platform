@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.Pages.Components
 
     public class UrlRewriterUtilsWrapper : IUrlRewriterUtilsWrapper
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public FriendlyUrlOptions GetExtendOptionsForURLs(int portalId)
         {
             return UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(portalId)));

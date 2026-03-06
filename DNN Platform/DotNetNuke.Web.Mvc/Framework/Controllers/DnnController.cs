@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (this.ModuleContext == null) ? null : this.ModuleContext.PortalSettings; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ActionResult ResultOfLastExecute
         {
             get
@@ -60,25 +60,25 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get { return (this.PortalSettings == null) ? null : this.PortalSettings.UserInfo; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Page DnnPage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public new DnnUrlHelper Url { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInstanceContext ModuleContext { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ViewEngineCollection ViewEngineCollectionEx { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalizeString(string key)
         {
             return Localization.GetString(key, this.LocalResourceFile);
@@ -90,13 +90,13 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             return new DnnRedirecttoRouteResult(string.Empty, string.Empty, string.Empty, null, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override RedirectToRouteResult RedirectToAction(string actionName, string controllerName, RouteValueDictionary routeValues)
         {
             return new DnnRedirecttoRouteResult(actionName, controllerName, string.Empty, routeValues, false, this.Url);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ViewResult View(IView view, object model)
         {
             if (model != null)
@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ViewResult View(string viewName, string masterName, object model)
         {
             if (model != null)
@@ -130,7 +130,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override PartialViewResult PartialView(string viewName, object model)
         {
             if (model != null)
@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Initialize(RequestContext requestContext)
         {
             base.Initialize(requestContext);

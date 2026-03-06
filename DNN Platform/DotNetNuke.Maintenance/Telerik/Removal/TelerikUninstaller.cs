@@ -17,7 +17,7 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Execute()
         {
             var steps = new[]

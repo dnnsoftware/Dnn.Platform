@@ -128,9 +128,8 @@ class ExportPortal extends Component {
         }
     }
     Validate() {
-        let success = true;
         const { portalBeingExported } = this.state;
-        success = this.ValidateTexts();
+        let success = this.ValidateTexts();
         if (success && portalBeingExported.pages.length <= 0) {
             success = false;
             utilities.notify(Localization.get("ErrorPages"));
@@ -157,8 +156,7 @@ class ExportPortal extends Component {
     }
     onLanguageSelectionChange(option) {
         let { portalBeingExported } = this.state;
-        let { reloadPages } = this.state;
-        reloadPages = true;
+        const reloadPages = true;
         portalBeingExported.localizationCulture = option.value;
         this.setState({ portalBeingExported, reloadPages }, () => {
             this.setState({
@@ -167,14 +165,12 @@ class ExportPortal extends Component {
         });
     }
     createLocaleOptions(native) {
-        let localeOptions = [];
-        localeOptions = this.state.localData.locales.map(locale => {
+        return this.state.localData.locales.map(locale => {
             if (native)
             //There is need of mechanism to get native name
                 return { label: locale.EnglishName, value: locale.Code };
             else return { label: locale.EnglishName, value: locale.Code };
         });
-        return localeOptions;
     }
     onLanguageCheckBoxChange(Code, event) {
         let { portalBeingExported } = this.state;

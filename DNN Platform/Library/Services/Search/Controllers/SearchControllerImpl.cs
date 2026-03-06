@@ -47,14 +47,14 @@ namespace DotNetNuke.Services.Search.Controllers
             this.serviceProvider = serviceProvider ?? Globals.DependencyProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
             var results = this.GetResults(searchQuery);
             return new SearchResults { TotalHits = results.Item1, Results = results.Item2 };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchResults ModuleSearch(SearchQuery searchQuery)
         {
             searchQuery.SearchTypeIds = new List<int> { this.moduleSearchTypeId };

@@ -8,7 +8,7 @@ namespace Dnn.EditBar.UI.Components
 
     public class BusinessController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)

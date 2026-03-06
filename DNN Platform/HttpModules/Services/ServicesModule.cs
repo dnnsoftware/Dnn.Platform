@@ -16,7 +16,7 @@ namespace DotNetNuke.HttpModules.Services
         /// <inheritdoc cref="Globals.ServicesFrameworkRegex"/>
         public static readonly Regex ServiceApi = Globals.ServicesFrameworkRegex;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Init(HttpApplication context)
         {
             context.BeginRequest += InitDnn;
@@ -24,7 +24,7 @@ namespace DotNetNuke.HttpModules.Services
             context.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
         }
@@ -47,10 +47,10 @@ namespace DotNetNuke.HttpModules.Services
                 headers.Remove("Server");
 
                 // DNN-8325
-                // if (ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
-                // {
-                //    headers.Remove("Set-Cookie");
-                // }
+                ////if (ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
+                ////{
+                ////   headers.Remove("Set-Cookie");
+                ////}
             }
         }
     }

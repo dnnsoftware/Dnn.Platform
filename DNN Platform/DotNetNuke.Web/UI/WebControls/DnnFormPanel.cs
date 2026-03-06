@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets the text.</summary>
         public string Text { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);

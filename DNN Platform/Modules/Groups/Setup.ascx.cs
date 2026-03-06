@@ -6,26 +6,58 @@ namespace DotNetNuke.Modules.Groups
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Modules.Groups.Components;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Display the group setup view.</summary>
     public partial class Setup : GroupsModuleBase
     {
+        private readonly RoleProvider roleProvider;
+        private readonly IEventLogger eventLogger;
+        private readonly IUserController userController;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+
+        /// <summary>Initializes a new instance of the <see cref="Setup"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
+        public Setup()
+            : this(null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Setup"/> class.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        public Setup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPermissionDefinitionService permissionDefinitionService)
+        {
+            this.roleProvider = roleProvider ?? this.DependencyProvider.GetRequiredService<RoleProvider>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.userController = userController ?? this.DependencyProvider.GetRequiredService<IUserController>();
+            this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
+        }
+
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
@@ -48,11 +80,11 @@ namespace DotNetNuke.Modules.Groups
             this.AddModule(memberTab, this.PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
 
             // List Settings
-            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());
+            ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, nameof(GroupMode.List));
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
             // Default Social Groups
-            var defaultGroup = RoleController.GetRoleGroupByName(this.PortalId, Constants.DefaultGroupName);
+            var defaultGroup = RoleController.GetRoleGroupByName(this.roleProvider, this.PortalId, Constants.DefaultGroupName);
             var groupId = -2;
             if (defaultGroup != null)
             {
@@ -64,7 +96,7 @@ namespace DotNetNuke.Modules.Groups
                 groupInfo.PortalID = this.PortalId;
                 groupInfo.RoleGroupName = Constants.DefaultGroupName;
                 groupInfo.Description = Constants.DefaultGroupName;
-                groupId = RoleController.AddRoleGroup(groupInfo);
+                groupId = RoleController.AddRoleGroup(this.roleProvider, this.eventLogger, this.userController, this.PortalSettings, groupInfo);
             }
 
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
@@ -79,6 +111,35 @@ namespace DotNetNuke.Modules.Groups
             this.btnGo.Click += this.btGo_Click;
         }
 
+        private static int GetDesktopModuleId(int portalId, string moduleName)
+        {
+            var info = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+            return info?.DesktopModuleID ?? -1;
+        }
+
+        private static IPermissionInfo AddModulePermission(ModuleInfo objModule, IPermissionDefinitionInfo permission, int roleId, int userId, bool allowAccess)
+        {
+            IPermissionInfo objModulePermission = new ModulePermissionInfo
+            {
+                ModuleID = objModule.ModuleID,
+                PermissionKey = permission.PermissionKey,
+                AllowAccess = allowAccess,
+            };
+
+            objModulePermission.PermissionId = permission.PermissionId;
+            objModulePermission.RoleId = roleId;
+            objModulePermission.UserId = userId;
+
+            // add the permission to the collection
+            objModule.ModulePermissions ??= [];
+            if (!objModule.ModulePermissions.Contains(objModulePermission))
+            {
+                objModule.ModulePermissions.Add((ModulePermissionInfo)objModulePermission);
+            }
+
+            return objModulePermission;
+        }
+
         private TabInfo CreatePage(TabInfo tab, int portalId, int parentTabId, string tabName, bool includeInMenu)
         {
             var newTab = TabController.Instance.GetTabsByPortal(portalId).WithTabNameAndParentId(tabName, parentTabId);
@@ -89,25 +150,27 @@ namespace DotNetNuke.Modules.Groups
 
                 if (tab != null)
                 {
-                    foreach (TabPermissionInfo t in tab.TabPermissions)
+                    foreach (IPermissionInfo t in tab.TabPermissions)
                     {
-                        var tNew = new TabPermissionInfo
+                        IPermissionInfo tNew = new TabPermissionInfo
                         {
                             AllowAccess = t.AllowAccess,
                             DisplayName = t.DisplayName,
-                            ModuleDefID = t.ModuleDefID,
                             PermissionCode = t.PermissionCode,
-                            PermissionID = t.PermissionID,
                             PermissionKey = t.PermissionKey,
                             PermissionName = t.PermissionName,
-                            RoleID = t.RoleID,
                             RoleName = t.RoleName,
                             TabID = -1,
                             TabPermissionID = -1,
-                            UserID = t.UserID,
                             Username = t.Username,
                         };
-                        newTab.TabPermissions.Add(tNew);
+
+                        tNew.UserId = t.UserId;
+                        tNew.ModuleDefId = t.ModuleDefId;
+                        tNew.PermissionId = t.PermissionId;
+                        tNew.RoleId = t.RoleId;
+
+                        newTab.TabPermissions.Add((TabPermissionInfo)tNew);
                     }
                 }
 
@@ -156,7 +219,7 @@ namespace DotNetNuke.Modules.Groups
             int id = -1;
             if (module == null)
             {
-                int desktopModuleId = this.GetDesktopModuleId(portalId, moduleName);
+                int desktopModuleId = GetDesktopModuleId(portalId, moduleName);
                 int moduleId = -1;
                 if (desktopModuleId > -1)
                 {
@@ -169,7 +232,7 @@ namespace DotNetNuke.Modules.Groups
                     ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
                     if (moduleName == "Social Groups")
                     {
-                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, GroupMode.View.ToString());
+                        ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, nameof(GroupMode.View));
                         ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupListPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
                     }
 
@@ -200,19 +263,9 @@ namespace DotNetNuke.Modules.Groups
             return id;
         }
 
-        private int GetDesktopModuleId(int portalId, string moduleName)
-        {
-            DesktopModuleInfo info = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
-            return info == null ? -1 : info.DesktopModuleID;
-        }
-
         private int AddNewModule(TabInfo tab, string title, int desktopModuleId, string paneName, int permissionType, string align)
         {
-            TabPermissionCollection objTabPermissions = tab.TabPermissions;
-            var objPermissionController = new PermissionController();
-            int j;
-
-            foreach (ModuleDefinitionInfo objModuleDefinition in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
+            foreach (var objModuleDefinition in ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
             {
                 var objModule = new ModuleInfo();
                 objModule.Initialize(tab.PortalID);
@@ -235,47 +288,42 @@ namespace DotNetNuke.Modules.Groups
                 objModule.DisplayTitle = false;
 
                 // get the default module view permissions
-                ArrayList arrSystemModuleViewPermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
+                var moduleViewPermission = this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW").FirstOrDefault();
 
                 // get the permissions from the page
-                foreach (TabPermissionInfo objTabPermission in objTabPermissions)
+                foreach (IPermissionInfo objTabPermission in tab.TabPermissions)
                 {
                     if (objTabPermission.PermissionKey == "VIEW" && permissionType == 0)
                     {
-                        // Don't need to explicitly add View permisisons if "Same As Page"
+                        // Don't need to explicitly add View permissions if "Same As Page"
                         continue;
                     }
 
-                    // get the system module permissions for the permissionkey
-                    ArrayList arrSystemModulePermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", objTabPermission.PermissionKey);
-
                     // loop through the system module permissions
-                    for (j = 0; j <= arrSystemModulePermissions.Count - 1; j++)
+                    foreach (var objSystemModulePermission in this.permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", objTabPermission.PermissionKey))
                     {
                         // create the module permission
-                        PermissionInfo objSystemModulePermission = default(PermissionInfo);
-                        objSystemModulePermission = (PermissionInfo)arrSystemModulePermissions[j];
                         if (objSystemModulePermission.PermissionKey == "VIEW" && permissionType == 1 && objTabPermission.PermissionKey != "EDIT")
                         {
                             // Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
 
-                        ModulePermissionInfo objModulePermission = this.AddModulePermission(
+                        var objModulePermission = AddModulePermission(
                             objModule,
                             objSystemModulePermission,
-                            objTabPermission.RoleID,
-                            objTabPermission.UserID,
+                            objTabPermission.RoleId,
+                            objTabPermission.UserId,
                             objTabPermission.AllowAccess);
 
                         // ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" & objModulePermission.AllowAccess)
                         {
-                            ModulePermissionInfo objModuleViewperm = this.AddModulePermission(
+                            AddModulePermission(
                                 objModule,
-                                (PermissionInfo)arrSystemModuleViewPermissions[0],
-                                objModulePermission.RoleID,
-                                objModulePermission.UserID,
+                                moduleViewPermission,
+                                objModulePermission.RoleId,
+                                objModulePermission.UserId,
                                 true);
                         }
                     }
@@ -288,30 +336,6 @@ namespace DotNetNuke.Modules.Groups
             }
 
             return -1;
-        }
-
-        private ModulePermissionInfo AddModulePermission(ModuleInfo objModule, PermissionInfo permission, int roleId, int userId, bool allowAccess)
-        {
-            var objModulePermission = new ModulePermissionInfo();
-            objModulePermission.ModuleID = objModule.ModuleID;
-            objModulePermission.PermissionID = permission.PermissionID;
-            objModulePermission.RoleID = roleId;
-            objModulePermission.UserID = userId;
-            objModulePermission.PermissionKey = permission.PermissionKey;
-            objModulePermission.AllowAccess = allowAccess;
-
-            // add the permission to the collection
-            if (objModule.ModulePermissions == null)
-            {
-                objModule.ModulePermissions = new ModulePermissionCollection();
-            }
-
-            if (!objModule.ModulePermissions.Contains(objModulePermission))
-            {
-                objModule.ModulePermissions.Add(objModulePermission);
-            }
-
-            return objModulePermission;
         }
     }
 }

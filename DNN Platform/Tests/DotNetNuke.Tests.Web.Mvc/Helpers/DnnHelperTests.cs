@@ -8,6 +8,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
     using System;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
     using DotNetNuke.Web.Mvc.Helpers;
@@ -17,41 +20,56 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
     [TestFixture]
     public class DnnHelperTests
     {
-        private Mock<ControllerBase> _mockController;
-        private Mock<IViewDataContainer> _mockViewDataContainer;
-        private ViewContext _viewContext;
+        private Mock<ControllerBase> mockController;
+        private Mock<IViewDataContainer> mockViewDataContainer;
+        private ViewContext viewContext;
 
         [SetUp]
         public void SetUp()
         {
-            this._mockController = new Mock<ControllerBase>();
-            this._viewContext = new ViewContext();
+            this.mockController = new Mock<ControllerBase>();
+            this.viewContext = new ViewContext();
 
-            this._mockViewDataContainer = new Mock<IViewDataContainer>();
+            this.mockViewDataContainer = new Mock<IViewDataContainer>();
         }
 
         [Test]
         public void Constructor_Throws_On_Null_ViewContext()
         {
             // Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, this._mockViewDataContainer.Object));
+            Assert.Throws<ArgumentNullException>(() => new DnnHelper(
+                Mock.Of<IClientResourceController>(),
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>(),
+                null,
+                this.mockViewDataContainer.Object));
         }
 
         [Test]
         public void Constructor_Throws_On_Null_ViewDataContainer()
         {
             // Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHelper(null, this._mockViewDataContainer.Object));
+            Assert.Throws<ArgumentNullException>(() => new DnnHelper(
+                Mock.Of<IClientResourceController>(),
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>(),
+                null,
+                this.mockViewDataContainer.Object));
         }
 
         [Test]
         public void Constructor_Throws_On_Invalid_Controller_Property()
         {
             // Arrange
-            this._viewContext.Controller = this._mockController.Object;
+            this.viewContext.Controller = this.mockController.Object;
 
             // Act,Assert
-            Assert.Throws<InvalidOperationException>(() => new DnnHelper(this._viewContext, this._mockViewDataContainer.Object));
+            Assert.Throws<InvalidOperationException>(() => new DnnHelper(
+                Mock.Of<IClientResourceController>(),
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>(),
+                this.viewContext,
+                this.mockViewDataContainer.Object));
         }
 
         [Test]
@@ -59,12 +77,17 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         {
             // Arrange
             var expectedContext = new ModuleInstanceContext();
-            var mockDnnController = this._mockController.As<IDnnController>();
+            var mockDnnController = this.mockController.As<IDnnController>();
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
-            this._viewContext.Controller = this._mockController.Object;
+            this.viewContext.Controller = this.mockController.Object;
 
             // Act
-            var helper = new DnnHelper(this._viewContext, this._mockViewDataContainer.Object);
+            var helper = new DnnHelper(
+                Mock.Of<IClientResourceController>(),
+                Mock.Of<IApplicationStatusInfo>(),
+                Mock.Of<IEventLogger>(),
+                this.viewContext,
+                this.mockViewDataContainer.Object);
 
             // Assert
             Assert.That(helper.ModuleContext, Is.EqualTo(expectedContext));

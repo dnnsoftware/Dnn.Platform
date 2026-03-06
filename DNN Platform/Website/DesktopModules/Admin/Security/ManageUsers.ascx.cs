@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions
         {
             get

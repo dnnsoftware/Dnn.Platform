@@ -10,17 +10,17 @@ namespace DotNetNuke.UI.Modules
 
     public class ReflectedModuleControlFactory : BaseModuleControlFactory
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Priority => -1;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)
         {
             // This factory is used as fallback
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             // load from a typename in an assembly ( ie. server control)
@@ -28,13 +28,13 @@ namespace DotNetNuke.UI.Modules
             return containerControl.LoadControl(objType, null);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return this.CreateControl(containerControl, string.Empty, controlSrc);

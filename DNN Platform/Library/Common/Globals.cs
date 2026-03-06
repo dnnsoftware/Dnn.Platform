@@ -460,20 +460,16 @@ namespace DotNetNuke.Common
         /// </value>
         public static Version OperatingSystemVersion { get; set; }
 
-        /// <summary>Gets or sets the NET framework version.</summary>
-        /// <value>
-        /// The NET framework version.
-        /// </value>
+        /// <summary>Gets or sets the .NET Framework version.</summary>
+        /// <value>The .NET Framework version.</value>
         public static Version NETFrameworkVersion { get; set; }
 
-        /// <summary>Gets the .Net framework version text.</summary>
-        /// <value>The .Net framework version text.</value>
+        /// <summary>Gets the .NET Framework version text.</summary>
+        /// <value>The .NET Framework version text.</value>
         public static string FormattedNetFrameworkVersion => FormatVersion(NETFrameworkVersion, "0", 3, ".");
 
         /// <summary>Gets or sets the database engine version.</summary>
-        /// <value>
-        /// The database engine version.
-        /// </value>
+        /// <value>The database engine version.</value>
         public static Version DatabaseEngineVersion { get; set; }
 
         /// <summary>Gets or sets the Dependency Service.</summary>
@@ -1147,7 +1143,14 @@ namespace DotNetNuke.Common
 
         /// <summary>Gets the portal settings.</summary>
         /// <returns>Portal settings.</returns>
-        public static PortalSettings GetPortalSettings()
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettings")]
+        public static partial PortalSettings GetPortalSettings()
+            => GetPortalSettings(GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>Gets the portal settings.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>Portal settings.</returns>
+        public static PortalSettings GetPortalSettings(IHostSettings hostSettings)
         {
             PortalSettings portalSettings = null;
 
@@ -1160,7 +1163,7 @@ namespace DotNetNuke.Common
             // If nothing then try getting the Host Settings
             if (portalSettings == null)
             {
-                portalSettings = GetHostPortalSettings();
+                portalSettings = GetHostPortalSettings(hostSettings);
             }
 
             return portalSettings;
@@ -2036,17 +2039,34 @@ namespace DotNetNuke.Common
         /// <param name="validateFirstChar">If set true, validate whether the first character
         ///   is alphabetic and, if not, prepend the letter 'A' to the returned value.</param>
         /// <returns>A string suitable for use as a class value.</returns>
-        public static string CreateValidClass(string inputValue, bool validateFirstChar)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettings")]
+        public static partial string CreateValidClass(string inputValue, bool validateFirstChar)
+            => CreateValidClass(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), inputValue, validateFirstChar);
+
+        /// <summary>
+        ///   CreateValidClass - removes characters from Module/Tab names which are invalid
+        ///   for use as an XHTML class attribute / CSS class selector value and optionally
+        ///   prepends the letter 'A' if the first character is not alphabetic.  This differs
+        ///   from <see>CreateValidID</see> which replaces invalid characters with an underscore
+        ///   and replaces the first letter with an 'A' if it is not alphabetic.
+        /// </summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="inputValue">String to use to create the class value.</param>
+        /// <param name="validateFirstChar">If set true, validate whether the first character
+        ///   is alphabetic and, if not, prepend the letter 'A' to the returned value.</param>
+        /// <returns>A string suitable for use as a class value.</returns>
+        public static string CreateValidClass(IHostSettings hostSettings, string inputValue, bool validateFirstChar)
         {
             string returnValue = Null.NullString;
 
             // Regex is expensive so we will cache the results in a lookup table
             var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
+                hostSettings,
                 new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
-                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
+                _ => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
-            using (ISharedCollectionLock readLock = validClassLookupDictionary.GetReadLock())
+            using (validClassLookupDictionary.GetReadLock())
             {
                 if (validClassLookupDictionary.TryGetValue(inputValue, out var className))
                 {
@@ -2058,7 +2078,7 @@ namespace DotNetNuke.Common
 
             if (!idFound)
             {
-                using (ISharedCollectionLock writeLock = validClassLookupDictionary.GetWriteLock())
+                using (validClassLookupDictionary.GetWriteLock())
                 {
                     if (!validClassLookupDictionary.ContainsKey(inputValue))
                     {
@@ -2088,20 +2108,29 @@ namespace DotNetNuke.Common
             return returnValue;
         }
 
-        /// <summary>  Creates the valid ID.</summary>
+        /// <summary>Creates the valid ID.</summary>
         /// <param name="inputValue">The input value.</param>
         /// <returns>String with a valid ID.</returns>
-        public static string CreateValidID(string inputValue)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettings")]
+        public static partial string CreateValidID(string inputValue)
+            => CreateValidID(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), inputValue);
+
+        /// <summary>Creates the valid ID.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="inputValue">The input value.</param>
+        /// <returns>String with a valid ID.</returns>
+        public static string CreateValidID(IHostSettings hostSettings, string inputValue)
         {
             string returnValue = Null.NullString;
 
             // Regex is expensive so we will cache the results in a lookup table
             var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(
+                hostSettings,
                 new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
-                (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
+                _ => new SharedDictionary<string, string>());
 
             bool idFound = Null.NullBoolean;
-            using (ISharedCollectionLock readLock = validIDLookupDictionary.GetReadLock())
+            using (validIDLookupDictionary.GetReadLock())
             {
                 if (validIDLookupDictionary.TryGetValue(inputValue, out var id))
                 {
@@ -2113,7 +2142,7 @@ namespace DotNetNuke.Common
 
             if (!idFound)
             {
-                using (ISharedCollectionLock writeLock = validIDLookupDictionary.GetWriteLock())
+                using (validIDLookupDictionary.GetWriteLock())
                 {
                     if (!validIDLookupDictionary.ContainsKey(inputValue))
                     {
@@ -2425,19 +2454,32 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Url's as internal links to Files, Tabs and Users should only be imported if
-        /// those files, tabs and users exist. This function parses the url, and checks
+        /// URLs as internal links to Files, Tabs and Users should only be imported if
+        /// those files, tabs and users exist. This function parses the URL, and checks
         /// whether the internal links exist.
         /// If the link does not exist, the function will return an empty string.
         /// </summary>
-        /// <param name="url">The url to import.</param>
+        /// <param name="url">The URL to import.</param>
         /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is.</returns>
-        public static string ImportUrl(string url)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettings")]
+        public static partial string ImportUrl(string url)
+            => ImportUrl(GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), url);
+
+        /// <summary>
+        /// URLs as internal links to Files, Tabs and Users should only be imported if
+        /// those files, tabs and users exist. This function parses the URL, and checks
+        /// whether the internal links exist.
+        /// If the link does not exist, the function will return an empty string.
+        /// </summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="url">The URL to import.</param>
+        /// <returns>If an internal link does not exist, an empty string is returned, otherwise the passed in url is returned as is.</returns>
+        public static string ImportUrl(IHostSettings hostSettings, string url)
         {
             string strUrl = url;
             TabType urlType = GetURLType(url);
             int intId = -1;
-            PortalSettings portalSettings = GetPortalSettings();
+            PortalSettings portalSettings = GetPortalSettings(hostSettings);
             switch (urlType)
             {
                 case TabType.File:
@@ -3341,7 +3383,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(7, 3, 0, "It causes issues in SSL-offloading scenarios - please use UserProfilePicRelativeUrl instead", RemovalVersion = 11)]
         public static partial string UserProfilePicFormattedUrl()
         {
-            var avatarUrl = PortalController.Instance.GetCurrentPortalSettings().DefaultPortalAlias;
+            var avatarUrl = PortalController.Instance.GetCurrentSettings().DefaultPortalAlias;
             if (string.IsNullOrEmpty(avatarUrl))
             {
                 avatarUrl = HttpContext.Current.Request.Url.Host;
@@ -3480,9 +3522,9 @@ namespace DotNetNuke.Common
         public static partial string GetSubFolderPath(string strFileNamePath)
         {
             // Obtain PortalSettings from Current Context
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             string parentFolderName = null;
-            if (IsHostTab(portalSettings.ActiveTab.TabID))
+            if (IsHostTab(TabController.CurrentPage.TabID))
             {
                 parentFolderName = HostMapPath.Replace("/", @"\");
             }
@@ -3502,8 +3544,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(7, 0, 0, "Use Common.Globals.LinkClick() for proper handling of URLs", RemovalVersion = 11)]
         public static partial string LinkClickURL(string link)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return LinkClick(link, portalSettings.ActiveTab.TabID, -1, false);
+            return LinkClick(link, TabController.CurrentPage.TabID, -1, false);
         }
 
         /// <summary>Helps prevent sql injection in certain scenarios.</summary>

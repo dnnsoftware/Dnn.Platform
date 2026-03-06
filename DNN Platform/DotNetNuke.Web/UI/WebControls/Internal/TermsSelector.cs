@@ -10,8 +10,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Taxonomy;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
 
@@ -19,6 +24,25 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     public class TermsSelector : DnnComboBox
     {
         private static readonly char[] TermIdSeparator = [',',];
+
+        /// <summary>Initializes a new instance of the <see cref="TermsSelector"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public TermsSelector()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="TermsSelector"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public TermsSelector(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
+            : base(
+                appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
+        {
+        }
 
         /// <summary>Gets or sets the portal ID.</summary>
         public int PortalId { get; set; }
@@ -66,10 +90,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool MultipleSelect { get; set; } = true;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -94,19 +118,20 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
                 Option = "function(item, escape) {return '<div>' + item.text + '</div>';}",
             };
 
-            this.Options.Load = $@"function(query, callback) {{
-                                $.ajax({{
-                                    url: '{HttpUtility.JavaScriptStringEncode(apiPath)}' + encodeURIComponent(query),
-                                    type: 'GET',
-                                    error: function() {{
-                                        callback();
-                                    }},
-                                    success: function(data) {{
-                                        callback(data);
-                                    }}
-                                }});
-                            }}
-";
+            this.Options.Load = $$"""
+                                  function(query, callback) {
+                                      $.ajax({
+                                          url: '{{HttpUtility.JavaScriptStringEncode(apiPath)}}' + encodeURIComponent(query),
+                                          type: 'GET',
+                                          error: function() {
+                                              callback();
+                                          },
+                                          success: function(data) {
+                                              callback(data);
+                                          }
+                                      });
+                                  }
+                                  """;
         }
     }
 }

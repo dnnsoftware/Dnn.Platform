@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CssClass = "dnnRibbonGroup";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ControlCollection Controls
         {
             get
@@ -53,14 +53,14 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control FindControl(string id)
         {
             this.EnsureChildControls();
             return base.FindControl(id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderControl(HtmlTextWriter writer)
         {
             if (this.CheckVisibility())
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.Controls.Clear();

@@ -57,12 +57,12 @@ namespace DotNetNuke.Tests.Core.Collections
             // Act
             IPagedList<int> pagedList = enumerable.ToPagedList(index, pageSize);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(pagedList.PageIndex, Is.EqualTo(index));
                 Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
-            });
+            }
         }
 
         [Test]
@@ -96,12 +96,12 @@ namespace DotNetNuke.Tests.Core.Collections
             // Act
             IPagedList<int> pagedList = queryable.ToPagedList(index, pageSize);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(pagedList.PageIndex, Is.EqualTo(index));
                 Assert.That(pagedList.PageSize, Is.EqualTo(pageSize));
-            });
+            }
         }
     }
 }

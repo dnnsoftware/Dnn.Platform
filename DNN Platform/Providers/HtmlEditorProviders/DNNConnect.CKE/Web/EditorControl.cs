@@ -26,6 +26,9 @@ namespace DNNConnect.CKEditorProvider.Web
     using DNNConnect.CKEditorProvider.Objects;
     using DNNConnect.CKEditorProvider.Utilities;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
@@ -38,6 +41,7 @@ namespace DNNConnect.CKEditorProvider.Web
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -48,7 +52,12 @@ namespace DNNConnect.CKEditorProvider.Web
     {
         private const string ProviderType = "htmlEditor";
         private readonly INavigationManager navigationManager;
-        private readonly PortalSettings portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IModuleController moduleController;
+        private readonly PortalSettings portalSettings = (PortalSettings)HttpContextSource.Current.Items["PortalSettings"];
         private bool isMerged; // Check if the Settings Collection is Merged with all Settings.
         private NameValueCollection settings;
         private EditorProviderSettings currentEditorSettings = new EditorProviderSettings();
@@ -57,9 +66,27 @@ namespace DNNConnect.CKEditorProvider.Web
         private int parentModulId;
 
         /// <summary>Initializes a new instance of the <see cref="EditorControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public EditorControl()
+            : this(null, null, null, null, null, null)
         {
-            this.navigationManager = this.Context.GetScope().ServiceProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="EditorControl"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="moduleController">The module controller.</param>
+        public EditorControl(INavigationManager navigationManager, IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IModuleController moduleController)
+        {
+            this.navigationManager = navigationManager ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<INavigationManager>();
+            this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IEventLogger>();
+            this.clientResourceController = clientResourceController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IClientResourceController>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
             this.LoadConfigSettings();
             this.Init += this.CKEditorInit;
         }
@@ -870,8 +897,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 if (!int.TryParse(sClientId, out this.parentModulId))
                 {
                     // The is no real module, then use the "User Accounts" module (Profile editor)
-                    ModuleController db = new ModuleController();
-                    ModuleInfo objm = db.GetModuleByDefinition(this.portalSettings.PortalId, "User Accounts");
+                    ModuleInfo objm = this.moduleController.GetModuleByDefinition(this.portalSettings.PortalId, "User Accounts");
 
                     this.parentModulId = objm.TabModuleID;
                 }
@@ -914,12 +940,13 @@ namespace DNNConnect.CKEditorProvider.Web
         /// <summary>Load Portal/Page/Module Settings.</summary>
         private void LoadAllSettings()
         {
-            var settingsDictionary = EditorController.GetEditorHostSettings();
+            var settingsDictionary = EditorController.GetEditorHostSettings(this.hostSettings);
             var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
 
             // Load Default Settings
             this.currentEditorSettings = SettingsUtil.GetDefaultSettings(
                 this.portalSettings,
+                this.hostSettings,
                 this.portalSettings.HomeDirectoryMapPath,
                 this.settings["configFolder"],
                 portalRoles);
@@ -935,7 +962,7 @@ namespace DNNConnect.CKEditorProvider.Web
             // Load Host Settings ?!
             if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))
             {
-                var hostPortalRoles = RoleController.Instance.GetRoles(Host.HostPortalID);
+                var hostPortalRoles = RoleController.Instance.GetRoles(this.hostSettings.HostPortalId);
                 this.currentEditorSettings = SettingsUtil.LoadEditorSettingsByKey(
                     this.portalSettings,
                     this.currentEditorSettings,
@@ -947,7 +974,7 @@ namespace DNNConnect.CKEditorProvider.Web
                 this.currentEditorSettings.SettingMode = SettingsMode.Host;
 
                 // reset the roles to the correct portal
-                if (this.portalSettings.PortalId != Host.HostPortalID)
+                if (this.portalSettings.PortalId != this.hostSettings.HostPortalId)
                 {
                     foreach (var toolbarRole in this.currentEditorSettings.ToolBarRoles)
                     {
@@ -1158,9 +1185,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
         private void RegisterCKEditorLibrary()
         {
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-            ClientResourceManager.RegisterStyleSheet(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css"));
+            this.clientResourceController.RegisterStylesheet(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
+            this.clientResourceController.RegisterStylesheet(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
+            this.clientResourceController.RegisterStylesheet(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css"));
 
             ClientScriptManager cs = this.Page.ClientScript;
 
@@ -1169,7 +1196,7 @@ namespace DNNConnect.CKEditorProvider.Web
             const string CsName = "CKEdScript";
             const string CsFindName = "CKFindScript";
 
-            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalSettings, CommonJs.jQuery);
 
             if (File.Exists(this.Context.Server.MapPath("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js"))
                 && !cs.IsClientScriptIncludeRegistered(csType, CsName))
@@ -1189,7 +1216,7 @@ namespace DNNConnect.CKEditorProvider.Web
                     Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/ckfinder/ckfinder.js"));
             }
 
-            ClientResourceManager.RegisterScript(this.Page, Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js"));
+            this.clientResourceController.RegisterScript(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js"));
 
             // Load Custom JS File
             if (!string.IsNullOrEmpty(this.currentEditorSettings.CustomJsFile)

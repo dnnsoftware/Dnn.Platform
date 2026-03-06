@@ -13,26 +13,39 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Dto.Portal;
+
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
 
     /// <summary>Service to export/import portal data.</summary>
-    public class PortalExportService : BasePortableService
+    public class PortalExportService(IEventLogger eventLogger) : BasePortableService
     {
         private static readonly char[] SettingExportSeparator = [',',];
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="PortalExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public PortalExportService()
+            : this(null)
+        {
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Portal;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 1;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
@@ -111,7 +124,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             // Update the total items count in the check points. This should be updated only once.
@@ -162,7 +175,7 @@ namespace Dnn.ExportImport.Components.Services
             */
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPortalSetting>() + this.Repository.GetCount<ExportPortalLanguage>();
@@ -265,7 +278,7 @@ namespace Dnn.ExportImport.Components.Services
                         Fallback = Localization.SystemLocale,
                         Text = CultureInfo.GetCultureInfo(exportPortalLanguage.CultureCode).NativeName,
                     };
-                    Localization.SaveLanguage(locale);
+                    Localization.SaveLanguage(this.eventLogger, locale);
                     localLanguageId = locale.LanguageId;
                 }
 

@@ -3,19 +3,19 @@ import performanceTabService from "../services/performanceTabService";
 import localization from "../localization";
 
 const performanceTabActions = {
-    loadPerformanceSettings() {       
+    loadPerformanceSettings() {
         return (dispatch) => {
             dispatch({
-                type: ActionTypes.LOAD_PERFORMANCE_TAB               
-            });        
-            
+                type: ActionTypes.LOAD_PERFORMANCE_TAB
+            });
+
             performanceTabService.getPerformanceSettings().then(response => {
                 dispatch({
                     type: ActionTypes.LOADED_PERFORMANCE_TAB,
                     payload: {
                         performanceSettings: response
                     }
-                });  
+                });
             }).catch(() => {
                 dispatch({
                     type: ActionTypes.ERROR_LOADING_PERFORMANCE_TAB,
@@ -23,41 +23,41 @@ const performanceTabActions = {
                         errorMessage: localization.get("errorMessageLoadingPerformanceTab")
                     }
                 });
-            });        
+            });
         };
     },
     changePerformanceSettingsValue(key, value) {
         return (dispatch) => {
             dispatch({
                 type: ActionTypes.CHANGE_PERFORMANCE_SETTINGS_VALUE,
-                payload: { 
+                payload: {
                     field: key,
                     value
                 }
-            });  
+            });
         };
     },
-    incrementVersion(version, isGlobalSettings) {
+    incrementVersion(isGlobalSettings) {
         return (dispatch) => {
             dispatch({
-                type: ActionTypes.INCREMENT_VERSION               
-            });        
-            
+                type: ActionTypes.INCREMENT_VERSION
+            });
+
             const key = isGlobalSettings ? "currentHostVersion" : "currentPortalVersion" ;
-            performanceTabService.incrementVersion(version, isGlobalSettings).then(response => {
+            performanceTabService.incrementVersion(isGlobalSettings).then(response => {
                 dispatch({
                     type: ActionTypes.INCREMENTED_VERSION,
                     payload: {
-                        success: response.success
+                        success: response.Success
                     }
-                });  
+                });
                 dispatch({
                     type: ActionTypes.CHANGE_PERFORMANCE_SETTINGS_VALUE,
-                    payload: { 
+                    payload: {
                         field: key,
-                        value: parseInt(version, 10) + 1
+                        value: response.NewValue
                     }
-                });  
+                });
             }).catch(() => {
                 dispatch({
                     type: ActionTypes.ERROR_INCREMENTING_VERSION,
@@ -65,22 +65,22 @@ const performanceTabActions = {
                         errorMessage: localization.get("errorMessageIncrementingVersion")
                     }
                 });
-            });        
+            });
         };
     },
     save(performanceSettings) {
         return (dispatch) => {
             dispatch({
-                type: ActionTypes.SAVE_PERFORMANCE_SETTINGS               
-            });        
-            
+                type: ActionTypes.SAVE_PERFORMANCE_SETTINGS
+            });
+
             performanceTabService.save(performanceSettings).then(response => {
                 dispatch({
                     type: ActionTypes.SAVED_PERFORMANCE_SETTINGS,
                     payload: {
                         success: response.success
                     }
-                });  
+                });
             }).catch(() => {
                 dispatch({
                     type: ActionTypes.ERROR_SAVING_PERFORMANCE_SETTINGS,
@@ -88,7 +88,7 @@ const performanceTabActions = {
                         errorMessage: localization.get("errorMessageSavingPerformanceSettingsTab")
                     }
                 });
-            });        
+            });
         };
     }
 };

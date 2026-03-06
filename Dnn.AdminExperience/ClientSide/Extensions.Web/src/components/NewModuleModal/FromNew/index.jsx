@@ -75,14 +75,14 @@ class FromNew extends Component {
     }
 
     validateFields() {
-        let {triedToSave, newModule} = this.state;
+        let {newModule} = this.state;
         let errorCount = 0;
         Object.keys(newModule).forEach((key) => {
             if (newModule[key].error) {
                 errorCount++;
             }
         });
-        triedToSave = true;
+        let triedToSave = true;
         this.setState({
             newModule,
             triedToSave
@@ -92,8 +92,7 @@ class FromNew extends Component {
 
     onCreateNewModule() {
         let {state, props} = this;
-        let {triedToSave} = state;
-        triedToSave = true;
+        let triedToSave = true;
         if (!this.validateFields()) {
             return;
         }

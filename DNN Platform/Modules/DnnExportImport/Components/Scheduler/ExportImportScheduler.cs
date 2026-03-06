@@ -63,7 +63,7 @@ namespace Dnn.ExportImport.Components.Scheduler
             this.engine = engine ?? Globals.DependencyProvider.GetRequiredService<ExportImportEngine>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try
@@ -185,7 +185,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
 
-                // SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
+                ////SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
             catch (Exception ex)
             {
@@ -194,10 +194,10 @@ namespace Dnn.ExportImport.Components.Scheduler
                 this.Errored(ref ex);
 
                 // this duplicates the logging
-                // if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
-                // {
-                //    Exceptions.LogException(ex);
-                // }
+                ////if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                ////{
+                ////   Exceptions.LogException(ex);
+                ////}
             }
         }
     }

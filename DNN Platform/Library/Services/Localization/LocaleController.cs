@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Localization
                 bool enabled = false;
                 Dictionary<string, Locale> dicLocales = this.GetLocales(portalId);
 
-                // if ((!dicLocales.ContainsKey(localeCode)))
+                ////if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;
                 if (dicLocales.FirstOrDefault(x => string.Equals(x.Key, locale, StringComparison.OrdinalIgnoreCase)).Key == null)
                 {

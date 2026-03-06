@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Connections
             this.connectionsManager = connectionsManager ?? serviceProvider.GetRequiredService<IConnectionsManager>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<IConnector> GetConnections(int portalId)
         {
             return
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Connections
                     .ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, string> GetConnectionConfigs(int portalId, string name)
         {
             return
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Connections
                     .FirstOrDefault();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IConnectionsController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IConnectionsController>;

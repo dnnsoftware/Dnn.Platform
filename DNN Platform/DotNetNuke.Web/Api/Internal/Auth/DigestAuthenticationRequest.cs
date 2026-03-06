@@ -8,8 +8,11 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     using System.Collections.Specialized;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>A digest authentication request.</summary>
-    internal class DigestAuthenticationRequest
+    [DnnDeprecated(10, 2, 2, "Use JWT or API token authentication")]
+    internal partial class DigestAuthenticationRequest
     {
         private static readonly Regex AuthHeaderRegex = new Regex("\\s?(?'name'\\w+)=(\"(?'value'[^\"]+)\"|(?'value'[^,]+))", RegexOptions.Compiled);
 

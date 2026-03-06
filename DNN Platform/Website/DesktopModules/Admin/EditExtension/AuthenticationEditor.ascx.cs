@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     using System.IO;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Installer.Packages;
@@ -19,14 +20,25 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     public partial class AuthenticationEditor : PackageEditorBase
     {
         private readonly INavigationManager navigationManager;
+        private readonly IEventLogger eventLogger;
 
         private AuthenticationInfo authSystem;
         private AuthenticationSettingsBase settingsControl;
 
         /// <summary>Initializes a new instance of the <see cref="AuthenticationEditor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public AuthenticationEditor()
+            : this(null, null)
         {
-            this.navigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AuthenticationEditor"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public AuthenticationEditor(INavigationManager navigationManager, IEventLogger eventLogger)
+        {
+            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         protected AuthenticationInfo AuthSystem
@@ -42,7 +54,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string EditorID
         {
             get
@@ -64,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Initialize()
         {
             this.pnlSettings.Visible = !this.IsSuperTab;
@@ -87,20 +99,19 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.BindAuthentication();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdatePackage()
         {
             if (this.authenticationForm.IsValid)
             {
-                var authInfo = this.authenticationForm.DataSource as AuthenticationInfo;
-                if (authInfo != null)
+                if (this.authenticationForm.DataSource is AuthenticationInfo authInfo)
                 {
-                    AuthenticationController.UpdateAuthentication(authInfo);
+                    AuthenticationController.UpdateAuthentication(this.eventLogger, authInfo);
                 }
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

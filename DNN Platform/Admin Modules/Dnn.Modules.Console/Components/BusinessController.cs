@@ -11,7 +11,7 @@ namespace Dnn.Modules.Console.Components
     /// <summary>Implements the module's business controller interface(s).</summary>
     public class BusinessController : IUpgradeable
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             try

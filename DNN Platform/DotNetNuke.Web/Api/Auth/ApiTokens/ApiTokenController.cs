@@ -9,12 +9,15 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using System.Linq;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Reflection;
     using System.Security.Cryptography;
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -22,6 +25,8 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
     using DotNetNuke.Web.Api.Auth.ApiTokens.Repositories;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <inheritdoc />
     public class ApiTokenController : IApiTokenController
@@ -33,16 +38,26 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 
         private readonly IApiTokenRepository apiTokenRepository;
         private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="ApiTokenController"/> class.</summary>
         /// <param name="apiTokenRepository">The API token repository.</param>
         /// <param name="eventLogger">The event logger.</param>
-        public ApiTokenController(
-            IApiTokenRepository apiTokenRepository,
-            IEventLogger eventLogger)
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ApiTokenController(IApiTokenRepository apiTokenRepository, IEventLogger eventLogger)
+            : this(apiTokenRepository, eventLogger, null)
         {
-            this.apiTokenRepository = apiTokenRepository;
-            this.eventLogger = eventLogger;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ApiTokenController"/> class.</summary>
+        /// <param name="apiTokenRepository">The API token repository.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ApiTokenController(IApiTokenRepository apiTokenRepository, IEventLogger eventLogger, IHostSettings hostSettings)
+        {
+            this.apiTokenRepository = apiTokenRepository ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApiTokenRepository>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <inheritdoc />
@@ -85,20 +100,19 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         {
             var res = new SortedDictionary<string, ApiTokenAttribute>();
             var typeLocator = new TypeLocator();
-            var attributes = typeLocator.GetAllMatchingTypes(
-                t => t != null &&
-                     t.IsClass &&
-                     !t.IsAbstract &&
-                     t.IsVisible)
-                .SelectMany(x => x.GetMethods())
-                .SelectMany(m => m.GetCustomAttributes(typeof(ApiTokenAuthorizeAttribute), false))
-                .Cast<ApiTokenAuthorizeAttribute>()
-                .Where(a => a.Scope <= scope);
+            var attributes =
+                from type in typeLocator.GetAllMatchingTypes(t => t is { IsClass: true, IsAbstract: false, IsVisible: true, })
+                let typeAttributes = type.GetCustomAttributes<ApiTokenAuthorizeAttribute>(inherit: false)
+                from method in type.GetMethods()
+                let methodAttributes = method.GetCustomAttributes<ApiTokenAuthorizeAttribute>(inherit: false)
+                from attribute in typeAttributes.Concat(methodAttributes)
+                where attribute.Scope <= scope
+                select attribute;
 
             foreach (var attr in attributes)
             {
                 var key = attr.Key.ToLowerInvariant();
-                var k = attr.Scope.ToString() + key;
+                var k = $"{attr.Scope}{key}";
                 if (!res.ContainsKey(k))
                 {
                     var name = DotNetNuke.Services.Localization.Localization.GetString(attr.Key + ".Text", attr.ResourceFile, locale);
@@ -137,7 +151,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 newToken = EncodeBase64(tokenBytes);
             }
 
-            var tokenAndHostGuid = newToken + Entities.Host.Host.GUID;
+            var tokenAndHostGuid = newToken + this.hostSettings.Guid;
             var hashedToken = GetHashedStr(tokenAndHostGuid);
 
             var token = new ApiTokenBase()
@@ -149,7 +163,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 TokenHash = hashedToken,
             };
             var ret = this.apiTokenRepository.AddApiToken(token, apiKeys, userId);
-            this.eventLogger.AddLog(ret.ToLogProps(), PortalSettings, userId, EventLogType.APITOKEN_CREATED.ToString(), false);
+            this.eventLogger.AddLog(ret.ToLogProps(), PortalSettings, userId, nameof(EventLogType.APITOKEN_CREATED), false);
             return newToken;
         }
 
@@ -165,12 +179,12 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             if (delete)
             {
                 this.apiTokenRepository.DeleteApiToken(token.ToBase());
-                this.eventLogger.AddLog(token.ToLogProps(), PortalSettings, userId, EventLogType.APITOKEN_DELETED.ToString(), false);
+                this.eventLogger.AddLog(token.ToLogProps(), PortalSettings, userId, nameof(EventLogType.APITOKEN_DELETED), false);
             }
             else
             {
                 this.apiTokenRepository.RevokeApiToken(token.ToBase(), userId);
-                this.eventLogger.AddLog(token.ToLogProps(), PortalSettings, userId, EventLogType.APITOKEN_REVOKED.ToString(), false);
+                this.eventLogger.AddLog(token.ToLogProps(), PortalSettings, userId, nameof(EventLogType.APITOKEN_REVOKED), false);
             }
         }
 
@@ -224,7 +238,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 
         private (ApiToken Token, UserInfo User) ValidateAuthorizationValue(string authorization)
         {
-            var tokenAndHostGuid = authorization + Entities.Host.Host.GUID;
+            var tokenAndHostGuid = authorization + this.hostSettings.Guid;
             var hashedToken = GetHashedStr(tokenAndHostGuid);
             var apiToken = this.apiTokenRepository.GetApiToken(PortalSettings.PortalId, hashedToken);
             if (apiToken != null)

@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
     {
         private static readonly string[] VersionSeparator = [".",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string InstallerLogName => "InstallerLog" + DateTime.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture) + ".resources";
 
         /// <summary>GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.</summary>
@@ -203,10 +203,10 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 }
 
                 // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
-                // else
-                // {
-                //    settingsNode.RemoveAll();
-                // }
+                ////else
+                ////{
+                ////   settingsNode.RemoveAll();
+                ////}
                 foreach (HostSettingConfig setting in installConfig.Settings)
                 {
                     XmlNode settingNode = AppendNewXmlNode(ref installTemplate, ref settingsNode, setting.Name, setting.Value);
@@ -246,7 +246,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RemoveFromInstallConfig(string xmlNodePath)
         {
             InstallConfig config = this.GetInstallConfig();
@@ -413,7 +413,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return installConfig;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsValidSqlServerVersion(string connectionString)
         {
             // todo: check if we can use globals.DatabaseEngineVersion instead
@@ -457,7 +457,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return isValidVersion;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsAbleToPerformDatabaseActions(string connectionString)
         {
             var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16", CultureInfo.InvariantCulture) + "]";
@@ -468,21 +468,21 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return string.IsNullOrEmpty(strExceptions);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsValidDotNetVersion()
         {
             // todo: check that this works for 4.5 etc.
             return Upgrade.IsNETFrameworkCurrent("4.0");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsSqlServerDbo()
         {
             string dbo = DataProvider.Instance().Settings["databaseOwner"];
             return !dbo.Trim().Equals("dbo.", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsAvailableLanguagePack(string cultureCode)
         {
             try
@@ -508,7 +508,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CultureInfo GetCurrentLanguage()
         {
             CultureInfo pageCulture = null;
@@ -557,7 +557,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return DataProvider.Instance().TestDatabaseConnection(builder, owner, objectQualifier);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CultureInfo GetCultureFromCookie()
         {
             var langCookie = HttpContext.Current.Request.Cookies["language"];

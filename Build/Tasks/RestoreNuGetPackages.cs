@@ -9,7 +9,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to restore the NuGet packages for the solution.</summary>
     public sealed class RestoreNuGetPackages : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.MSBuild(

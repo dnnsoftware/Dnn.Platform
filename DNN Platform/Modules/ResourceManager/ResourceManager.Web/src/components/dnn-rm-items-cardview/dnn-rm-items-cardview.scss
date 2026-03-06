@@ -20,9 +20,11 @@
     justify-content: flex-end;
     position: relative;
     &:hover, &:focus{
-      transform: scale3d(1.1, 1.1, 1.1);
       .radio{
         opacity: 1;
+      }
+      img {
+        transform: scale3d(1.1, 1.1, 1.1);
       }
     }
     .radio{

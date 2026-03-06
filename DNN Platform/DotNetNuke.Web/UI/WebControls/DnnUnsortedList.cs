@@ -46,13 +46,13 @@ namespace DotNetNuke.Web.UI.WebControls
             this.ListItems.Add(listItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override sealed ControlCollection CreateControlCollection()
         {
             return new TypedControlCollection<DnnUnsortedListItem>(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddAttributesToRender(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);

@@ -25,6 +25,7 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Extensions;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Permissions;
@@ -69,7 +70,7 @@ namespace DotNetNuke.Framework
         /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DefaultPage()
-            : this(null, null, null, null, null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -85,6 +86,7 @@ namespace DotNetNuke.Framework
         /// <param name="contentSecurityPolicy">The content security policy.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="pageService">The page service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
         public DefaultPage(
             INavigationManager navigationManager,
             IApplicationInfo appInfo,
@@ -97,7 +99,37 @@ namespace DotNetNuke.Framework
             IClientResourceController clientResourceController,
             IPageService pageService,
             IContentSecurityPolicy contentSecurityPolicy)
-            : base(portalController, appStatus, hostSettings)
+            : this(navigationManager, appInfo, appStatus, moduleControlPipeline, hostSettings, eventLogger, portalController, portalSettingsController, clientResourceController, pageService, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DefaultPage"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appInfo">The application info.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalSettingsController">The portal settings controller.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="pageService">The page service.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public DefaultPage(
+            INavigationManager navigationManager,
+            IApplicationInfo appInfo,
+            IApplicationStatusInfo appStatus,
+            IModuleControlPipeline moduleControlPipeline,
+            IHostSettings hostSettings,
+            IEventLogger eventLogger,
+            IPortalController portalController,
+            IPortalSettingsController portalSettingsController,
+            IClientResourceController clientResourceController,
+            IPageService pageService,
+            IUserController userController,
+            IHostSettingsService hostSettingsService)
+            : base(portalController, appStatus, hostSettings, userController, hostSettingsService)
         {
             this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
             this.appInfo = appInfo ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationInfo>();
@@ -184,7 +216,7 @@ namespace DotNetNuke.Framework
 
         private IPortalAliasInfo PrimaryPortalAlias => this.PortalSettings.PrimaryAlias;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string RaiseClientAPICallbackEvent(string eventArgument)
         {
             var dict = this.ParsePageCallBackArgs(eventArgument);
@@ -373,7 +405,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs evt)
         {
             base.OnPreRender(evt);
@@ -469,7 +501,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             if (Personalization.GetUserMode() == PortalSettings.Mode.Edit)
@@ -758,14 +790,14 @@ namespace DotNetNuke.Framework
                 ClientAPI.RegisterClientVariable(this, "cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
                 this.clientResourceController.RegisterScript("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
                 this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.css", FileOrder.Css.ResourceCss);
-                this.clientResourceController.RegisterStylesheet("~/js/dnn.cookieconsent.js");
+                this.clientResourceController.RegisterScript("~/js/dnn.cookieconsent.js");
             }
         }
 
         /// <summary>
         /// Look for skin level doctype configuration file, and inject the value into the top of default.aspx
         /// when no configuration if found, the doctype for versions prior to 4.4 is used to maintain backwards compatibility with existing skins.
-        /// Adds xmlns and lang parameters when appropiate.
+        /// Adds xmlns and lang parameters when appropriate.
         /// </summary>
         private void SetSkinDoctype()
         {

@@ -92,7 +92,7 @@ namespace DotNetNuke.Security.Roles
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get { return CacheLevel.fullyCacheable; }
@@ -265,7 +265,7 @@ namespace DotNetNuke.Security.Roles
             this.FillInternal(dr);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             string outputFormat = string.Empty;

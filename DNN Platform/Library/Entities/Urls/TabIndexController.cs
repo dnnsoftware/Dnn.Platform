@@ -254,7 +254,7 @@ namespace DotNetNuke.Entities.Urls
                 // searching from longest to shortest alias ensures that the most specific portal is matched first
                 // In some cases this method has been called with "portalaliases" that were not exactly the real portal alias
                 // the startswith behaviour is preserved here to support those non-specific uses
-                // IEnumerable<String> aliases = portalAliasCollection.Keys.Cast<String>().OrderByDescending(k => k.Length);
+                ////IEnumerable<String> aliases = portalAliasCollection.Keys.Cast<String>().OrderByDescending(k => k.Length);
                 foreach (string currentAlias in aliases)
                 {
                     // check if the alias key starts with the portal alias value passed in - we use

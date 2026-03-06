@@ -29,10 +29,10 @@ namespace DotNetNuke.Web.Mvp
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract bool DisplayModule { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int ProfileUserId
         {
             get
@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.Mvp
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             if (this.ProfileUserId == Null.NullInteger &&

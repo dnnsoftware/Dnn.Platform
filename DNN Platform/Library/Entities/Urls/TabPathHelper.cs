@@ -172,7 +172,7 @@ namespace DotNetNuke.Entities.Urls
             isCustomPath = false;
             if (homePageSiteRoot && isHomeTab && !hasPath)
             {
-                // && !isDefaultCultureCode - not working for non-language specific custom root urls
+                ////&& !isDefaultCultureCode - not working for non-language specific custom root urls
                 newTabPath = "/"; // site root for home page
             }
             else
@@ -233,7 +233,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         customTabPath = tabPath;
 
-                                        // dropLangParms = true;//drop the language parms if they exist, because this is the default language
+                                        ////dropLangParms = true; // drop the language parms if they exist, because this is the default language
                                     }
                                 }
                             }

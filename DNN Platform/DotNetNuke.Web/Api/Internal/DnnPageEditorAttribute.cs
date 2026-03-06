@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Api.Internal
     /// <summary>Requires that the user is an editor on the page.</summary>
     public sealed class DnnPageEditorAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

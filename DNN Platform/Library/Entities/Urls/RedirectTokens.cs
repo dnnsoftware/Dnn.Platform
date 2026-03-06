@@ -8,6 +8,8 @@ namespace DotNetNuke.Entities.Urls
     using System.Collections.Specialized;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Common.Utilities;
+
     /// <summary>
     /// This class contains helpers which set the redirect action and reason tokens.  These are fake additions to the rewritten query string
     /// which are used as a type of property to store intent of a particular url in the page index.  This is done to keep the base type

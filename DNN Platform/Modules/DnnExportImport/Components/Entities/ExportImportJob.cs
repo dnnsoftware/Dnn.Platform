@@ -57,14 +57,14 @@ namespace Dnn.ExportImport.Components.Entities
         /// <summary>Gets or sets the job object serialized as JSON.</summary>
         public string JobObject { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get { return this.JobId; }
             set { this.JobId = value; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.JobId = Null.SetNullInteger(dr[nameof(this.JobId)]);

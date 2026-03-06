@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>Gets or sets order to show on UI.</summary>
         public uint Order { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {
             // Nothing to convert.

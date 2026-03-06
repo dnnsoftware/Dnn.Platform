@@ -51,7 +51,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             this.serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;
@@ -78,7 +78,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
             var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
-            if (Globals.FileEscapingRegex.Match(strURL).Success || Globals.FileEscapingRegex.Match(strDoubleDecodeURL).Success)
+            if (Globals.FileEscapingRegex.IsMatch(strURL) || Globals.FileEscapingRegex.IsMatch(strDoubleDecodeURL))
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
@@ -326,10 +326,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                             break;
                         case Abstractions.Security.SiteSslSetup.Advanced:
-                            // if site is secure or else page is secure and connection is not secure orelse ssloffload is enabled and server value exists
+                            // if site is secure or else page is secure and connection is not secure or else SSL offload is enabled and server value exists
                             if (portalSettings.ActiveTab.IsSecure &&
                                 !request.IsSecureConnection &&
-                                (UrlUtils.IsSslOffloadEnabled(request) == false))
+                                !UrlUtils.IsSslOffloadEnabled(this.hostSettingsService, request))
                             {
                                 // switch to secure connection
                                 strURL = requestedPath.Replace("http://", "https://");
@@ -341,7 +341,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 // if page is not secure and connection is secure
                                 if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
                                 {
-                                    // check if connection has already been forced to secure orelse ssloffload is disabled
+                                    // check if connection has already been forced to secure or else SSL offload is disabled
                                     if (request.QueryString["ssl"] == null)
                                     {
                                         strURL = requestedPath.Replace("https://", "http://");

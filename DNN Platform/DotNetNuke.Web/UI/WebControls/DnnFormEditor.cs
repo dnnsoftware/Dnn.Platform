@@ -11,24 +11,47 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web control for editing a form.</summary>
     [ParseChildren(true)]
     public partial class DnnFormEditor : WebControl, INamingContainer
     {
+        private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
         private object dataSource;
         private int itemCount;
 
         /// <summary>Initializes a new instance of the <see cref="DnnFormEditor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnFormEditor()
+            : this(null, null, null)
         {
-            this.Items = new List<DnnFormItemBase>();
-            this.Sections = new List<DnnFormSection>();
-            this.Tabs = new List<DnnFormTab>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFormEditor"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public DnnFormEditor(IHostSettings hostSettings, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+
+            this.Items = [];
+            this.Sections = [];
+            this.Tabs = [];
 
             this.FormMode = DnnFormMode.Long;
             this.ViewStateMode = ViewStateMode.Disabled;
@@ -108,7 +131,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override HtmlTextWriterTag TagKey
         {
             get
@@ -117,7 +140,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DataBind()
         {
             this.OnDataBinding(EventArgs.Empty);
@@ -129,24 +152,24 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>Sets the items up.</summary>
+        /// <param name="hostSettings">The host settings.</param>
         /// <param name="items">The items.</param>
         /// <param name="parentControl">The parent control.</param>
-        /// <param name="localResourceFile">The local resource file.</param>
         /// <param name="encryptIds">Whether to encrypt the IDs.</param>
-        internal static void SetUpItems(IEnumerable<DnnFormItemBase> items, WebControl parentControl, string localResourceFile, bool encryptIds)
+        internal static void SetUpItems(IHostSettings hostSettings, IEnumerable<DnnFormItemBase> items, WebControl parentControl, bool encryptIds)
         {
             foreach (DnnFormItemBase item in items)
             {
                 if (encryptIds)
                 {
-                    item.ID = (Host.GUID.Substring(0, 7) + item.ID + DateTime.Now.Day).GenerateHash();
+                    item.ID = (hostSettings.Guid.Substring(0, 7) + item.ID + DateTime.Now.Day).GenerateHash();
                 }
 
                 parentControl.Controls.Add(item);
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             // CreateChildControls re-creates the children (the items)
@@ -176,12 +199,12 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.SetUpSections(this.Sections, this);
 
-            SetUpItems(this.Items, this, this.LocalResourceFile, this.EncryptIds);
+            SetUpItems(this.hostSettings, this.Items, this, this.EncryptIds);
 
             this.DataBindItems(useDataSource);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void LoadControlState(object state)
         {
@@ -191,15 +214,15 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.Page.RegisterRequiresControlState(this);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.DnnPlugins);
             base.OnInit(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -242,7 +265,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveControlState()
         {
             return this.itemCount > 0 ? (object)this.itemCount : null;
@@ -293,7 +316,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     panel.Text = Localization.GetString(resourceKey, this.LocalResourceFile);
                     panel.Expanded = section.Expanded;
 
-                    SetUpItems(section.Items, panel, this.LocalResourceFile, this.EncryptIds);
+                    SetUpItems(this.hostSettings, this.Items, panel, this.EncryptIds);
                 }
             }
         }
@@ -341,7 +364,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         tab.CssClass += " dnnFormNoSections";
                     }
 
-                    SetUpItems(formTab.Items, tab, this.LocalResourceFile, this.EncryptIds);
+                    SetUpItems(this.hostSettings, formTab.Items, tab, this.EncryptIds);
                 }
             }
         }

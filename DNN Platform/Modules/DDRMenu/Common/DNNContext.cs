@@ -103,7 +103,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             return this.HostControl.ResolveUrl(relativeUrl);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);

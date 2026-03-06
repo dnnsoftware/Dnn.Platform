@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
     internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
         {
             using (var context = DataContext.Instance())
@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public WorkflowState GetWorkflowStateByID(int stateId)
         {
             return CBO.GetCachedObject<WorkflowState>(
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             CacheWorkflowState(state);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             CacheWorkflowState(state);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
@@ -103,7 +103,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowStateRepository> GetFactory()
         {
             return () => new WorkflowStateRepository();

@@ -4,32 +4,53 @@
 namespace Dnn.PersonaBar.ConfigConsole.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Threading.Tasks;
     using System.Web.Http;
 
     using Dnn.PersonaBar.ConfigConsole.Services.Dto;
     using Dnn.PersonaBar.Library;
     using Dnn.PersonaBar.Library.Attributes;
+
+    using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The web API controller for the Config Console component in the Persona Bar.</summary>
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ConfigConsoleController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
-        private Components.ConfigConsoleController controller = new Components.ConfigConsoleController();
+        private Components.ConfigConsoleController controller;
+
+        /// <summary>Initializes a new instance of the <see cref="ConfigConsoleController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
+        public ConfigConsoleController()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ConfigConsoleController"/> class.</summary>
+        /// <param name="controller">The controller.</param>
+        public ConfigConsoleController(Components.ConfigConsoleController controller)
+        {
+            this.controller = controller ?? Globals.GetCurrentServiceProvider().GetRequiredService<Components.ConfigConsoleController>();
+        }
 
         /// GET: api/ConfigConsole/GetConfigFilesList
         /// <summary>Gets list of config files.A response indicating success.</summary>
         /// <returns>List of config files.</returns>
         [HttpGet]
-        public HttpResponseMessage GetConfigFilesList()
+        public async Task<HttpResponseMessage> GetConfigFilesList()
         {
             try
             {
-                var configFileList = this.controller.GetConfigFilesList().ToList();
+                var configFileList = (await this.controller.GetConfigFilesListAsync()).ToList();
 
                 var response = new
                 {
@@ -52,16 +73,14 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <param name="fileName">Name of a config file.</param>
         /// <returns>Content of a config file.</returns>
         [HttpGet]
-        public HttpResponseMessage GetConfigFile(string fileName)
+        public async Task<HttpResponseMessage> GetConfigFile(string fileName)
         {
             try
             {
-                var fileContent = this.controller.GetConfigFile(fileName);
-
                 var response = new
                 {
                     FileName = fileName,
-                    FileContent = fileContent,
+                    FileContent = await this.controller.GetConfigFileAsync(fileName),
                 };
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -83,12 +102,15 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <returns>A list of validation errors.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage ValidateConfigFile(ConfigFileDto configFileDto)
+        public async Task<HttpResponseMessage> ValidateConfigFile(ConfigFileDto configFileDto)
         {
             try
             {
-                var errors = this.controller.ValidateConfigFile(configFileDto.FileName, configFileDto.FileContent);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { ValidationErrors = errors });
+                var response = new
+                {
+                    ValidationErrors = await this.controller.ValidateConfigFileAsync(configFileDto.FileName, configFileDto.FileContent),
+                };
+                return this.Request.CreateResponse(HttpStatusCode.OK, response);
             }
             catch (ArgumentException exc)
             {
@@ -107,12 +129,12 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public HttpResponseMessage UpdateConfigFile(ConfigFileDto configFileDto)
+        public async Task<HttpResponseMessage> UpdateConfigFile(ConfigFileDto configFileDto)
         {
             try
             {
-                this.controller.UpdateConfigFile(configFileDto.FileName, configFileDto.FileContent);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                await this.controller.UpdateConfigFileAsync(configFileDto.FileName, configFileDto.FileContent);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (ArgumentException exc)
             {
@@ -136,7 +158,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             try
             {
                 this.controller.MergeConfigFile(configFileDto.FileContent);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

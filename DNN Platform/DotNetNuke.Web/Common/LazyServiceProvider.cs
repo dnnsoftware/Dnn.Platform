@@ -12,18 +12,13 @@ namespace DotNetNuke.Web.Common
     {
         private IServiceProvider serviceProvider;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object GetService(Type serviceType)
         {
-            if (this.serviceProvider is null)
-            {
-                throw new InvalidOperationException("Cannot resolve services until the service provider is built.");
-            }
-
-            return this.serviceProvider.GetService(serviceType);
+            return this.serviceProvider?.GetService(serviceType);
         }
 
         /// <summary>Sets the service provider.</summary>

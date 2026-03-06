@@ -59,12 +59,12 @@ namespace DotNetNuke.Tests.UI.Validation
             // Act
             ValidationResult result = validator.ValidateObject(target);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsValid, Is.False);
                 Assert.That(result.Errors.Count(), Is.EqualTo(2));
-            });
+            }
             EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult }, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
         }
 

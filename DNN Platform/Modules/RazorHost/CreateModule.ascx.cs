@@ -74,7 +74,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.RazorHost
             this.scriptList.SelectedIndexChanged += this.ScriptList_SelectedIndexChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

@@ -11,28 +11,28 @@ namespace DotNetNuke.Web.Mvc
 
     public class MvcModuleControlFactory : BaseModuleControlFactory
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Priority => 100;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsControl(ModuleInfo moduleConfiguration, string controlSrc)
         {
             return controlSrc.EndsWith(".mvc", System.StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
             return new MvcHostControl(controlKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             return new MvcHostControl();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ModuleControlBase CreateModuleControl(ModuleInfo moduleConfiguration)
         {
             ModuleControlBase moduleControl = base.CreateModuleControl(moduleConfiguration);
@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.Mvc
             return moduleControl;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             return new MvcSettingsControl();

@@ -14,11 +14,16 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Dto.Pages;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     /// <summary>An export service for extension packages.</summary>
@@ -28,18 +33,33 @@ namespace Dnn.ExportImport.Components.Services
 
         private static readonly Regex ExtensionPackageFilesRegex = new Regex(@"^(.+?)_(.+?)_(\d+\.\d+\.\d+).resources$", RegexOptions.Compiled);
 
+        private readonly IApplicationStatusInfo appStatus;
         private ExportImportJob exportImportJob;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="PackagesExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public PackagesExportService()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PackagesExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        public PackagesExportService(IApplicationStatusInfo appStatus)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Packages;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 18; // execute before pages service.
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -59,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
             var totalPackagesExported = 0;
             try
             {
-                var packagesZipFileFormat = $@"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipPackages}";
+                var packagesZipFileFormat = $@"{this.appStatus.ApplicationMapPath}{Constants.ExportFolder}{{0}}\{Constants.ExportZipPackages}";
                 var packagesZipFile = string.Format(CultureInfo.InvariantCulture, packagesZipFileFormat, exportJob.Directory.TrimEnd('\\').TrimEnd('/'));
 
                 if (this.CheckPoint.Stage == 0)
@@ -68,7 +88,7 @@ namespace Dnn.ExportImport.Components.Services
                     var toDate = exportDto.ToDateUtc;
 
                     // export skin packages.
-                    var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
+                    var extensionPackagesBackupFolder = Path.Combine(this.appStatus.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
                     var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => IsValidPackage(f, fromDate, toDate)).ToList();
                     var totalPackages = skinPackageFiles.Count;
 
@@ -119,7 +139,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -138,7 +158,7 @@ namespace Dnn.ExportImport.Components.Services
             this.ProcessImportModulePackages(importDto);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPackage>();
@@ -148,38 +168,36 @@ namespace Dnn.ExportImport.Components.Services
         /// <param name="filePath">The file path to the installer.</param>
         public void InstallPackage(string filePath)
         {
-            using (var stream = new FileStream(filePath, FileMode.Open))
+            using var stream = new FileStream(filePath, FileMode.Open);
+            try
             {
-                try
+                var installer = GetInstaller(this.appStatus, stream);
+
+                if (installer.IsValid)
                 {
-                    var installer = GetInstaller(stream);
+                    // Reset Log
+                    installer.InstallerInfo.Log.Logs.Clear();
 
-                    if (installer.IsValid)
-                    {
-                        // Reset Log
-                        installer.InstallerInfo.Log.Logs.Clear();
+                    // Set the IgnoreWhiteList flag
+                    installer.InstallerInfo.IgnoreWhiteList = true;
 
-                        // Set the IgnnoreWhiteList flag
-                        installer.InstallerInfo.IgnoreWhiteList = true;
+                    // Set the Repair flag
+                    installer.InstallerInfo.RepairInstall = true;
 
-                        // Set the Repair flag
-                        installer.InstallerInfo.RepairInstall = true;
-
-                        // Install
-                        installer.Install();
-                    }
+                    // Install
+                    installer.Install();
                 }
-                catch (Exception ex)
-                {
-                    this.Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
-                    Logger.Error(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                this.Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
+                Logger.Error(ex);
             }
         }
 
-        private static Installer GetInstaller(Stream stream)
+        private static Installer GetInstaller(IApplicationStatusInfo appStatus, Stream stream)
         {
-            var installer = new Installer(stream, Globals.ApplicationMapPath, false, false)
+            var installer = new Installer(stream, appStatus.ApplicationMapPath, false, false)
             {
                 InstallerInfo = { PortalID = Null.NullInteger },
             };
@@ -278,7 +296,7 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessImportModulePackages(ImportDto importDto)
         {
-            var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+            var packageZipFile = $"{this.appStatus.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
             var tempFolder = $"{Path.GetDirectoryName(packageZipFile)}\\{DateTime.Now.Ticks}";
             if (File.Exists(packageZipFile))
             {

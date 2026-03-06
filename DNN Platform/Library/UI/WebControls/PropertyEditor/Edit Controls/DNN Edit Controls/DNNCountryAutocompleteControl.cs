@@ -8,34 +8,56 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [ToolboxData("<{0}:DnnCountryAutocompleteControl runat=server></{0}:DnnCountryAutocompleteControl>")]
     public class DnnCountryAutocompleteControl : EditControl
     {
+        private readonly IServicesFramework servicesFramework;
         private TextBox countryName;
 
         private HiddenField countryId;
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DnnCountryAutocompleteControl()
+            : this((IServicesFramework)null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnCountryAutocompleteControl(IServicesFramework servicesFramework)
+        {
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
             this.Init += this.DnnCountryRegionControl_Init;
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DnnCountryAutocompleteControl(string type)
+            : this(type, null)
         {
-            this.Init += this.DnnCountryRegionControl_Init;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnCountryAutocompleteControl"/> class.</summary>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnCountryAutocompleteControl(string type, IServicesFramework servicesFramework)
+            : this(servicesFramework)
+        {
             this.SystemType = type;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EditControlClientId
         {
             get
@@ -47,7 +69,7 @@ namespace DotNetNuke.UI.WebControls
 
         protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string StringValue
         {
             get
@@ -93,7 +115,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -108,7 +130,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataChanged(EventArgs e)
         {
             PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
@@ -118,7 +140,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -136,7 +158,7 @@ namespace DotNetNuke.UI.WebControls
             this.Controls.Add(this.CountryId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(System.EventArgs e)
         {
             base.OnPreRender(e);
@@ -150,7 +172,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             this.RenderChildren(writer);
@@ -158,7 +180,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void DnnCountryRegionControl_Init(object sender, System.EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
             ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
             JavaScript.RequestRegistration(CommonJs.jQuery);

@@ -18,10 +18,10 @@ namespace DotNetNuke.Prompt
     /// <summary>The implementation of a Prompt command.</summary>
     public abstract class ConsoleCommand : IConsoleCommand
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract string LocalResourceFile { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ValidationMessage { get; private set; }
 
         /// <summary>Gets the result html.</summary>
@@ -48,7 +48,7 @@ namespace DotNetNuke.Prompt
         private static ISerializationManager SerializationManager =>
             Common.Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             this.Args = args;
@@ -60,10 +60,10 @@ namespace DotNetNuke.Prompt
             this.ParseFlags();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract IConsoleResultModel Run();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(this.ValidationMessage);
@@ -91,7 +91,7 @@ namespace DotNetNuke.Prompt
         protected void ParseParameters<T>(T myCommand)
             where T : class, new()
         {
-            // LoadMapping();
+            ////LoadMapping();
             var mpg = this.CreateMapping();
             mpg.ForEach(mapping =>
             {

@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             this.fileName = Util.ReadAttribute(manifestNav, "fileName");
@@ -262,7 +262,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {
             return base.ReadManifestItem(nav, false);

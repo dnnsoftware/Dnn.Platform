@@ -1,0 +1,18 @@
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+UPDATE {databaseOwner}[{objectQualifier}PortalSettings]
+SET SettingName='CrmOverrideDefaultSettings'
+WHERE SettingName='CrmUseApplicationSettings'
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+WHERE SettingName IN('CrmEnableCompositeFiles', 'CrmMinifyCss', 'CrmMinifyJs', 'ClientResourcesManagementMode')
+GO

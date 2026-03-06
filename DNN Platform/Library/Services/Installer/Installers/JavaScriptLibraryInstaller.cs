@@ -17,12 +17,12 @@ namespace DotNetNuke.Services.Installer.Installers
         private JavaScriptLibrary library;
         private JavaScriptLibrary installedLibrary;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Commit()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Install()
         {
             try
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator manifestNav)
         {
             // Load the JavaScript Library from the manifest
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Rollback()
         {
             // If Temp Library exists then we need to update the DataStore with this
@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UnInstall()
         {
             this.DeleteLibrary();

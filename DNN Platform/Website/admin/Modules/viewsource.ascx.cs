@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

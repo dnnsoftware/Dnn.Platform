@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
         private XslCompiledTransform xsl;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             if (!baseDefinition.TemplateVirtualPath.EndsWith(".txt", StringComparison.InvariantCultureIgnoreCase))
@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             var resolver = new PathResolver(liveDefinition.Folder);

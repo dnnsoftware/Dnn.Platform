@@ -57,7 +57,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         public void FacebookRequestController_GetFacebookDetailsFromRequest_With_Valid_Request_String_ForAPage()
         {
             var request = FacebookRequestController.GetFacebookDetailsFromRequest(this._requestDics["ValidForAPage"]);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(request.IsValid, Is.EqualTo(true));
                 Assert.That(request.Algorithm, Is.EqualTo("HMAC-SHA256"));
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
                 Assert.That(request.PageId, Is.EqualTo("130634540372728"));
                 Assert.That(request.PageLiked, Is.EqualTo(false));
                 Assert.That(request.PageUserAdmin, Is.EqualTo(true));
-            });
+            }
         }
 
         [Test]

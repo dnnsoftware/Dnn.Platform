@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Library.Attributes
         [Dependency]
         private IPersonaBarController PersonaBarController { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             var authenticated = Thread.CurrentPrincipal.Identity.IsAuthenticated;

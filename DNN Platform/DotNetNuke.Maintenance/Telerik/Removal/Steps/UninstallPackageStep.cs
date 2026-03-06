@@ -45,17 +45,17 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(installerFactory));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => this.LocalizeFormat("UninstallStepUninstallExtension", this.PackageName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool DeleteFiles { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string PackageName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             bool WithMatchingName(PackageInfo p) =>

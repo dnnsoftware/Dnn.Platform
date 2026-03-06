@@ -520,8 +520,8 @@ namespace DotNetNuke.UI.UserControls
                     this.txtFax.TabIndex = Convert.ToInt16(this.StartTabIndex + 9);
 
                     // <tam:note modified to test Lists
-                    // Dim objRegionalController As New RegionalController
-                    // cboCountry.DataSource = objRegionalController.GetCountries
+                    ////Dim objRegionalController As New RegionalController
+                    ////cboCountry.DataSource = objRegionalController.GetCountries
                     // <this test using method 2: get empty collection then get each entry list on demand & store into cache
                     var ctlEntry = new ListController();
                     var entryCollection = ctlEntry.GetListEntryInfoItems("Country");

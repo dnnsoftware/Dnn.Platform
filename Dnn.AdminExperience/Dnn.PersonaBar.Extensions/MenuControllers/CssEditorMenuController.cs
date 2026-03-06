@@ -14,19 +14,19 @@ namespace Dnn.PersonaBar.CssEditor.MenuControllers
     /// <summary>Controls the css editor menu.</summary>
     public class CssEditorMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

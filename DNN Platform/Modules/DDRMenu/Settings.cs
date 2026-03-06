@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.DDRMenu
             return sb.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             try

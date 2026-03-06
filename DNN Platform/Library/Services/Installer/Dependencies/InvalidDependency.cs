@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             this.errorMessage = errorMessage;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ErrorMessage
         {
             get
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsValid
         {
             get

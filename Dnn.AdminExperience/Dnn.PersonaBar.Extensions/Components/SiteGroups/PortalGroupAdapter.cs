@@ -18,7 +18,7 @@ namespace Dnn.PersonaBar.SiteGroups
     {
         private static IPortalGroupController PortalGroupController => DotNetNuke.Entities.Portals.PortalGroupController.Instance;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<PortalGroupInfo> SiteGroups()
         {
             return PortalGroupController.GetPortalGroups().Select(g => new PortalGroupInfo
@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.SiteGroups
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<PortalInfo> AvailablePortals()
         {
             return new PortalController().GetPortals()
@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.SiteGroups
                         });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Save(PortalGroupInfo portalGroup)
         {
             if (portalGroup.PortalGroupId == -1)
@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.SiteGroups
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Delete(int portalGroupId)
         {
             var group = PortalGroupController.GetPortalGroups().Single(g => g.PortalGroupId == portalGroupId);

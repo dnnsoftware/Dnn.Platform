@@ -27,7 +27,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.tabController = TabController.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetCreatedInfo(TabInfo tab)
         {
             var createdBy = tab.CreatedByUser(PortalSettings.Current.PortalId);
@@ -40,21 +40,21 @@ namespace Dnn.PersonaBar.Pages.Components
             return displayName;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool TabHasChildren(TabInfo tabInfo)
         {
             var children = TabController.GetTabsByParent(tabInfo.TabID, tabInfo.PortalID);
             return children != null && children.Count >= 1;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetTabHierarchy(TabInfo tab)
         {
             this.tabController.PopulateBreadCrumbs(ref tab);
             return tab.BreadCrumbs.Count == 1 ? string.Empty : string.Join(" > ", from t in tab.BreadCrumbs.Cast<TabInfo>().Take(tab.BreadCrumbs.Count - 1) select t.LocalizedTabName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetTabUrl(TabInfo tab)
         {
             var url = string.Empty;
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return url;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPageManagementController> GetFactory()
         {
             return () => new PageManagementController();

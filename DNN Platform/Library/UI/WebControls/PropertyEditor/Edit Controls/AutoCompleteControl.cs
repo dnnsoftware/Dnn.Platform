@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
             this.Load += this.AutoCompleteControl_Load;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;

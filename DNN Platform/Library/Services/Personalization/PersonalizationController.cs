@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.Personalization
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -23,18 +24,31 @@ namespace DotNetNuke.Services.Personalization
         private const string PersonalizationCookieName = "DNNPersonalization";
         private const string AlgorithmCookieName = "DNNPersonalizationAlg";
         private readonly IHostSettings hostSettings;
+        private readonly ICryptographyProvider cryptographyProvider;
 
         /// <summary>Initializes a new instance of the <see cref="PersonalizationController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public PersonalizationController()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PersonalizationController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public PersonalizationController(IHostSettings hostSettings)
+            : this(null, null)
         {
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PersonalizationController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public PersonalizationController(IHostSettings hostSettings, ICryptographyProvider cryptographyProvider)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
         }
 
         // default implementation relies on HTTPContext
@@ -187,12 +201,12 @@ namespace DotNetNuke.Services.Personalization
 
         private string EncryptData(HashAlgorithmName hashAlgorithm, string profileData)
         {
-            return PortalSecurity.Instance.Encrypt(ValidationUtils.GetDecryptionKey(this.hostSettings, hashAlgorithm), profileData);
+            return this.cryptographyProvider.EncryptParameter(profileData, ValidationUtils.GetDecryptionKey(this.hostSettings, hashAlgorithm)).EncryptedMessage;
         }
 
         private string DecryptData(HashAlgorithmName hashAlgorithm, string profileData)
         {
-            return PortalSecurity.Instance.Decrypt(ValidationUtils.GetDecryptionKey(this.hostSettings, hashAlgorithm), profileData);
+            return this.cryptographyProvider.DecryptParameter(profileData, ValidationUtils.GetDecryptionKey(this.hostSettings, hashAlgorithm), this.cryptographyProvider.EncryptParameterAlgorithmName);
         }
     }
 }

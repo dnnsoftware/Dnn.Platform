@@ -19,7 +19,7 @@ namespace DotNetNuke.Security.Permissions
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class AdvancedPermissionProvider : PermissionProvider
     {
         /// <summary>Content Editors Advanced Role Name.</summary>
@@ -36,12 +36,12 @@ namespace DotNetNuke.Security.Permissions
         private const string AdminFolderPermissionKey = "WRITE";
         private const string AddFolderPermissionKey = "ADD"; // "WRITE";
 
-        // private const string BrowseFolderPermissionKey = "BROWSE";
+        ////private const string BrowseFolderPermissionKey = "BROWSE";
         private const string CopyFolderPermissionKey = "COPY"; // "WRITE";
         private const string DeleteFolderPermissionKey = "DELETE"; // "WRITE";
         private const string ManageFolderPermissionKey = "MANAGE"; // "WRITE";
 
-        // private const string ViewFolderPermissionKey = "READ";
+        ////private const string ViewFolderPermissionKey = "READ";
 
         // Module Permission Keys
         private const string AdminModulePermissionKey = "EDIT";
@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Permissions
         private const string ImportModulePermissionKey = "IMPORT"; // "EDIT";
         private const string ManageModulePermissionKey = "MANAGE"; // "EDIT";
 
-        // private const string ViewModulePermissionKey = "VIEW";
+        ////private const string ViewModulePermissionKey = "VIEW";
 
         // Page Permission Keys
         private const string AddPagePermissionKey = "ADD"; // "EDIT";
@@ -94,28 +94,28 @@ namespace DotNetNuke.Security.Permissions
             this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsPortalEditor()
             => this.advancedRoles.Any(PortalSecurity.IsInRole)
             || base.IsPortalEditor();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanAddFolder(FolderInfo folder)
             => CanDoOnFolder(folder, AddFolderPermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanCopyFolder(FolderInfo folder)
             => CanDoOnFolder(folder, CopyFolderPermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanDeleteFolder(FolderInfo folder)
             => CanDoOnFolder(folder, DeleteFolderPermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanManageFolder(FolderInfo folder)
             => CanDoOnFolder(folder, ManageFolderPermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
         {
             var list = base.ImplicitRolesForFolders(portalId).ToList();
@@ -123,7 +123,7 @@ namespace DotNetNuke.Security.Permissions
             return list;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override FolderPermissionCollection GetFolderPermissionsCollectionByFolder(int portalId, string folder)
         {
@@ -143,37 +143,37 @@ namespace DotNetNuke.Security.Permissions
             return permissions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasFolderPermission(FolderPermissionCollection objFolderPermissions, string permissionKey)
             => base.HasFolderPermission(objFolderPermissions, permissionKey)
             || base.HasFolderPermission(objFolderPermissions, AdminFolderPermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanEditModuleContent(ModuleInfo module)
             => CanDoOnModule(module, ContentModulePermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanDeleteModule(ModuleInfo module)
             => CanDoOnModule(module, DeleteModulePermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanExportModule(ModuleInfo module)
             => CanDoOnModule(module, ExportModulePermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanImportModule(ModuleInfo module)
             => CanDoOnModule(module, ImportModulePermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanManageModule(ModuleInfo module)
             => CanDoOnModule(module, ManageModulePermissionKey);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanViewModule(ModuleInfo module)
             => this.ForAdvancedRoles(module)
             || base.CanViewModule(module);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override ModulePermissionCollection GetModulePermissions(int moduleId, int tabId)
         {
@@ -203,7 +203,7 @@ namespace DotNetNuke.Security.Permissions
             return permissions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasModuleAccess(SecurityAccessLevel accessLevel, string permissionKey, ModuleInfo moduleConfiguration)
         {
             var hasModuleAccess = base.HasModuleAccess(accessLevel, permissionKey, moduleConfiguration);
@@ -214,69 +214,69 @@ namespace DotNetNuke.Security.Permissions
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanAddContentToPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, ContentPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanAdminPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, AdminPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanAddPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, AddPagePermissionKey)
             || (tab.TabID == Null.NullInteger && this.CanAddTopLevel(tab.PortalID))
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanCopyPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, CopyPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanDeletePage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, DeletePagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanExportPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, ExportPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanImportPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, ImportPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanManagePage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, ManagePagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanNavigateToPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, NavigatePagePermissionKey)
             || CanDoOnPage(tab, ViewPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool CanViewPage(TabInfo tab)
             => this.ForAdvancedRoles(tab)
             || CanDoOnPage(tab, ViewPagePermissionKey)
             || this.IsPageAdmin(tab.PortalID);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IEnumerable<RoleInfo> ImplicitRolesForPages(int portalId)
         {
             var roles = base.ImplicitRolesForPages(portalId).ToList();
@@ -284,7 +284,7 @@ namespace DotNetNuke.Security.Permissions
             return roles;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
             var tab = this.tabController.GetTab(tabId, portalId);
@@ -312,7 +312,7 @@ namespace DotNetNuke.Security.Permissions
             return permissions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
         {
             if (tabPermissions.Count == 0)
@@ -332,7 +332,7 @@ namespace DotNetNuke.Security.Permissions
                 || base.HasTabPermission(tabPermissions, permissionKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
             => this.IsPortalEditor()
             || base.HasDesktopModulePermission(desktopModulePermissions, permissionKey);

@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
     internal class WorkflowActionRepository : ServiceLocator<IWorkflowActionRepository, WorkflowActionRepository>, IWorkflowActionRepository
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public WorkflowAction GetWorkflowAction(int contentTypeId, string type)
         {
             using var context = DataContext.Instance();
@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 ?? GetWorkflowActionsDefaultsOrNull(contentTypeId, type); // fallback to default action (not in db)
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflowAction(WorkflowAction action)
         {
             using var context = DataContext.Instance();
@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             rep.Insert(action);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowActionRepository> GetFactory()
         {
             return () => new WorkflowActionRepository();

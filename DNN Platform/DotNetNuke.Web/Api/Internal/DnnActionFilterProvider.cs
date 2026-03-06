@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Api.Internal
             this.container = container;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<FilterInfo> GetFilters(HttpConfiguration configuration, HttpActionDescriptor actionDescriptor)
         {
             Requires.NotNull("actionDescriptor", actionDescriptor);

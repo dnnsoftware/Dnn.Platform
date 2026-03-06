@@ -46,7 +46,7 @@ namespace DotNetNuke.Collections.Internal
             this.Dispose(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Count
         {
             get
@@ -57,7 +57,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReadOnly
         {
             get
@@ -68,7 +68,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ICollection<TKey> Keys
         {
             get
@@ -79,7 +79,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ICollection<TValue> Values
         {
             get
@@ -99,7 +99,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TValue this[TKey key]
         {
             get
@@ -117,13 +117,13 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerator GetEnumerator()
         {
             return this.IEnumerable_GetEnumerator();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Add(KeyValuePair<TKey, TValue> item)
         {
             this.EnsureNotDisposed();
@@ -131,7 +131,7 @@ namespace DotNetNuke.Collections.Internal
             this.dict.Add(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Clear()
         {
             this.EnsureNotDisposed();
@@ -139,7 +139,7 @@ namespace DotNetNuke.Collections.Internal
             this.dict.Clear();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Contains(KeyValuePair<TKey, TValue> item)
         {
             this.EnsureNotDisposed();
@@ -147,7 +147,7 @@ namespace DotNetNuke.Collections.Internal
             return this.dict.Contains(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
             this.EnsureNotDisposed();
@@ -155,7 +155,7 @@ namespace DotNetNuke.Collections.Internal
             this.dict.CopyTo(array, arrayIndex);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Remove(KeyValuePair<TKey, TValue> item)
         {
             this.EnsureNotDisposed();
@@ -163,7 +163,7 @@ namespace DotNetNuke.Collections.Internal
             return this.dict.Remove(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ContainsKey(TKey key)
         {
             this.EnsureNotDisposed();
@@ -171,7 +171,7 @@ namespace DotNetNuke.Collections.Internal
             return this.dict.ContainsKey(key);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Add(TKey key, TValue value)
         {
             this.EnsureNotDisposed();
@@ -179,7 +179,7 @@ namespace DotNetNuke.Collections.Internal
             this.dict.Add(key, value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Remove(TKey key)
         {
             this.EnsureNotDisposed();
@@ -187,7 +187,7 @@ namespace DotNetNuke.Collections.Internal
             return this.dict.Remove(key);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool TryGetValue(TKey key, out TValue value)
         {
             this.EnsureNotDisposed();
@@ -195,7 +195,7 @@ namespace DotNetNuke.Collections.Internal
             return this.dict.TryGetValue(key, out value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);
@@ -263,7 +263,7 @@ namespace DotNetNuke.Collections.Internal
             return this.dict.GetEnumerator();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IEnumerator<KeyValuePair<TKey, TValue>> IEnumerable<KeyValuePair<TKey, TValue>>.GetEnumerator()
         {
             return this.IEnumerable_GetEnumerator();

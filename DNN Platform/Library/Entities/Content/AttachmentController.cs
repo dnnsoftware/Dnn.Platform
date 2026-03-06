@@ -40,43 +40,43 @@ namespace DotNetNuke.Entities.Content
             this.contentController = contentController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddFileToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddFilesToContent(contentItemId, new[] { fileInfo });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddFilesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Files.AddRange(fileInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddVideoToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddVideosToContent(contentItemId, new[] { fileInfo });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddVideosToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Videos.AddRange(fileInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddImageToContent(int contentItemId, IFileInfo fileInfo)
         {
             this.AddImagesToContent(contentItemId, new[] { fileInfo });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddImagesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo)
         {
             this.AddToContent(contentItemId, contentItem => contentItem.Images.AddRange(fileInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<IFileInfo> GetVideosByContent(int contentItemId)
         {
             var files = this.GetFilesByContent(contentItemId, VideoKey);
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Content
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<IFileInfo> GetImagesByContent(int contentItemId)
         {
             var files = this.GetFilesByContent(contentItemId, ImageKey);
@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Content
             return files.Select(fileId => FileManager.Instance.GetFile(fileId)).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<IFileInfo> GetFilesByContent(int contentItemId)
         {
             var files = this.GetFilesByContent(contentItemId, FilesKey);
@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Content
                 }
                 catch
                 {
-                    // throw new ApplicationException(string.Format("Error loading file properties for FileID '{0}'", file), ex);
+                    ////throw new ApplicationException(string.Format("Error loading file properties for FileID '{0}'", file), ex);
 
                     // On second thought, I don't know how much sense it makes to be throwing an exception here.  If the file
                     // has been deleted or is otherwise unavailable, there's really no reason we can't continue on handling the

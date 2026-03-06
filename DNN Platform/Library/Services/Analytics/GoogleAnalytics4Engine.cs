@@ -9,10 +9,10 @@ namespace DotNetNuke.Services.Analytics
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Analytics.Config;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public class GoogleAnalytics4Engine : AnalyticsEngineBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EngineName
         {
             get
@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Analytics
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string RenderScript(string scriptTemplate)
         {
             AnalyticsConfiguration config = this.GetConfig();

@@ -19,28 +19,28 @@ namespace Dnn.EditBar.UI.Items
     [Serializable]
     public class AddExistingModuleMenu : BaseMenuItem
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => "AddExistingModule";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => "Add Existing Module";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent => Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader => "AddExistingModule";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order => 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible()
         {
             var portalSettings = PortalSettings.Current;

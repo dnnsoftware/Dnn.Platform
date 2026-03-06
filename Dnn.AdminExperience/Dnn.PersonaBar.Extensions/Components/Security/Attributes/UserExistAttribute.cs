@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Security.Attributes
     {
         public string[] RoleNames { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var propertyName = validationContext.DisplayName;

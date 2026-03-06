@@ -42,8 +42,7 @@ public class TabCollectionTests
     public void DNN_13659_WithTabName_NullTabName()
     {
         // Setup
-        var tabCollection = new TabCollection();
-        tabCollection.Add(new TabInfo { PortalID = 1, TabID = 1 });
+        var tabCollection = new TabCollection { new TabInfo { PortalID = 1, TabID = 1, }, };
 
         // Act
         var tab = tabCollection.WithTabName("TestName");
@@ -55,10 +54,12 @@ public class TabCollectionTests
     public void WithTabName_Match()
     {
         // Setup
-        var tabCollection = new TabCollection();
-        tabCollection.Add(new TabInfo { TabName = "TestName1", PortalID = 1, TabID = 1 });
-        tabCollection.Add(new TabInfo { TabName = "TestName2", PortalID = 1, TabID = 2 });
-        tabCollection.Add(new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3 });
+        var tabCollection = new TabCollection
+        {
+            new TabInfo { TabName = "TestName1", PortalID = 1, TabID = 1, },
+            new TabInfo { TabName = "TestName2", PortalID = 1, TabID = 2, },
+            new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3, },
+        };
 
         // Act
         var tab = tabCollection.WithTabName("TestName2");
@@ -71,10 +72,12 @@ public class TabCollectionTests
     public void WithTabName_NoMatch()
     {
         // Setup
-        var tabCollection = new TabCollection();
-        tabCollection.Add(new TabInfo { TabName = "TestName1", PortalID = 1, TabID = 1 });
-        tabCollection.Add(new TabInfo { TabName = "TestName2", PortalID = 1, TabID = 2 });
-        tabCollection.Add(new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3 });
+        var tabCollection = new TabCollection
+        {
+            new TabInfo { TabName = "TestName1", PortalID = 1, TabID = 1, },
+            new TabInfo { TabName = "TestName2", PortalID = 1, TabID = 2, },
+            new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3, },
+        };
 
         // Act
         var tab = tabCollection.WithTabName("NO_MATCH");
@@ -87,10 +90,12 @@ public class TabCollectionTests
     public void WithTabName_Empty()
     {
         // Setup
-        var tabCollection = new TabCollection();
-        tabCollection.Add(new TabInfo { TabName = "TestName1", PortalID = 1, TabID = 1 });
-        tabCollection.Add(new TabInfo { TabName = "TestName2", PortalID = 1, TabID = 2 });
-        tabCollection.Add(new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3 });
+        var tabCollection = new TabCollection
+        {
+            new TabInfo { TabName = "TestName1", PortalID = 1, TabID = 1, },
+            new TabInfo { TabName = "TestName2", PortalID = 1, TabID = 2, },
+            new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3, },
+        };
 
         // Act
         var tab = tabCollection.WithTabName(string.Empty);

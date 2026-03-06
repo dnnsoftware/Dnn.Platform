@@ -9,6 +9,9 @@ namespace DotNetNuke.UI.Containers
     using System.Web;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -22,17 +25,30 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.WebControls;
 
-    /// <summary>ActionManager is a helper class that provides common Action Behaviours that can be used by any <see cref="IActionControl"/> implementation.</summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>ActionManager is a helper class that provides common Action Behaviors that can be used by any <see cref="IActionControl"/> implementation.</summary>
     public class ActionManager
     {
-        private readonly PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+        private readonly IPortalSettings portalSettings = PortalController.Instance.GetCurrentSettings();
         private readonly HttpRequest request = HttpContext.Current.Request;
         private readonly HttpResponse response = HttpContext.Current.Response;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
         /// <param name="actionControl">The action control.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ActionManager(IActionControl actionControl)
+            : this(null, actionControl)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ActionManager"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="actionControl">The action control.</param>
+        public ActionManager(IEventLogger eventLogger, IActionControl actionControl)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             this.ActionControl = actionControl;
         }
 
@@ -40,13 +56,7 @@ namespace DotNetNuke.UI.Containers
         public IActionControl ActionControl { get; set; }
 
         /// <summary>Gets the ModuleInstanceContext instance that is connected to this ActionManager instance.</summary>
-        protected ModuleInstanceContext ModuleContext
-        {
-            get
-            {
-                return this.ActionControl.ModuleControl.ModuleContext;
-            }
-        }
+        protected ModuleInstanceContext ModuleContext => this.ActionControl.ModuleControl.ModuleContext;
 
         /// <summary>DisplayControl determines whether the associated Action control should be displayed.</summary>
         /// <param name="objNodes">The nav nodes.</param>
@@ -241,13 +251,13 @@ namespace DotNetNuke.UI.Containers
                     {
                         // HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
-                        EventLogController.Instance.AddLog(instance, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_DELETED);
+                        this.eventLogger.AddLog(instance, this.portalSettings, user.UserID, string.Empty, EventLogType.MODULE_DELETED);
                     }
                 }
             }
 
             ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(command.CommandArgument, CultureInfo.InvariantCulture), true);
-            EventLogController.Instance.AddLog(module, this.portalSettings, user.UserID, string.Empty, EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
+            this.eventLogger.AddLog(module, this.portalSettings, user.UserID, string.Empty, EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
             // Redirect to the same page to pick up changes
             this.response.Redirect(this.request.RawUrl, true);

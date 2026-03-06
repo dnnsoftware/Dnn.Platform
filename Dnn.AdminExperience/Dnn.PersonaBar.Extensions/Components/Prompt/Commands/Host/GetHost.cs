@@ -17,10 +17,10 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     [ConsoleCommand("get-host", Constants.HostCategory, "Prompt_GetHost_Description")]
     public class GetHost : ConsoleCommandBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             var sbErrors = new StringBuilder();
@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
             this.AddMessage(sbErrors.ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var lst = new List<HostModel>();

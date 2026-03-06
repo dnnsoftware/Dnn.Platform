@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.pagesController = pagesController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int PageId { get; set; }

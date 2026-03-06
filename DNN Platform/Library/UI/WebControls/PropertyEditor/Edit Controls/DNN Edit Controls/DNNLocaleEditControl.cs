@@ -29,9 +29,9 @@ namespace DotNetNuke.UI.WebControls
         protected string DisplayMode => this.displayMode;
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        protected PortalSettings PortalSettings => PortalSettings.Current;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             this.displayMode = eventArgument;
@@ -194,7 +194,7 @@ function onLocaleChanged(element){
             writer.RenderEndTag();
             writer.Write(Localization.GetString("EnglishName", Localization.GlobalResourceFile));
 
-            // writer.Write("<br />");
+            ////writer.Write("<br />");
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
             writer.AddAttribute("aria-label", "Mode");
             if (this.DisplayMode == "Native")

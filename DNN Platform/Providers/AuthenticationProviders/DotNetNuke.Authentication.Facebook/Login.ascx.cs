@@ -12,28 +12,28 @@ namespace DotNetNuke.Authentication.Facebook
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public partial class Login : OAuthLoginBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsRegistration
         {
             get { return true; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string AuthSystemApplicationName
         {
             get { return "Facebook"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override UserData GetCurrentUser()
         {
             return this.OAuthClient.GetCurrentUser<FacebookUserData>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -47,7 +47,7 @@ namespace DotNetNuke.Authentication.Facebook
             this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddCustomProperties(NameValueCollection properties)
         {
             base.AddCustomProperties(properties);

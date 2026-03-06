@@ -42,7 +42,7 @@ namespace DotNetNuke.Collections.Internal
             this.Dispose(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Count
         {
             get
@@ -53,7 +53,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReadOnly
         {
             get
@@ -73,7 +73,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public T this[int index]
         {
             get
@@ -91,7 +91,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Add(T item)
         {
             this.EnsureNotDisposed();
@@ -99,7 +99,7 @@ namespace DotNetNuke.Collections.Internal
             this.list.Add(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Clear()
         {
             this.EnsureNotDisposed();
@@ -107,7 +107,7 @@ namespace DotNetNuke.Collections.Internal
             this.list.Clear();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Contains(T item)
         {
             this.EnsureNotDisposed();
@@ -115,7 +115,7 @@ namespace DotNetNuke.Collections.Internal
             return this.list.Contains(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CopyTo(T[] array, int arrayIndex)
         {
             this.EnsureNotDisposed();
@@ -123,7 +123,7 @@ namespace DotNetNuke.Collections.Internal
             this.list.CopyTo(array, arrayIndex);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Remove(T item)
         {
             this.EnsureNotDisposed();
@@ -131,7 +131,7 @@ namespace DotNetNuke.Collections.Internal
             return this.list.Remove(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
             this.EnsureNotDisposed();
@@ -139,7 +139,7 @@ namespace DotNetNuke.Collections.Internal
             return this.list.GetEnumerator();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int IndexOf(T item)
         {
             this.EnsureNotDisposed();
@@ -147,7 +147,7 @@ namespace DotNetNuke.Collections.Internal
             return this.list.IndexOf(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Insert(int index, T item)
         {
             this.EnsureNotDisposed();
@@ -155,7 +155,7 @@ namespace DotNetNuke.Collections.Internal
             this.list.Insert(index, item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RemoveAt(int index)
         {
             this.EnsureNotDisposed();
@@ -163,7 +163,7 @@ namespace DotNetNuke.Collections.Internal
             this.list.RemoveAt(index);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);
@@ -234,7 +234,7 @@ namespace DotNetNuke.Collections.Internal
             return this.GetEnumerator();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator1();

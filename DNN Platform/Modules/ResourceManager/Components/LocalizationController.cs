@@ -22,7 +22,7 @@ namespace Dnn.Modules.ResourceManager.Components
     /// <summary>Provides localization services.</summary>
     public class LocalizationController : ServiceLocator<ILocalizationController, LocalizationController>, ILocalizationController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string CultureName => Instance.CultureName;
 
         /// <inheritdoc />

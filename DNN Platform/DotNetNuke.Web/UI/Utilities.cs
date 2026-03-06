@@ -11,15 +11,19 @@ namespace DotNetNuke.Web.UI
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Internal.SourceGenerators;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
+    using FileOrder = DotNetNuke.Abstractions.ClientResources.FileOrder;
 
     /// <summary>Provides utility methods for UI elements within DNN.</summary>
     public partial class Utilities
@@ -28,7 +32,16 @@ namespace DotNetNuke.Web.UI
         /// <param name="targetControl">The control that should have a skin injected.</param>
         /// <param name="controlSubSkinName">An optional sub-skin.</param>
         /// <param name="controlName">An optional control name that might differ from the type.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public static void ApplyControlSkin(Control targetControl, string controlSubSkinName = "", string controlName = "")
+            => ApplyControlSkin(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), targetControl, controlSubSkinName, controlName);
+
+        /// <summary>Applies a custom CSS file for a control using a consistent naming pattern.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="targetControl">The control that should have a skin injected.</param>
+        /// <param name="controlSubSkinName">An optional sub-skin.</param>
+        /// <param name="controlName">An optional control name that might differ from the type.</param>
+        public static void ApplyControlSkin(IClientResourceController clientResourceController, Control targetControl, string controlSubSkinName = "", string controlName = "")
         {
             string fallBackEmbeddedSkinName = string.Empty;
             PropertyInfo skinProperty = null;
@@ -138,10 +151,10 @@ namespace DotNetNuke.Web.UI
 
                     if (HttpContext.Current != null && HttpContext.Current.Handler is Page)
                     {
-                        ClientResourceManager.RegisterStyleSheet(HttpContext.Current.Handler as Page, filePath, FileOrder.Css.ResourceCss);
+                        clientResourceController.RegisterStylesheet(filePath, FileOrder.Css.ResourceCss);
                     }
 
-                    if ((skinProperty != null) && (enableEmbeddedSkinsProperty != null))
+                    if (skinProperty != null && enableEmbeddedSkinsProperty != null)
                     {
                         skinApplied = true;
                         skinProperty.SetValue(targetControl, webControlSkinName, null);
@@ -260,18 +273,34 @@ namespace DotNetNuke.Web.UI
         /// <param name="ctrl">The control.</param>
         /// <param name="message">The message.</param>
         /// <returns>A script.</returns>
-        public static string GetOnClientClickConfirm(Control ctrl, string message)
-        {
-            return GetOnClientClickConfirm(ctrl, new MessageWindowParameters(message));
-        }
+        [DnnDeprecated(10, 2, 2, "Please use overload with IClientResourceController")]
+        public static partial string GetOnClientClickConfirm(Control ctrl, string message)
+            => GetOnClientClickConfirm(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), ctrl, message);
+
+        /// <summary>Gets a script for a click confirmation.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>A script.</returns>
+        public static string GetOnClientClickConfirm(IClientResourceController clientResourceController, Control ctrl, string message)
+            => GetOnClientClickConfirm(clientResourceController, ctrl, new MessageWindowParameters(message));
 
         /// <summary>Gets a script for a click confirmation.</summary>
         /// <param name="ctrl">The control.</param>
         /// <param name="message">The message.</param>
         /// <returns>A script.</returns>
-        public static string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
+        [DnnDeprecated(10, 2, 2, "Please use overload with IClientResourceController")]
+        public static partial string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
+            => GetOnClientClickConfirm(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), ctrl, message);
+
+        /// <summary>Gets a script for a click confirmation.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="ctrl">The control.</param>
+        /// <param name="message">The message.</param>
+        /// <returns>A script.</returns>
+        public static string GetOnClientClickConfirm(IClientResourceController clientResourceController, Control ctrl, MessageWindowParameters message)
         {
-            AddMessageWindow(ctrl);
+            AddMessageWindow(clientResourceController, ctrl);
 
             // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
             return string.Format(
@@ -313,9 +342,9 @@ namespace DotNetNuke.Web.UI
             ctrl.Page.ClientScript.RegisterClientScriptBlock(ctrl.GetType(), ctrl.ID + "_AlertOnPageLoad", GetClientAlert(ctrl, message), true);
         }
 
-        private static void AddMessageWindow(Control ctrl)
+        private static void AddMessageWindow(IClientResourceController clientResourceController, Control ctrl)
         {
-            ClientResourceManager.RegisterScript(ctrl.Page, ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
+            clientResourceController.RegisterScript(ctrl.ResolveUrl("~/js/dnn.postbackconfirm.js"));
         }
     }
 }

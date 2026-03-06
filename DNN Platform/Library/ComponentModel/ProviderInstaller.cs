@@ -52,7 +52,7 @@ namespace DotNetNuke.ComponentModel
             this.providerInterface = providerInterface;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void InstallComponents(IContainer container)
         {
             ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this.providerType);

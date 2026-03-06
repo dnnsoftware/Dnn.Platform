@@ -96,11 +96,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(exceptionThrown, Is.True, "Should throw out exception");
                 Assert.That(exceptionMessage, Is.EqualTo("you have no permission to attach files not belongs to you."));
-            });
+            }
         }
 
         [Test]
@@ -131,11 +131,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(exceptionThrown, Is.True, "Should throw out exception");
                 Assert.That(exceptionMessage, Is.EqualTo("you have no permission to post journal on current profile page."));
-            });
+            }
         }
 
         [Test]
@@ -214,11 +214,11 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 exceptionMessage = Json.Deserialize<dynamic>(ex.Body).ExceptionMessage;
             }
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(exceptionThrown, Is.True, "Should throw out exception");
                 Assert.That(exceptionMessage, Is.EqualTo("you have no permission to post journal on current group."));
-            });
+            }
         }
 
         [Test]

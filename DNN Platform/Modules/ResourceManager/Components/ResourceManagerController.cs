@@ -16,7 +16,7 @@ namespace Dnn.Modules.ResourceManager.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceManagerController));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             try

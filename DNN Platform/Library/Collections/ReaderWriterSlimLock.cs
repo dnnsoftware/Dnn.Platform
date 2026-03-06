@@ -25,7 +25,7 @@ namespace DotNetNuke.Collections.Internal
             this.Dispose(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             this.Dispose(true);

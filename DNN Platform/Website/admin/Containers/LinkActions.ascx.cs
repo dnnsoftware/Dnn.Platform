@@ -8,10 +8,13 @@ namespace DotNetNuke.UI.Containers
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which renders module actions as link buttons.</summary>
     public partial class LinkActions : ActionBase
@@ -22,20 +25,27 @@ namespace DotNetNuke.UI.Containers
         // ReSharper disable once InconsistentNaming
         protected string _itemSeparator = string.Empty;
 
-        public string ItemSeparator
+        /// <summary>Initializes a new instance of the <see cref="LinkActions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public LinkActions()
+            : this(null)
         {
-            get
-            {
-                return this._itemSeparator;
-            }
-
-            set
-            {
-                this._itemSeparator = value;
-            }
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="LinkActions"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        public LinkActions(IEventLogger eventLogger)
+            : base(eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>())
+        {
+        }
+
+        public string ItemSeparator
+        {
+            get => this._itemSeparator;
+            set => this._itemSeparator = value;
+        }
+
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -100,7 +110,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

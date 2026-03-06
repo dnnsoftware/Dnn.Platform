@@ -7,12 +7,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Security.Cryptography;
 
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Localization;
@@ -26,6 +25,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
     using NUnit.Framework;
 
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
+
     [TestFixture]
     public class StandardFolderProviderTests
     {
@@ -38,7 +39,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         private Mock<IFileManager> fileManager;
         private Mock<IPathUtils> pathUtils;
         private Mock<IPortalController> portalControllerMock;
-        private Mock<CryptographyProvider> cryptographyProviderMock;
         private Mock<ILocaleController> localeControllerMock;
         private FakeServiceProvider serviceProvider;
 
@@ -57,9 +57,9 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.portalControllerMock.Setup(p => p.GetPortalSettings(Constants.CONTENT_ValidPortalId))
                 .Returns(this.GetPortalSettingsDictionaryMock());
             this.portalControllerMock.Setup(p => p.GetCurrentPortalSettings()).Returns(this.GetPortalSettingsMock());
-            this.cryptographyProviderMock = new Mock<CryptographyProvider>();
-            this.cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
-                .Returns(Guid.NewGuid().ToString("N"));
+            var cryptographyProviderMock = new Mock<ICryptographyProvider>();
+            cryptographyProviderMock.Setup(c => c.EncryptParameter(It.IsAny<string>(), It.IsAny<string>()))
+                .Returns((Guid.NewGuid().ToString("N"), nameof(Aes)));
             this.localeControllerMock = new Mock<ILocaleController>();
             this.localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string, Locale>
             {
@@ -72,7 +72,6 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FileManager.RegisterInstance(this.fileManager.Object);
             PathUtils.RegisterInstance(this.pathUtils.Object);
             PortalController.SetTestableInstance(this.portalControllerMock.Object);
-            ComponentFactory.RegisterComponentInstance<CryptographyProvider>("CryptographyProviderMock", this.cryptographyProviderMock.Object);
             LocaleController.RegisterInstance(this.localeControllerMock.Object);
 
             this.serviceProvider = FakeServiceProvider.Setup(
@@ -82,7 +81,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                     services.AddSingleton(this.fileManager.Object);
                     services.AddSingleton(this.pathUtils.Object);
                     services.AddSingleton(this.portalControllerMock.Object);
-                    services.AddSingleton(this.cryptographyProviderMock.Object);
+                    services.AddSingleton(cryptographyProviderMock.Object);
                     services.AddSingleton(this.localeControllerMock.Object);
                 });
         }
@@ -548,12 +547,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this.portalControllerMock.Setup(x => x.GetCurrentPortalSettings())
                 .Returns<PortalSettings>(null);
 
-            // act
             string fileUrl = null;
-            TestDelegate action = () => fileUrl = sfp.Object.GetFileUrl(this.fileInfo.Object);
-
-            // assert
-            Assert.DoesNotThrow(action);
+            Assert.DoesNotThrow((TestDelegate)(() => fileUrl = sfp.Object.GetFileUrl(this.fileInfo.Object)));
             Assert.That(fileUrl, Is.Not.Null);
         }
 

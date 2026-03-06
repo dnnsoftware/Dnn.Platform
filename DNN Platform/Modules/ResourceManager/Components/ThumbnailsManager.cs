@@ -50,7 +50,7 @@ namespace Dnn.Modules.ResourceManager.Components
         /// <summary>Gets the default file name extension.</summary>
         public string DefaultThumbnailExtension => "png";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ThumbnailAvailable(string fileName)
         {
             var ext = Path.GetExtension(fileName).ToUpperInvariant();
@@ -58,13 +58,13 @@ namespace Dnn.Modules.ResourceManager.Components
             return Enum.TryParse(ext, out ThumbnailExtensions _);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height)
         {
             return this.ThumbnailUrl(moduleId, fileId, width, height, this.GetNewTimeStamp());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height, string timestamp)
         {
             var tabId = TabController.CurrentPage.TabID;
@@ -73,14 +73,14 @@ namespace Dnn.Modules.ResourceManager.Components
                 $"{ServicesFramework.GetServiceFrameworkRoot()}API/ResourceManager/Items/ThumbnailDownLoad?fileId={fileId}&width={width}&height={height}&timestamp={timestamp}&moduleId={moduleId}&tabId={tabId}";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ThumbnailUrl(int moduleId, int fileId, int width, int height, int version)
         {
             var result = this.ThumbnailUrl(moduleId, fileId, width, height, this.GetNewTimeStamp());
             return result + "&version=" + version;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ThumbnailContent GetThumbnailContentFromImageUrl(string imageUrl, int width, int height)
         {
             Image image = new Bitmap(imageUrl);
@@ -91,7 +91,7 @@ namespace Dnn.Modules.ResourceManager.Components
             return result;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ThumbnailContent GetThumbnailContentFromImage(Image image, int width, int height, bool crop = false)
         {
             int thumbnailWidth;
@@ -124,7 +124,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ThumbnailContent GetThumbnailContent(IFileInfo item, int width, int height, bool crop = false)
         {
             using (var content = this.fileManager.GetFileContent(item))
@@ -136,7 +136,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IThumbnailsManager> GetFactory()
         {
             return () => new ThumbnailsManager();

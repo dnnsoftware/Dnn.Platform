@@ -25,8 +25,6 @@ namespace Dnn.PersonaBar.Servers.Services
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using static System.Boolean;
-
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {
@@ -36,10 +34,11 @@ namespace Dnn.PersonaBar.Servers.Services
         private readonly IHostSettings hostSettings;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalController portalController;
 
         /// <summary>Initializes a new instance of the <see cref="ServerSettingsPerformanceController"/> class.</summary>
         public ServerSettingsPerformanceController()
-            : this(null, null, null)
+            : this(null, null, null, null)
         {
         }
 
@@ -47,11 +46,13 @@ namespace Dnn.PersonaBar.Servers.Services
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="appStatus">The application status.</param>
-        public ServerSettingsPerformanceController(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus)
+        /// <param name="portalController">The portal controller.</param>
+        public ServerSettingsPerformanceController(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IPortalController portalController)
         {
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
         }
 
         /// GET: api/Servers/GetPerformanceSettings
@@ -75,13 +76,10 @@ namespace Dnn.PersonaBar.Servers.Services
                     AuthCacheability = this.hostSettings.AuthenticatedCacheability,
                     UnauthCacheability = this.hostSettings.UnauthenticatedCacheability,
                     SslForCacheSynchronization = this.hostSettingsService.GetBoolean(UseSSLKey, false),
-                    ClientResourcesManagementMode = PortalController.GetPortalSetting("ClientResourcesManagementMode", portalId, "h"),
 
+                    CrmOverrideDefaultSettings = bool.Parse(PortalController.GetPortalSetting(this.portalController, ClientResourceSettings.OverrideDefaultSettingsKey, portalId, "False")),
                     CurrentHostVersion = this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture),
-                    HostEnableCompositeFiles = this.hostSettings.CrmEnableCompositeFiles,
-                    HostMinifyCss = this.hostSettings.CrmMinifyCss,
-                    HostMinifyJs = this.hostSettings.CrmMinifyJs,
-                    CurrentPortalVersion = GetPortalVersion(portalId),
+                    CurrentPortalVersion = this.GetPortalVersion(portalId),
 
                     // Options
                     CachingProviderOptions = this.performanceController.GetCachingProviderOptions(),
@@ -111,11 +109,9 @@ namespace Dnn.PersonaBar.Servers.Services
             try
             {
                 var portalId = PortalSettings.Current.PortalId;
-                PortalController.IncrementCrmVersion(portalId);
-                PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
-                PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "p", false);
+                PortalController.IncrementCrmVersion(this.portalController, portalId);
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, NewValue = this.GetPortalVersion(portalId) });
             }
             catch (Exception exc)
             {
@@ -135,10 +131,8 @@ namespace Dnn.PersonaBar.Servers.Services
             {
                 var portalId = PortalSettings.Current.PortalId;
                 this.hostSettingsService.IncrementCrmVersion(false);
-                PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
-                PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", "h", false);
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, NewValue = this.hostSettings.CrmVersion });
             }
             catch (Exception exc)
             {
@@ -179,16 +173,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 this.hostSettingsService.Update(UseSSLKey, request.SslForCacheSynchronization.ToString(), true);
 
-                PortalController.UpdatePortalSetting(portalId, "ClientResourcesManagementMode", request.ClientResourcesManagementMode, false);
-
-                if (request.ClientResourcesManagementMode == "h")
-                {
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, FalseString, false);
-                }
-                else
-                {
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, TrueString, false);
-                }
+                this.portalController.UpdatePortalSetting(portalId, ClientResourceSettings.OverrideDefaultSettingsKey, request.CrmOverrideDefaultSettings.ToString(), false, Null.NullString, false);
 
                 DataCache.ClearCache();
 
@@ -201,15 +186,15 @@ namespace Dnn.PersonaBar.Servers.Services
             }
         }
 
-        private static int GetPortalVersion(int portalId)
+        private int GetPortalVersion(int portalId)
         {
-            var settingValue = PortalController.GetPortalSetting(ClientResourceSettings.VersionKey, portalId, "0");
+            var settingValue = PortalController.GetPortalSetting(this.portalController, ClientResourceSettings.VersionKey, portalId, "0");
             if (int.TryParse(settingValue, out var version))
             {
                 if (version == 0)
                 {
                     version = 1;
-                    PortalController.UpdatePortalSetting(portalId, ClientResourceSettings.VersionKey, "1", true);
+                    PortalController.UpdatePortalSetting(this.portalController, portalId, ClientResourceSettings.VersionKey, "1", true);
                 }
             }
 

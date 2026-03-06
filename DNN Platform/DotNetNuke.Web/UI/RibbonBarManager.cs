@@ -12,8 +12,9 @@ namespace DotNetNuke.Web.UI
     using System.Xml;
 
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
-    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -85,24 +86,44 @@ namespace DotNetNuke.Web.UI
 
         /// <summary>Initializes tab info user to add a new tab/page.</summary>
         /// <returns>The new <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo InitTabInfoObject()
-        {
-            return InitTabInfoObject(null, TabRelativeLocation.AFTER);
-        }
+        [DnnDeprecated(10, 2, 2, "Please use overload with IPermissionDefinitionService")]
+        public static partial TabInfo InitTabInfoObject()
+            => InitTabInfoObject(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>());
+
+        /// <summary>Initializes tab info user to add a new tab/page.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <returns>The new <see cref="TabInfo"/> instance.</returns>
+        public static TabInfo InitTabInfoObject(IPermissionDefinitionService permissionDefinitionService)
+            => InitTabInfoObject(permissionDefinitionService, null, TabRelativeLocation.AFTER);
 
         /// <summary>Initializes tab info user to add a new tab/page after the given <paramref name="relativeToTab"/>.</summary>
         /// <param name="relativeToTab">The page/tab to which the new page/tab should be relative.</param>
         /// <returns>The new <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo InitTabInfoObject(TabInfo relativeToTab)
-        {
-            return InitTabInfoObject(relativeToTab, TabRelativeLocation.AFTER);
-        }
+        [DnnDeprecated(10, 2, 2, "Please use overload with IPermissionDefinitionService")]
+        public static partial TabInfo InitTabInfoObject(TabInfo relativeToTab)
+            => InitTabInfoObject(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), relativeToTab);
+
+        /// <summary>Initializes tab info user to add a new tab/page after the given <paramref name="relativeToTab"/>.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="relativeToTab">The page/tab to which the new page/tab should be relative.</param>
+        /// <returns>The new <see cref="TabInfo"/> instance.</returns>
+        public static TabInfo InitTabInfoObject(IPermissionDefinitionService permissionDefinitionService, TabInfo relativeToTab)
+            => InitTabInfoObject(permissionDefinitionService, relativeToTab, TabRelativeLocation.AFTER);
 
         /// <summary>Initializes tab info user to add a new tab/page, relative to the given <paramref name="relativeToTab"/>.</summary>
         /// <param name="relativeToTab">The page/tab to which the new page/tab should be relative.</param>
         /// <param name="location">The new page/tab's location relative to <paramref name="relativeToTab"/>.</param>
         /// <returns>The new <see cref="TabInfo"/> instance.</returns>
-        public static TabInfo InitTabInfoObject(TabInfo relativeToTab, TabRelativeLocation location)
+        [DnnDeprecated(10, 2, 2, "Please use overload with IPermissionDefinitionService")]
+        public static partial TabInfo InitTabInfoObject(TabInfo relativeToTab, TabRelativeLocation location)
+            => InitTabInfoObject(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), relativeToTab, location);
+
+        /// <summary>Initializes tab info user to add a new tab/page, relative to the given <paramref name="relativeToTab"/>.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="relativeToTab">The page/tab to which the new page/tab should be relative.</param>
+        /// <param name="location">The new page/tab's location relative to <paramref name="relativeToTab"/>.</param>
+        /// <returns>The new <see cref="TabInfo"/> instance.</returns>
+        public static TabInfo InitTabInfoObject(IPermissionDefinitionService permissionDefinitionService, TabInfo relativeToTab, TabRelativeLocation location)
         {
             if (relativeToTab == null)
             {
@@ -160,17 +181,15 @@ namespace DotNetNuke.Web.UI
             else if (newTab.PortalID != Null.NullInteger)
             {
                 // Give admin full permission
-                ArrayList permissions = PermissionController.GetPermissionsByTab();
-
-                foreach (PermissionInfo permission in permissions)
+                foreach (var permission in permissionDefinitionService.GetDefinitionsByTab())
                 {
-                    TabPermissionInfo newTabPermission = new TabPermissionInfo();
-                    newTabPermission.PermissionID = permission.PermissionID;
+                    IPermissionInfo newTabPermission = new TabPermissionInfo();
+                    newTabPermission.PermissionId = permission.PermissionId;
                     newTabPermission.PermissionKey = permission.PermissionKey;
                     newTabPermission.PermissionName = permission.PermissionName;
                     newTabPermission.AllowAccess = true;
-                    newTabPermission.RoleID = PortalSettings.Current.AdministratorRoleId;
-                    newTab.TabPermissions.Add(newTabPermission);
+                    newTabPermission.RoleId = PortalSettings.Current.AdministratorRoleId;
+                    newTab.TabPermissions.Add((TabPermissionInfo)newTabPermission);
                 }
             }
 
@@ -292,13 +311,25 @@ namespace DotNetNuke.Web.UI
         /// <param name="templateFileId">The file ID of the page template (or <see langword="null"/> or <see cref="string.Empty"/> to not use a page template).</param>
         /// <returns>The new tab's ID.</returns>
         /// <exception cref="DotNetNukeException">If the page is invalid.</exception>
-        public static int SaveTabInfoObject(IBusinessControllerProvider businessControllerProvider, TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
+        [DnnDeprecated(10, 2, 2, "Please use overload with IPermissionDefinitionService")]
+        public static partial int SaveTabInfoObject(IBusinessControllerProvider businessControllerProvider, TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
+            => SaveTabInfoObject(businessControllerProvider, Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), tab, relativeToTab, location, templateFileId);
+
+        /// <summary>Creates a new page/tab.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="tab">The page to create.</param>
+        /// <param name="relativeToTab">The page/tab to which the new page/tab should be relative.</param>
+        /// <param name="location">The new page/tab's location relative to <paramref name="relativeToTab"/>.</param>
+        /// <param name="templateFileId">The file ID of the page template (or <see langword="null"/> or <see cref="string.Empty"/> to not use a page template).</param>
+        /// <returns>The new tab's ID.</returns>
+        /// <exception cref="DotNetNukeException">If the page is invalid.</exception>
+        public static int SaveTabInfoObject(IBusinessControllerProvider businessControllerProvider, IPermissionDefinitionService permissionDefinitionService, TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
         {
             // Validation:
             // Tab name is required
             // Tab name is invalid
-            string invalidType;
-            if (!TabController.IsValidTabName(tab.TabName, out invalidType))
+            if (!TabController.IsValidTabName(tab.TabName, out var invalidType))
             {
                 switch (invalidType)
                 {
@@ -323,10 +354,10 @@ namespace DotNetNuke.Web.UI
 
                     if (defaultLanguageSelectedTab == null)
                     {
-                        // get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
+                        // get the siblings from the selected tab and iterate through until you find a sibling with a corresponding default language tab
                         // if none are found get a list of all the tabs from the default language and then select the last one
-                        var selectedTabSibblings = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
-                        foreach (TabInfo sibling in selectedTabSibblings)
+                        var selectedTabSiblings = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
+                        foreach (TabInfo sibling in selectedTabSiblings)
                         {
                             TabInfo siblingDefaultTab = sibling.DefaultLanguageTab;
                             if (siblingDefaultTab != null)
@@ -353,7 +384,7 @@ namespace DotNetNuke.Web.UI
             if (location != TabRelativeLocation.NOTSET)
             {
                 // Check Host tab - don't allow adding before or after
-                if (IsHostConsolePage(relativeToTab) && (location == TabRelativeLocation.AFTER || location == TabRelativeLocation.BEFORE))
+                if (IsHostConsolePage(relativeToTab) && location is TabRelativeLocation.AFTER or TabRelativeLocation.BEFORE)
                 {
                     throw new DotNetNukeException("You cannot add or move pages before or after the Host tab.", DotNetNukeErrorCode.HostBeforeAfterError);
                 }
@@ -404,22 +435,19 @@ namespace DotNetNuke.Web.UI
                     if (tab.TabPermissions.Count == 0 && tab.PortalID != Null.NullInteger)
                     {
                         // Give admin full permission
-                        ArrayList permissions = PermissionController.GetPermissionsByTab();
-
-                        foreach (PermissionInfo permission in permissions)
+                        foreach (IPermissionDefinitionInfo permission in permissionDefinitionService.GetDefinitionsByTab())
                         {
-                            TabPermissionInfo newTabPermission = new TabPermissionInfo();
-                            newTabPermission.PermissionID = permission.PermissionID;
+                            IPermissionInfo newTabPermission = new TabPermissionInfo();
+                            newTabPermission.PermissionId = permission.PermissionId;
                             newTabPermission.PermissionKey = permission.PermissionKey;
                             newTabPermission.PermissionName = permission.PermissionName;
                             newTabPermission.AllowAccess = true;
-                            newTabPermission.RoleID = PortalSettings.Current.AdministratorRoleId;
-                            tab.TabPermissions.Add(newTabPermission);
+                            newTabPermission.RoleId = PortalSettings.Current.AdministratorRoleId;
+                            tab.TabPermissions.Add((TabPermissionInfo)newTabPermission);
                         }
                     }
 
-                    PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-
+                    var portalSettings = PortalController.Instance.GetCurrentSettings();
                     if (portalSettings.ContentLocalizationEnabled)
                     {
                         Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(tab.PortalID);
@@ -495,7 +523,7 @@ namespace DotNetNuke.Web.UI
                     TabController.DeserializePanes(businessControllerProvider, xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
 
                     // save tab permissions
-                    DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
+                    DeserializeTabPermissions(permissionDefinitionService, xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
                 }
                 catch (Exception ex)
                 {
@@ -542,17 +570,24 @@ namespace DotNetNuke.Web.UI
         /// <summary>Updates a <paramref name="tab"/> with permission information.</summary>
         /// <param name="nodeTabPermissions">A list of tab permission elements.</param>
         /// <param name="tab">The tab/page to update.</param>
-        public static void DeserializeTabPermissions(XmlNodeList nodeTabPermissions, TabInfo tab)
+        [DnnDeprecated(10, 2, 2, "Please use overload with IPermissionDefinitionService")]
+        public static partial void DeserializeTabPermissions(XmlNodeList nodeTabPermissions, TabInfo tab)
+            => DeserializeTabPermissions(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), nodeTabPermissions, tab);
+
+        /// <summary>Updates a <paramref name="tab"/> with permission information.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="nodeTabPermissions">A list of tab permission elements.</param>
+        /// <param name="tab">The tab/page to update.</param>
+        public static void DeserializeTabPermissions(IPermissionDefinitionService permissionDefinitionService, XmlNodeList nodeTabPermissions, TabInfo tab)
         {
-            var permissionController = new PermissionController();
             foreach (XmlNode xmlTabPermission in nodeTabPermissions)
             {
                 var permissionKey = XmlUtils.GetNodeValue(xmlTabPermission.CreateNavigator(), "permissionkey");
                 var permissionCode = XmlUtils.GetNodeValue(xmlTabPermission.CreateNavigator(), "permissioncode");
                 var roleName = XmlUtils.GetNodeValue(xmlTabPermission.CreateNavigator(), "rolename");
                 var allowAccess = XmlUtils.GetNodeValueBoolean(xmlTabPermission, "allowaccess");
-                var permissions = permissionController.GetPermissionByCodeAndKey(permissionCode, permissionKey);
-                var permissionId = permissions.Cast<PermissionInfo>().Last().PermissionID;
+                var permissions = permissionDefinitionService.GetDefinitionsByCodeAndKey(permissionCode, permissionKey);
+                var permissionId = permissions.Last().PermissionId;
 
                 var roleId = int.MinValue;
                 switch (roleName)
@@ -564,8 +599,8 @@ namespace DotNetNuke.Web.UI
                         roleId = Convert.ToInt32(Globals.glbRoleUnauthUser, CultureInfo.InvariantCulture);
                         break;
                     default:
-                        var portal = PortalController.Instance.GetPortal(tab.PortalID);
-                        var role = RoleController.Instance.GetRole(portal.PortalID, r => r.RoleName == roleName);
+                        IPortalInfo portal = PortalController.Instance.GetPortal(tab.PortalID);
+                        var role = RoleController.Instance.GetRole(portal.PortalId, r => r.RoleName == roleName);
                         if (role != null)
                         {
                             roleId = role.RoleID;
@@ -574,18 +609,15 @@ namespace DotNetNuke.Web.UI
                         break;
                 }
 
-                if (roleId != int.MinValue &&
-                        !tab.TabPermissions.Cast<TabPermissionInfo>().Any(p =>
-                                                                            p.RoleID == roleId
-                                                                            && p.PermissionID == permissionId))
+                if (roleId != int.MinValue && !tab.TabPermissions.Cast<IPermissionInfo>().Any(p => p.RoleId == roleId && p.PermissionId == permissionId))
                 {
                     var tabPermission = new TabPermissionInfo
                     {
                         TabID = tab.TabID,
-                        PermissionID = permissionId,
-                        RoleID = roleId,
                         AllowAccess = allowAccess,
                     };
+                    ((IPermissionInfo)tabPermission).PermissionId = permissionId;
+                    ((IPermissionInfo)tabPermission).RoleId = roleId;
 
                     tab.TabPermissions.Add(tabPermission);
                 }

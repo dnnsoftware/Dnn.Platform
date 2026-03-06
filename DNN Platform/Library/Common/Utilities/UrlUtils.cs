@@ -4,7 +4,6 @@
 namespace DotNetNuke.Common.Utilities
 {
     using System;
-    using System.Net;
     using System.Text;
     using System.Text.RegularExpressions;
     using System.Web;
@@ -13,9 +12,10 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Entities.Controllers;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using Microsoft.Extensions.DependencyInjection;
@@ -59,23 +59,40 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
-        public static string DecryptParameter(string value)
-        {
-            return DecryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial string DecryptParameter(string value)
+            => DecryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value);
+
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="value">The encrypted value.</param>
+        /// <returns>The decrypted value.</returns>
+        public static string DecryptParameter(ICryptographyProvider cryptographyProvider, string value)
+            => DecryptParameter(cryptographyProvider, value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
 
         /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string,string)"/>.</summary>
         /// <param name="value">The encrypted value.</param>
         /// <param name="encryptionKey">The key used to encrypt the value.</param>
         /// <returns>The decrypted value.</returns>
-        public static string DecryptParameter(string value, string encryptionKey)
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial string DecryptParameter(string value, string encryptionKey)
+        {
+            return DecryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value, encryptionKey);
+        }
+
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string,string)"/>.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="value">The encrypted value.</param>
+        /// <param name="encryptionKey">The key used to encrypt the value.</param>
+        /// <returns>The decrypted value.</returns>
+        public static string DecryptParameter(ICryptographyProvider cryptographyProvider, string value, string encryptionKey)
         {
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
             var toDecrypt = new StringBuilder(value);
             toDecrypt.Replace('_', '/');
             toDecrypt.Replace('-', '+');
             toDecrypt.Replace("%3d", "=");
-            return PortalSecurity.Instance.Decrypt(encryptionKey, toDecrypt.ToString());
+            return cryptographyProvider.DecryptParameter(toDecrypt.ToString(), encryptionKey, cryptographyProvider.EncryptParameterAlgorithmName);
         }
 
         /// <summary>Encodes a value (using base64) for placing in a URL.</summary>
@@ -94,18 +111,33 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
         /// <param name="value">The value to encrypt.</param>
         /// <returns>The encrypted value.</returns>
-        public static string EncryptParameter(string value)
-        {
-            return EncryptParameter(value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
-        }
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial string EncryptParameter(string value)
+            => EncryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value);
+
+        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="value">The value to encrypt.</param>
+        /// <returns>The encrypted value.</returns>
+        public static string EncryptParameter(ICryptographyProvider cryptographyProvider, string value)
+            => EncryptParameter(cryptographyProvider, value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
 
         /// <summary>Encrypt a parameter for placing in a URL.</summary>
         /// <param name="value">The value to encrypt.</param>
         /// <param name="encryptionKey">The key to use when encrypting the value. This key must be used to decrypt the value.</param>
         /// <returns>The encrypted value.</returns>
-        public static string EncryptParameter(string value, string encryptionKey)
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial string EncryptParameter(string value, string encryptionKey)
+            => EncryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value, encryptionKey);
+
+        /// <summary>Encrypt a parameter for placing in a URL.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="value">The value to encrypt.</param>
+        /// <param name="encryptionKey">The key to use when encrypting the value. This key must be used to decrypt the value.</param>
+        /// <returns>The encrypted value.</returns>
+        public static string EncryptParameter(ICryptographyProvider cryptographyProvider, string value, string encryptionKey)
         {
-            var encryptedValue = PortalSecurity.Instance.Encrypt(encryptionKey, value);
+            var encryptedValue = cryptographyProvider.EncryptParameter(value, encryptionKey).EncryptedMessage;
             var parameterValue = new StringBuilder(encryptedValue);
 
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
@@ -168,7 +200,7 @@ namespace DotNetNuke.Common.Utilities
                             // skip parameter
                             break;
                         default:
-                            if (keys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && Globals.GetPortalSettings().ActiveTab.IsSuperTab)
+                            if (keys[i].Equals("portalid", StringComparison.OrdinalIgnoreCase) && TabController.CurrentPage.IsSuperTab)
                             {
                                 // skip parameter
                                 // navigateURL adds portalid to querystring if tab is superTab
@@ -209,23 +241,53 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>
         /// check if connection is HTTPS
-        /// or is HTTP but with ssloffload enabled on a secure page.
+        /// or is HTTP but with SSL offload enabled on a secure page.
         /// </summary>
         /// <param name="request">current request.</param>
         /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequestBase request)
+            => IsSecureConnectionOrSslOffload(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), request);
+
+        /// <summary>
+        /// check if connection is HTTPS
+        /// or is HTTP but with SSL offload enabled on a secure page.
+        /// </summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="request">current request.</param>
+        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
+        public static bool IsSecureConnectionOrSslOffload(IHostSettingsService hostSettingsService, HttpRequestBase request)
         {
-            return request.IsSecureConnection || IsSslOffloadEnabled(request);
+            return request.IsSecureConnection || IsSslOffloadEnabled(hostSettingsService, request);
         }
 
-        public static bool IsSslOffloadEnabled(HttpRequest request)
-        {
-            return IsSslOffloadEnabled(new HttpRequestWrapper(request));
-        }
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettingsService")]
+        public static partial bool IsSslOffloadEnabled(HttpRequest request)
+            => IsSslOffloadEnabled(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), request);
 
-        public static bool IsSslOffloadEnabled(HttpRequestBase request)
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        public static bool IsSslOffloadEnabled(IHostSettingsService hostSettingsService, HttpRequest request)
+            => IsSslOffloadEnabled(hostSettingsService, new HttpRequestWrapper(request));
+
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IHostSettingsService")]
+        public static partial bool IsSslOffloadEnabled(HttpRequestBase request)
+            => IsSslOffloadEnabled(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), request);
+
+        /// <summary>Gets a value indicating whether SSL/HTTPS offloading is enabled for the given <paramref name="request"/>.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="request">The request.</param>
+        /// <returns><see langword="true"/> if offloading is in use, otherwise <see langword="false"/>.</returns>
+        public static bool IsSslOffloadEnabled(IHostSettingsService hostSettingsService, HttpRequestBase request)
         {
-            var sslOffloadHeader = HostController.Instance.GetString("SSLOffloadHeader", string.Empty);
+            var sslOffloadHeader = hostSettingsService.GetString("SSLOffloadHeader", string.Empty);
 
             // if the sslOffloadHeader variable has been set check to see if a request header with that type exists
             if (string.IsNullOrEmpty(sslOffloadHeader))
@@ -487,6 +549,12 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="response">The response.</param>
         /// <param name="portalSetting">The portal settings.</param>
         public static void Handle404Exception(HttpResponse response, PortalSettings portalSetting)
+            => Handle404Exception(new HttpResponseWrapper(response), portalSetting);
+
+        /// <summary>Redirect current response to 404 error page or output 404 content if error page not defined.</summary>
+        /// <param name="response">The response.</param>
+        /// <param name="portalSetting">The portal settings.</param>
+        public static void Handle404Exception(HttpResponseBase response, IPortalSettings portalSetting)
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {

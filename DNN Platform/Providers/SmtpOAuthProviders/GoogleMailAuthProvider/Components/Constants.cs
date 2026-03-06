@@ -16,6 +16,12 @@ internal class Constants
     /// <summary>The client secret setting name.</summary>
     public const string ClientSecretSettingName = "gmailauth_clientSecret";
 
+    /// <summary>The name of the algorithm used to encrypt the client secret.</summary>
+    public const string ClientSecretEncryptionAlgorithm = "gmailauth_clientSecret_algorithmName";
+
+    /// <summary>The initialization vector used to encrypt the client secret.</summary>
+    public const string ClientSecretInitializationVector = "gmailauth_clientSecret_initializationVector";
+
     /// <summary>The account email setting name.</summary>
     public const string AccountEmailSettingName = "gmailauth_username";
 

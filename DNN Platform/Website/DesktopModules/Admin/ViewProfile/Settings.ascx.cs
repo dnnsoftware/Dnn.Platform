@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// <summary>A settings control for the profile module.</summary>
     public partial class ViewProfileSettings : ModuleSettingsBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             try
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             try
@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

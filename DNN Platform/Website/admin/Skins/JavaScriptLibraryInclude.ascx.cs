@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public SpecificVersion? SpecificVersion { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             if (this.Version == null)

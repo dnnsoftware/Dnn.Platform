@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             base.OnLoad(e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(System.EventArgs e)
         {
             foreach (var path in this.Paths)

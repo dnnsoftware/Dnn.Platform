@@ -16,20 +16,20 @@ namespace DotNetNuke.Collections.Internal
         /// <remarks> Allows locking to be explicitly managed for the sake of efficiency.</remarks>
         public SharedList<T> SharedList { get; } = new SharedList<T>();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Count => this.DoInReadLock(() => this.SharedList.Count);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReadOnly => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public T this[int index]
         {
             get => this.DoInReadLock(() => this.SharedList[index]);
             set => this.DoInWriteLock(() => this.SharedList[index] = value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
             // disposal of enumerator will release read lock
@@ -39,55 +39,55 @@ namespace DotNetNuke.Collections.Internal
             return new NaiveLockingEnumerator(this.SharedList.GetEnumerator(), readLock);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Add(T item)
         {
             this.DoInWriteLock(() => this.SharedList.Add(item));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Clear()
         {
             this.DoInWriteLock(() => this.SharedList.Clear());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Contains(T item)
         {
             return this.DoInReadLock(() => this.SharedList.Contains(item));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CopyTo(T[] array, int arrayIndex)
         {
             this.DoInReadLock(() => this.SharedList.CopyTo(array, arrayIndex));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Remove(T item)
         {
             return this.DoInWriteLock(() => this.SharedList.Remove(item));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int IndexOf(T item)
         {
             return this.DoInReadLock(() => this.SharedList.IndexOf(item));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Insert(int index, T item)
         {
             this.DoInWriteLock(() => this.SharedList.Insert(index, item));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RemoveAt(int index)
         {
             this.DoInWriteLock(() => this.SharedList.RemoveAt(index));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         IEnumerator IEnumerable.GetEnumerator()
         {
             return this.GetEnumerator();
@@ -165,7 +165,7 @@ namespace DotNetNuke.Collections.Internal
                 this.Dispose(false);
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public T Current
             {
                 get
@@ -174,7 +174,7 @@ namespace DotNetNuke.Collections.Internal
                 }
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             object IEnumerator.Current
             {
                 get
@@ -183,19 +183,19 @@ namespace DotNetNuke.Collections.Internal
                 }
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public bool MoveNext()
             {
                 return this.enumerator.MoveNext();
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public void Reset()
             {
                 this.enumerator.Reset();
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             public void Dispose()
             {
                 this.Dispose(true);

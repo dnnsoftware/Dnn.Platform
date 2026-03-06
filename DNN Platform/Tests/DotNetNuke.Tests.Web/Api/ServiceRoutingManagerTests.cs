@@ -27,10 +27,7 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class ServiceRoutingManagerTests
     {
-        private static readonly List<string[]> EmptyStringArrays = new List<string[]>
-        {
-            null, Array.Empty<string>(), new[] { string.Empty }, new string[] { null },
-        };
+        private static readonly List<string[]> EmptyStringArrays = [null, [], [string.Empty,], [null,],];
 
         private Mock<IPortalController> mockPortalController;
         private IPortalController portalController;
@@ -81,23 +78,24 @@ namespace DotNetNuke.Tests.Web.Api
 
             var locator = new TypeLocator { AssemblyLocator = assemblyLocator.Object };
 
-            List<Type> types = locator.GetAllMatchingTypes(ServicesRoutingManager.IsValidServiceRouteMapper).ToList();
+            var types = locator.GetAllMatchingTypes(ServicesRoutingManager.IsValidServiceRouteMapper).ToList();
 
             // if new ServiceRouteMapper classes are added to the assembly they will likely need to be added here
             Assert.That(
-                types, Is.EquivalentTo(new[]
-                    {
-                        typeof(FakeServiceRouteMapper),
-                        typeof(ReflectedServiceRouteMappers.EmbeddedServiceRouteMapper),
-                        typeof(ExceptionOnCreateInstanceServiceRouteMapper),
-                        typeof(ExceptionOnRegisterServiceRouteMapper),
-                    }));
+                types,
+                Is.EquivalentTo(
+                [
+                    typeof(FakeServiceRouteMapper),
+                    typeof(ReflectedServiceRouteMappers.EmbeddedServiceRouteMapper),
+                    typeof(ExceptionOnCreateInstanceServiceRouteMapper),
+                    typeof(ExceptionOnRegisterServiceRouteMapper)
+                ]));
         }
 
         [Test]
         public void NameSpaceRequiredOnMapRouteCalls([ValueSource(nameof(EmptyStringArrays))] string[] namespaces)
         {
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection());
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, new RouteCollection());
 
             Assert.Throws<ArgumentException>(() => srm.MapHttpRoute("usm", "default", "url", null, namespaces));
         }
@@ -107,16 +105,17 @@ namespace DotNetNuke.Tests.Web.Api
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
             var assembly = new Mock<IAssembly>();
-            assembly.Setup(x => x.GetTypes()).Returns(new[]
-                                                          {
-                                                              typeof(ExceptionOnRegisterServiceRouteMapper),
-                                                              typeof(ExceptionOnCreateInstanceServiceRouteMapper),
-                                                              typeof(FakeServiceRouteMapper),
-                                                          });
+            assembly.Setup(x => x.GetTypes())
+                .Returns(
+                [
+                    typeof(ExceptionOnRegisterServiceRouteMapper),
+                    typeof(ExceptionOnCreateInstanceServiceRouteMapper),
+                    typeof(FakeServiceRouteMapper)
+                ]);
             var al = new Mock<IAssemblyLocator>();
-            al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
+            al.Setup(x => x.Assemblies).Returns([assembly.Object,]);
             var tl = new TypeLocator { AssemblyLocator = al.Object };
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection()) { TypeLocator = tl };
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, new RouteCollection()) { TypeLocator = tl, };
 
             srm.RegisterRoutes();
 
@@ -128,11 +127,11 @@ namespace DotNetNuke.Tests.Web.Api
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
             var assembly = new Mock<IAssembly>();
-            assembly.Setup(x => x.GetTypes()).Returns(new[] { typeof(FakeServiceRouteMapper) });
+            assembly.Setup(x => x.GetTypes()).Returns([typeof(FakeServiceRouteMapper),]);
             var al = new Mock<IAssemblyLocator>();
-            al.Setup(x => x.Assemblies).Returns(new[] { assembly.Object });
+            al.Setup(x => x.Assemblies).Returns([assembly.Object,]);
             var tl = new TypeLocator { AssemblyLocator = al.Object };
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection()) { TypeLocator = tl };
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, new RouteCollection()) { TypeLocator = tl, };
 
             srm.RegisterRoutes();
 
@@ -144,9 +143,9 @@ namespace DotNetNuke.Tests.Web.Api
         [TestCase(null)]
         public void UniqueNameRequiredOnMapRouteCalls(string uniqueName)
         {
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection());
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, new RouteCollection());
 
-            Assert.Throws<ArgumentException>(() => srm.MapHttpRoute(uniqueName, "default", "url", null, new[] { "foo" }));
+            Assert.Throws<ArgumentException>(() => srm.MapHttpRoute(uniqueName, "default", "url", null, ["foo",]));
         }
 
         [Test]
@@ -156,10 +155,10 @@ namespace DotNetNuke.Tests.Web.Api
             this.mockPortalController.Setup(x => x.GetPortals()).Returns(new ArrayList());
 
             // Act
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, new RouteCollection());
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, new RouteCollection());
 
             // Assert
-            Assert.DoesNotThrow(() => srm.MapHttpRoute("name", "default", "/url", null, new[] { "foo" }));
+            Assert.DoesNotThrow(() => srm.MapHttpRoute("name", "default", "/url", null, ["foo",]));
         }
 
         [Test]
@@ -169,14 +168,14 @@ namespace DotNetNuke.Tests.Web.Api
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
             this.mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
 
-            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
-            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com", },]);
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com", },]);
 
             var routeCollection = new RouteCollection();
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, routeCollection);
 
             // Act
-            srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
+            srm.MapHttpRoute("folder", "default", "url", ["foo",]);
 
             // Assert
             var route = (Route)routeCollection[0];
@@ -190,15 +189,15 @@ namespace DotNetNuke.Tests.Web.Api
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
             this.mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
 
-            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
-            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns(new[] { new PortalAliasInfo { HTTPAlias = "www.foo.com" } });
+            this.mockPortalAliasService.Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com", },]);
+            this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com", },]);
 
             var routeCollection = new RouteCollection();
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, routeCollection);
 
             // Act
-            srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
-            srm.MapHttpRoute("folder", "another", "alt/url", new[] { "foo" });
+            srm.MapHttpRoute("folder", "default", "url", ["foo",]);
+            srm.MapHttpRoute("folder", "another", "alt/url", ["foo",]);
 
             // Assert
             var route = (Route)routeCollection[0];
@@ -218,7 +217,7 @@ namespace DotNetNuke.Tests.Web.Api
             this.mockPortalAliasService.As<IPortalAliasController>().Setup(x => x.GetPortalAliasesByPortalId(0)).Returns([new PortalAliasInfo { HTTPAlias = "www.foo.com" }]);
 
             var routeCollection = new RouteCollection();
-            var srm = new ServicesRoutingManager(Globals.DependencyProvider, routeCollection);
+            var srm = new ServicesRoutingManager(Globals.DependencyProvider, this.mockPortalAliasService.Object, routeCollection);
 
             // Act
             srm.MapHttpRoute("folder", "default", "url", ["foo"]);
@@ -227,11 +226,11 @@ namespace DotNetNuke.Tests.Web.Api
             var route = (Route)routeCollection[0];
             Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0"));
             route = (Route)routeCollection[1];
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(route.DataTokens["Name"], Is.EqualTo("folder-default-0-old"));
                 Assert.That(route.Url, Does.StartWith("DesktopModules"));
-            });
+            }
         }
     }
 }

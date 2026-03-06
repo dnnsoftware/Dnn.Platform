@@ -13,13 +13,13 @@ namespace DotNetNuke.Services.Tokens
 
     public abstract class JsonPropertyAccess<TModel> : IPropertyAccess
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual CacheLevel Cacheability
         {
             get { return CacheLevel.notCacheable; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             var json = propertyName.Trim();

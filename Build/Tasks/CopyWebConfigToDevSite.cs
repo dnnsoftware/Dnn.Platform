@@ -14,7 +14,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to copy the <c>web.config</c> file to the local dev site with appropriate transformations.</summary>
     public sealed class CopyWebConfigToDevSite : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             if (string.IsNullOrWhiteSpace(context.Settings.DnnConnectionString))

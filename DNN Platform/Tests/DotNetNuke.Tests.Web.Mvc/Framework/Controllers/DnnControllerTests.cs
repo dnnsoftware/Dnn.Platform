@@ -114,11 +114,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
             // Assert
             var dnnViewResult = viewResult as DnnViewResult;
             Assert.That(dnnViewResult, Is.Not.Null);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(dnnViewResult.ViewName, Is.EqualTo("Action2"));
                 Assert.That(dnnViewResult.MasterName, Is.EqualTo("Master2"));
-            });
+            }
         }
 
         [Test]

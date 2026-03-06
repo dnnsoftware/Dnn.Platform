@@ -47,22 +47,22 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(packageController));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Name => this.LocalizeFormat("UninstallStepInstallPackage", this.PackageName);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string PackageFileNamePattern { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string PackageName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public string PackageType { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             if (this.PackageIsAlreadyInstalled())

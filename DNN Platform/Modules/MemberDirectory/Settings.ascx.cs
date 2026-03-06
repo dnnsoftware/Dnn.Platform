@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.MemberDirectory
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Profile;
@@ -54,13 +55,8 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                string template;
-                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "AlternateItemTemplate.htm")))
-                {
-                    template = sr.ReadToEnd();
-                }
-
-                return template;
+                using var sr = new StreamReader(HttpContextSource.Current.Server.MapPath(templatePath + "AlternateItemTemplate.htm"));
+                return sr.ReadToEnd();
             }
         }
 
@@ -68,13 +64,8 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                string template;
-                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "ItemTemplate.htm")))
-                {
-                    template = sr.ReadToEnd();
-                }
-
-                return template;
+                using var sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "ItemTemplate.htm"));
+                return sr.ReadToEnd();
             }
         }
 
@@ -82,17 +73,12 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             get
             {
-                string template;
-                using (StreamReader sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "PopUpTemplate.htm")))
-                {
-                    template = sr.ReadToEnd();
-                }
-
-                return template;
+                using var sr = new StreamReader(HttpContext.Current.Server.MapPath(templatePath + "PopUpTemplate.htm"));
+                return sr.ReadToEnd();
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -100,7 +86,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             this.AutoDataBind = false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -175,7 +161,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnSettingsLoaded()
         {
             base.OnSettingsLoaded();
@@ -202,7 +188,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnSavingSettings()
         {
             this.Model.TabModuleSettings["ItemTemplate"] = this.itemTemplate.Text;

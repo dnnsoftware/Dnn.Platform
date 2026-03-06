@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             return procImage;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return "ImageResizeTransform";
