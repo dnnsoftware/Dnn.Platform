@@ -14,5 +14,5 @@ using System.Reflection;
 [assembly: AssemblyCopyright("DNN Platform is copyright 2002-2026 by .NET Foundation. All Rights Reserved.")]
 [assembly: AssemblyTrademark("DNN")]
 [assembly: AssemblyVersion("10.2.4")]
-[assembly: AssemblyFileVersion("10.2.4.44")]
-[assembly: AssemblyInformationalVersion("10.2.4-automated-ci-124216.1+44.Branch.automated-ci-124216.Sha.448ffcb35a57f0599dd8e6771fc73ed00e8dde36")]
+[assembly: AssemblyFileVersion("10.2.4.45")]
+[assembly: AssemblyInformationalVersion("10.2.4-automated-ci-124220.1+45.Branch.automated-ci-124220.Sha.956dfba8ce6ca14d298ff5b39df02f457e9d89d3")]
