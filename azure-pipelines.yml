@@ -135,5 +135,6 @@ steps:
     filePath: ./build.ps1
     arguments: '--target=CreateGitHubPullRequest --verbosity=${{ parameters.CakeVerbosity }}'
   env:
-    GITHUB_TOKEN: $(GitHubToken)
+    GITHUB_APP_ID: $(GitHubAppId)
+    GITHUB_APP_PRIVATE_KEY: $(GitHubAppPrivateKey)
   condition: succeeded()

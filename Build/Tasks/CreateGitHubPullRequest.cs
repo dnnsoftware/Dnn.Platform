@@ -7,6 +7,10 @@ namespace DotNetNuke.Build.Tasks
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Security.Cryptography;
+    using System.Text;
 
     using Cake.Common;
     using Cake.Common.Diagnostics;
@@ -14,19 +18,27 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Core.IO;
     using Cake.Frosting;
 
+    using Microsoft.IdentityModel.JsonWebTokens;
+    using Microsoft.IdentityModel.Tokens;
+
+    using Newtonsoft.Json;
+
     using Octokit;
 
     using YamlDotNet.RepresentationModel;
 
+    using ProductHeaderValue = Octokit.ProductHeaderValue;
+
     /// <summary>A cake task to create a GitHub pull request from CI.</summary>
     /// <remarks>
-    /// This task runs after <see cref="BuildAll"/> and only in CI.
-    /// It fetches GitHub releases to update the bug report template with current version options,
+    /// This task is invoked as a standalone target from the pipeline after the build and tests succeed.
+    /// It authenticates as a GitHub App, fetches releases to update the bug report template,
     /// then checks whether any uncommitted changes exist.
     /// If changes exist it commits them to a new branch, pushes, and opens a draft PR.
     /// It requires the following environment variables:
     /// <list type="bullet">
-    ///   <item><c>GITHUB_TOKEN</c> – A GitHub token with <c>repo</c> scope.</item>
+    ///   <item><c>GITHUB_APP_ID</c> – The numeric GitHub App ID.</item>
+    ///   <item><c>GITHUB_APP_PRIVATE_KEY</c> – The PEM-encoded private key for the GitHub App.</item>
     ///   <item><c>BUILD_REPOSITORY_NAME</c> – The <c>owner/repo</c> slug (set automatically by Azure Pipelines).</item>
     ///   <item><c>BUILD_SOURCEBRANCH</c> – The full ref of the source branch (set automatically by Azure Pipelines).</item>
     /// </list>
@@ -48,10 +60,11 @@ namespace DotNetNuke.Build.Tasks
                 return false;
             }
 
-            var token = context.EnvironmentVariable("GITHUB_TOKEN");
-            if (string.IsNullOrEmpty(token))
+            var appId = context.EnvironmentVariable("GITHUB_APP_ID");
+            var privateKey = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
+            if (string.IsNullOrEmpty(appId) || string.IsNullOrEmpty(privateKey))
             {
-                context.Warning("Skipping CreateGitHubPullRequest because GITHUB_TOKEN is not set.");
+                context.Warning("Skipping CreateGitHubPullRequest because GITHUB_APP_ID or GITHUB_APP_PRIVATE_KEY is not set.");
                 return false;
             }
 
@@ -61,8 +74,6 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc/>
         public override void Run(Context context)
         {
-            var token = context.EnvironmentVariable("GITHUB_TOKEN");
-
             // owner/repo – e.g. "dnnsoftware/Dnn.Platform"
             var repoSlug = context.EnvironmentVariable("BUILD_REPOSITORY_NAME")
                            ?? throw new CakeException("BUILD_REPOSITORY_NAME environment variable is not set.");
@@ -76,10 +87,15 @@ namespace DotNetNuke.Build.Tasks
             var owner = parts[0];
             var repo = parts[1];
 
+            // Generate a short-lived installation token from the GitHub App credentials
+            var token = GenerateInstallationToken(context);
+
             var client = new GitHubClient(new ProductHeaderValue("DnnPlatformCakeBuild"))
             {
                 Credentials = new Credentials(token),
             };
+
+            context.Information("Authenticated as GitHub App installation.");
 
             // Update bug-report.yml with version info from GitHub releases
             UpdateBugReportVersions(context, client, owner, repo);
@@ -93,11 +109,15 @@ namespace DotNetNuke.Build.Tasks
 
             var headBranch = $"automated/ci-{context.BuildId}";
 
-            // Commit all changes to a new branch and push
+            // Commit all changes to a new branch
             Git(context, $"checkout -b {headBranch}");
             Git(context, "add .");
             Git(context, $"commit -m \"[Automated] CI build {context.BuildId} changes\"");
-            Git(context, $"push https://{token}@github.com/{repoSlug}.git {headBranch}");
+
+            // Push using token via HTTP header so it never appears in logs
+            Git(context, $"remote set-url origin https://github.com/{repoSlug}.git");
+            var encodedToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"x-access-token:{token}"));
+            Git(context, $"-c http.extraHeader=\"Authorization: Basic {encodedToken}\" push origin {headBranch}", redactOutput: true);
 
             var title = $"[Automated] Merge CI changes into {TargetBranch}";
             var body = $"Automated pull request created by CI build {context.BuildId}.";
@@ -112,6 +132,68 @@ namespace DotNetNuke.Build.Tasks
 
             var pr = client.PullRequest.Create(owner, repo, newPr).GetAwaiter().GetResult();
             context.Information("Pull request #{0} created: {1}", pr.Number, pr.HtmlUrl);
+        }
+
+        private static string GenerateInstallationToken(Context context)
+        {
+            var appId = context.EnvironmentVariable("GITHUB_APP_ID");
+            var privateKeyPem = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
+
+            // Build a JWT signed with the App's RSA private key
+            var rsa = RSA.Create();
+            rsa.ImportFromPem(privateKeyPem);
+
+            var now = DateTimeOffset.UtcNow;
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Issuer = appId,
+                IssuedAt = now.AddSeconds(-60).UtcDateTime,
+                Expires = now.AddMinutes(9).UtcDateTime,
+                SigningCredentials = new SigningCredentials(
+                    new RsaSecurityKey(rsa),
+                    SecurityAlgorithms.RsaSha256),
+            };
+
+            var tokenHandler = new JsonWebTokenHandler();
+            var jwt = tokenHandler.CreateToken(tokenDescriptor);
+
+            context.Information("Generated JWT for GitHub App ID {0}.", appId);
+
+            // Exchange the JWT for a short-lived installation access token
+            using var httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwt);
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github+json"));
+            httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DnnPlatformCakeBuild", "1.0"));
+
+            // Get the installation ID
+            var installationsResponse = httpClient.GetAsync("https://api.github.com/app/installations").GetAwaiter().GetResult();
+            installationsResponse.EnsureSuccessStatusCode();
+            var installationsJson = installationsResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var installations = JsonConvert.DeserializeObject<List<GitHubInstallation>>(installationsJson);
+
+            if (installations == null || installations.Count == 0)
+            {
+                throw new CakeException("No GitHub App installations found. Install the app on the target repository first.");
+            }
+
+            var installationId = installations[0].Id;
+            context.Information("Found GitHub App installation ID: {0}.", installationId);
+
+            // Create an installation access token
+            var tokenResponse = httpClient.PostAsync(
+                $"https://api.github.com/app/installations/{installationId}/access_tokens",
+                new StringContent(string.Empty)).GetAwaiter().GetResult();
+            tokenResponse.EnsureSuccessStatusCode();
+            var tokenJson = tokenResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var accessToken = JsonConvert.DeserializeObject<GitHubAccessToken>(tokenJson);
+
+            if (string.IsNullOrEmpty(accessToken?.Token))
+            {
+                throw new CakeException("Failed to obtain a GitHub App installation access token.");
+            }
+
+            context.Information("GitHub App installation token generated successfully.");
+            return accessToken.Token;
         }
 
         private static void UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo)
@@ -232,13 +314,29 @@ namespace DotNetNuke.Build.Tasks
             return output.Count > 0;
         }
 
-        private static void Git(ICakeContext context, string arguments)
+        private static void Git(ICakeContext context, string arguments, bool redactOutput = false)
         {
-            context.Information("git {0}", arguments);
+            context.Information("git {0}", redactOutput ? "[redacted]" : arguments);
             using (var process = context.StartAndReturnProcess("git", new ProcessSettings { Arguments = arguments, }))
             {
                 process.WaitForExit();
             }
+        }
+
+        /// <summary>Minimal model for deserializing a GitHub App installation response.</summary>
+        private sealed class GitHubInstallation
+        {
+            /// <summary>Gets or sets the installation ID.</summary>
+            [JsonProperty("id")]
+            public long Id { get; set; }
+        }
+
+        /// <summary>Minimal model for deserializing a GitHub installation access token response.</summary>
+        private sealed class GitHubAccessToken
+        {
+            /// <summary>Gets or sets the access token.</summary>
+            [JsonProperty("token")]
+            public string Token { get; set; }
         }
     }
 }
