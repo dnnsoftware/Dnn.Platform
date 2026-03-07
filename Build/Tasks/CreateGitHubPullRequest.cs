@@ -139,9 +139,10 @@ namespace DotNetNuke.Build.Tasks
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
             var privateKeyPem = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
 
-            // Build a JWT signed with the App's RSA private key
+            // Azure DevOps collapses multi-line secrets into a single line,
+            // so we need to normalize the PEM before importing it.
             var rsa = RSA.Create();
-            rsa.ImportFromPem(privateKeyPem);
+            rsa.ImportFromPem(NormalizePem(privateKeyPem));
 
             var now = DateTimeOffset.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -194,6 +195,49 @@ namespace DotNetNuke.Build.Tasks
 
             context.Information("GitHub App installation token generated successfully.");
             return accessToken.Token;
+        }
+
+        private static string NormalizePem(string pem)
+        {
+            // Azure DevOps may replace newlines with literal \n or collapse them entirely
+            pem = pem.Replace("\\n", "\n").Trim();
+
+            if (pem.Contains('\n'))
+            {
+                return pem;
+            }
+
+            // The PEM was collapsed to a single line — extract the base64 and re-wrap
+            string begin, end;
+            if (pem.Contains("BEGIN RSA PRIVATE KEY", StringComparison.Ordinal))
+            {
+                begin = "-----BEGIN RSA PRIVATE KEY-----";
+                end = "-----END RSA PRIVATE KEY-----";
+            }
+            else if (pem.Contains("BEGIN PRIVATE KEY", StringComparison.Ordinal))
+            {
+                begin = "-----BEGIN PRIVATE KEY-----";
+                end = "-----END PRIVATE KEY-----";
+            }
+            else
+            {
+                return pem;
+            }
+
+            var base64 = pem
+                .Replace(begin, string.Empty)
+                .Replace(end, string.Empty)
+                .Replace(" ", string.Empty);
+
+            var sb = new StringBuilder();
+            sb.AppendLine(begin);
+            for (var i = 0; i < base64.Length; i += 64)
+            {
+                sb.AppendLine(base64.Substring(i, Math.Min(64, base64.Length - i)));
+            }
+
+            sb.Append(end);
+            return sb.ToString();
         }
 
         private static void UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo)
