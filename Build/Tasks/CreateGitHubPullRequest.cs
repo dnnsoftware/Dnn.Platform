@@ -31,7 +31,6 @@ namespace DotNetNuke.Build.Tasks
     ///   <item><c>BUILD_SOURCEBRANCH</c> – The full ref of the source branch (set automatically by Azure Pipelines).</item>
     /// </list>
     /// </remarks>
-    [IsDependentOn(typeof(BuildAll))]
     public sealed class CreateGitHubPullRequest : FrostingTask<Context>
     {
         private const string TargetBranch = "develop";
