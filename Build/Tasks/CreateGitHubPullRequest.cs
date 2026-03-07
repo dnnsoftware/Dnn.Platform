@@ -47,6 +47,8 @@ namespace DotNetNuke.Build.Tasks
     {
         private const string TargetBranch = "develop";
         private const string BugReportPath = ".github/ISSUE_TEMPLATE/bug-report.yml";
+        private const string GitUserName = "DNN Platform CI Bot";
+        private const string GitUserEmail = "noreply@dnncommunity.org";
 
         /// <inheritdoc/>
         public override bool ShouldRun(Context context)
@@ -108,6 +110,10 @@ namespace DotNetNuke.Build.Tasks
             }
 
             var headBranch = $"automated/ci-{context.BuildId}";
+
+            // Configure git identity for CI (agents don't have one by default)
+            Git(context, $"config user.name \"{GitUserName}\"");
+            Git(context, $"config user.email \"{GitUserEmail}\"");
 
             // Commit all changes to a new branch
             Git(context, $"checkout -b {headBranch}");
@@ -383,9 +389,11 @@ namespace DotNetNuke.Build.Tasks
         private static void Git(ICakeContext context, string arguments, bool redactOutput = false)
         {
             context.Information("git {0}", redactOutput ? "[redacted]" : arguments);
-            using (var process = context.StartAndReturnProcess("git", new ProcessSettings { Arguments = arguments, }))
+            using var process = context.StartAndReturnProcess("git", new ProcessSettings { Arguments = arguments, });
+            process.WaitForExit();
+            if (process.GetExitCode() != 0)
             {
-                process.WaitForExit();
+                throw new CakeException($"git {(redactOutput ? "[redacted]" : arguments)} failed with exit code {process.GetExitCode()}.");
             }
         }
 

@@ -137,4 +137,4 @@ steps:
   env:
     GITHUB_APP_ID: $(GitHubAppId)
     GITHUB_APP_PRIVATE_KEY: $(GitHubAppPrivateKey)
-  condition: succeeded()
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
