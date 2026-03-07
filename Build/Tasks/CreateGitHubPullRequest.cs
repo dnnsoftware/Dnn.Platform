@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
@@ -200,7 +200,7 @@ namespace DotNetNuke.Build.Tasks
         private static string NormalizePem(string pem)
         {
             // Azure DevOps may replace newlines with literal \n or collapse them entirely
-            pem = pem.Replace("\\n", "\n").Trim();
+            pem = pem.Replace("\\r\\n", "\n").Replace("\\n", "\n").Trim();
 
             if (pem.Contains('\n'))
             {
