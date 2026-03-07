@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
@@ -139,10 +139,32 @@ namespace DotNetNuke.Build.Tasks
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
             var privateKeyPem = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
 
+            // Diagnostic logging to troubleshoot PEM format issues in CI (no sensitive data logged)
+            context.Information(
+                "PEM diagnostics: length={0}, hasLF={1}, hasCR={2}, hasLiteralBackslashN={3}, hasSpaces={4}",
+                privateKeyPem.Length,
+                privateKeyPem.Contains('\n'),
+                privateKeyPem.Contains('\r'),
+                privateKeyPem.Contains("\\n", StringComparison.Ordinal),
+                privateKeyPem.Contains(' '));
+            context.Information(
+                "PEM header: '{0}'",
+                privateKeyPem.Substring(0, Math.Min(31, privateKeyPem.Length)));
+            context.Information(
+                "PEM footer: '{0}'",
+                privateKeyPem.Substring(Math.Max(0, privateKeyPem.Length - 29)));
+
             // Azure DevOps collapses multi-line secrets into a single line,
             // so we need to normalize the PEM before importing it.
+            var normalized = NormalizePem(privateKeyPem);
+            context.Information(
+                "Normalized PEM: length={0}, hasLF={1}, lineCount={2}",
+                normalized.Length,
+                normalized.Contains('\n'),
+                normalized.Split('\n').Length);
+
             var rsa = RSA.Create();
-            rsa.ImportFromPem(NormalizePem(privateKeyPem));
+            rsa.ImportFromPem(normalized);
 
             var now = DateTimeOffset.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -199,7 +221,7 @@ namespace DotNetNuke.Build.Tasks
 
         private static string NormalizePem(string pem)
         {
-            // Azure DevOps may replace newlines with literal \n or collapse them entirely
+            // Azure DevOps may replace newlines with literal \r\n or \n sequences
             pem = pem.Replace("\\r\\n", "\n").Replace("\\n", "\n").Trim();
 
             if (pem.Contains('\n'))
