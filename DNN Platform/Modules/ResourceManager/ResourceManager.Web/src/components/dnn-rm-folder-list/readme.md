@@ -23,17 +23,15 @@
 ### Depends on
 
 - dnn-context-menu
+- [dnn-rm-folder-context-menu](../context-menus/dnn-rm-folder-context-menu)
 - [dnn-rm-folder-list-item](../dnn-rm-folder-list-item)
 
 ### Graph
 ```mermaid
 graph TD;
   dnn-rm-folder-list --> dnn-context-menu
+  dnn-rm-folder-list --> dnn-rm-folder-context-menu
   dnn-rm-folder-list --> dnn-rm-folder-list-item
-  dnn-rm-folder-list-item --> dnn-collapsible
-  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
-  dnn-rm-folder-list-item --> dnn-treeview-item
-  dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-rm-folder-context-menu --> dnn-action-move-items
@@ -77,6 +75,10 @@ graph TD;
   dnn-action-unlink-items --> dnn-rm-unlink-items
   dnn-rm-unlink-items --> dnn-rm-progress-bar
   dnn-rm-unlink-items --> dnn-button
+  dnn-rm-folder-list-item --> dnn-treeview-item
+  dnn-rm-folder-list-item --> dnn-context-menu
+  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
+  dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-treeview-item --> dnn-collapsible
   dnn-rm-left-pane --> dnn-rm-folder-list
   style dnn-rm-folder-list fill:#f9f,stroke:#333,stroke-width:4px

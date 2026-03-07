@@ -1,6 +1,6 @@
 {
   "name": "licensing",
-  "version": "10.2.3",
+  "version": "10.2.4-alpha.42",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production",
@@ -13,7 +13,7 @@
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
-    "@dnnsoftware/dnn-react-common": "10.2.3",
+    "@dnnsoftware/dnn-react-common": "10.2.4-alpha.42",
     "@svgr/webpack": "^8.1.0",
     "array.prototype.find": "2.2.3",
     "array.prototype.findindex": "2.2.4",
