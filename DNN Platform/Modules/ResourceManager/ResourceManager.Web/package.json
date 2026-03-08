@@ -1,6 +1,6 @@
 {
   "name": "dnn-resource-manager",
-  "version": "10.2.4-automated-ci-124223.1+46",
+  "version": "10.2.4-automated-ci-124225.1+47",
   "description": "Resource Manager",
   "private": true,
   "main": "dist/index.cjs.js",
