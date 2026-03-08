@@ -28,9 +28,9 @@
 graph TD;
   dnn-rm-files-pane --> dnn-rm-items-listview
   dnn-rm-files-pane --> dnn-rm-items-cardview
+  dnn-rm-items-listview --> dnn-context-menu
   dnn-rm-items-listview --> dnn-rm-folder-context-menu
   dnn-rm-items-listview --> dnn-rm-file-context-menu
-  dnn-rm-items-listview --> dnn-collapsible
   dnn-rm-folder-context-menu --> dnn-action-create-folder
   dnn-rm-folder-context-menu --> dnn-action-edit-item
   dnn-rm-folder-context-menu --> dnn-action-move-items
@@ -69,10 +69,11 @@ graph TD;
   dnn-rm-move-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-button
   dnn-rm-folder-list --> dnn-context-menu
+  dnn-rm-folder-list --> dnn-rm-folder-context-menu
   dnn-rm-folder-list --> dnn-rm-folder-list-item
-  dnn-rm-folder-list-item --> dnn-collapsible
-  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-rm-folder-list-item --> dnn-treeview-item
+  dnn-rm-folder-list-item --> dnn-context-menu
+  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-treeview-item --> dnn-collapsible
   dnn-action-delete-items --> dnn-modal
@@ -89,7 +90,7 @@ graph TD;
   dnn-rm-file-context-menu --> dnn-action-open-file
   dnn-rm-file-context-menu --> dnn-action-download-item
   dnn-rm-file-context-menu --> dnn-action-copy-url
-  dnn-rm-items-cardview --> dnn-collapsible
+  dnn-rm-items-cardview --> dnn-context-menu
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-items-cardview --> dnn-rm-file-context-menu
   dnn-rm-right-pane --> dnn-rm-files-pane
