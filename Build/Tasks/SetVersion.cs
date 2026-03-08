@@ -4,7 +4,6 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
-    using System.Linq;
 
     using Cake.Common.Diagnostics;
     using Cake.Common.Tools.GitVersion;

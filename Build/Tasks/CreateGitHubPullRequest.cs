@@ -11,6 +11,7 @@ namespace DotNetNuke.Build.Tasks
     using System.Net.Http.Headers;
     using System.Security.Cryptography;
     using System.Text;
+    using System.Text.RegularExpressions;
 
     using Cake.Common;
     using Cake.Common.Diagnostics;
@@ -47,6 +48,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private const string TargetBranch = "develop";
         private const string BugReportPath = ".github/ISSUE_TEMPLATE/bug-report.yml";
+        private const string SolutionInfoPath = "SolutionInfo.cs";
         private const string GitUserName = "DNN Platform CI Bot";
         private const string GitUserEmail = "noreply@dnncommunity.org";
 
@@ -100,6 +102,10 @@ namespace DotNetNuke.Build.Tasks
 
             // Update bug-report.yml with version info from GitHub releases
             UpdateBugReportVersions(context, client, owner, repo);
+
+            // Reset SolutionInfo.cs if only the commit count/SHA changed (not the major.minor.patch)
+            // to avoid creating a PR for every single commit.
+            ResetSolutionInfoIfVersionUnchanged(context);
 
             // Only proceed with the PR if there are actual changes
             if (!HasUncommittedChanges(context))
@@ -375,6 +381,48 @@ namespace DotNetNuke.Build.Tasks
             process.WaitForExit();
             var output = process.GetStandardOutput().ToList();
             return output.Count > 0;
+        }
+
+        private static void ResetSolutionInfoIfVersionUnchanged(Context context)
+        {
+            var committedProcess = context.StartAndReturnProcess(
+                "git",
+                new ProcessSettings
+                {
+                    Arguments = $"show HEAD:{SolutionInfoPath}",
+                    RedirectStandardOutput = true,
+                });
+            committedProcess.WaitForExit();
+
+            if (committedProcess.GetExitCode() != 0)
+            {
+                context.Information("Could not read committed {0}, skipping reset check.", SolutionInfoPath);
+                return;
+            }
+
+            var committedContent = string.Join("\n", committedProcess.GetStandardOutput());
+            var currentContent = File.ReadAllText(SolutionInfoPath);
+
+            var committedVersion = ExtractAssemblyVersion(committedContent);
+            var currentVersion = ExtractAssemblyVersion(currentContent);
+
+            context.Information("SolutionInfo.cs AssemblyVersion — committed: '{0}', current: '{1}'.", committedVersion, currentVersion);
+
+            if (string.Equals(committedVersion, currentVersion, StringComparison.Ordinal))
+            {
+                context.Information("Major.Minor.Patch has not changed. Resetting {0} to avoid a noisy PR.", SolutionInfoPath);
+                Git(context, $"checkout -- {SolutionInfoPath}");
+            }
+            else
+            {
+                context.Information("Major.Minor.Patch changed ({0} → {1}). Keeping {2} modifications.", committedVersion, currentVersion, SolutionInfoPath);
+            }
+        }
+
+        private static string ExtractAssemblyVersion(string content)
+        {
+            var match = Regex.Match(content, @"\[assembly:\s*AssemblyVersion\(""([^""]+)""\)\]");
+            return match.Success ? match.Groups[1].Value : string.Empty;
         }
 
         private static void Git(ICakeContext context, string arguments, bool redactOutput = false)
