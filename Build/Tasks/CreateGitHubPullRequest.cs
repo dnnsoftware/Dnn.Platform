@@ -62,6 +62,12 @@ namespace DotNetNuke.Build.Tasks
                 return false;
             }
 
+            if (!IsTargetedBranch(sourceBranch))
+            {
+                context.Information("Skipping CreateGitHubPullRequest because branch '{0}' is not develop, main, or release/*.", sourceBranch);
+                return false;
+            }
+
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
             var privateKey = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
             if (string.IsNullOrEmpty(appId) || string.IsNullOrEmpty(privateKey))
@@ -138,6 +144,18 @@ namespace DotNetNuke.Build.Tasks
 
             var pr = client.PullRequest.Create(owner, repo, newPr).GetAwaiter().GetResult();
             context.Information("Pull request #{0} created: {1}", pr.Number, pr.HtmlUrl);
+        }
+
+        private static bool IsTargetedBranch(string sourceBranch)
+        {
+            const string refsHeads = "refs/heads/";
+            var branch = sourceBranch.StartsWith(refsHeads, StringComparison.OrdinalIgnoreCase)
+                ? sourceBranch.Substring(refsHeads.Length)
+                : sourceBranch;
+
+            return string.Equals(branch, "develop", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(branch, "main", StringComparison.OrdinalIgnoreCase)
+                || branch.StartsWith("release/", StringComparison.OrdinalIgnoreCase);
         }
 
         private static string GenerateInstallationToken(Context context)
