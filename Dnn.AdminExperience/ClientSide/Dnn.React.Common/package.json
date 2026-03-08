@@ -1,6 +1,6 @@
 {
   "name": "@dnnsoftware/dnn-react-common",
-  "version": "10.2.4-automated-ci-124220.1+45",
+  "version": "10.2.4-automated-ci-124223.1+46",
   "description": "DNN React Component Library",
   "main": "dist/dnn-react-common.min.js",
   "repository": {
