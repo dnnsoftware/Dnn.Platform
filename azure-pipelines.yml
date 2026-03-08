@@ -127,3 +127,14 @@ steps:
 - publish: 'Artifacts'
   artifact: 'Artifacts$(System.JobAttempt)'
   condition: always()
+
+- task: PowerShell@2
+  displayName: 'Create GitHub Pull Request'
+  inputs:
+    targetType: filePath
+    filePath: ./build.ps1
+    arguments: '--target=CreateGitHubPullRequest --verbosity=${{ parameters.CakeVerbosity }}'
+  env:
+    GITHUB_APP_ID: $(GitHubAppId)
+    GITHUB_APP_PRIVATE_KEY: $(GitHubAppPrivateKey)
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
