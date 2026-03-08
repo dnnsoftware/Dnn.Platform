@@ -32,15 +32,15 @@ namespace DotNetNuke.Build.Tasks
             // Set all package.json in Admin Experience to the current version and to consume the current (local) version of dnn-react-common.
             foreach (var file in packages)
             {
-                context.Information($"Updating {file} to version {context.Version.SemVer}");
+                context.Information($"Updating {file} to version {context.Version.MajorMinorPatch}");
                 context.ReplaceRegexInFiles(
                     file.ToString(),
                     @"""version"": "".*""",
-                    $@"""version"": ""{context.Version.SemVer}""");
+                    $@"""version"": ""{context.Version.MajorMinorPatch}""");
                 context.ReplaceRegexInFiles(
                     file.ToString(),
                     @"""@dnnsoftware\/dnn-react-common"": "".*""",
-                    $@"""@dnnsoftware/dnn-react-common"": ""{context.Version.SemVer}""");
+                    $@"""@dnnsoftware/dnn-react-common"": ""{context.Version.MajorMinorPatch}""");
             }
         }
     }
