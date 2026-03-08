@@ -51,21 +51,20 @@ namespace DotNetNuke.Build.Tasks
         private const string GitUserEmail = "noreply@dnncommunity.org";
 
         /// <inheritdoc/>
-        public override bool ShouldRun(Context context)
+        public override void Run(Context context)
         {
-            var sourceBranch = context.EnvironmentVariable("BUILD_SOURCEBRANCH") ?? string.Empty;
-            context.Information("CreateGitHubPullRequest: BUILD_SOURCEBRANCH is '{0}'.", sourceBranch);
-
             if (!context.IsRunningInCI)
             {
                 context.Information("Skipping CreateGitHubPullRequest because the build is not running in CI.");
-                return false;
+                return;
             }
 
+            var sourceBranch = context.EnvironmentVariable("BUILD_SOURCEBRANCH") ?? string.Empty;
+            context.Information("CreateGitHubPullRequest: BUILD_SOURCEBRANCH is '{0}'.", sourceBranch);
             if (!IsTargetedBranch(sourceBranch))
             {
                 context.Information("Skipping CreateGitHubPullRequest because branch '{0}' is not develop, main, or release/*.", sourceBranch);
-                return false;
+                return;
             }
 
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
@@ -73,15 +72,9 @@ namespace DotNetNuke.Build.Tasks
             if (string.IsNullOrEmpty(appId) || string.IsNullOrEmpty(privateKey))
             {
                 context.Warning("Skipping CreateGitHubPullRequest because GITHUB_APP_ID or GITHUB_APP_PRIVATE_KEY is not set.");
-                return false;
+                return;
             }
 
-            return true;
-        }
-
-        /// <inheritdoc/>
-        public override void Run(Context context)
-        {
             // owner/repo – e.g. "dnnsoftware/Dnn.Platform"
             var repoSlug = context.EnvironmentVariable("BUILD_REPOSITORY_NAME")
                            ?? throw new CakeException("BUILD_REPOSITORY_NAME environment variable is not set.");
@@ -163,29 +156,9 @@ namespace DotNetNuke.Build.Tasks
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
             var privateKeyPem = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
 
-            // Diagnostic logging to troubleshoot PEM format issues in CI (no sensitive data logged)
-            context.Information(
-                "PEM diagnostics: length={0}, hasLF={1}, hasCR={2}, hasLiteralBackslashN={3}, hasSpaces={4}",
-                privateKeyPem.Length,
-                privateKeyPem.Contains('\n'),
-                privateKeyPem.Contains('\r'),
-                privateKeyPem.Contains("\\n", StringComparison.Ordinal),
-                privateKeyPem.Contains(' '));
-            context.Information(
-                "PEM header: '{0}'",
-                privateKeyPem.Substring(0, Math.Min(31, privateKeyPem.Length)));
-            context.Information(
-                "PEM footer: '{0}'",
-                privateKeyPem.Substring(Math.Max(0, privateKeyPem.Length - 29)));
-
             // Azure DevOps collapses multi-line secrets into a single line,
             // so we need to normalize the PEM before importing it.
             var normalized = NormalizePem(privateKeyPem);
-            context.Information(
-                "Normalized PEM: length={0}, hasLF={1}, lineCount={2}",
-                normalized.Length,
-                normalized.Contains('\n'),
-                normalized.Split('\n').Length);
 
             var rsa = RSA.Create();
             rsa.ImportFromPem(normalized);

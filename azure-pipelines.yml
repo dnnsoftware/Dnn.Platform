@@ -137,4 +137,4 @@ steps:
   env:
     GITHUB_APP_ID: $(GitHubAppId)
     GITHUB_APP_PRIVATE_KEY: $(GitHubAppPrivateKey)
-  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))
