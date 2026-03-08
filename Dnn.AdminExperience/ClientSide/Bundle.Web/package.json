@@ -1,6 +1,6 @@
 {
   "name": "export-bundle",
-  "version": "10.2.4-automated-ci-124225.1+47",
+  "version": "10.2.4-automated-ci-124231.1+48",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&webpack --mode production --progress",
@@ -61,6 +61,6 @@
     "webpack-dev-server": "5.2.2"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "10.2.4-automated-ci-124225.1+47"
+    "@dnnsoftware/dnn-react-common": "10.2.4-automated-ci-124231.1+48"
   }
 }
