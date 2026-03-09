@@ -123,6 +123,15 @@ namespace DotNetNuke.Build.Tasks
             // Commit all changes to a new branch
             Git(context, $"checkout -b {headBranch}");
             Git(context, "add .");
+
+            // Verify there are actually staged changes after git add
+            // (git status --porcelain can report changes that don't result in staged content)
+            if (!HasStagedChanges(context))
+            {
+                context.Information("No staged changes after git add. Skipping PR creation.");
+                return;
+            }
+
             Git(context, $"commit -m \"[Automated] CI build {context.BuildId} changes\"");
 
             // Push using token via HTTP header so it never appears in logs
@@ -381,6 +390,21 @@ namespace DotNetNuke.Build.Tasks
             process.WaitForExit();
             var output = process.GetStandardOutput().ToList();
             return output.Count > 0;
+        }
+
+        private static bool HasStagedChanges(ICakeContext context)
+        {
+            var process = context.StartAndReturnProcess(
+                "git",
+                new ProcessSettings
+                {
+                    Arguments = "diff --cached --quiet",
+                    RedirectStandardOutput = true,
+                });
+            process.WaitForExit();
+
+            // git diff --cached --quiet exits with 1 if there are staged changes, 0 if clean
+            return process.GetExitCode() != 0;
         }
 
         private static void ResetSolutionInfoIfVersionUnchanged(Context context)
