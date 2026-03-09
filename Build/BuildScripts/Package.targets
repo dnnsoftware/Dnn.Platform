@@ -65,15 +65,14 @@
     <Copy SourceFiles="@(ReleaseNotesFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     
     <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(PackageFiles.RecursiveDir)" />
-
+    
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="ZipOutputContent" />
     </CreateItem>
     <Zip Files="@(ZipOutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
+    <Move SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
 
-    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
-    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
   </Target>
 
   <Target Name="Minification">
