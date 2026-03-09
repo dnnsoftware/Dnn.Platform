@@ -25,6 +25,7 @@
         from component in package.Element("components").Descendants("component")
         let componentType = component.Attribute("type").Value
         from file in component.Descendants().Descendants<XElement>(componentType.ToLowerInvariant())
+        where file.Attribute("action")?.Value != "UnRegister"
         let path = file.Element("path")
         let name = file.Element("name")
         let sourceFileName = file.Element("sourceFileName")
