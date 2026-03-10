@@ -13,9 +13,9 @@
     <InstallPath>$(PathToArtifacts)\SampleModules</InstallPath>
   </PropertyGroup>
   <Target Name="CopySqlDataProviderFiles" BeforeTargets="Build" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <CreateItem Include="$(MSBuildProjectDirectory)\..\Dnn.ContactList.Api\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
-      <Output TaskParameter="Include" ItemName="SqlDataProviderFiles" />
-    </CreateItem>
+    <ItemGroup>
+      <SqlDataProviderFiles Include="$(MSBuildProjectDirectory)\..\Dnn.ContactList.Api\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider" />
+    </ItemGroup>
     <Copy SourceFiles="@(SqlDataProviderFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider" />
   </Target>
   <Target Name="CopyBinOrNot" Condition=" '$(CopySampleProjects)' == 'True' ">
@@ -25,9 +25,9 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\bin\Dnn.ContactList.Api.xml" DestinationFolder="$(WebsitePath)/bin" />
   </Target>
   <Target Name="PostBuild" AfterTargets="Package" DependsOnTargets="CopyBinOrNot;GetFiles;UpdateFiles;DebugProject;Package">
-    <CreateItem Include="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider">
-      <Output TaskParameter="Include" ItemName="CopiedSqlDataProviderFiles" />
-    </CreateItem>
+    <ItemGroup>
+      <CopiedSqlDataProviderFiles Include="$(MSBuildProjectDirectory)\Providers\DataProviders\SqlDataProvider\*.SqlDataProvider" />
+    </ItemGroup>
     <Delete Files="@(CopiedSqlDataProviderFiles)" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)\Providers" />
   </Target>

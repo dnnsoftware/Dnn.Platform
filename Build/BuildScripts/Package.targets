@@ -66,9 +66,9 @@
     
     <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(PackageFiles.RecursiveDir)" />
     
-    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
-      <Output TaskParameter="Include" ItemName="ZipOutputContent" />
-    </CreateItem>
+    <ItemGroup>
+      <ZipOutputContent Include="$(MSBuildProjectDirectory)\Package\**\*.*" />
+    </ItemGroup>
     <Zip Files="@(ZipOutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
     <Move SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
 
