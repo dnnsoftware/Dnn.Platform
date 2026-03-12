@@ -7,11 +7,14 @@ namespace DotNetNuke.Security.Permissions
     using System.Collections.Generic;
     using System.Globalization;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The default <see cref="IFolderPermissionController"/> implementation.</summary>
     public partial class FolderPermissionController : ServiceLocator<IFolderPermissionController, FolderPermissionController>, IFolderPermissionController
@@ -19,7 +22,7 @@ namespace DotNetNuke.Security.Permissions
         private static readonly PermissionProvider Provider = PermissionProvider.Instance();
 
         /// <summary>Returns a list with all roles with implicit permissions on Folders.</summary>
-        /// <param name="portalId">The Portal Id where the Roles are.</param>
+        /// <param name="portalId">The Portal ID where the Roles are.</param>
         /// <returns>A List with the implicit roles.</returns>
         public static IEnumerable<RoleInfo> ImplicitRoles(int portalId)
         {
@@ -34,7 +37,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanAddFolder(folder);
         }
 
-        /// <summary>Returns a flag indicating whether the current user can addmister a folder.</summary>
+        /// <summary>Returns a flag indicating whether the current user can administer a folder.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         public static bool CanAdminFolder(FolderInfo folder)
@@ -158,7 +161,7 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanAddFolder((FolderInfo)folder);
         }
 
-        /// <summary>Returns a flag indicating whether the current user can addmister a folder.</summary>
+        /// <summary>Returns a flag indicating whether the current user can administer a folder.</summary>
         /// <param name="folder">The page.</param>
         /// <returns>A flag indicating whether the user has permission.</returns>
         bool IFolderPermissionController.CanAdminFolder(IFolderInfo folder)
@@ -174,10 +177,10 @@ namespace DotNetNuke.Security.Permissions
             return Provider.CanViewFolder((FolderInfo)folder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IFolderPermissionController> GetFactory()
         {
-            return () => new FolderPermissionController();
+            return () => Globals.DependencyProvider.GetRequiredService<IFolderPermissionController>();
         }
 
         private static void ClearPermissionCache(int portalId)

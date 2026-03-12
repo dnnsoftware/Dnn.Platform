@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         public string Target { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

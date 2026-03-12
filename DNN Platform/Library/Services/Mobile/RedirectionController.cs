@@ -8,8 +8,8 @@ namespace DotNetNuke.Services.Mobile
     using System.Globalization;
     using System.Linq;
     using System.Web;
-    using System.Web.Services.Description;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
@@ -21,7 +21,6 @@ namespace DotNetNuke.Services.Mobile
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.ClientCapability;
-    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -39,6 +38,8 @@ namespace DotNetNuke.Services.Mobile
 
         private readonly IEventLogger eventLogger;
         private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
 
         /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
@@ -50,10 +51,23 @@ namespace DotNetNuke.Services.Mobile
         /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public RedirectionController(IPortalController portalController, IEventLogger eventLogger)
+            : this(portalController, eventLogger, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RedirectionController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public RedirectionController(IPortalController portalController, IEventLogger eventLogger, IHostSettings hostSettings, ITabController tabController)
         {
             this.portalController = portalController ?? Globals.DependencyProvider.GetRequiredService<IPortalController>();
             this.eventLogger = eventLogger ?? Globals.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.DependencyProvider.GetRequiredService<ITabController>();
         }
 
         private static string AllRedirectionsCacheKey => string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, "All");
@@ -137,11 +151,11 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
         {
-            var portalSettings = this.portalController.GetCurrentPortalSettings();
-            if (portalSettings is { ActiveTab: not null, })
+            var currentPage = TabController.CurrentPage;
+            if (currentPage is not null)
             {
-                string redirectUrl = this.GetRedirectUrl(userAgent, portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(redirectUrl) && !string.Equals(redirectUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
+                string redirectUrl = this.GetRedirectUrl(userAgent, this.portalController.GetCurrentSettings().PortalId, currentPage.TabID);
+                if (!string.IsNullOrEmpty(redirectUrl) && !string.Equals(redirectUrl, currentPage.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return redirectUrl;
                 }
@@ -197,8 +211,8 @@ namespace DotNetNuke.Services.Mobile
                         // is child tabs to be included as well
                         else if (redirection.IncludeChildTabs)
                         {
-                            // Get all the descendents of the source tab and find out if current tab is in source tab's hierarchy or not.
-                            foreach (var childTab in TabController.Instance.GetTabsByPortal(portalId).DescendentsOf(redirection.SourceTabId))
+                            // Get all the descendants of the source tab and find out if current tab is in source tab's hierarchy or not.
+                            foreach (var childTab in this.tabController.GetTabsByPortal(portalId).DescendentsOf(redirection.SourceTabId))
                             {
                                 if (childTab.TabID == currentTabId)
                                 {
@@ -243,11 +257,11 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetFullSiteUrl()
         {
-            var portalSettings = this.portalController.GetCurrentPortalSettings();
-            if (portalSettings is { ActiveTab: not null, })
+            var currentPage = TabController.CurrentPage;
+            if (currentPage is not null)
             {
-                string fullSiteUrl = this.GetFullSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
+                string fullSiteUrl = this.GetFullSiteUrl(this.portalController.GetCurrentSettings().PortalId, currentPage.TabID);
+                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, currentPage.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return fullSiteUrl;
                 }
@@ -309,14 +323,14 @@ namespace DotNetNuke.Services.Mobile
                     // found the rule, let's find the url now
                     if (foundRule)
                     {
-                        ////redirection is based on tab
+                        // redirection is based on tab
                         // Following are being commented as NavigateURL method does not return correct url for a tab in a different portal
                         // always point to the home page of the other portal
-                        // if (redirection.SourceTabId != Null.NullInteger)
-                        // {
-                        //    fullSiteUrl = Globals.NavigateURL(redirection.SourceTabId);
-                        // }
-                        // else //redirection is based on portal
+                        ////if (redirection.SourceTabId != Null.NullInteger)
+                        ////{
+                        ////   fullSiteUrl = Globals.NavigateURL(redirection.SourceTabId);
+                        ////}
+                        ////else //redirection is based on portal
                         {
                             var portalSettings = new PortalSettings(redirection.PortalId);
 
@@ -348,11 +362,11 @@ namespace DotNetNuke.Services.Mobile
         /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetMobileSiteUrl()
         {
-            var portalSettings = this.portalController.GetCurrentPortalSettings();
-            if (portalSettings is { ActiveTab: not null })
+            var currentPage = TabController.CurrentPage;
+            if (currentPage is not null)
             {
-                string fullSiteUrl = this.GetMobileSiteUrl(portalSettings.PortalId, portalSettings.ActiveTab.TabID);
-                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, portalSettings.ActiveTab.FullUrl, StringComparison.OrdinalIgnoreCase))
+                string fullSiteUrl = this.GetMobileSiteUrl(this.portalController.GetCurrentSettings().PortalId, currentPage.TabID);
+                if (!string.IsNullOrEmpty(fullSiteUrl) && !string.Equals(fullSiteUrl, currentPage.FullUrl, StringComparison.OrdinalIgnoreCase))
                 {
                     return fullSiteUrl;
                 }
@@ -459,7 +473,7 @@ namespace DotNetNuke.Services.Mobile
         /// <param name="portalId">The portal ID.</param>
         public void PurgeInvalidRedirections(int portalId)
         {
-            var allTabs = TabController.Instance.GetTabsByPortal(portalId);
+            var allTabs = this.tabController.GetTabsByPortal(portalId);
             var redirects = this.GetRedirectionsByPortal(portalId);
 
             // remove rules for deleted source tabs
@@ -481,9 +495,9 @@ namespace DotNetNuke.Services.Mobile
             foreach (var r in redirects.Where(r => r.TargetType == TargetType.Portal))
             {
                 bool found = false;
-                foreach (PortalInfo portal in allPortals)
+                foreach (IPortalInfo portal in allPortals)
                 {
-                    if (portal.PortalID == int.Parse(r.TargetValue.ToString(), CultureInfo.InvariantCulture))
+                    if (portal.PortalId == int.Parse(r.TargetValue.ToString(), CultureInfo.InvariantCulture))
                     {
                         found = true;
                         break;
@@ -541,7 +555,7 @@ namespace DotNetNuke.Services.Mobile
         public IList<IRedirection> GetAllRedirections()
         {
             var cacheArg = new CacheItemArgs(AllRedirectionsCacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, string.Empty);
-            return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, GetAllRedirectionsCallBack);
+            return CBO.GetCachedObject<IList<IRedirection>>(this.hostSettings, cacheArg, GetAllRedirectionsCallBack);
         }
 
         /// <summary>get a redirection list for portal.</summary>
@@ -551,7 +565,7 @@ namespace DotNetNuke.Services.Mobile
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.RedirectionsCacheKey, portalId);
             var cacheArg = new CacheItemArgs(cacheKey, DataCache.RedirectionsCacheTimeOut, DataCache.RedirectionsCachePriority, portalId);
-            return CBO.GetCachedObject<IList<IRedirection>>(cacheArg, GetRedirectionsByPortalCallBack);
+            return CBO.GetCachedObject<IList<IRedirection>>(this.hostSettings, cacheArg, GetRedirectionsByPortalCallBack);
         }
 
         /// <summary>get a specific redirection by id.</summary>
@@ -585,7 +599,7 @@ namespace DotNetNuke.Services.Mobile
                 // ensure it's not redirecting to itself
                 if (targetTabId != currentTabId)
                 {
-                    var tab = TabController.Instance.GetTab(targetTabId, portalId, false);
+                    var tab = this.tabController.GetTab(targetTabId, portalId, false);
                     if (tab is { IsDeleted: false, })
                     {
                         redirectUrl = TestableGlobals.Instance.NavigateURL(targetTabId);

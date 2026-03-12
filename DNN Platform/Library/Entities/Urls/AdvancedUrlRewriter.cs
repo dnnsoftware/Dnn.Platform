@@ -33,7 +33,15 @@ namespace DotNetNuke.Entities.Urls
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class AdvancedUrlRewriter : UrlRewriterBase
+    /// <summary>The advanced URL rewriter.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="hostSettingsService">The host settings service.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    public class AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        : UrlRewriterBase(hostSettings, portalAliasService, hostSettingsService, portalController)
     {
         private const string ProductName = "AdvancedUrlRewriter";
         private static readonly Regex DefaultPageRegex = new Regex(@"(?<!(\?.+))/" + Globals.glbDefaultPage, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
@@ -41,7 +49,9 @@ namespace DotNetNuke.Entities.Urls
         private static readonly Regex RewritePathRx = new Regex("(?:&(?<parm>.[^&]+)=$)", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
         private static readonly Regex UrlSlashesRegex = new Regex("[\\\\/]\\.\\.[\\\\/]", RegexOptions.Compiled);
         private static readonly Regex AliasUrlRegex = new Regex(@"(?:^(?<http>http[s]{0,1}://){0,1})(?:(?<alias>_ALIAS_)(?<path>$|\?[\w]*|/[\w]*))", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
-        private readonly IPortalAliasService portalAliasService;
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
         private FriendlyUrlSettings settings;
 
         /// <summary>Initializes a new instance of the <see cref="AdvancedUrlRewriter"/> class.</summary>
@@ -56,10 +66,10 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="portalController">The portal controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AdvancedUrlRewriter(IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
-            : base(hostSettings, portalAliasService, hostSettingsService, portalController)
+            : this(hostSettings, portalAliasService, hostSettingsService, portalController, null, null)
         {
-            this.portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
         }
 
         public void ProcessTestRequestWithContext(
@@ -198,7 +208,7 @@ namespace DotNetNuke.Entities.Urls
             return destUrl;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             Guid parentTraceId = Guid.Empty;
@@ -710,7 +720,7 @@ namespace DotNetNuke.Entities.Urls
                                     // results when iis is configured to handle portal alias, but
                                     // DNN isn't.  This always returns 404 because a multi-portal site
                                     // can't just show the 404 page of the host site.
-                                    ArrayList portals = PortalController.Instance.GetPortals();
+                                    ArrayList portals = Portals.PortalController.Instance.GetPortals();
                                     if (portals != null && portals.Count == 1)
                                     {
                                         // single portal install, load up portal settings for this portal
@@ -1549,6 +1559,10 @@ namespace DotNetNuke.Entities.Urls
         }
 
         private static void CheckForRewrite(
+            IHostSettings hostSettings,
+            IPortalController portalController,
+            IApplicationStatusInfo appStatus,
+            IPortalGroupController portalGroupController,
             string fullUrl,
             string querystring,
             UrlAction result,
@@ -1586,7 +1600,7 @@ namespace DotNetNuke.Entities.Urls
                 if (!doSiteUrlProcessing)
                 {
                     // looks up the page index to find the correct Url
-                    bool doRewrite = RewriteController.IdentifyByTabPathEx(fullUrl, querystring, result, queryStringCol, settings, parentTraceId);
+                    bool doRewrite = RewriteController.IdentifyByTabPathEx(hostSettings, portalController, appStatus, portalGroupController, fullUrl, querystring, result, queryStringCol, settings, parentTraceId);
                     if (!doRewrite)
                     {
                         doSiteUrlProcessing = true;
@@ -1792,8 +1806,8 @@ namespace DotNetNuke.Entities.Urls
                             // 819 : leaving /do301/check in Url because not using cleanPath to remove from
                             string cleanPath = RedirectTokens.RemoveAnyRedirectTokensAndReasons(rewritePathOnly);
 
-                            // string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
-                            // cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
+                            ////string cleanPath = rewritePathOnly.Replace("&do301=check","");//remove check parameter if it exists
+                            ////cleanPath = cleanPath.Replace("&do301=true", "");//don't pass through internal redirect check parameter
                             cleanPath = cleanPath.Replace("&_aumdebug=true", string.Empty); // remove debug parameter if it exists
 
                             Match match = RewritePathRx.Match(rewritePathOnly ?? string.Empty);
@@ -1837,7 +1851,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 string rawUrlWithHost = StripDebugParameter(urlDecode.ToLowerInvariant());
 
-                                // string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
+                                ////string rawUrlWithHost = StripDebugParameter(System.Web.HttpUtility.UrlDecode(scheme + requestUri.Host + requestUri.PathAndQuery).ToLowerInvariant());
                                 string rawUrlWithHostNoScheme = StripDebugParameter(rawUrlWithHost.Replace(scheme, string.Empty));
                                 string bestFriendlyNoScheme = StripDebugParameter(bestFriendlyUrl.ToLowerInvariant().Replace(scheme, string.Empty));
                                 string requestedPathNoScheme = StripDebugParameter(requestUri.AbsoluteUri.Replace(scheme, string.Empty).ToLowerInvariant());
@@ -2188,7 +2202,7 @@ namespace DotNetNuke.Entities.Urls
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
             var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.Url.AbsolutePath)) ?? string.Empty;
-            if (UrlSlashesRegex.Match(strURL).Success || UrlSlashesRegex.Match(strDoubleDecodeURL).Success)
+            if (UrlSlashesRegex.IsMatch(strURL) || UrlSlashesRegex.IsMatch(strDoubleDecodeURL))
             {
                 throw new HttpException(404, "Not Found");
             }
@@ -2418,8 +2432,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        bool isPhysicalResource;
-                        CheckForRewrite(fullUrl, querystring, result, useFriendlyUrls, queryStringCol, settings, out isPhysicalResource, parentTraceId);
+                        CheckForRewrite(this.HostSettings, this.PortalController, this.appStatus, this.portalGroupController, fullUrl, querystring, result, useFriendlyUrls, queryStringCol, settings, out bool _, parentTraceId);
                     }
 
                     // return 404 if there is no portal alias for a rewritten request
@@ -2667,7 +2680,7 @@ namespace DotNetNuke.Entities.Urls
 
                                 // load PortalSettings and HostSettings dictionaries into current context
                                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                                context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
+                                context.Items.Add("PortalSettingsDictionary", Portals.PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
                                 context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
                             }
 
@@ -2817,7 +2830,7 @@ namespace DotNetNuke.Entities.Urls
                             pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                         }
 
-                        if (!pathWithNoQs.AsSpan(pathWithNoQs.Length - 5, 5).Contains(".".AsSpan(), StringComparison.Ordinal))
+                        if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains(".", StringComparison.Ordinal))
                         {
                             // no page extension, output a 404 if the Url is not found
                             // 766 : check for physical path before passing off as a 404 error
@@ -3165,7 +3178,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // this might end up in a double redirect if the path of the Url is for a specific language as opposed
                         // to a path belonging to the default language domain
-                        PortalInfo portal = PortalController.Instance.GetPortal(result.PortalId);
+                        PortalInfo portal = Portals.PortalController.Instance.GetPortal(result.PortalId);
                         if (portal != null)
                         {
                             requestCultureCode = portal.DefaultLanguage;

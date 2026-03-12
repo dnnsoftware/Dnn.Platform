@@ -33,10 +33,7 @@ namespace DotNetNuke.Services.Sitemap
         private string cacheFileName;
         private string cacheIndexFileNameFormat;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
-        ///   Creates an instance of the sitemap builder class.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SitemapBuilder"/> class.</summary>
         /// <param name="ps">Current PortalSettings for the portal being processed.</param>
         public SitemapBuilder(PortalSettings ps)
         {
@@ -54,7 +51,7 @@ namespace DotNetNuke.Services.Sitemap
                     var currentCulture = this.portalSettings.CultureCode?.ToLowerInvariant();
                     if (string.IsNullOrEmpty(currentCulture))
                     {
-                        currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+                        currentCulture = Localization.GetPageLocale((IPortalSettings)this.portalSettings).Name.ToLowerInvariant();
                     }
 
                     this.cacheFileName = $"sitemap.{currentCulture}.xml";
@@ -70,7 +67,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 if (string.IsNullOrEmpty(this.cacheIndexFileNameFormat))
                 {
-                    var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+                    var currentCulture = Localization.GetPageLocale((IPortalSettings)this.portalSettings).Name.ToLowerInvariant();
                     this.cacheIndexFileNameFormat = $"sitemap_{{0}}.{currentCulture}.xml";
                 }
 
@@ -205,7 +202,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void GetSitemapIndexFile(string index, TextWriter output)
         {
-            var currentCulture = Localization.GetPageLocale(this.portalSettings).Name.ToLowerInvariant();
+            var currentCulture = Localization.GetPageLocale((IPortalSettings)this.portalSettings).Name.ToLowerInvariant();
             this.WriteSitemapFileToOutput($"sitemap_{index}.{currentCulture}.xml", output);
         }
 
@@ -225,7 +222,7 @@ namespace DotNetNuke.Services.Sitemap
                         providers.Add(comp.Value);
                     }
 
-                    // 'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
+                    ////ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
                 }
             }
         }
@@ -241,17 +238,17 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLowerInvariant());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
 
-            // if (sitemapUrl.AlternateUrls != null)
-            // {
-            //    foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
-            //    {
-            //        writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
-            //        writer.WriteAttributeString("rel", "alternate");
-            //        writer.WriteAttributeString("hreflang", alternate.Language);
-            //        writer.WriteAttributeString("href", alternate.Url);
-            //        writer.WriteEndElement();
-            //    }
-            // }
+            ////if (sitemapUrl.AlternateUrls != null)
+            ////{
+            ////   foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
+            ////   {
+            ////       writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
+            ////       writer.WriteAttributeString("rel", "alternate");
+            ////       writer.WriteAttributeString("hreflang", alternate.Language);
+            ////       writer.WriteAttributeString("href", alternate.Url);
+            ////       writer.WriteEndElement();
+            ////   }
+            ////}
             writer.WriteEndElement();
         }
 

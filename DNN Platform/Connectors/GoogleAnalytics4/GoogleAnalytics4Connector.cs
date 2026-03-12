@@ -21,25 +21,25 @@ namespace DNN.Connectors.GoogleAnalytics4
 
         private string displayName;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name
         {
             get { return "Core Google Analytics 4 Connector"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string IconUrl
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics4/Images/GoogleAnalytics4_32X32_Standard.png"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string PluginFolder
         {
             get { return "~/DesktopModules/Connectors/GoogleAnalytics4/"; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsEngageConnector
         {
             get
@@ -48,35 +48,35 @@ namespace DNN.Connectors.GoogleAnalytics4
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ConnectorCategories Type => ConnectorCategories.Analytics;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         // As of DNN 9.2.2 you need to support multiple to get access to the Delete Connection functionality
         public bool SupportsMultiple => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string DisplayName
         {
             get => string.IsNullOrEmpty(this.displayName) ? DefaultDisplayName : this.displayName;
             set => this.displayName = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<IConnector> GetConnectors(int portalId)
         {
             return new List<IConnector> { this };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteConnector(int portalId)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasConfig(int portalId)
         {
             var config = this.GetConfig(portalId);
@@ -84,7 +84,7 @@ namespace DNN.Connectors.GoogleAnalytics4
             return config.ContainsKey("Ga4ID") && !string.IsNullOrEmpty(config["Ga4ID"]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, string> GetConfig(int portalId)
         {
             var ga4Config = AnalyticsConfiguration.GetConfig("GoogleAnalytics4");
@@ -121,7 +121,7 @@ namespace DNN.Connectors.GoogleAnalytics4
             return configItems;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SaveConfig(int portalId, IDictionary<string, string> values, ref bool validated, out string customErrorMessage)
         {
             // Delete / Deactivation functionality added into SaveConfig because

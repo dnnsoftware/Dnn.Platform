@@ -47,67 +47,67 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             this.dataService = dataService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteMessageRecipient(int messageId, int userId)
         {
             this.dataService.DeleteMessageRecipientByMessageAndUser(messageId, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void DeleteUserFromConversation(int conversationId, int userId)
         {
             this.dataService.DeleteUserFromConversation(conversationId, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual Message GetMessage(int messageId)
         {
             return CBO.FillObject<Message>(this.dataService.GetMessage(messageId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageRecipient GetMessageRecipient(int messageId, int userId)
         {
             return CBO.FillObject<MessageRecipient>(this.dataService.GetMessageRecipientByMessageAndUser(messageId, userId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual IList<MessageRecipient> GetMessageRecipients(int messageId)
         {
             return CBO.FillCollection<MessageRecipient>(this.dataService.GetMessageRecipientsByMessage(messageId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void MarkArchived(int conversationId, int userId)
         {
             this.dataService.UpdateMessageArchivedStatus(conversationId, userId, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void MarkRead(int conversationId, int userId)
         {
             this.dataService.UpdateMessageReadStatus(conversationId, userId, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void MarkUnArchived(int conversationId, int userId)
         {
             this.dataService.UpdateMessageArchivedStatus(conversationId, userId, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void MarkUnRead(int conversationId, int userId)
         {
             this.dataService.UpdateMessageReadStatus(conversationId, userId, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs)
         {
             return this.ReplyMessage(conversationId, body, fileIDs, UserController.Instance.GetCurrentUserInfo());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender)
         {
             if (sender == null || sender.UserID <= 0)
@@ -210,33 +210,33 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return this.GetPortalSetting("DisablePrivateMessage", portalId, "N") == "Y";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetArchivedMessages(int userId, int afterMessageId, int numberOfRecords)
         {
             var reader = this.dataService.GetArchiveBoxView(userId, PortalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, ConstSortColumnDate, !ConstAscending);
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
             return this.GetInbox(userId, afterMessageId, numberOfRecords, sortColumn, sortAscending, MessageReadStatus.Any, MessageArchivedStatus.UnArchived);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus)
         {
             var reader = this.dataService.GetInBoxView(userId, PortalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, sortColumn, sortAscending, readStatus, archivedStatus, MessageSentStatus.Received);
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, ref int totalRecords)
         {
             return this.GetMessageThread(conversationId, userId, afterMessageId, numberOfRecords, ConstSortColumnDate, !ConstAscending, ref totalRecords);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, ref int totalRecords)
         {
             var messageThreadsView = new MessageThreadsView();
@@ -271,63 +271,63 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return messageThreadsView;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetRecentInbox(int userId)
         {
             return this.GetRecentInbox(userId, DefaultPageIndex, DefaultPageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetRecentInbox(int userId, int afterMessageId, int numberOfRecords)
         {
             return this.GetInbox(userId, afterMessageId, numberOfRecords, ConstSortColumnDate, !ConstAscending);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetRecentSentbox(int userId)
         {
             return this.GetRecentSentbox(userId, DefaultPageIndex, DefaultPageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetRecentSentbox(int userId, int afterMessageId, int numberOfRecords)
         {
             return this.GetSentbox(userId, afterMessageId, numberOfRecords, ConstSortColumnDate, !ConstAscending);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending)
         {
             return this.GetSentbox(userId, afterMessageId, numberOfRecords, sortColumn, sortAscending, MessageReadStatus.Any, MessageArchivedStatus.UnArchived);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus)
         {
             var reader = this.dataService.GetSentBoxView(userId, PortalController.GetEffectivePortalId(this.GetCurrentUserInfo().PortalID), afterMessageId, numberOfRecords, sortColumn, sortAscending);
             return new MessageBoxView { Conversations = CBO.FillCollection<MessageConversationView>(reader) };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CheckReplyHasRecipients(int conversationId, int userId)
         {
             return userId <= 0 ? 0 :
                 conversationId <= 0 ? 0 : this.dataService.CheckReplyHasRecipients(conversationId, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountArchivedMessagesByConversation(int conversationId)
         {
             return conversationId <= 0 ? 0 : this.dataService.CountArchivedMessagesByConversation(conversationId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountMessagesByConversation(int conversationId)
         {
             return conversationId <= 0 ? 0 : this.dataService.CountMessagesByConversation(conversationId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountConversations(int userId, int portalId)
         {
             if (userId <= 0)
@@ -353,7 +353,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return count;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountUnreadMessages(int userId, int portalId)
         {
             if (userId <= 0)
@@ -379,25 +379,25 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return count;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountSentMessages(int userId, int portalId)
         {
             return userId <= 0 ? 0 : this.dataService.CountSentMessages(userId, portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountArchivedMessages(int userId, int portalId)
         {
             return userId <= 0 ? 0 : this.dataService.CountArchivedMessages(userId, portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountSentConversations(int userId, int portalId)
         {
             return userId <= 0 ? 0 : this.dataService.CountSentConversations(userId, portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual int CountArchivedConversations(int userId, int portalId)
         {
             return userId <= 0 ? 0 : this.dataService.CountArchivedConversations(userId, portalId);
@@ -409,13 +409,13 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return this.dataService.GetMessageAttachmentsByMessage(messageId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertLegacyMessages(int pageIndex, int pageSize)
         {
             this.dataService.ConvertLegacyMessages(pageIndex, pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int CountLegacyMessages()
         {
             var totalRecords = 0;
@@ -436,25 +436,25 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             return totalRecords;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize)
         {
             return CBO.FillCollection<MessageRecipient>(this.dataService.GetNextMessagesForInstantDispatch(schedulerInstance, batchSize));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize)
         {
             return CBO.FillCollection<MessageRecipient>(this.dataService.GetNextMessagesForDigestDispatch((int)frequency, schedulerInstance, batchSize));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void MarkMessageAsDispatched(int messageId, int recipientId)
         {
             this.dataService.MarkMessageAsDispatched(messageId, recipientId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void MarkMessageAsSent(int messageId, int recipientId)
         {
             this.dataService.MarkMessageAsSent(messageId, recipientId);

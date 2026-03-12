@@ -47,10 +47,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         [Required]
         public string NewModuleName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<IStep> Steps => this.steps;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Func<Hashtable, Hashtable> MigrateSettings { get; set; }
 
         /// <inheritdoc />

@@ -26,13 +26,13 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateControlHierarchy(bool useDataSource)
         {
             base.CreateControlHierarchy(useDataSource);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void PrepareControlHierarchy()
         {
             base.PrepareControlHierarchy();

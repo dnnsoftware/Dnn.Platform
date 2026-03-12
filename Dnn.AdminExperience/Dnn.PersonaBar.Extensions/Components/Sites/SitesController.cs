@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Sites.Components
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         private CultureDropDownTypes DisplayType { get; set; }
 
@@ -129,7 +129,7 @@ namespace Dnn.PersonaBar.Sites.Components
             {
                 if (this.DisplayType == 0)
                 {
-                    var viewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.Current.PortalId), CultureInfo.InvariantCulture);
+                    var viewType = Convert.ToString(DotNetNuke.Services.Personalization.Personalization.GetProfile("LanguageDisplayMode", "ViewType" + PortalSettings.PortalId), CultureInfo.InvariantCulture);
                     switch (viewType)
                     {
                         case "NATIVE":
@@ -351,7 +351,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 {
                     if (useCurrent)
                     {
-                        adminUser = PortalSettings.Current.UserInfo;
+                        adminUser = UserController.Instance.GetCurrentUserInfo();
                         intPortalId = PortalController.Instance.CreatePortal(
                             siteName,
                             adminUser.UserID,

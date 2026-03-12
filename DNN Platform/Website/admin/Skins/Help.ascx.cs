@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets the CSS class to apply to the hyperlink.</summary>
         public string CssClass { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.InitializeComponent();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

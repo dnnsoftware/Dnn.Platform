@@ -23,7 +23,6 @@
     <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
     <asp:PlaceHolder ID="BodySCRIPTS" runat="server">
       <script type="text/javascript" src="../js/dnn.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
-      <script type="text/javascript" src="../Resources/Shared/Scripts/dnn.jquery.js?ver=<%=DotNetNuke.Common.Globals.FormatVersion(ApplicationVersion)%>"></script>
     </asp:PlaceHolder>
 
     <div id="languageFlags">
@@ -125,7 +124,7 @@
               <div id="installation-progress">
                 <span id="timer"></span>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<span id="percentage" style="height: auto; max-height: 200px; overflow: auto"> </span>
                 <div class="dnnProgressbar">
-                  <div id="progressbar"></div>
+                  <progress id="progressbar" value="0" max="100"></progress>
                 </div>
                 <div id="installation-buttons">
                   <a id="retry" href="javascript:void(0)" class="dnnPrimaryAction"><%= LocalizeString("Retry") %></a>
@@ -237,8 +236,7 @@
               $.stopProgressbarOnError();
             });
             disable('#seeLogs, #visitSite, #retry');
-            //Making sure that progress indicate 0
-            $("#progressbar").progressbar('value', 0);
+            document.querySelector("#progressbar").value = 0;
             $("#percentage").text('0% ');
             $("#timer").html('0:00 ' + '<%=LocalizeString("TimerMinutes") %>');
       };
@@ -283,12 +281,10 @@
         $("#tabs").tabs();
         $("#tabs").tabs({ disabled: [1, 2, 3] });
         $('.dnnFormMessage.dnnFormError').each(function () {
-          if ($(this).html().length)
+            if ($(this).html().length)
             $(this).css('display', 'block');
         });
-
-        upgradeWizard.dnnProgressbar = $(".dnnProgressbar").dnnProgressbar();
-      });
+    });
 
       //****************************************************************************************
       // EVENT HANDLER FUNCTIONS
@@ -355,10 +351,10 @@
     $.updateProgressbar = function (status) {
       var result = jQuery.parseJSON(status);
       if (result !== null) {
-        if (result.progress < $("#progressbar").progressbar('value')) return;
+        const progressBar = document.querySelector("#progressbar");   
+        if (result.progress < progressBar.value) return;
         //Updating progress
-        $("#progressbar").progressbar('value', result.progress);
-        upgradeWizard.dnnProgressbar.update(result.progress);
+        progressBar.value = result.progress;
         $("#percentage").text(result.progress + '% ' + result.details);
         var upgradeError = result.details.toUpperCase().indexOf('<%= Localization.GetSafeJSString(LocalizeString("Error"))%>') > -1;
         if (upgradeError) {
@@ -419,12 +415,12 @@
     $.startProgressbar = function () {
       //Disabling button
       disable('#seeLogs, #visitSite, #retry');
-      //Making sure that progress indicate 0
-      $("#progressbar").progressbar().progressbar('value', 0);
+      const progressBar = document.querySelector("#progressbar");
+      progressBar.value = 0;
       $("#percentage").text('0%');
       upgradeWizard.startProgressBar();
-      $("#progressbar").removeClass('stoppedProgress');
-      $("#progressbar").addClass('inProgress');
+      progressBar.classList.remove('stoppedProgress');
+      progressBar.classList.add('inProgress');
     };
 
     //Stop update progress bar on errors
@@ -436,8 +432,9 @@
       }
       $('#installation-steps > p.step-running').attr('class', 'step-error');
       upgradeWizard.stopProgressBar();
-      $("#progressbar").removeClass('inProgress');
-      $("#progressbar").addClass('stoppedProgress');
+      const progressBar = document.querySelector("#progressbar");
+      progressBar.classList.remove('inProgress');
+      progressBar.classList.add('stoppedProgress');
     };
 
     $(document).ready(function () {
@@ -446,7 +443,7 @@
       $('.flag[value=' + $("#PageLocale")[0].value + ']').addClass("selectedFlag");
 
       //Progressbar and button initialization
-      $("#progressbar").progressbar({ value: 0 });
+      document.querySelector("#progressbar").value = 0;
       disable('#visitSite, #seeLogs, #retry');
 
       $("#retry").click(function (e) {
@@ -478,7 +475,6 @@
             if (installationLogStartLine === 0)
               $('#installation-log').html('<%= Localization.GetSafeJSString(LocalizeString("NoInstallationLog"))%>');
           }
-          $('#installation-log-container').jScrollPane();
         }, function (err) {
         });
       };

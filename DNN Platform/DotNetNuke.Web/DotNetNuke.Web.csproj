@@ -10,25 +10,15 @@
     <AnalysisLevel>latest</AnalysisLevel>
     <AnalysisMode>Recommended</AnalysisMode>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsNotAsErrors>CS0618,SA1600,CA5351</WarningsNotAsErrors>
-    <NoWarn>CS1591</NoWarn>
-    <WarningsNotAsErrors>CS0618,CA3075,CA5351</WarningsNotAsErrors>
+    <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.Web.Infrastructure" />
     <PackageReference Include="Newtonsoft.Json" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="WebFormsMvp" />
   </ItemGroup>
 

@@ -6,18 +6,30 @@ namespace DotNetNuke.Services.Installer.Installers
     using System;
     using System.Xml.XPath;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The InstallerFactory is a factory class that is used to instantiate the appropriate Component Installer.</summary>
-    public class InstallerFactory
+    public partial class InstallerFactory
     {
         /// <summary>The GetInstaller method instantiates the relevant Component Installer.</summary>
         /// <param name="installerType">The type of Installer.</param>
         /// <returns>A <see cref="ComponentInstallerBase"/> instance or <see langword="null"/>.</returns>
-        public static ComponentInstallerBase GetInstaller(string installerType)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IServiceProvider")]
+        public static partial ComponentInstallerBase GetInstaller(string installerType)
+            => GetInstaller(Globals.GetCurrentServiceProvider(), installerType);
+
+        /// <summary>The GetInstaller method instantiates the relevant Component Installer.</summary>
+        /// <param name="serviceProvider">The dependency injection container from which a custom installer should be created.</param>
+        /// <param name="installerType">The type of Installer.</param>
+        /// <returns>A <see cref="ComponentInstallerBase"/> instance or <see langword="null"/>.</returns>
+        public static ComponentInstallerBase GetInstaller(IServiceProvider serviceProvider, string installerType)
         {
             ComponentInstallerBase installer = null;
             switch (installerType)
@@ -79,13 +91,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
                 default:
                     // Installer type is defined in the List
-                    var listController = new ListController();
+                    var listController = ActivatorUtilities.GetServiceOrCreateInstance<ListController>(serviceProvider);
                     ListEntryInfo entry = listController.GetListEntryInfo("Installer", installerType);
 
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
                         // The class for the Installer is specified in the Text property
-                        installer = (ComponentInstallerBase)Reflection.CreateObject(entry.Text, "Installer_" + entry.Value);
+                        installer = (ComponentInstallerBase)Reflection.CreateObject(serviceProvider, entry.Text, $"Installer_{entry.Value}");
                     }
 
                     break;
@@ -98,12 +110,21 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="manifestNav">The manifest (XPathNavigator) for the component.</param>
         /// <param name="package">The associated PackageInfo instance.</param>
         /// <returns>A <see cref="ComponentInstallerBase"/> instance or <see langword="null"/>.</returns>
-        public static ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IServiceProvider")]
+        public static partial ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
+            => GetInstaller(Globals.GetCurrentServiceProvider(), manifestNav, package);
+
+        /// <summary>The GetInstaller method instantiates the relevant Component Installer.</summary>
+        /// <param name="serviceProvider">The dependency injection container from which a custom installer should be created.</param>
+        /// <param name="manifestNav">The manifest (XPathNavigator) for the component.</param>
+        /// <param name="package">The associated PackageInfo instance.</param>
+        /// <returns>A <see cref="ComponentInstallerBase"/> instance or <see langword="null"/>.</returns>
+        public static ComponentInstallerBase GetInstaller(IServiceProvider serviceProvider, XPathNavigator manifestNav, PackageInfo package)
         {
             string installerType = Util.ReadAttribute(manifestNav, "type");
             string componentVersion = Util.ReadAttribute(manifestNav, "version");
 
-            ComponentInstallerBase installer = GetInstaller(installerType);
+            ComponentInstallerBase installer = GetInstaller(serviceProvider, installerType);
             if (installer != null)
             {
                 // Set package

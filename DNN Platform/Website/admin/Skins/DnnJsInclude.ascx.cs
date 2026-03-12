@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <inheritdoc cref="IScriptResource.NoModule" />
         public bool NoModule { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

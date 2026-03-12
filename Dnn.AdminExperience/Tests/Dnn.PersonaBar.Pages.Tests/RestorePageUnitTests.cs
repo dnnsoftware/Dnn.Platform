@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Pages.Tests
 
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Services.Localization;
     using DotNetNuke.Tests.Utilities.Fakes;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         private Mock<ITabController> tabControllerMock;
         private Mock<IRecyclebinController> recycleBinControllerMock;
         private Mock<IContentVerifier> contentVerifierMock;
+        private Mock<IPortalController> portalControllerMock;
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
@@ -41,6 +43,9 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.tabControllerMock = new Mock<ITabController>();
             this.recycleBinControllerMock = new Mock<IRecyclebinController>();
             this.contentVerifierMock = new Mock<IContentVerifier>();
+            this.portalControllerMock = new Mock<IPortalController>();
+
+            LocalizationProvider.SetTestableInstance(Mock.Of<ILocalizationProvider>());
 
             this.tabControllerMock.SetReturnsDefault(this.tab);
             this.contentVerifierMock.SetReturnsDefault(true);
@@ -53,6 +58,7 @@ namespace Dnn.PersonaBar.Pages.Tests
                     services.AddSingleton(this.tabControllerMock.Object);
                     services.AddSingleton(this.recycleBinControllerMock.Object);
                     services.AddSingleton(this.contentVerifierMock.Object);
+                    services.AddSingleton(this.portalControllerMock.Object);
                 });
         }
 
@@ -60,6 +66,7 @@ namespace Dnn.PersonaBar.Pages.Tests
         public void TearDown()
         {
             this.serviceProvider.Dispose();
+            LocalizationProvider.ClearInstance();
         }
 
         [Test]
@@ -71,13 +78,13 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.False);
                 Assert.That(result.Records, Is.EqualTo(1));
                 Assert.That(result is ConsoleErrorResultModel, Is.False);
-            });
+            }
         }
 
         [Test]
@@ -93,12 +100,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.True);
                 Assert.That(result is ConsoleErrorResultModel, Is.True);
-            });
+            }
         }
 
         [Test]
@@ -112,12 +119,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.True);
                 Assert.That(result is ConsoleErrorResultModel, Is.True);
-            });
+            }
         }
 
         [Test]
@@ -132,12 +139,12 @@ namespace Dnn.PersonaBar.Pages.Tests
             // Act
             var result = this.restorePage.Run();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result.IsError, Is.True);
                 Assert.That(result is ConsoleErrorResultModel, Is.True);
-            });
+            }
         }
 
         private void SetupCommand()

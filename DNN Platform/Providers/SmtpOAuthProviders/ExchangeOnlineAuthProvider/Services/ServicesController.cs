@@ -6,7 +6,7 @@ namespace Dnn.ExchangeOnlineAuthProvider.Services;
 
 using DotNetNuke.Web.Api;
 
-/// <inheritdoc/>
+/// <inheritdoc />
 [DnnAuthorize]
 public class ServicesController : DnnApiController
 {

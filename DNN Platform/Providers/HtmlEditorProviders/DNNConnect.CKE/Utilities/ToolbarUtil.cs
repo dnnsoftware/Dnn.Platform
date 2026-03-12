@@ -893,11 +893,13 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             bool createDefault = false;
 
+#pragma warning disable CS0618 // Type or member is obsolete
             // Import old ToolbarXmlFileName first if exist
             if (File.Exists(Path.Combine(homeDirPath, SettingConstants.ToolbarXmlFileName)))
             {
                 ImportOldToolbarXml(homeDirPath);
             }
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (!File.Exists(Path.Combine(homeDirPath, SettingConstants.ToolbarSetXmlFileName)))
             {
@@ -1013,15 +1015,16 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
         /// <summary>Imports the old toolbar XML.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
+        [Obsolete("Deprecated in DotNetNuke 7.0.0. Legacy XML file. Scheduled removal in v11.0.0.")]
         internal static void ImportOldToolbarXml(string homeDirPath)
         {
-            // Delete old xml file in Host Path
+            // Delete old XML file in Host Path
             if (File.Exists(Path.Combine(Globals.HostMapPath, SettingConstants.ToolbarXmlFileName)))
             {
                 File.Delete(Path.Combine(Globals.HostMapPath, SettingConstants.ToolbarXmlFileName));
             }
 
-            // Import old xml file
+            // Import old XML file
             var oldXmlPath = Path.Combine(homeDirPath, SettingConstants.ToolbarXmlFileName);
 
             var oldSerializer = new XmlSerializer(typeof(List<Toolbar>));

@@ -46,13 +46,13 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Unverified));
                 Assert.That(result.Notes.Count, Is.EqualTo(1));
                 Assert.That(result.Notes.First(), Is.EqualTo("An internal error occurred. See logs for details."));
-            });
+            }
         }
 
         [Test]
@@ -78,13 +78,13 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
                 Assert.That(result.Notes.Count(), Is.EqualTo(1));
                 Assert.That(result.Notes.First(), Does.Contain("* DotNetNuke.Modules.Mod3.dll"));
-            });
+            }
         }
 
         [Test]
@@ -106,12 +106,12 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Failure));
                 Assert.That(result.Notes.Count(), Is.EqualTo(1));
-            });
+            }
         }
 
         [Test]
@@ -129,12 +129,12 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
             // act
             var result = sut.Execute();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // assert
                 Assert.That(result.Severity, Is.EqualTo(SeverityEnum.Pass));
                 Assert.That(result.Notes.Count(), Is.EqualTo(0));
-            });
+            }
         }
     }
 }

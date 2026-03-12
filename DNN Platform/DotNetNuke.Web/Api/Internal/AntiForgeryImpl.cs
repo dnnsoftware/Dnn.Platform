@@ -7,10 +7,10 @@ namespace DotNetNuke.Web.Api.Internal
     /// <summary>The default <see cref="IAntiForgery"/> implementation.</summary>
     internal class AntiForgeryImpl : IAntiForgery
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string CookieName => System.Web.Helpers.AntiForgeryConfig.CookieName;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Validate(string cookieToken, string headerToken)
         {
             System.Web.Helpers.AntiForgery.Validate(cookieToken, headerToken);

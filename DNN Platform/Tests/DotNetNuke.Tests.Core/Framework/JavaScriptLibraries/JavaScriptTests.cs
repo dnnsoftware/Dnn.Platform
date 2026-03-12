@@ -269,12 +269,12 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Act
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.LatestMinor);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId], Is.Not.EqualTo(true));
                 Assert.That(this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId], Is.EqualTo(true));
-            });
+            }
         }
 
         [Test]
@@ -299,12 +299,12 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Act
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.LatestMinor);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId], Is.Not.EqualTo(true));
                 Assert.That(this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId], Is.EqualTo(true));
-            });
+            }
         }
 
         [Test]
@@ -367,12 +367,12 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Act
             JavaScript.RequestRegistration("Test", new Version(2, 2, 2), SpecificVersion.LatestMajor);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId], Is.Not.EqualTo(true));
                 Assert.That(this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId], Is.EqualTo(true));
-            });
+            }
         }
 
         [Test]
@@ -397,12 +397,12 @@ namespace DotNetNuke.Tests.Core.Framework.JavaScriptLibraries
             // Act
             JavaScript.RequestRegistration("test", new Version(2, 2, 2), SpecificVersion.LatestMajor);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(this.httpContext.Items[ScriptPrefix + lowerVersionJavaScriptLibraryId], Is.Not.EqualTo(true));
                 Assert.That(this.httpContext.Items[ScriptPrefix + higherVersionJavaScriptLibraryId], Is.EqualTo(true));
-            });
+            }
         }
 
         private void SetupJavaScriptLibraryController(params JavaScriptLibrary[] libraries)

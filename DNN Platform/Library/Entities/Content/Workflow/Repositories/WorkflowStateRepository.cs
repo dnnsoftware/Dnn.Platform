@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -16,41 +17,51 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
     using DotNetNuke.Entities.Content.Workflow.Exceptions;
     using DotNetNuke.Framework;
 
-    internal class WorkflowStateRepository : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The default <see cref="IWorkflowStateRepository"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    internal class WorkflowStateRepository(IHostSettings hostSettings)
+        : ServiceLocator<IWorkflowStateRepository, WorkflowStateRepository>, IWorkflowStateRepository
     {
-        /// <inheritdoc/>
-        public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStateRepository"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public WorkflowStateRepository()
+            : this(null)
         {
-            using (var context = DataContext.Instance())
-            {
-                var rep = context.GetRepository<WorkflowState>();
-                return rep.Find("WHERE WorkflowID = @0 ORDER BY [Order] ASC", workflowId);
-            }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
+        public IEnumerable<WorkflowState> GetWorkflowStates(int workflowId)
+        {
+            using var context = DataContext.Instance(this.hostSettings);
+            var rep = context.GetRepository<WorkflowState>();
+            return rep.Find("WHERE WorkflowID = @0 ORDER BY [Order] ASC", workflowId);
+        }
+
+        /// <inheritdoc />
         public WorkflowState GetWorkflowStateByID(int stateId)
         {
             return CBO.GetCachedObject<WorkflowState>(
-                new CacheItemArgs(
-                GetWorkflowStateKey(stateId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                this.hostSettings,
+                new CacheItemArgs(GetWorkflowStateKey(stateId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ =>
                 {
-                    using (var context = DataContext.Instance())
-                    {
-                        var rep = context.GetRepository<WorkflowState>();
-                        return rep.GetById(stateId);
-                    }
+                    using var context = DataContext.Instance(this.hostSettings);
+                    var rep = context.GetRepository<WorkflowState>();
+                    return rep.GetById(stateId);
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
             Requires.PropertyNotNullOrEmpty("state", "StateName", state.StateName);
 
-            using (var context = DataContext.Instance())
+            using (var context = DataContext.Instance(this.hostSettings))
             {
                 var rep = context.GetRepository<WorkflowState>();
                 if (DoesExistWorkflowState(state, rep))
@@ -61,17 +72,17 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(state);
             }
 
-            CacheWorkflowState(state);
+            CacheWorkflowState(this.hostSettings, state);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
             Requires.PropertyNotNegative("state", "StateID", state.StateID);
             Requires.PropertyNotNullOrEmpty("state", "StateName", state.StateName);
 
-            using (var context = DataContext.Instance())
+            using (var context = DataContext.Instance(this.hostSettings))
             {
                 var rep = context.GetRepository<WorkflowState>();
                 if (DoesExistWorkflowState(state, rep))
@@ -84,16 +95,16 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
             DataCache.RemoveCache(GetWorkflowStateKey(state.StateID));
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
-            CacheWorkflowState(state);
+            CacheWorkflowState(this.hostSettings, state);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteWorkflowState(WorkflowState state)
         {
             Requires.NotNull("state", state);
             Requires.PropertyNotNegative("state", "StateID", state.StateID);
 
-            using (var context = DataContext.Instance())
+            using (var context = DataContext.Instance(this.hostSettings))
             {
                 var rep = context.GetRepository<WorkflowState>();
                 rep.Delete(state);
@@ -103,10 +114,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             DataCache.RemoveCache(WorkflowRepository.GetWorkflowItemKey(state.WorkflowID));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowStateRepository> GetFactory()
         {
-            return () => new WorkflowStateRepository();
+            return () => ActivatorUtilities.GetServiceOrCreateInstance<WorkflowStateRepository>(Globals.DependencyProvider);
         }
 
         private static bool DoesExistWorkflowState(WorkflowState state, IRepository<WorkflowState> rep)
@@ -124,11 +135,12 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return string.Format(CultureInfo.InvariantCulture, DataCache.ContentWorkflowStateCacheKey, stateId);
         }
 
-        private static void CacheWorkflowState(WorkflowState state)
+        private static void CacheWorkflowState(IHostSettings hostSettings, WorkflowState state)
         {
             if (state.StateID > 0)
             {
                 CBO.GetCachedObject<WorkflowState>(
+                    hostSettings,
                     new CacheItemArgs(GetWorkflowStateKey(state.StateID), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                     _ => state);
             }

@@ -20,13 +20,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TabVersion GetTabVersion(int tabVersionId, int tabId, bool ignoreCache = false)
         {
             return this.GetTabVersions(tabId, ignoreCache).SingleOrDefault(tv => tv.TabVersionId == tabVersionId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<TabVersion> GetTabVersions(int tabId, bool ignoreCache = false)
         {
             // if we are not using the cache, then remove from cache and re-add loaded items when needed later
@@ -47,20 +47,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return tabVersions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveTabVersion(TabVersion tabVersion)
         {
             this.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID)
         {
             this.SaveTabVersion(tabVersion, createdByUserID, createdByUserID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void SaveTabVersion(TabVersion tabVersion, int createdByUserID, int modifiedByUserID)
         {
@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             ClearCache(tabVersion.TabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public TabVersion CreateTabVersion(int tabId, int createdByUserID, bool isPublished = false)
         {
@@ -91,20 +91,20 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             return this.GetTabVersion(tabVersionId, tabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteTabVersion(int tabId, int tabVersionId)
         {
             Provider.DeleteTabVersion(tabVersionId);
             ClearCache(tabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteTabVersionDetailByModule(int moduleId)
         {
             Provider.DeleteTabVersionDetailByModule(moduleId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITabVersionController> GetFactory()
         {
             return () => new TabVersionController();

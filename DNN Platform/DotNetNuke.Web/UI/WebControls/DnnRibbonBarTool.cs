@@ -10,11 +10,12 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -22,13 +23,21 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Log.EventLog;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control for a tool in a <see cref="DnnRibbonBar"/>.</summary>
+    /// <param name="navigationManager">A navigation manager.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="eventLogger">The event logger.</param>
     [ParseChildren(true)]
-    public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
+    public class DnnRibbonBarTool(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IHostSettings hostSettings, IEventLogger eventLogger)
+        : Control, IDnnRibbonBarTool
     {
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         private IDictionary<string, RibbonBarToolInfo> allTools;
         private DnnTextLink dnnLink;
         private DnnTextButton dnnLinkButton;
@@ -42,9 +51,20 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarTool"/> class.</summary>
         /// <param name="navigationManager">A navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnRibbonBarTool(INavigationManager navigationManager)
+            : this(navigationManager, null, null)
         {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnRibbonBarTool"/> class.</summary>
+        /// <param name="navigationManager">A navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public DnnRibbonBarTool(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : this(navigationManager, appStatus, hostSettings, null)
+        {
         }
 
         /// <summary>Gets or sets the tool info.</summary>
@@ -69,60 +89,32 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets the URL.</summary>
         public virtual string NavigateUrl
         {
-            get
-            {
-                return Utilities.GetViewStateAsString(this.ViewState["NavigateUrl"], Null.NullString);
-            }
-
-            set
-            {
-                this.ViewState["NavigateUrl"] = value;
-            }
+            get => Utilities.GetViewStateAsString(this.ViewState["NavigateUrl"], Null.NullString);
+            set => this.ViewState["NavigateUrl"] = value;
         }
 
         /// <summary>Gets or sets the CSS class.</summary>
         public virtual string ToolCssClass
         {
-            get
-            {
-                return Utilities.GetViewStateAsString(this.ViewState["ToolCssClass"], Null.NullString);
-            }
-
-            set
-            {
-                this.ViewState["ToolCssClass"] = value;
-            }
+            get => Utilities.GetViewStateAsString(this.ViewState["ToolCssClass"], Null.NullString);
+            set => this.ViewState["ToolCssClass"] = value;
         }
 
         /// <summary>Gets or sets the text.</summary>
         public virtual string Text
         {
-            get
-            {
-                return Utilities.GetViewStateAsString(this.ViewState["Text"], Null.NullString);
-            }
-
-            set
-            {
-                this.ViewState["Text"] = value;
-            }
+            get => Utilities.GetViewStateAsString(this.ViewState["Text"], Null.NullString);
+            set => this.ViewState["Text"] = value;
         }
 
         /// <summary>Gets or sets the tooltip text.</summary>
         public virtual string ToolTip
         {
-            get
-            {
-                return Utilities.GetViewStateAsString(this.ViewState["ToolTip"], Null.NullString);
-            }
-
-            set
-            {
-                this.ViewState["ToolTip"] = value;
-            }
+            get => Utilities.GetViewStateAsString(this.ViewState["ToolTip"], Null.NullString);
+            set => this.ViewState["ToolTip"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string ToolName
         {
             get
@@ -144,7 +136,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>Gets the navigation manager.</summary>
-        protected INavigationManager NavigationManager { get; }
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <summary>Gets the link button.</summary>
         protected virtual DnnTextButton DnnLinkButton
@@ -154,7 +146,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (this.dnnLinkButton == null)
                 {
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
-                    this.dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
+                    this.dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn", };
                 }
 
                 return this.dnnLinkButton;
@@ -162,62 +154,44 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>Gets the link.</summary>
-        protected virtual DnnTextLink DnnLink
-        {
-            get
-            {
-                if (this.dnnLink == null)
-                {
-                    this.dnnLink = new DnnTextLink();
-                }
-
-                return this.dnnLink;
-            }
-        }
+        protected virtual DnnTextLink DnnLink => this.dnnLink ??= new DnnTextLink();
 
         /// <summary>Gets the tools.</summary>
-        protected virtual IDictionary<string, RibbonBarToolInfo> AllTools
-        {
-            get
+        protected virtual IDictionary<string, RibbonBarToolInfo> AllTools =>
+            this.allTools ??= new Dictionary<string, RibbonBarToolInfo>
             {
-                if (this.allTools == null)
+                // Framework
                 {
-                    this.allTools = new Dictionary<string, RibbonBarToolInfo>
-                                    {
-                                        // Framework
-                                        { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, string.Empty, string.Empty, string.Empty, true) },
-                                        { "CopyPage", new RibbonBarToolInfo("CopyPage", false, false, string.Empty, string.Empty, string.Empty, true) },
-                                        { "DeletePage", new RibbonBarToolInfo("DeletePage", false, true, string.Empty, string.Empty, string.Empty, true) },
-                                        { "ImportPage", new RibbonBarToolInfo("ImportPage", false, false, string.Empty, string.Empty, string.Empty, true) },
-                                        { "ExportPage", new RibbonBarToolInfo("ExportPage", false, false, string.Empty, string.Empty, string.Empty, true) },
-                                        { "NewPage", new RibbonBarToolInfo("NewPage", false, false, string.Empty, string.Empty, string.Empty, true) },
-                                        { "CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, string.Empty, string.Empty, string.Empty, false) },
-                                        { "CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, string.Empty, string.Empty, string.Empty, false) },
-                                        { "Help", new RibbonBarToolInfo("Help", false, false, "_Blank", string.Empty, string.Empty, false) },
+                    "PageSettings",
+                    new RibbonBarToolInfo("PageSettings", false, false, string.Empty, string.Empty, string.Empty, true)
+                },
+                { "CopyPage", new RibbonBarToolInfo("CopyPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                { "DeletePage", new RibbonBarToolInfo("DeletePage", false, true, string.Empty, string.Empty, string.Empty, true) },
+                { "ImportPage", new RibbonBarToolInfo("ImportPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                { "ExportPage", new RibbonBarToolInfo("ExportPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                { "NewPage", new RibbonBarToolInfo("NewPage", false, false, string.Empty, string.Empty, string.Empty, true) },
+                {
+                    "CopyPermissionsToChildren",
+                    new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, string.Empty, string.Empty, string.Empty, false)
+                },
+                {
+                    "CopyDesignToChildren",
+                    new RibbonBarToolInfo("CopyDesignToChildren", false, true, string.Empty, string.Empty, string.Empty, false)
+                },
+                { "Help", new RibbonBarToolInfo("Help", false, false, "_Blank", string.Empty, string.Empty, false) },
 
-                                        // Modules On Tabs
-                                        { "Console", new RibbonBarToolInfo("Console", false, false, string.Empty, "Console", string.Empty, false) },
-                                        { "HostConsole", new RibbonBarToolInfo("HostConsole", true, false, string.Empty, "Console", string.Empty, false) },
-                                        { "UploadFile", new RibbonBarToolInfo("UploadFile", false, false, string.Empty, string.Empty, "WebUpload", true) },
-                                        { "NewRole", new RibbonBarToolInfo("NewRole", false, false, string.Empty, "Security Roles", "Edit", true) },
-                                        { "NewUser", new RibbonBarToolInfo("NewUser", false, false, string.Empty, "User Accounts", "Edit", true) },
-                                        { "ClearCache", new RibbonBarToolInfo("ClearCache", true, true, string.Empty, string.Empty, string.Empty, false) },
-                                        { "RecycleApp", new RibbonBarToolInfo("RecycleApp", true, true, string.Empty, string.Empty, string.Empty, false) },
-                                    };
-                }
-
-                return this.allTools;
-            }
-        }
+                // Modules On Tabs
+                { "Console", new RibbonBarToolInfo("Console", false, false, string.Empty, "Console", string.Empty, false) },
+                { "HostConsole", new RibbonBarToolInfo("HostConsole", true, false, string.Empty, "Console", string.Empty, false) },
+                { "UploadFile", new RibbonBarToolInfo("UploadFile", false, false, string.Empty, string.Empty, "WebUpload", true) },
+                { "NewRole", new RibbonBarToolInfo("NewRole", false, false, string.Empty, "Security Roles", "Edit", true) },
+                { "NewUser", new RibbonBarToolInfo("NewUser", false, false, string.Empty, "User Accounts", "Edit", true) },
+                { "ClearCache", new RibbonBarToolInfo("ClearCache", true, true, string.Empty, string.Empty, string.Empty, false) },
+                { "RecycleApp", new RibbonBarToolInfo("RecycleApp", true, true, string.Empty, string.Empty, string.Empty, false) },
+            };
 
         /// <summary>Gets the current portal settings.</summary>
-        private static PortalSettings PortalSettings
-        {
-            get
-            {
-                return PortalSettings.Current;
-            }
-        }
+        private static PortalSettings PortalSettings => PortalSettings.Current;
 
         /// <summary>Handles a click event on the tool.</summary>
         /// <param name="sender">The sender.</param>
@@ -238,7 +212,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 case "CopyPermissionsToChildren":
                     if (this.HasToolPermissions("CopyPermissionsToChildren"))
                     {
-                        TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
+                        TabController.CopyPermissionsToChildren(this.eventLogger, PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
 
@@ -246,7 +220,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 case "CopyDesignToChildren":
                     if (this.HasToolPermissions("CopyDesignToChildren"))
                     {
-                        TabController.CopyDesignToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.SkinSrc, PortalSettings.ActiveTab.ContainerSrc);
+                        TabController.CopyDesignToChildren(this.eventLogger, PortalSettings.ActiveTab, PortalSettings.ActiveTab.SkinSrc, PortalSettings.ActiveTab.ContainerSrc);
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
 
@@ -255,7 +229,6 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (this.HasToolPermissions("ClearCache"))
                     {
                         this.ClearCache();
-                        ClientResourceManager.ClearCache();
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
 
@@ -271,7 +244,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
@@ -279,14 +252,14 @@ namespace DotNetNuke.Web.UI.WebControls
             this.Controls.Add(this.DnnLink);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.EnsureChildControls();
             this.DnnLinkButton.Click += this.ControlPanelTool_OnClick;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.ProcessTool();
@@ -443,7 +416,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     returnValue = TabPermissionController.CanAddPage();
                     break;
                 case "Help":
-                    returnValue = !string.IsNullOrEmpty(Host.HelpURL);
+                    returnValue = !string.IsNullOrEmpty(this.hostSettings.HelpUrl);
                     break;
                 default:
                     // if it has a module definition, look it up and check permissions
@@ -525,10 +498,10 @@ namespace DotNetNuke.Web.UI.WebControls
                     returnValue = TestableGlobals.Instance.NavigateURL("Tab");
                     break;
                 case "Help":
-                    if (!string.IsNullOrEmpty(Host.HelpURL))
+                    if (!string.IsNullOrEmpty(this.hostSettings.HelpUrl))
                     {
                         var version = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
-                        returnValue = TestableGlobals.Instance.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
+                        returnValue = TestableGlobals.Instance.FormatHelpUrl(this.hostSettings.HelpUrl, PortalSettings, "Home", version);
                     }
 
                     break;
@@ -594,32 +567,28 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             int portalId = this.ToolInfo.IsHostTool ? Null.NullInteger : PortalSettings.PortalId;
 
-            string strURL = string.Empty;
-
-            if (additionalParams == null)
-            {
-                additionalParams = new List<string>();
-            }
+            additionalParams ??= [];
 
             var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, this.ToolInfo.ModuleFriendlyName);
 
-            if (moduleInfo != null)
+            if (moduleInfo == null)
             {
-                bool isHostPage = portalId == Null.NullInteger;
-                if (!string.IsNullOrEmpty(this.ToolInfo.ControlKey))
-                {
-                    additionalParams.Insert(0, "mid=" + moduleInfo.ModuleID);
-                    if (this.ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
-                    {
-                        additionalParams.Add("popUp=true");
-                    }
-                }
-
-                string currentCulture = Thread.CurrentThread.CurrentCulture.Name;
-                strURL = this.NavigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, this.ToolInfo.ControlKey, currentCulture, additionalParams.ToArray());
+                return string.Empty;
             }
 
-            return strURL;
+            bool isHostPage = portalId == Null.NullInteger;
+            if (!string.IsNullOrEmpty(this.ToolInfo.ControlKey))
+            {
+                additionalParams.Insert(0, "mid=" + moduleInfo.ModuleID);
+                if (this.ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
+                {
+                    additionalParams.Add("popUp=true");
+                }
+            }
+
+            string currentCulture = Thread.CurrentThread.CurrentCulture.Name;
+
+            return this.NavigationManager.NavigateURL(moduleInfo.TabID, isHostPage, PortalSettings, this.ToolInfo.ControlKey, currentCulture, additionalParams.ToArray());
         }
 
         /// <summary>Gets a value indicating whether the current page has children.</summary>
@@ -653,15 +622,15 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Restarts the application.</summary>
         protected virtual void RestartApplication()
         {
-            var log = new LogInfo { BypassBuffering = true, LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+            var log = new LogInfo { BypassBuffering = true, LogTypeKey = nameof(EventLogType.HOST_ALERT), };
             log.AddProperty("Message", this.GetString("UserRestart"));
             LogController.Instance.AddLog(log);
-            Config.Touch();
+            Config.Touch(this.appStatus);
         }
 
-        private static ModuleInfo GetInstalledModule(int portalID, string friendlyName)
+        private static ModuleInfo GetInstalledModule(int portalId, string friendlyName)
         {
-            return ModuleController.Instance.GetModuleByDefinition(portalID, friendlyName);
+            return ModuleController.Instance.GetModuleByDefinition(portalId, friendlyName);
         }
     }
 }

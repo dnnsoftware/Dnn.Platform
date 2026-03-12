@@ -11,6 +11,7 @@
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Abstractions.Settings;
     using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
@@ -62,11 +63,12 @@
             const string UrlRewriteItemName = "UrlRewrite:OriginalUrl";
             ComponentFactory.Container = null;
             PortalController.ClearInstance();
-            var portalController = new PortalController(
-                Mock.Of<IBusinessControllerProvider>(),
-                Mock.Of<IHostSettings>(),
-                Mock.Of<IApplicationStatusInfo>(),
-                Mock.Of<IEventLogger>());
+
+            PortalController portalController;
+            using (_ = FakeServiceProvider.Setup(services => services.AddSingleton(Mock.Of<ICryptographyProvider>())))
+            {
+                portalController = new PortalController(Mock.Of<IBusinessControllerProvider>(), Mock.Of<IHostSettings>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IEventLogger>());
+            }
 
             using var serviceProvider = FakeServiceProvider.Setup(services =>
             {

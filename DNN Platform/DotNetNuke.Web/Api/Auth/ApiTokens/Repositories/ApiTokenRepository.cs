@@ -145,7 +145,7 @@ AND (CreatedByUserId=@2 OR @2=-1)
             return rep.Find(pageIndex, pageSize, sql, portalId, userId, (int)scope, apiKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SetApiTokenLastUsed(ApiTokenBase apiToken)
         {
             var sql = @"UPDATE {databaseOwner}{objectQualifier}ApiTokens

@@ -25,7 +25,7 @@ namespace Dnn.Modules.Console
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             try
@@ -97,7 +97,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             try
@@ -156,7 +156,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

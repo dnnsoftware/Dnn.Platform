@@ -24,7 +24,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
         private static readonly object LockAppStarted = new object();
         private static bool hasAppStarted;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
@@ -45,7 +45,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             EventsController.Instance.ApplicationEndEvent();

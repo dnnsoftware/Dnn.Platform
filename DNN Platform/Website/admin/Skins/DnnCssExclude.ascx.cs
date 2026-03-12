@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         public string Name { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

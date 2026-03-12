@@ -26,7 +26,7 @@ namespace Dnn.PersonaBar.Extensions.Components
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public ParseResultDto ParsePackage(PortalSettings portalSettings, UserInfo user, string filePath, Stream stream)
         {
@@ -91,7 +91,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return parseResult;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public InstallResultDto InstallPackage(PortalSettings portalSettings, UserInfo user, string legacySkin, string filePath, Stream stream, bool isPortalPackage = false)
         {
@@ -158,7 +158,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return installResult;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IInstallController> GetFactory()
         {
             return () => new InstallController();

@@ -13,7 +13,7 @@ namespace Dnn.PersonaBar.Library
     /// <summary>Register services used by the Persona Bar library.</summary>
     internal sealed class Startup : IDnnStartup
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IPersonaBarContainer, PersonaBarContainer>();

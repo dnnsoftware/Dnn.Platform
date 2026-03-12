@@ -15,7 +15,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(SetVersion))]
     public sealed class SetPackageVersions : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             if (context.Settings.Version == "off")
@@ -32,15 +32,15 @@ namespace DotNetNuke.Build.Tasks
             // Set all package.json in Admin Experience to the current version and to consume the current (local) version of dnn-react-common.
             foreach (var file in packages)
             {
-                context.Information($"Updating {file} to version {context.Version.FullSemVer}");
+                context.Information($"Updating {file} to version {context.Version.MajorMinorPatch}");
                 context.ReplaceRegexInFiles(
                     file.ToString(),
                     @"""version"": "".*""",
-                    $@"""version"": ""{context.Version.FullSemVer}""");
+                    $@"""version"": ""{context.Version.MajorMinorPatch}""");
                 context.ReplaceRegexInFiles(
                     file.ToString(),
                     @"""@dnnsoftware\/dnn-react-common"": "".*""",
-                    $@"""@dnnsoftware/dnn-react-common"": ""{context.Version.FullSemVer}""");
+                    $@"""@dnnsoftware/dnn-react-common"": ""{context.Version.MajorMinorPatch}""");
             }
         }
     }

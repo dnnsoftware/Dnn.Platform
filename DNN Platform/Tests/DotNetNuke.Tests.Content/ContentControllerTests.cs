@@ -289,13 +289,13 @@ namespace DotNetNuke.Tests.Content
             // Act
             ContentItem content = controller.GetContentItem(Constants.CONTENT_ValidContentItemId);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(content.ContentItemId, Is.EqualTo(Constants.CONTENT_ValidContentItemId));
                 Assert.That(content.Content, Is.EqualTo(ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId)));
                 Assert.That(content.ContentKey, Is.EqualTo(ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId)));
-            });
+            }
         }
 
         [Test]
@@ -397,11 +397,11 @@ namespace DotNetNuke.Tests.Content
             var negative = controller.GetContentItemsByModuleId(-1).ToArray();
             var positive = controller.GetContentItemsByModuleId(0).ToArray();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(negative, Has.Length.EqualTo(10));
                 Assert.That(positive, Has.Length.EqualTo(1));
-            });
+            }
         }
 
         [Test]

@@ -5,9 +5,11 @@ namespace DotNetNuke
 {
     using System;
     using System.Linq;
+    using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Pages;
@@ -18,12 +20,16 @@ namespace DotNetNuke
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Taxonomy;
+    using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
@@ -33,6 +39,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
@@ -40,7 +47,9 @@ namespace DotNetNuke
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.FileSystem;
+    using DotNetNuke.Services.FileSystem.Internal;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Journal;
@@ -50,14 +59,18 @@ namespace DotNetNuke
     using DotNetNuke.Services.Mobile;
     using DotNetNuke.Services.Pages;
     using DotNetNuke.Services.Personalization;
+    using DotNetNuke.Services.Registration;
     using DotNetNuke.Services.Search.Controllers;
     using DotNetNuke.Services.Search.Internals;
+    using DotNetNuke.Services.Social.Subscriptions;
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Modules.Html5;
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
+
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
     /// <inheritdoc />
     public class Startup : IDnnStartup
@@ -101,7 +114,9 @@ namespace DotNetNuke
             services.AddTransient<IPortalTemplateController, PortalTemplateController>();
             services.AddTransient<ITabVersionBuilder, TabVersionBuilder>();
             services.AddTransient<ISearchController, SearchControllerImpl>();
-            services.AddTransient<IFolderMappingController, FolderMappingController>(_ => new FolderMappingController());
+            services.AddTransient<IFolderMappingController, FolderMappingController>(serviceProvider => new FolderMappingController(serviceProvider.GetRequiredService<IHostSettings>()));
+            services.AddTransient<IInternalSearchController, InternalSearchControllerImpl>(serviceProvider => new InternalSearchControllerImpl(serviceProvider.GetRequiredService<IHostSettingsService>(), serviceProvider.GetRequiredService<IHostSettings>(), serviceProvider));
+            services.AddTransient<IServicesFramework, ServicesFrameworkImpl>(ActivatorUtilities.GetServiceOrCreateInstance<ServicesFrameworkImpl>);
 
             // TODO: LocalizationProvider can be overridden via the ComponentFactory, need to be able to get an instance registered via ComponentFactory without creating a dependency loop
             services.AddTransient<ILocalizationProvider, LocalizationProvider>();
@@ -118,8 +133,16 @@ namespace DotNetNuke
             services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
             services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
             services.AddTransient<IPortalSettingsController, PortalSettingsController>();
+#pragma warning disable CS0618 // Type or member is obsolete
             services.AddTransient<IPortalAliasController, PortalAliasController>();
+#pragma warning restore CS0618 // Type or member is obsolete
             services.AddTransient<IPortalGroupController, PortalGroupController>();
+            services.AddTransient<DotNetNuke.Entities.Portals.Data.IDataService, DotNetNuke.Entities.Portals.Data.DataService>();
+            services.AddTransient<DotNetNuke.Entities.Content.Data.IDataService, DotNetNuke.Entities.Content.Data.DataService>();
+            services.AddTransient<DotNetNuke.Entities.Users.Social.Data.IDataService, DotNetNuke.Entities.Users.Social.Data.DataService>();
+            services.AddTransient<DotNetNuke.Services.Social.Notifications.Data.IDataService, DotNetNuke.Services.Social.Notifications.Data.DataService>();
+            services.AddTransient<DotNetNuke.Services.Social.Messaging.Data.IDataService, DotNetNuke.Services.Social.Messaging.Data.DataService>();
+            services.AddTransient<ISubscriptionTypeController, SubscriptionTypeController>();
             services.AddTransient<ILocaleController, LocaleController>();
             services.AddTransient<IUserRequestIPAddressController, UserRequestIPAddressController>();
             services.AddTransient<IRoleController, RoleController>();
@@ -130,18 +153,51 @@ namespace DotNetNuke
             services.AddTransient<IJournalDataService, JournalDataServiceImpl>();
             services.AddTransient<IFileContentTypeManager, FileContentTypeManager>();
             services.AddTransient<ISearchHelper, SearchHelperImpl>();
+            services.AddTransient<IFile, FileWrapper>();
+            services.AddTransient<IDirectory, DirectoryWrapper>();
+            services.AddTransient<ILogController, LogController>();
+            services.AddTransient<ITabPublishingController, TabPublishingController>();
+            services.AddTransient<IClientResourceSettings, ClientResourceSettings>();
+            services.AddTransient<IWorkflowEngine, WorkflowEngine>();
+            services.AddTransient<IWorkflowSecurity, WorkflowSecurity>();
+            services.AddTransient<IWorkflowManager, WorkflowManager>();
+            services.AddTransient<IWorkflowStateManager, WorkflowStateManager>();
+            services.AddTransient<ISystemWorkflowManager, SystemWorkflowManager>();
+            services.AddTransient<IContentController, ContentController>();
+            services.AddTransient<IContentTypeController, ContentTypeController>();
+            services.AddTransient<IVocabularyController, VocabularyController>();
+            services.AddTransient<ITermController, TermController>();
+            services.AddTransient<IScopeTypeController, ScopeTypeController>();
+            services.AddTransient<ITabModulesController, TabModulesController>();
+            services.AddTransient<IRegistrationProfileController, RegistrationProfileController>();
+            services.AddTransient<IFileSecurityController, FileSecurityController>();
+            services.AddTransient<IFileLockingController, FileLockingController>();
+            services.AddTransient<IFileDeletionController, FileDeletionController>();
+            services.AddTransient<IFileVersionController, FileVersionController>();
+            services.AddTransient<IFolderPermissionController, FolderPermissionController>();
+            services.AddTransient<IPathUtils>(_ => new PathUtils());
+            if (CryptoConfig.AllowOnlyFipsAlgorithms)
+            {
+                services.AddTransient<ICryptographyProvider, FipsCompilanceCryptographyProvider>();
+            }
+            else
+            {
+                services.AddTransient<ICryptographyProvider, CoreCryptographyProvider>();
+            }
 
             services.AddTransient<IDataContext>(serviceProvider =>
             {
+                var hostSettings = serviceProvider.GetRequiredService<IHostSettings>();
                 var dataProvider = serviceProvider.GetRequiredService<DataProvider>();
                 var defaultConnectionStringName = dataProvider.Settings["connectionStringName"];
 
-                return new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+                return new PetaPocoDataContext(hostSettings, defaultConnectionStringName, dataProvider.ObjectQualifier);
             });
 
             services.AddTransient<ModuleInjectionManager>();
             services.AddTransient<PersonalizationController>();
-            services.AddTransient(_ => PortalSecurity.Instance);
+            services.AddTransient<PortalSecurity>();
+            services.AddTransient<ListController>();
             RegisterModuleInjectionFilters(services);
         }
 

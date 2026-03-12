@@ -25,12 +25,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new BasicAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Basic"));
                 Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Is.EqualTo("realm=\"DNNAPI\""));
-            });
+            }
         }
 
         [Test]
@@ -60,12 +60,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new BasicAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Basic"));
                 Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Is.EqualTo("realm=\"DNNAPI\""));
-            });
+            }
         }
 
         [Test]
@@ -78,12 +78,12 @@ namespace DotNetNuke.Tests.Web.Api
             var handler = new BasicAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, CancellationToken.None);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(response.Headers.WwwAuthenticate.First().Scheme, Is.EqualTo("Basic"));
                 Assert.That(response.Headers.WwwAuthenticate.First().Parameter, Is.EqualTo("realm=\"DNNAPI\""));
-            });
+            }
         }
 
         // todo unit test actual authentication code

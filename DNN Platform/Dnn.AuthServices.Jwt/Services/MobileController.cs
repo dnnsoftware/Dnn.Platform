@@ -16,18 +16,20 @@ namespace Dnn.AuthServices.Jwt.Services
     [DnnAuthorize(AuthTypes = "JWT")]
     public class MobileController : DnnApiController
     {
-        /// <summary>Clients that used JWT login should use this API call to logout and invalidate the tokens.</summary>
+        /// <summary>Clients that used JWT login should use this API call to log out and invalidate the tokens.</summary>
         /// <returns>An asynchronous HTTP response.</returns>
         [HttpGet]
         public IHttpActionResult Logout()
         {
-            return JwtController.Instance.LogoutUser(this.Request) ? (IHttpActionResult)this.Ok(new { success = true }) : this.Unauthorized();
+            return JwtController.Instance.LogoutUser(this.Request)
+                ? this.Ok(new { success = true, })
+                : this.Unauthorized();
         }
 
         /// <summary>
-        /// Clients that want to go cookie-less should call this API to login and receive
-        /// a Json Web Token (JWT) that allows them to authenticate the users to other
-        /// secure API endpoints afterwards.
+        /// Clients that want to go cookie-less should call this API to log in and receive
+        /// a JSON Web Token (JWT) that allows them to authenticate the users to other
+        /// secure API endpoints afterward.
         /// </summary>
         /// <remarks>AllowAnonymous attribute must stay in this call even though the
         /// DnnAuthorize attribute is present at a class level.</remarks>
@@ -67,7 +69,7 @@ namespace Dnn.AuthServices.Jwt.Services
         {
             var identity = System.Threading.Thread.CurrentPrincipal.Identity;
             var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}.";
-            return this.Ok(new { reply });
+            return this.Ok(new { reply, });
         }
 
         /// <summary>Tests a POST api method.</summary>
@@ -80,7 +82,7 @@ namespace Dnn.AuthServices.Jwt.Services
             var identity = System.Threading.Thread.CurrentPrincipal.Identity;
             var reply = $"Hello {identity.Name}! You are authenticated through {identity.AuthenticationType}." +
                         $" You said: ({something.Text})";
-            return this.Ok(new { reply });
+            return this.Ok(new { reply, });
         }
 
         private IHttpActionResult ReplyWith(LoginResultData result)

@@ -49,28 +49,28 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void RenderControl(HtmlTextWriter writer)
         {
             this.EnsureValue();
             base.RenderControl(writer);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object SaveViewState()
         {
             this.EnsureValue();
             return base.SaveViewState();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadViewState(object savedState)
         {
             base.LoadViewState(savedState);
             this.SetTypedValue();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             var controlsStateChanged = base.LoadPostData(postDataKey, postCollection);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return controlsStateChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void TrackViewState()
         {
             this.EnsureValue();

@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.Razor
             this.razorScriptFile = scriptFile;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions
         {
             get
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.Razor
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

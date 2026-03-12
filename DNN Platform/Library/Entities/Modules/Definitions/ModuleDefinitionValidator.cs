@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             return retValue;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Validate(Stream xmlStream)
         {
             this.SchemaSet.Add(string.Empty, this.GetDnnSchemaPath(xmlStream));

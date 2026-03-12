@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Maintenance.Shims
 {
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Entities.Modules;
 
     /// <summary>
@@ -12,10 +13,19 @@ namespace DotNetNuke.Maintenance.Shims
     /// </summary>
     internal sealed class DesktopModuleControllerShim : IDesktopModuleController
     {
-        /// <inheritdoc/>
-        public DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
+        private readonly IHostSettings hostSettings;
+
+        /// <summary>Initializes a new instance of the <see cref="DesktopModuleControllerShim"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public DesktopModuleControllerShim(IHostSettings hostSettings)
         {
-            return DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalID);
+            this.hostSettings = hostSettings;
+        }
+
+        /// <inheritdoc />
+        public DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalId)
+        {
+            return DesktopModuleController.GetDesktopModuleByModuleName(this.hostSettings, moduleName, portalId);
         }
     }
 }

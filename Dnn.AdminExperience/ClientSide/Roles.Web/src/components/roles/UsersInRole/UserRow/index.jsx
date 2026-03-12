@@ -6,7 +6,7 @@ import { GridCell, DatePicker, IconButton }  from "@dnnsoftware/dnn-react-common
 import util from "../../../../utils";
 import resx from "../../../../resources";
 import { roleUsers as RoleUsersActions } from "../../../../actions";
-import XIcon from "../../../../img/common/x.svg";
+import XIcon from "../../../../img/common/x.svg?react";
 
 class UserRow extends Component {
 

@@ -58,7 +58,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.pagesController = pagesController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private string Title { get; set; }
@@ -75,7 +75,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private bool? Visible { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.ParentId = this.GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, false, true);
@@ -99,7 +99,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

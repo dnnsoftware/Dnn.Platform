@@ -18,7 +18,7 @@ namespace DotNetNuke.ComponentModel
             this.instance = instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Name
         {
             get
@@ -27,7 +27,7 @@ namespace DotNetNuke.ComponentModel
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public object BuildComponent()
         {
             return this.instance;

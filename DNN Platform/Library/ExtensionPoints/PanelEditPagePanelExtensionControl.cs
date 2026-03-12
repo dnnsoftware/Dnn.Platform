@@ -13,7 +13,7 @@ namespace DotNetNuke.ExtensionPoints
 
         public string Text { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void RenderContents(HtmlTextWriter op)
         {

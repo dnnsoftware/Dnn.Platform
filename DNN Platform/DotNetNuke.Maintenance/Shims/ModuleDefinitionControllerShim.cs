@@ -14,7 +14,7 @@ namespace DotNetNuke.Maintenance.Shims
     /// </summary>
     internal sealed class ModuleDefinitionControllerShim : IModuleDefinitionController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)
         {
             return ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleID);

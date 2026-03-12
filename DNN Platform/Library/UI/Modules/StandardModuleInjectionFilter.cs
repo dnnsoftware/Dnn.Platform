@@ -12,7 +12,7 @@ namespace DotNetNuke.UI.Modules
 
     public class StandardModuleInjectionFilter : IModuleInjectionFilter
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool CanInjectModule(ModuleInfo module, PortalSettings portalSettings)
         {
             return ModulePermissionController.CanViewModule(module)

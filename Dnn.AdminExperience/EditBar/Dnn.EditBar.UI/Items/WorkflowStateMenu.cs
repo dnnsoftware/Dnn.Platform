@@ -7,28 +7,42 @@ namespace Dnn.EditBar.UI.Items
     using System;
     using System.Linq;
 
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
+
+    /// <summary>A <see cref="WorkflowBaseMenuItem"/> for a workflow state menu item..</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
     [Serializable]
-    public class WorkflowStateMenu : WorkflowBaseMenuItem
+    public class WorkflowStateMenu(IContentController contentController, IWorkflowEngine workflowEngine)
+        : WorkflowBaseMenuItem(contentController, workflowEngine)
     {
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="WorkflowStateMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        public WorkflowStateMenu()
+            : this(null, null)
+        {
+        }
+
+        /// <inheritdoc />
         public override string Name { get; } = "WorkflowState";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Text => this.Workflow != null ? $"<small>{this.Workflow.WorkflowName}:</small><br>{this.RenderStates()}" : string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template { get; } = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent { get; } = Library.Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader { get; } = "WorkflowState";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order { get; } = 77;
 
         // render list of workflow states from first state to current workflow state

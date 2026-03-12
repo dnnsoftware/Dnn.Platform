@@ -14,19 +14,19 @@ namespace Dnn.PersonaBar.SqlConsole.MenuControllers
     /// <summary>Controls the sql console menu.</summary>
     public class SqlConsoleMenuController : IMenuItemController
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateParameters(MenuItem menuItem)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Visible(MenuItem menuItem)
         {
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetSettings(MenuItem menuItem)
         {
             return null;

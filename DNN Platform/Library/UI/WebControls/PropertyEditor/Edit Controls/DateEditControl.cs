@@ -129,7 +129,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             this.EnsureChildControls();
@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -183,7 +183,7 @@ namespace DotNetNuke.UI.WebControls
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);

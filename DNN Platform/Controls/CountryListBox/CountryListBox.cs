@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue("")]
         public string LocalhostCountryCode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataBinding(EventArgs e)
         {
             bool isLocal = false;

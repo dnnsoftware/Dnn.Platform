@@ -23,7 +23,7 @@ namespace Dnn.Modules.TelerikRemoval
 
         private readonly IServiceProvider serviceProvider = GetServiceProvider();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             var option = this.GetHostSetting(DotNetNuke.Maintenance.Constants.TelerikUninstallOptionSettingKey);

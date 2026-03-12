@@ -12,7 +12,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     internal abstract class XmlStepBase : StepBase, IXmlStep
     {
         private readonly IApplicationStatusInfo applicationStatusInfo;
@@ -31,14 +31,14 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
                 throw new ArgumentNullException(nameof(applicationStatusInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [Required]
         public virtual string RelativeFilePath { get; set; }
 
         /// <summary>Gets the <see cref="XmlNamespaceManager"/> instance associated with the XML document.</summary>
         protected XmlNamespaceManager NamespaceManager { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ExecuteInternal()
         {
             var doc = new XmlDocument { PreserveWhitespace = true };

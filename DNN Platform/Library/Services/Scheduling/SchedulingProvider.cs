@@ -134,10 +134,10 @@ namespace DotNetNuke.Services.Scheduling
 
                 MaxThreads = value;
 
-                // if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
-                // {
-                //    value = 60;
-                // }
+                ////if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                ////{
+                ////   value = 60;
+                ////}
                 if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
                 {
                     DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;

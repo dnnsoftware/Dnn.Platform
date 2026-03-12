@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.Api.Internal
     using System.Web.Http.Tracing;
     using System.Web.Routing;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -30,33 +31,43 @@ namespace DotNetNuke.Web.Api.Internal
     public sealed class ServicesRoutingManager : IMapRoute, IRoutingManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
-        private readonly Dictionary<string, int> moduleUsage = new Dictionary<string, int>();
         private readonly IServiceProvider serviceProvider;
         private readonly RouteCollection routes;
         private readonly PortalAliasRouteManager portalAliasRouteManager;
 
         /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
         /// <param name="serviceProvider">The dependency injection container.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public ServicesRoutingManager(IServiceProvider serviceProvider)
-            : this(serviceProvider, RouteTable.Routes)
+            : this(serviceProvider, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
         /// <param name="serviceProvider">The dependency injection container.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        public ServicesRoutingManager(IServiceProvider serviceProvider, IPortalAliasService portalAliasService)
+            : this(serviceProvider, portalAliasService, RouteTable.Routes)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ServicesRoutingManager"/> class.</summary>
+        /// <param name="serviceProvider">The dependency injection container.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="routes">The route collection.</param>
-        internal ServicesRoutingManager(IServiceProvider serviceProvider, RouteCollection routes)
+        internal ServicesRoutingManager(IServiceProvider serviceProvider, IPortalAliasService portalAliasService, RouteCollection routes)
         {
             this.serviceProvider = serviceProvider;
             this.routes = routes;
-            this.portalAliasRouteManager = new PortalAliasRouteManager();
+            portalAliasService ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+            this.portalAliasRouteManager = new PortalAliasRouteManager(portalAliasService);
             this.TypeLocator = new TypeLocator();
         }
 
         /// <summary>Gets or sets the type locator.</summary>
         internal ITypeLocator TypeLocator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
             if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
@@ -252,7 +263,6 @@ namespace DotNetNuke.Web.Api.Internal
             RegisterSystemRoutes();
             this.ClearCachedRouteData();
 
-            this.moduleUsage.Clear();
             using var serviceScope = Globals.DependencyProvider.CreateScope();
             foreach (var routeMapper in this.GetServiceRouteMappers(serviceScope.ServiceProvider))
             {

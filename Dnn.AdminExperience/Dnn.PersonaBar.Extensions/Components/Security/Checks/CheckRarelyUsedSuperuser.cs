@@ -10,13 +10,13 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
     public class CheckRarelyUsedSuperuser : IAuditCheck
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string Id => "CheckRarelyUsedSuperuser";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool LazyLoad => false;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CheckResult Execute()
         {
             var result = new CheckResult(SeverityEnum.Unverified, this.Id);

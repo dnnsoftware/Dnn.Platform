@@ -435,7 +435,6 @@ declare global {
         new (): HTMLDnnRmFolderListElement;
     };
     interface HTMLDnnRmFolderListItemElementEventMap {
-        "dnnRmcontextMenuOpened": number;
         "dnnRmFolderListItemClicked": FolderTreeItem;
     }
     interface HTMLDnnRmFolderListItemElement extends Components.DnnRmFolderListItem, HTMLStencilElement {
@@ -762,10 +761,6 @@ declare namespace LocalJSX {
           * Fires when a folder is clicked.
          */
         "onDnnRmFolderListItemClicked"?: (event: DnnRmFolderListItemCustomEvent<FolderTreeItem>) => void;
-        /**
-          * Fires when a context menu is opened for this item. Emits the folder ID.
-         */
-        "onDnnRmcontextMenuOpened"?: (event: DnnRmFolderListItemCustomEvent<number>) => void;
         /**
           * The ID of the parent folder.
          */

@@ -24,9 +24,13 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The default <see cref="IAdminMenuController"/> implementation.</summary>
-    public class AdminMenuController : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class AdminMenuController(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+        : ServiceLocator<IAdminMenuController, AdminMenuController>, IAdminMenuController
     {
-        private readonly IApplicationStatusInfo appStatus;
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private Dictionary<string, IList<string>> knownPages;
 
         /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
@@ -38,12 +42,13 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
         /// <summary>Initializes a new instance of the <see cref="AdminMenuController"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AdminMenuController(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
         {
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreateLinkMenu(TabInfo tab)
         {
             if (!this.ValidateTab(tab))
@@ -82,7 +87,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteLinkMenu(TabInfo tab)
         {
             var portalId = tab.PortalID;
@@ -93,10 +98,10 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
             PersonaBarRepository.Instance.DeleteMenuItem(identifier);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IAdminMenuController> GetFactory()
         {
-            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IAdminMenuController>();
+            return () => Globals.DependencyProvider.GetRequiredService<IAdminMenuController>();
         }
 
         private bool ValidateTab(TabInfo tab)
@@ -118,7 +123,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
 
             if (!tab.IsSuperTab)
             {
-                var adminPage = TabController.GetTabByTabPath(portalId, "//Admin", string.Empty);
+                var adminPage = TabController.GetTabByTabPath(this.hostSettings, portalId, "//Admin", string.Empty);
                 if (adminPage == Null.NullInteger)
                 {
                     return false;

@@ -6,16 +6,45 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Profile;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Exceptions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which displays a user's profile.</summary>
     public partial class ViewProfile : UserModuleBase
     {
-        /// <inheritdoc/>
+        private readonly ICryptographyProvider cryptographyProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
+        public ViewProfile()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public ViewProfile(ICryptographyProvider cryptographyProvider)
+            : this(cryptographyProvider, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewProfile"/> class.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ViewProfile(ICryptographyProvider cryptographyProvider, ListController listController, IHostSettings hostSettings)
+            : base(listController, hostSettings)
+        {
+            this.cryptographyProvider = cryptographyProvider ?? this.DependencyProvider.GetRequiredService<ICryptographyProvider>();
+        }
+
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -23,14 +52,14 @@ namespace DotNetNuke.Modules.Admin.Users
             this.UserId = Null.NullInteger;
             if (this.Context.Request.QueryString["userticket"] != null)
             {
-                this.UserId = int.Parse(UrlUtils.DecryptParameter(this.Context.Request.QueryString["userticket"]));
+                this.UserId = int.Parse(UrlUtils.DecryptParameter(this.cryptographyProvider, this.Context.Request.QueryString["userticket"]));
             }
 
             this.ctlProfile.ID = "Profile";
             this.ctlProfile.UserId = this.UserId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -43,7 +72,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
 
                 this.ctlProfile.DataBind();
-                if (this.ctlProfile.UserProfile.ProfileProperties.Cast<ProfilePropertyDefinition>().Count(profProperty => profProperty.Visible) == 0)
+                if (!this.ctlProfile.UserProfile.ProfileProperties.Any(profProperty => profProperty.Visible))
                 {
                     this.lblNoProperties.Visible = true;
                 }

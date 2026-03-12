@@ -50,13 +50,13 @@ namespace DotNetNuke.Prompt
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<ICommand> GetCommands()
         {
             return this.CommandList().Values;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IConsoleCommand GetCommand(IServiceProvider serviceProvider, string commandName)
         {
             var allCommands = this.CommandList();
@@ -68,7 +68,7 @@ namespace DotNetNuke.Prompt
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ICommandHelp GetCommandHelp(IConsoleCommand consoleCommand)
         {
             var cacheKey = $"{consoleCommand.GetType().Name}-{System.Threading.Thread.CurrentThread.CurrentUICulture.Name}";
@@ -78,7 +78,7 @@ namespace DotNetNuke.Prompt
                 _ => GetCommandHelpInternal(consoleCommand));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ICommandRepository> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ICommandRepository>;

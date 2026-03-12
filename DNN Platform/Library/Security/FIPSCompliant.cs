@@ -60,31 +60,27 @@ namespace DotNetNuke.Security
             VerifyAesSettings(passPhrase, salt);
 
             byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
-            using (var aesProvider = new AesCryptoServiceProvider())
-            {
-                var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations, hashAlgorithm);
-                byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
-                byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
-                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+            using var aesProvider = new AesCryptoServiceProvider();
+            using var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations, hashAlgorithm);
+            byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
+            byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
+            byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
-                aesProvider.KeySize = 256;
-                aesProvider.Padding = PaddingMode.ISO10126;
-                aesProvider.Mode = CipherMode.CBC;
+            aesProvider.KeySize = 256;
+            aesProvider.Padding = PaddingMode.ISO10126;
+            aesProvider.Mode = CipherMode.CBC;
 
-                ICryptoTransform encryptor = aesProvider.CreateEncryptor(derivedKey, derivedInitVector);
-                using (var memStream = new MemoryStream())
-                using (var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
-                {
-                    cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-                    cryptoStream.FlushFinalBlock();
-                    byte[] cipherTextBytes = memStream.ToArray();
+            using var encryptor = aesProvider.CreateEncryptor(derivedKey, derivedInitVector);
+            using var memStream = new MemoryStream();
+            using var cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write);
+            cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+            cryptoStream.FlushFinalBlock();
+            byte[] cipherTextBytes = memStream.ToArray();
 
-                    memStream.Close();
-                    cryptoStream.Close();
+            memStream.Close();
+            cryptoStream.Close();
 
-                    return Convert.ToBase64String(cipherTextBytes);
-                }
-            }
+            return Convert.ToBase64String(cipherTextBytes);
         }
 
         /// <summary>uses the AES FIPS-140 compliant algorithm to encrypt a string.</summary>
@@ -110,8 +106,8 @@ namespace DotNetNuke.Security
             VerifyAesSettings(passPhrase, salt);
 
             byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
-            var aesProvider = new AesCryptoServiceProvider();
-            var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations, hashAlgorithm);
+            using var aesProvider = new AesCryptoServiceProvider();
+            using var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations, hashAlgorithm);
             byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
             byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
             byte[] cipherTextBytes = Convert.FromBase64String(encryptedText);
@@ -120,17 +116,15 @@ namespace DotNetNuke.Security
             aesProvider.Padding = PaddingMode.ISO10126;
             aesProvider.Mode = CipherMode.CBC;
 
-            ICryptoTransform decryptor = aesProvider.CreateDecryptor(derivedKey, derivedInitVector);
-            using (var memStream = new MemoryStream(cipherTextBytes))
-            using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
-            {
-                var plainTextBytes = new byte[cipherTextBytes.Length];
-                int byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+            using var decryptor = aesProvider.CreateDecryptor(derivedKey, derivedInitVector);
+            using var memStream = new MemoryStream(cipherTextBytes);
+            using var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read);
+            var plainTextBytes = new byte[cipherTextBytes.Length];
+            int byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
 
-                memStream.Close();
-                cryptoStream.Close();
-                return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
-            }
+            memStream.Close();
+            cryptoStream.Close();
+            return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
         }
 
         private static void VerifyAesSettings(string passPhrase, string salt)

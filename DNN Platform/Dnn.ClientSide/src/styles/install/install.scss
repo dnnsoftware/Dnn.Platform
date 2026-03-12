@@ -204,5 +204,37 @@ a.dnnDisabledAction:link, a.dnnDisabledAction:visited, a.dnnDisabledAction:activ
     border: 1px solid #ccc;
     padding: 0.5rem;
     display: none;
-    height: 15rem;
+    min-height: 15rem;
+}
+
+/* HTML5 Progress Bar Styles for Install Wizard */
+.dnnProgressbar progress {
+    width: 100%;
+    height: 10px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: none;
+    background-color: #ccc;
+    border-radius: 0;
+}
+
+/* Chrome/Safari/Edge */
+.dnnProgressbar progress::-webkit-progress-bar {
+    background-color: #ccc;
+    border-radius: 0;
+}
+
+.dnnProgressbar progress::-webkit-progress-value {
+    background-color: #00A5E0;
+    background: -webkit-linear-gradient(left, #00A5E0 0%, #1AAEE3 100%);
+    background: linear-gradient(to right, #00A5E0 0%, #1AAEE3 100%);
+}
+
+/* Firefox */
+.dnnProgressbar progress::-moz-progress-bar {
+    background-color: #00A5E0;
+    background: -moz-linear-gradient(left, #00A5E0 0%, #1AAEE3 100%);
+    background: linear-gradient(to right, #00A5E0 0%, #1AAEE3 100%);
+    border-radius: 0;
 }

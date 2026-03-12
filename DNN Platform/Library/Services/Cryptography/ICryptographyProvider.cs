@@ -3,7 +3,11 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Cryptography
 {
-    public interface ICryptographyProvider
+    using DotNetNuke.Internal.SourceGenerators;
+
+    /// <summary>A contract specifying the ability to encrypt and decrypt strings.</summary>
+    [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
+    public partial interface ICryptographyProvider
     {
         /// <summary>simple method that uses basic encryption to safely encode parameters.</summary>
         /// <param name="message">the text to be encrypted (encoded).</param>

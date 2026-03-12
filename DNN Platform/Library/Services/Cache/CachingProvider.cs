@@ -49,8 +49,6 @@ namespace DotNetNuke.Services.Cache
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
         private static System.Web.Caching.Cache cache;
 
-        private readonly IHostSettings hostSettings;
-
         /// <summary>Initializes a new instance of the <see cref="CachingProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected CachingProvider()
@@ -62,22 +60,19 @@ namespace DotNetNuke.Services.Cache
         /// <param name="hostSettings">The host settings.</param>
         protected CachingProvider(IHostSettings hostSettings)
         {
-            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets the default cache provider.</summary>
         /// <value>HttpRuntime.Cache.</value>
-        protected static System.Web.Caching.Cache Cache
-        {
-            get
-            {
-                return cache ?? (cache = HttpRuntime.Cache);
-            }
-        }
+        protected static System.Web.Caching.Cache Cache => cache ?? (cache = HttpRuntime.Cache);
 
         /// <summary>Gets a value indicating whether current caching provider disabled to expire cache.</summary>
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }
+
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
 
         /// <summary>Cleans the cache key by remove cache key prefix.</summary>
         /// <param name="cacheKey">The cache key.</param>
@@ -402,7 +397,7 @@ namespace DotNetNuke.Services.Cache
             if (locales == null || locales.Count == 0)
             {
                 // At least attempt to remove default locale
-                string defaultLocale = PortalController.GetPortalDefaultLanguage(this.hostSettings, portalId);
+                string defaultLocale = PortalController.GetPortalDefaultLanguage(this.HostSettings, portalId);
                 this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
                 this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
@@ -453,7 +448,7 @@ namespace DotNetNuke.Services.Cache
             if (locales == null || locales.Count == 0)
             {
                 // At least attempt to remove default locale
-                string defaultLocale = PortalController.GetPortalDefaultLanguage(this.hostSettings, portalId);
+                string defaultLocale = PortalController.GetPortalDefaultLanguage(this.HostSettings, portalId);
                 this.RemoveCacheKey(string.Format(CultureInfo.InvariantCulture, DataCache.TabPathCacheKey, defaultLocale, portalId), clearRuntime);
             }
             else

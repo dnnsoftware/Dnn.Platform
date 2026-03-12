@@ -98,26 +98,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         }
 
         [Test]
-        public void RelationshipController_Constructor_Throws_On_Null_DataService()
-        {
-            // Arrange
-            var mockEventLogger = new Mock<IEventLogger>();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(null, mockEventLogger.Object));
-        }
-
-        [Test]
-        public void RelationshipController_Constructor_Throws_On_Null_EventLogController()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new RelationshipControllerImpl(mockDataService.Object, null));
-        }
-
-        [Test]
         public void RelationshipController_DeleteRelationshipType_Throws_On_Null_RelationshipType()
         {
             // Arrange
@@ -427,8 +407,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
-                                            DefaultRelationshipTypes.Friends.ToString(),
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends),
+                                            nameof(DefaultRelationshipTypes.Friends),
                                             Constants.PORTAL_Zero,
                                             Constants.USER_ValidId,
                                             RelationshipStatus.None);
@@ -470,8 +450,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
-                                            DefaultRelationshipTypes.Friends.ToString(),
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends),
+                                            nameof(DefaultRelationshipTypes.Friends),
                                             Constants.PORTAL_Zero,
                                             Constants.USER_Null,
                                             RelationshipStatus.None);
@@ -499,8 +479,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.Clear();
             for (int i = 1; i <= 5; i++)
             {
-                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(),
-                                            DefaultRelationshipTypes.Friends.ToString(),
+                this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends),
+                                            nameof(DefaultRelationshipTypes.Friends),
                                             Constants.PORTAL_Zero,
                                             Constants.USER_Null,
                                             RelationshipStatus.None);
@@ -781,7 +761,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
             var userRelationship = new UserRelationship
             {
                 UserRelationshipId = Constants.SOCIAL_UserRelationshipIDUser10User11,
@@ -922,7 +902,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             mockEventLogger.Setup(c => c.AddLog(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<EventLogType>()));
             this.CreateLocalizationProvider();
 
-            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            var relationshipController = new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
             var preference = new UserRelationshipPreference()
             {
                 PreferenceId = Constants.SOCIAL_PrefereceIDForUser11,
@@ -1202,13 +1182,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
         private RelationshipControllerImpl CreateRelationshipController(Mock<IDataService> mockDataService)
         {
             var mockEventLogger = new Mock<IEventLogger>();
-            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
         }
 
         private RelationshipControllerImpl CreateRelationshipController(Mock<IEventLogger> mockEventLogger)
         {
             var mockDataService = new Mock<IDataService>();
-            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object);
+            return new RelationshipControllerImpl(mockDataService.Object, mockEventLogger.Object, Mock.Of<IHostSettings>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>(), Mock.Of<IPortalGroupController>());
         }
 
         private void SetupDataTables()
@@ -1226,8 +1206,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
 
             this.dtRelationshipTypes.PrimaryKey = new[] { pkRelationshipTypeID };
 
-            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(), DefaultRelationshipTypes.Friends.ToString(), RelationshipDirection.TwoWay);
-            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Followers, DefaultRelationshipTypes.Followers.ToString(), DefaultRelationshipTypes.Followers.ToString(), RelationshipDirection.OneWay);
+            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends), nameof(DefaultRelationshipTypes.Friends), RelationshipDirection.TwoWay);
+            this.dtRelationshipTypes.Rows.Add(DefaultRelationshipTypes.Followers, nameof(DefaultRelationshipTypes.Followers), nameof(DefaultRelationshipTypes.Followers), RelationshipDirection.OneWay);
 
             // Relationships
             this.dtRelationships = new DataTable("Relationships");
@@ -1245,8 +1225,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             this.dtRelationships.PrimaryKey = new[] { pkRelationshipID };
 
             // Create default Friend and Social Relationships
-            this.dtRelationships.Rows.Add(Constants.SOCIAL_FriendRelationshipID, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(), DefaultRelationshipTypes.Friends.ToString(), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
-            this.dtRelationships.Rows.Add(Constants.SOCIAL_FollowerRelationshipID, DefaultRelationshipTypes.Followers, DefaultRelationshipTypes.Followers.ToString(), DefaultRelationshipTypes.Followers.ToString(), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
+            this.dtRelationships.Rows.Add(Constants.SOCIAL_FriendRelationshipID, DefaultRelationshipTypes.Friends, nameof(DefaultRelationshipTypes.Friends), nameof(DefaultRelationshipTypes.Friends), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
+            this.dtRelationships.Rows.Add(Constants.SOCIAL_FollowerRelationshipID, DefaultRelationshipTypes.Followers, nameof(DefaultRelationshipTypes.Followers), nameof(DefaultRelationshipTypes.Followers), Constants.PORTAL_Zero, Constants.USER_Null, RelationshipStatus.None);
 
             // UserRelationships
             this.dtUserRelationships = new DataTable("UserRelationships");

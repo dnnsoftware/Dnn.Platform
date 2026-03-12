@@ -71,10 +71,7 @@
     <Reference Include="System.Configuration" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <None Include="Directory.Packages.props" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="log4net\Appender\AdoNetAppender.cs">

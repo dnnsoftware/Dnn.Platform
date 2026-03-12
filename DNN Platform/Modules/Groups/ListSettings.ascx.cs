@@ -15,9 +15,27 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The Settings class manages Module Settings.</summary>
     public partial class ListSettings : GroupsSettingsBase
     {
+        private readonly RoleProvider roleProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="ListSettings"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
+        public ListSettings()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ListSettings"/> class.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        public ListSettings(RoleProvider roleProvider)
+        {
+            this.roleProvider = roleProvider ?? this.DependencyProvider.GetRequiredService<RoleProvider>();
+        }
+
         /// <summary>LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
         {
@@ -115,7 +133,7 @@ namespace DotNetNuke.Modules.Groups
 
         private void BindGroups()
         {
-            var arrGroups = RoleController.GetRoleGroups(this.PortalId);
+            var arrGroups = RoleController.GetRoleGroups(this.roleProvider, this.PortalId);
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("GlobalRoles"), "-1"));
 

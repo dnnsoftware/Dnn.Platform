@@ -5,7 +5,6 @@
     <IsPackable>false</IsPackable>
     <LangVersion>latest</LangVersion>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <NoWarn>$(NoWarn),0618,SA0001</NoWarn>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <UserSecretsId>983d1c6b-1b44-4b1c-ac14-c9f4b86ddd84</UserSecretsId>
   </PropertyGroup>
@@ -24,10 +23,6 @@
     </PackageReference>
     <PackageReference Include="NUnit3TestAdapter" />
     <PackageReference Include="PetaPoco.Compiled" />
-    <PackageReference Include="StyleCop.Analyzers">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
     <PackageReference Include="TestStack.Dossier" />
   </ItemGroup>
 

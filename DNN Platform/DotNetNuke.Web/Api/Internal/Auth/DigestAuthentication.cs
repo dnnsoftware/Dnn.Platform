@@ -11,15 +11,19 @@ namespace DotNetNuke.Web.Api.Internal.Auth
     using System.Text;
 
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Web.Api.Auth;
 
     /// <summary>Helps implement the digest auth algorithm for <see cref="DigestAuthMessageHandler"/>.</summary>
-    internal class DigestAuthentication
+    [DnnDeprecated(10, 2, 2, "Use JWT or API token authentication")]
+    internal partial class DigestAuthentication
     {
         /// <summary>The scheme name for <see cref="AuthMessageHandlerBase.AuthScheme"/>.</summary>
         internal const string AuthenticationScheme = "Digest";
+#pragma warning disable CA5351 // Do not use broken cryptographic algorithms
         private static readonly MD5 Md5 = new MD5CryptoServiceProvider();
+#pragma warning restore CA5351
         private readonly int portalId;
         private readonly string ipAddress;
         private string password;
@@ -57,8 +61,8 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         private static string CreateMd5HashBinHex(string val)
         {
-            // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
-            // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
+            ////Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
+            ////Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
             var bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
             var ha1 = string.Empty;
             for (var i = 0; i <= 15; i++)
@@ -103,7 +107,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 this.IsNonceStale = !IsNonceValid(this.Request.RequestParams["nonce"]);
 
-                // Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
+                ////Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
                 if ((!this.IsNonceStale) && this.Request.RequestParams["response"] == this.CalculateHashedDigest())
                 {
                     this.IsValid = true;
@@ -151,7 +155,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             var cnonce = this.Request.RequestParams["cnonce"];
             var qop = this.Request.RequestParams["qop"];
 
-            // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
+            ////Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return qop != null ? $"{ha1}:{nonce}:{nc}:{cnonce}:{qop}:{ha2}" : $"{ha1}:{nonce}:{ha2}";
         }
     }

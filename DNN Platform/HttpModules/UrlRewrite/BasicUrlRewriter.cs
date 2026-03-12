@@ -33,8 +33,6 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
 
-        private readonly IPortalAliasService portalAliasService;
-        private readonly IHostSettingsService hostSettingsService;
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>Initializes a new instance of the <see cref="BasicUrlRewriter"/> class.</summary>
@@ -46,12 +44,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
         public BasicUrlRewriter(IServiceProvider serviceProvider, IHostSettings hostSettings, IPortalAliasService portalAliasService, IHostSettingsService hostSettingsService, IPortalController portalController)
             : base(hostSettings, portalAliasService, hostSettingsService, portalController)
         {
-            this.portalAliasService = portalAliasService;
-            this.hostSettingsService = hostSettingsService;
             this.serviceProvider = serviceProvider;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override void RewriteUrl(object sender, EventArgs e)
         {
             var app = (HttpApplication)sender;
@@ -78,7 +74,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // the application should always use the exact relative location of the resource it is requesting
             var strURL = request.Url.AbsolutePath;
             var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
-            if (Globals.FileEscapingRegex.Match(strURL).Success || Globals.FileEscapingRegex.Match(strDoubleDecodeURL).Success)
+            if (Globals.FileEscapingRegex.IsMatch(strURL) || Globals.FileEscapingRegex.IsMatch(strDoubleDecodeURL))
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
@@ -155,7 +151,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         childAlias = childAlias.Replace(":" + request.Url.Port, string.Empty);
                     }
 
-                    if (this.portalAliasService.GetPortalAlias(childAlias) != null)
+                    if (this.PortalAliasService.GetPortalAlias(childAlias) != null)
                     {
                         // check if the domain name contains the alias
                         if (childAlias.IndexOf(domainName, StringComparison.OrdinalIgnoreCase) == -1)
@@ -176,7 +172,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     if (portalId != Null.NullInteger)
                     {
-                        portalAlias = this.portalAliasService.GetPortalAliasByPortal(portalId, domainName);
+                        portalAlias = this.PortalAliasService.GetPortalAliasByPortal(portalId, domainName);
                     }
                 }
 
@@ -186,12 +182,12 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (tabId != Null.NullInteger)
                     {
                         // get the alias from the tabid, but only if it is for a tab in that domain
-                        portalAlias = this.portalAliasService.GetPortalAliasByTab(tabId, domainName);
+                        portalAlias = this.PortalAliasService.GetPortalAliasByTab(tabId, domainName);
                         if (string.IsNullOrEmpty(portalAlias))
                         {
                             // if the TabId is not for the correct domain
                             // see if the correct domain can be found and redirect it
-                            portalAliasInfo = this.portalAliasService.GetPortalAlias(domainName);
+                            portalAliasInfo = this.PortalAliasService.GetPortalAlias(domainName);
                             if (portalAliasInfo != null && !request.Url.LocalPath.EndsWith("/linkclick.aspx", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
@@ -222,7 +218,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // using the DomainName above will find that alias that is the domainname portion of the Url
                 // ie. dotnetnuke.com will be found even if zzz.dotnetnuke.com was entered on the Url
-                portalAliasInfo = this.portalAliasService.GetPortalAlias(portalAlias);
+                portalAliasInfo = this.PortalAliasService.GetPortalAlias(portalAlias);
                 if (portalAliasInfo != null)
                 {
                     portalId = portalAliasInfo.PortalId;
@@ -267,8 +263,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // load PortalSettings and HostSettings dictionaries into current context
                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
-                app.Context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalId));
-                app.Context.Items.Add("HostSettingsDictionary", this.hostSettingsService.GetSettingsDictionary());
+                app.Context.Items.Add("PortalSettingsDictionary", Entities.Portals.PortalController.Instance.GetPortalSettings(portalId));
+                app.Context.Items.Add("HostSettingsDictionary", this.HostSettingsService.GetSettingsDictionary());
 
                 // don't redirect if no primary alias is defined
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect
@@ -326,10 +322,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                             break;
                         case Abstractions.Security.SiteSslSetup.Advanced:
-                            // if site is secure or else page is secure and connection is not secure orelse ssloffload is enabled and server value exists
+                            // if site is secure or else page is secure and connection is not secure or else SSL offload is enabled and server value exists
                             if (portalSettings.ActiveTab.IsSecure &&
                                 !request.IsSecureConnection &&
-                                (UrlUtils.IsSslOffloadEnabled(request) == false))
+                                !UrlUtils.IsSslOffloadEnabled(this.HostSettingsService, request))
                             {
                                 // switch to secure connection
                                 strURL = requestedPath.Replace("http://", "https://");
@@ -341,7 +337,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 // if page is not secure and connection is secure
                                 if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
                                 {
-                                    // check if connection has already been forced to secure orelse ssloffload is disabled
+                                    // check if connection has already been forced to secure or else SSL offload is disabled
                                     if (request.QueryString["ssl"] == null)
                                     {
                                         strURL = requestedPath.Replace("https://", "http://");
@@ -428,7 +424,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             IPortalAliasInfo objPortalAlias;
             do
             {
-                objPortalAlias = this.portalAliasService.GetPortalAlias(myAlias);
+                objPortalAlias = this.PortalAliasService.GetPortalAlias(myAlias);
 
                 if (objPortalAlias != null)
                 {
@@ -649,6 +645,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                         // Check to see if the tab exists (if localization is enabled, check for the specified culture)
                         int tabId = TabController.GetTabByTabPath(
+                            this.HostSettings,
                             portalId,
                             tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                             cultureCode);
@@ -657,6 +654,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         if (tabId == Null.NullInteger && cultureCode.Length > 0)
                         {
                             tabId = TabController.GetTabByTabPath(
+                                this.HostSettings,
                                 portalId,
                                 tabPath.Replace("/", "//").Replace(".aspx", string.Empty),
                                 string.Empty);
@@ -687,7 +685,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
 
                         // Get the Portal
-                        PortalInfo portal = PortalController.Instance.GetPortal(portalId);
+                        PortalInfo portal = Entities.Portals.PortalController.Instance.GetPortal(portalId);
                         string requestQuery = app.Request.Url.Query;
                         if (!string.IsNullOrEmpty(requestQuery))
                         {

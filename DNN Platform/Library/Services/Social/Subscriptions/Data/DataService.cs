@@ -20,25 +20,25 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
             this.provider = DataProvider.Instance();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddSubscriptionType(string subscriptionName, string friendlyName, int desktopModuleId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_AddSubscriptionType", subscriptionName, friendlyName, desktopModuleId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetSubscriptionTypes()
         {
             return this.provider.ExecuteReader("CoreMessaging_GetSubscriptionTypes");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool DeleteSubscriptionType(int subscriptionTypeId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscriptionType", subscriptionTypeId) == 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddSubscription(int userId, int portalId, int subscriptionTypeId, string objectKey, string description, int moduleId, int tabId, string objectData)
         {
             return this.provider.ExecuteScalar<int>(
@@ -53,19 +53,19 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
                 objectData);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetSubscriptionsByUser(int portalId, int userId, int subscriptionTypeId)
         {
             return this.provider.ExecuteReader("CoreMessaging_GetSubscriptionsByUser", this.provider.GetNull(portalId), userId, this.provider.GetNull(subscriptionTypeId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetSubscriptionsByContent(int portalId, int subscriptionTypeId, string objectKey)
         {
             return this.provider.ExecuteReader("CoreMessaging_GetSubscriptionsByContent", this.provider.GetNull(portalId), subscriptionTypeId, objectKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader IsSubscribed(int portalId, int userId, int subscriptionTypeId, string objectKey, int moduleId, int tabId)
         {
             return this.provider.ExecuteReader(
@@ -78,13 +78,13 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
                 this.provider.GetNull(tabId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool DeleteSubscription(int subscriptionId)
         {
             return this.provider.ExecuteScalar<int>("CoreMessaging_DeleteSubscription", subscriptionId) == 0;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
         {
             return this.provider.ExecuteScalar<int>(
@@ -94,13 +94,13 @@ namespace DotNetNuke.Services.Social.Subscriptions.Data
                 newDescription);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSubscriptionsByObjectKey(int portalId, string objectKey)
         {
             this.provider.ExecuteNonQuery("CoreMessaging_DeleteSubscriptionsByObjectKey", portalId, objectKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IDataService> GetFactory()
         {
             return () => new DataService();

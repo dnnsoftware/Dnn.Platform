@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.Skins.Controls
         // ReSharper disable once InconsistentNaming
         public bool jQueryUI { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.javaScript.RequestRegistration(CommonJs.jQuery);

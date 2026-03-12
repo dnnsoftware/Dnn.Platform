@@ -95,17 +95,23 @@ internal class JournalControllerImpl : IJournalController
         string xml = null;
         if (!string.IsNullOrEmpty(journalItem.Title))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Title = this.portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Summary))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Summary = this.portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Body = this.portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
@@ -130,22 +136,30 @@ internal class JournalControllerImpl : IJournalController
         {
             if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Title = this.portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Description = this.portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Url = this.portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.ImageUrl = this.portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -225,17 +239,23 @@ internal class JournalControllerImpl : IJournalController
         string xml = null;
         if (!string.IsNullOrEmpty(journalItem.Title))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Title = this.portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Summary))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Summary = this.portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             journalItem.Body = this.portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         if (!string.IsNullOrEmpty(journalItem.Body))
@@ -260,23 +280,31 @@ internal class JournalControllerImpl : IJournalController
         {
             if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Title = this.portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
             {
                 journalItem.ItemData.Description =
+#pragma warning disable CS0618 // Type or member is obsolete
                     this.portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.Url = this.portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 journalItem.ItemData.ImageUrl = this.portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -336,43 +364,43 @@ internal class JournalControllerImpl : IJournalController
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId)
     {
         return this.GetJournalItem(portalId, currentUserId, journalId, false, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems)
     {
         return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted)
     {
         return this.GetJournalItem(portalId, currentUserId, journalId, includeAllItems, isDeleted, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItem(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
     {
         return CBO.FillObject<JournalItem>(this.dataService.Journal_Get(portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItemByKey(int portalId, string objectKey)
     {
         return this.GetJournalItemByKey(portalId, objectKey, false, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems)
     {
         return this.GetJournalItemByKey(portalId, objectKey, includeAllItems, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalItem GetJournalItemByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
     {
         if (string.IsNullOrEmpty(objectKey))
@@ -383,7 +411,7 @@ internal class JournalControllerImpl : IJournalController
         return CBO.FillObject<JournalItem>(this.dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent)
     {
         var userFolder = this.folderManager.GetUserFolder(userInfo);
@@ -404,7 +432,7 @@ internal class JournalControllerImpl : IJournalController
         }
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SaveJournalItem(JournalItem journalItem, ModuleInfo module)
     {
         var tabId = module?.TabID ?? Null.NullInteger;
@@ -413,7 +441,7 @@ internal class JournalControllerImpl : IJournalController
         this.SaveJournalItem(journalItem, tabId, tabModuleId);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void UpdateJournalItem(JournalItem journalItem, ModuleInfo module)
     {
         var tabId = module?.TabID ?? Null.NullInteger;
@@ -422,25 +450,25 @@ internal class JournalControllerImpl : IJournalController
         this.UpdateJournalItem(journalItem, tabId, tabModuleId);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void DisableComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleDisable(portalId, journalId, true);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void EnableComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleDisable(portalId, journalId, false);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void HideComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleHidden(portalId, journalId, true);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void ShowComments(int portalId, int journalId)
     {
         this.dataService.Journal_Comments_ToggleHidden(portalId, journalId, false);
@@ -498,30 +526,32 @@ internal class JournalControllerImpl : IJournalController
         this.dataService.Journal_SoftDeleteByGroupId(portalId, groupId);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IList<CommentInfo> GetCommentsByJournalIds(List<int> journalIdList)
     {
         var journalIds = journalIdList.Aggregate(string.Empty, (current, journalId) => current + journalId + ";");
         return CBO.FillCollection<CommentInfo>(this.dataService.Journal_Comment_ListByJournalIds(journalIds));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void LikeJournalItem(int journalId, int userId, string displayName)
     {
         this.dataService.Journal_Like(journalId, userId, displayName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void SaveComment(CommentInfo comment)
     {
         if (!string.IsNullOrEmpty(comment.Comment))
         {
             comment.Comment =
+#pragma warning disable CS0618 // Type or member is obsolete
                 this.portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         // TODO: enable once the profanity filter is working properly.
-        // objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
+        ////objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
         string xml = null;
         if (comment.CommentXML != null)
         {
@@ -535,13 +565,13 @@ internal class JournalControllerImpl : IJournalController
         comment.DateUpdated = newComment.DateUpdated;
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public CommentInfo GetComment(int commentId)
     {
         return CBO.FillObject<CommentInfo>(this.dataService.Journal_Comment_Get(commentId));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void DeleteComment(int journalId, int commentId)
     {
         this.dataService.Journal_Comment_Delete(journalId, commentId);
@@ -549,25 +579,25 @@ internal class JournalControllerImpl : IJournalController
         // UNDONE: update the parent journal item and content item so this comment gets removed from search index
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public void LikeComment(int journalId, int commentId, int userId, string displayName)
     {
         this.dataService.Journal_Comment_Like(journalId, commentId, userId, displayName);
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalTypeInfo GetJournalType(string journalType)
     {
         return CBO.FillObject<JournalTypeInfo>(this.dataService.Journal_Types_Get(journalType));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public JournalTypeInfo GetJournalTypeById(int journalTypeId)
     {
         return CBO.FillObject<JournalTypeInfo>(this.dataService.Journal_Types_GetById(journalTypeId));
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId)
     {
         return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
@@ -804,7 +834,7 @@ internal class JournalControllerImpl : IJournalController
             AuthorUserId = currentUserId,
             UniqueKey = ji.ContentItemId.ToString("D", CultureInfo.InvariantCulture),
 
-            // QueryString = "journalid=" + journalId,
+            ////QueryString = "journalid=" + journalId,
             SearchTypeId = this.searchHelper.GetSearchTypeByName("module").SearchTypeId,
         };
 

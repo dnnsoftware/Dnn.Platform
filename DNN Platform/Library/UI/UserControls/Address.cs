@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.UserControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
@@ -18,8 +19,10 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.WebControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The Address UserControl is used to manage User Addresses.</summary>
-    public abstract class Address : UserControlBase
+    public abstract class Address(ListController listController, IPortalController portalController) : UserControlBase
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
@@ -156,6 +159,7 @@ namespace DotNetNuke.UI.UserControls
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         protected RequiredFieldValidator valTelephone;
+
         private const string MyFileName = "Address.ascx";
         private string cell;
         private string city;
@@ -182,97 +186,50 @@ namespace DotNetNuke.UI.UserControls
         private string unit;
 
         /// <summary>Initializes a new instance of the <see cref="Address"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         protected Address()
+            : this(null, null)
         {
-            this.StartTabIndex = 1;
         }
 
-        public string LocalResourceFile
-        {
-            get
-            {
-                return Localization.GetResourceFile(this, MyFileName);
-            }
-        }
+        public string LocalResourceFile => Localization.GetResourceFile(this, MyFileName);
 
         public int ModuleId
         {
-            get
-            {
-                return Convert.ToInt32(this.ViewState["ModuleId"], CultureInfo.InvariantCulture);
-            }
-
-            set
-            {
-                this.moduleId = value;
-            }
+            get => Convert.ToInt32(this.ViewState["ModuleId"], CultureInfo.InvariantCulture);
+            set => this.moduleId = value;
         }
 
         public string LabelColumnWidth
         {
-            get
-            {
-                return Convert.ToString(this.ViewState["LabelColumnWidth"], CultureInfo.InvariantCulture);
-            }
-
-            set
-            {
-                this.labelColumnWidth = value;
-            }
+            get => Convert.ToString(this.ViewState["LabelColumnWidth"], CultureInfo.InvariantCulture);
+            set => this.labelColumnWidth = value;
         }
 
         public string ControlColumnWidth
         {
-            get
-            {
-                return Convert.ToString(this.ViewState["ControlColumnWidth"], CultureInfo.InvariantCulture);
-            }
-
-            set
-            {
-                this.controlColumnWidth = value;
-            }
+            get => Convert.ToString(this.ViewState["ControlColumnWidth"], CultureInfo.InvariantCulture);
+            set => this.controlColumnWidth = value;
         }
 
-        public int StartTabIndex { private get; set; }
+        public int StartTabIndex { private get; set; } = 1;
 
         public string Street
         {
-            get
-            {
-                return this.txtStreet.Text;
-            }
-
-            set
-            {
-                this.street = value;
-            }
+            get => this.txtStreet.Text;
+            set => this.street = value;
         }
 
         public string Unit
         {
-            get
-            {
-                return this.txtUnit.Text;
-            }
-
-            set
-            {
-                this.unit = value;
-            }
+            get => this.txtUnit.Text;
+            set => this.unit = value;
         }
 
         public string City
         {
-            get
-            {
-                return this.txtCity.Text;
-            }
-
-            set
-            {
-                this.city = value;
-            }
+            get => this.txtCity.Text;
+            set => this.city = value;
         }
 
         public string Country
@@ -342,143 +299,88 @@ namespace DotNetNuke.UI.UserControls
 
         public string Postal
         {
-            get
-            {
-                return this.txtPostal.Text;
-            }
-
-            set
-            {
-                this.postal = value;
-            }
+            get => this.txtPostal.Text;
+            set => this.postal = value;
         }
 
         public string Telephone
         {
-            get
-            {
-                return this.txtTelephone.Text;
-            }
-
-            set
-            {
-                this.telephone = value;
-            }
+            get => this.txtTelephone.Text;
+            set => this.telephone = value;
         }
 
         public string Cell
         {
-            get
-            {
-                return this.txtCell.Text;
-            }
-
-            set
-            {
-                this.cell = value;
-            }
+            get => this.txtCell.Text;
+            set => this.cell = value;
         }
 
         public string Fax
         {
-            get
-            {
-                return this.txtFax.Text;
-            }
-
-            set
-            {
-                this.fax = value;
-            }
+            get => this.txtFax.Text;
+            set => this.fax = value;
         }
 
         public bool ShowStreet
         {
-            set
-            {
-                this.showStreet = value;
-            }
+            set => this.showStreet = value;
         }
 
         public bool ShowUnit
         {
-            set
-            {
-                this.showUnit = value;
-            }
+            set => this.showUnit = value;
         }
 
         public bool ShowCity
         {
-            set
-            {
-                this.showCity = value;
-            }
+            set => this.showCity = value;
         }
 
         public bool ShowCountry
         {
-            set
-            {
-                this.showCountry = value;
-            }
+            set => this.showCountry = value;
         }
 
         public bool ShowRegion
         {
-            set
-            {
-                this.showRegion = value;
-            }
+            set => this.showRegion = value;
         }
 
         public bool ShowPostal
         {
-            set
-            {
-                this.showPostal = value;
-            }
+            set => this.showPostal = value;
         }
 
         public bool ShowTelephone
         {
-            set
-            {
-                this.showTelephone = value;
-            }
+            set => this.showTelephone = value;
         }
 
         public bool ShowCell
         {
-            set
-            {
-                this.showCell = value;
-            }
+            set => this.showCell = value;
         }
 
         public bool ShowFax
         {
-            set
-            {
-                this.showFax = value;
-            }
+            set => this.showFax = value;
         }
 
         public string CountryData
         {
-            set
-            {
-                this.countryData = value;
-            }
+            set => this.countryData = value;
         }
 
         public string RegionData
         {
-            set
-            {
-                this.regionData = value;
-            }
+            set => this.regionData = value;
         }
+
+        /// <summary>Gets the list controller.</summary>
+        protected ListController ListController { get; } = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+
+        /// <summary>Gets the portal controller.</summary>
+        protected IPortalController PortalController { get; } = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
 
         /// <summary>Page_Load runs when the control is loaded.</summary>
         /// <param name="e">The event arguments.</param>
@@ -520,11 +422,10 @@ namespace DotNetNuke.UI.UserControls
                     this.txtFax.TabIndex = Convert.ToInt16(this.StartTabIndex + 9);
 
                     // <tam:note modified to test Lists
-                    // Dim objRegionalController As New RegionalController
-                    // cboCountry.DataSource = objRegionalController.GetCountries
+                    ////Dim objRegionalController As New RegionalController
+                    ////cboCountry.DataSource = objRegionalController.GetCountries
                     // <this test using method 2: get empty collection then get each entry list on demand & store into cache
-                    var ctlEntry = new ListController();
-                    var entryCollection = ctlEntry.GetListEntryInfoItems("Country");
+                    var entryCollection = this.ListController.GetListEntryInfoItems("Country");
 
                     this.cboCountry.DataSource = entryCollection;
                     this.cboCountry.DataBind();
@@ -746,11 +647,10 @@ namespace DotNetNuke.UI.UserControls
         private void Localize()
         {
             var countryCode = this.cboCountry.SelectedItem.Value;
-            var ctlEntry = new ListController();
 
             // listKey in format "Country.US:Region"
-            var listKey = "Country." + countryCode;
-            var entryCollection = ctlEntry.GetListEntryInfoItems("Region", listKey);
+            var listKey = $"Country.{countryCode}";
+            var entryCollection = this.ListController.GetListEntryInfoItems("Region", listKey);
 
             if (entryCollection.Any())
             {
@@ -760,7 +660,7 @@ namespace DotNetNuke.UI.UserControls
                     this.cboRegion.Items.Clear();
                     this.cboRegion.DataSource = entryCollection;
                     this.cboRegion.DataBind();
-                    this.cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
+                    this.cboRegion.Items.Insert(0, new ListItem($"<{Localization.GetString("Not_Specified", Localization.SharedResourceFile)}>", string.Empty));
                 }
 
                 if (countryCode.Equals("us", StringComparison.OrdinalIgnoreCase))
@@ -799,7 +699,7 @@ namespace DotNetNuke.UI.UserControls
                 this.plPostal.HelpText = Localization.GetString("plPostal.Help", Localization.GetResourceFile(this, MyFileName));
             }
 
-            var reqRegion = PortalController.GetPortalSettingAsBoolean("addressregion", this.PortalSettings.PortalId, true);
+            var reqRegion = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addressregion", this.PortalSettings.PortalId, true);
             if (reqRegion)
             {
                 this.valRegion1.Enabled = false;
@@ -810,14 +710,14 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>ShowRequiredFields sets up displaying which fields are required.</summary>
         private void ShowRequiredFields()
         {
-            var reqStreet = PortalController.GetPortalSettingAsBoolean("addressstreet", this.PortalSettings.PortalId, true);
-            var reqCity = PortalController.GetPortalSettingAsBoolean("addresscity", this.PortalSettings.PortalId, true);
-            var reqCountry = PortalController.GetPortalSettingAsBoolean("addresscountry", this.PortalSettings.PortalId, true);
-            var reqRegion = PortalController.GetPortalSettingAsBoolean("addressregion", this.PortalSettings.PortalId, true);
-            var reqPostal = PortalController.GetPortalSettingAsBoolean("addresspostal", this.PortalSettings.PortalId, true);
-            var reqTelephone = PortalController.GetPortalSettingAsBoolean("addresstelephone", this.PortalSettings.PortalId, true);
-            var reqCell = PortalController.GetPortalSettingAsBoolean("addresscell", this.PortalSettings.PortalId, true);
-            var reqFax = PortalController.GetPortalSettingAsBoolean("addressfax", this.PortalSettings.PortalId, true);
+            var reqStreet = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addressstreet", this.PortalSettings.PortalId, true);
+            var reqCity = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addresscity", this.PortalSettings.PortalId, true);
+            var reqCountry = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addresscountry", this.PortalSettings.PortalId, true);
+            var reqRegion = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addressregion", this.PortalSettings.PortalId, true);
+            var reqPostal = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addresspostal", this.PortalSettings.PortalId, true);
+            var reqTelephone = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addresstelephone", this.PortalSettings.PortalId, true);
+            var reqCell = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addresscell", this.PortalSettings.PortalId, true);
+            var reqFax = DotNetNuke.Entities.Portals.PortalController.GetPortalSettingAsBoolean(this.PortalController, "addressfax", this.PortalSettings.PortalId, true);
 
             if (TabPermissionController.CanAdminPage())
             {
@@ -935,19 +835,19 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>UpdateRequiredFields updates which fields are required.</summary>
         private void UpdateRequiredFields()
         {
-            if (this.chkCountry.Checked == false)
+            if (!this.chkCountry.Checked)
             {
                 this.chkRegion.Checked = false;
             }
 
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressstreet", this.chkStreet.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscity", this.chkCity.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscountry", this.chkCountry.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressregion", this.chkRegion.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresspostal", this.chkPostal.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresstelephone", this.chkTelephone.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscell", this.chkCell.Checked ? string.Empty : "N");
-            PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressfax", this.chkFax.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addressstreet", this.chkStreet.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addresscity", this.chkCity.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addresscountry", this.chkCountry.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addressregion", this.chkRegion.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addresspostal", this.chkPostal.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addresstelephone", this.chkTelephone.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addresscell", this.chkCell.Checked ? string.Empty : "N");
+            DotNetNuke.Entities.Portals.PortalController.UpdatePortalSetting(this.PortalController, this.PortalSettings.PortalId, "addressfax", this.chkFax.Checked ? string.Empty : "N");
 
             this.ShowRequiredFields();
         }

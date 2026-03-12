@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
             return dataChanged;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void LoadDateControls()
         {
             base.LoadDateControls();

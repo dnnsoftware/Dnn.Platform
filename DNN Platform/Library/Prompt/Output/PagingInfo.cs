@@ -9,19 +9,19 @@ namespace DotNetNuke.Prompt
     /// <summary>Used to page long lists of data to the client.</summary>
     public class PagingInfo : IPagingInfo
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "pageNo")]
         public int PageNo { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "pageSize")]
         public int PageSize { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "totalPages")]
         public int TotalPages { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [JsonProperty(PropertyName = "totalRecords")]
         public int TotalRecords { get; set; }
     }

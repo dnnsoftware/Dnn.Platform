@@ -154,7 +154,7 @@
     <value>Changing the web.config will cause your website to reload and may decrease site performance while the application is reloaded by the webserver.  Do you want to continue?</value>
   </data>
   <data name="ERROR_ConfigurationFormat.Text" xml:space="preserve">
-    <value>Your configuration file is not a valid XML file.  Please correct the formatting issue and try again. {0}</value>
+    <value>Your configuration file is not a valid XML file.  Please correct the formatting issue and try again.</value>
   </data>
   <data name="LoadConfigWarning.Text" xml:space="preserve">
     <value>Warning: You will lose your current changes if you load a new config file.</value>

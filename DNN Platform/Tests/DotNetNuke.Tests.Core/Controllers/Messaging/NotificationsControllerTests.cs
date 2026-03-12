@@ -9,6 +9,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using System.Globalization;
     using System.Text;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
@@ -62,7 +63,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.dataProvider = MockComponentProvider.CreateDataProvider();
             this.cachingProvider = MockComponentProvider.CreateDataCacheProvider();
 
-            this.notificationsController = new NotificationsController(this.mockDataService.Object, this.mockMessagingDataService.Object);
+            this.notificationsController = new NotificationsController(this.mockDataService.Object, this.mockMessagingDataService.Object, Mock.Of<IHostSettings>());
             this.mockNotificationsController = new Mock<NotificationsController> { CallBase = true };
 
             this.mockMessagingController = new Mock<IMessagingController>();
@@ -554,11 +555,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var actualNotificationTypeActions = this.notificationsController.GetNotificationTypeActions(Constants.Messaging_NotificationTypeId);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(actualNotificationTypeActions, Has.Count.EqualTo(1));
                 Assert.That(actualNotificationTypeActions[0], Is.EqualTo(expectedNotificationTypeAction).Using(new NotificationTypeActionComparer()));
-            });
+            }
         }
 
         [Test]

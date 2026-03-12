@@ -8,24 +8,32 @@ namespace DotNetNuke.Services.Social.Subscriptions
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Social.Subscriptions.Data;
     using DotNetNuke.Services.Social.Subscriptions.Entities;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>This controller is responsible to manage the subscription types.</summary>
-    public class SubscriptionTypeController : ServiceLocator<ISubscriptionTypeController, SubscriptionTypeController>, ISubscriptionTypeController
+    /// <param name="dataService">The data service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class SubscriptionTypeController(IDataService dataService, IHostSettings hostSettings)
+        : ServiceLocator<ISubscriptionTypeController, SubscriptionTypeController>, ISubscriptionTypeController
     {
-        private readonly IDataService dataService;
+        private readonly IDataService dataService = dataService ?? DataService.Instance;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="SubscriptionTypeController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public SubscriptionTypeController()
+            : this(null, null)
         {
-            this.dataService = DataService.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -38,7 +46,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             CleanCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SubscriptionType GetSubscriptionType(Func<SubscriptionType, bool> predicate)
         {
             Requires.NotNull("predicate", predicate);
@@ -46,7 +54,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().SingleOrDefault(predicate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SubscriptionType> GetSubscriptionTypes()
         {
             var cacheArgs = new CacheItemArgs(
@@ -55,11 +63,12 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 DataCache.SubscriptionTypesCachePriority);
 
             return CBO.GetCachedObject<IEnumerable<SubscriptionType>>(
+                this.hostSettings,
                 cacheArgs,
-                c => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
+                _ => CBO.FillCollection<SubscriptionType>(this.dataService.GetSubscriptionTypes()));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<SubscriptionType> GetSubscriptionTypes(Func<SubscriptionType, bool> predicate)
         {
             Requires.NotNull("predicate", predicate);
@@ -67,7 +76,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.GetSubscriptionTypes().Where(predicate);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSubscriptionType(SubscriptionType subscriptionType)
         {
             Requires.NotNull("subscriptionType", subscriptionType);
@@ -77,10 +86,10 @@ namespace DotNetNuke.Services.Social.Subscriptions
             CleanCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISubscriptionTypeController> GetFactory()
         {
-            return () => new SubscriptionTypeController();
+            return () => Globals.DependencyProvider.GetRequiredService<ISubscriptionTypeController>();
         }
 
         private static void CleanCache()

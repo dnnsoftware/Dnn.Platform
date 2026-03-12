@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Api.Internal
     using System.Threading;
 
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
 
@@ -24,10 +25,10 @@ namespace DotNetNuke.Web.Api.Internal
                 return false;
             }
 
-            var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPortal = PortalController.Instance.GetCurrentSettings();
+            var currentUser = UserController.Instance.GetCurrentUserInfo();
 
-            bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
-            if (isAdminUser)
+            if (currentUser.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName))
             {
                 return true;
             }

@@ -38,7 +38,9 @@ namespace Dnn.PersonaBar.Pages.Components
 
         public static string Clean(
             string input,
+#pragma warning disable CS0618 // Type or member is obsolete
             PortalSecurity.FilterFlag filterFlag = PortalSecurity.FilterFlag.NoMarkup)
+#pragma warning restore CS0618 // Type or member is obsolete
         {
             return PortalSecurity.Instance.InputFilter(input, filterFlag);
         }

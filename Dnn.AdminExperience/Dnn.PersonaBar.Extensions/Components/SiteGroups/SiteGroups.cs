@@ -8,7 +8,7 @@ namespace Dnn.PersonaBar.SiteGroups
 
     public class SiteGroups : ServiceLocator<IManagePortalGroups, SiteGroups>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override System.Func<IManagePortalGroups> GetFactory()
         {
             return () => new PortalGroupAdapter();

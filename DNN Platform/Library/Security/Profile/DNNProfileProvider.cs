@@ -6,6 +6,7 @@ namespace DotNetNuke.Security.Profile
     using System;
     using System.Globalization;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -15,19 +16,32 @@ namespace DotNetNuke.Security.Profile
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The DNNProfileProvider overrides the default ProfileProvider to provide a purely DotNetNuke implementation.</summary>
     public class DNNProfileProvider : ProfileProvider
     {
-        private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IEventLogger eventLogger;
+        private readonly DataProvider dataProvider;
+
+        /// <summary>Initializes a new instance of the <see cref="DNNProfileProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public DNNProfileProvider()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNProfileProvider"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public DNNProfileProvider(IEventLogger eventLogger, DataProvider dataProvider)
+        {
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        }
 
         /// <summary>Gets a value indicating whether the Provider Properties can be edited.</summary>
-        public override bool CanEditProviderProperties
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool CanEditProviderProperties => true;
 
         /// <summary>GetUserProfile retrieves the UserProfile information from the Data Store.</summary>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
@@ -143,10 +157,12 @@ namespace DotNetNuke.Security.Profile
 
             foreach (ProfilePropertyDefinition profProperty in properties)
             {
-                if ((profProperty.PropertyValue != null) && profProperty.IsDirty)
+                if (profProperty.PropertyValue != null && profProperty.IsDirty)
                 {
                     var objSecurity = PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
                     this.dataProvider.UpdateProfileProperty(
                         Null.NullInteger,
                         user.UserID,
@@ -155,7 +171,7 @@ namespace DotNetNuke.Security.Profile
                         (int)profProperty.ProfileVisibility.VisibilityMode,
                         profProperty.ProfileVisibility.ExtendedVisibilityString(),
                         DateTime.Now);
-                    EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");
+                    this.eventLogger.AddLog(user, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, "USERPROFILE_UPDATED");
                 }
             }
         }

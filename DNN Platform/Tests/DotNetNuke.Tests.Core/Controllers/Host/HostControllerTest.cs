@@ -103,12 +103,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Assert
             foreach (var currentConfig in settingsDic)
             {
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(currentConfig.Value.Key, Is.EqualTo(currentConfig.Key));
                     Assert.That(currentConfig.Value.Value, Is.EqualTo(expectedDic[currentConfig.Key].Value));
                     Assert.That(currentConfig.Value.IsSecure, Is.EqualTo(expectedDic[currentConfig.Key].IsSecure));
-                });
+                }
             }
         }
 
@@ -365,11 +365,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [TestCase("AAAAAAA")]
         public void HostController_GetBoolean_InvalidKey_Returns_Default_Value(string key)
         {
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HostController.Instance.GetBoolean(key, true), Is.EqualTo(true));
                 Assert.That(HostController.Instance.GetBoolean(key, false), Is.EqualTo(false));
-            });
+            }
         }
 
         [Test]

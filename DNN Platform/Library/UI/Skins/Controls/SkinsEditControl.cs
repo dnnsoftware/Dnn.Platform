@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             PropertyEditorEventArgs args;
@@ -152,7 +152,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
             bool dataChanged = false;

@@ -22,13 +22,13 @@ namespace DotNetNuke.Services.GeneratedImage
 
         public Control BindingContainer { get; internal set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         DataBindingCollection IDataBindingsAccessor.DataBindings => this.dataBindings;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         bool IDataBindingsAccessor.HasDataBindings => this.dataBindings.Count != 0;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             if (string.IsNullOrEmpty(this.Name) && string.IsNullOrEmpty(this.Value))

@@ -4,12 +4,12 @@
 namespace DotNetNuke.Modules.Html
 {
     using System;
-    using System.Linq;
     using System.Web;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Common;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -17,37 +17,56 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Framework;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.UI.WebControls;
-    using DotNetNuke.Web.MvcPipeline.ModuleControl;
-    using DotNetNuke.Web.MvcPipeline.Utils;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>  The HtmlModule Class provides the UI for displaying the Html.</summary>
+    /// <summary>The HtmlModule Class provides the UI for displaying the HTML.</summary>
     public partial class HtmlModule : HtmlModuleBase, IActionable
     {
-        private readonly INavigationManager navigationManager;
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
+        private readonly INavigationManager navigationManager;
+        private readonly HtmlTextController htmlTextController;
+        private readonly IClientResourceController clientResourceController;
         private bool editorEnabled;
-        private int workflowID;
+        private int workflowId;
 
         /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public HtmlModule()
+            : this(null, null)
         {
-            this.navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        /// <summary>  Gets moduleActions is an interface property that returns the module actions collection for the module.</summary>
-        public ModuleActionCollection ModuleActions
+        /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="htmlTextController">The HTML/Text controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
+        public HtmlModule(INavigationManager navigationManager, HtmlTextController htmlTextController)
+            : this(null, navigationManager, htmlTextController, null)
         {
-            get
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HtmlModule"/> class.</summary>
+        /// <param name="settingsRepository">The settings repository.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="htmlTextController">The HTML/Text controller.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public HtmlModule(HtmlModuleSettingsRepository settingsRepository, INavigationManager navigationManager, HtmlTextController htmlTextController, IClientResourceController clientResourceController)
+            : base(settingsRepository)
+        {
+            this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.htmlTextController = htmlTextController ?? this.DependencyProvider.GetRequiredService<HtmlTextController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+        }
+
+        /// <summary>Gets moduleActions is an interface property that returns the module actions collection for the module.</summary>
+        public ModuleActionCollection ModuleActions =>
+            new()
             {
-                // add the Edit Text action
-                var actions = new ModuleActionCollection();
-                actions.Add(
+                {
                     this.GetNextActionID(),
                     Localization.GetString(ModuleActionType.AddContent, this.LocalResourceFile),
                     ModuleActionType.AddContent,
@@ -57,10 +76,9 @@ namespace DotNetNuke.Modules.Html
                     false,
                     SecurityAccessLevel.Edit,
                     true,
-                    false);
-
-                // add mywork to action menu
-                actions.Add(
+                    false
+                },
+                {
                     this.GetNextActionID(),
                     Localization.GetString("MyWork.Action", this.LocalResourceFile),
                     "MyWork.Action",
@@ -70,11 +88,9 @@ namespace DotNetNuke.Modules.Html
                     false,
                     SecurityAccessLevel.Edit,
                     true,
-                    false);
-
-                return actions;
-            }
-        }
+                    false
+                },
+            };
 
         /// <summary>Page_Init runs when the control is initialized.</summary>
         /// <param name="e">The event arguments.</param>
@@ -85,7 +101,7 @@ namespace DotNetNuke.Modules.Html
             this.editorEnabled = this.PortalSettings.InlineEditorEnabled;
             try
             {
-                this.workflowID = new HtmlTextController(this.navigationManager).GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
+                this.workflowId = this.htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 // Add an Action Event Handler to the Skin
                 this.AddActionHandler(this.ModuleAction_Click);
@@ -103,8 +119,6 @@ namespace DotNetNuke.Modules.Html
             base.OnLoad(e);
             try
             {
-                var objHTML = new HtmlTextController(this.navigationManager);
-
                 // edit in place
                 if (this.editorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
@@ -119,7 +133,7 @@ namespace DotNetNuke.Modules.Html
                 HtmlTextInfo htmlTextInfo = null;
                 string contentString = string.Empty;
 
-                htmlTextInfo = objHTML.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.workflowID);
+                htmlTextInfo = this.htmlTextController.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.workflowId);
 
                 if (htmlTextInfo != null)
                 {
@@ -166,7 +180,7 @@ namespace DotNetNuke.Modules.Html
                 this.lblContent.EditEnabled = this.editorEnabled;
 
                 // add content to module
-                this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.Page)));
+                this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.clientResourceController)));
 
                 // set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
                 if (!this.Settings.UseDecorate)
@@ -198,15 +212,14 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             try
             {
                 // verify security
-                if (!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text))
+                if (HtmlUtils.ContainsJavaScript(e.Text))
                 {
                     throw new SecurityException();
                 }
                 else if (this.editorEnabled && this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                 {
                     // get content
-                    var objHTML = new HtmlTextController(this.navigationManager);
-                    HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
+                    HtmlTextInfo objContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.workflowId);
                     if (objContent == null)
                     {
                         objContent = new HtmlTextInfo();
@@ -216,11 +229,11 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     // set content attributes
                     objContent.ModuleID = this.ModuleId;
                     objContent.Content = this.Server.HtmlEncode(e.Text);
-                    objContent.WorkflowID = this.workflowID;
-                    objContent.StateID = this.workflowManager.GetWorkflow(this.workflowID).FirstState.StateID;
+                    objContent.WorkflowID = this.workflowId;
+                    objContent.StateID = this.workflowManager.GetWorkflow(this.workflowId).FirstState.StateID;
 
                     // save the content
-                    objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
+                    this.htmlTextController.UpdateHtmlText(objContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
                 }
                 else
                 {
@@ -244,16 +257,15 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                     if (this.IsEditable && Personalization.GetUserMode() == PortalSettings.Mode.Edit)
                     {
                         // get content
-                        var objHTML = new HtmlTextController(this.navigationManager);
-                        HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.workflowID);
-                        var workflow = this.workflowManager.GetWorkflow(this.workflowID);
+                        HtmlTextInfo objContent = this.htmlTextController.GetTopHtmlText(this.ModuleId, false, this.workflowId);
+                        var workflow = this.workflowManager.GetWorkflow(this.workflowId);
                         if (objContent.StateID == workflow.FirstState.StateID)
                         {
                             // publish content
                             objContent.StateID = workflow.LastState.StateID;
 
                             // save the content
-                            objHTML.UpdateHtmlText(objContent, objHTML.GetMaximumVersionHistory(this.PortalId));
+                            this.htmlTextController.UpdateHtmlText(objContent, this.htmlTextController.GetMaximumVersionHistory(this.PortalId));
 
                             // refresh page
                             this.Response.Redirect(this.navigationManager.NavigateURL(), true);

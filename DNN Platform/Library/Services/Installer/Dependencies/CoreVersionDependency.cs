@@ -13,10 +13,10 @@ namespace DotNetNuke.Services.Installer.Dependencies
     {
         private Version minVersion;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ErrorMessage => string.Format(CultureInfo.InvariantCulture, Util.INSTALL_Compatibility, this.minVersion);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsValid
         {
             get
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator dependencyNav)
         {
             this.minVersion = new Version(dependencyNav.Value);

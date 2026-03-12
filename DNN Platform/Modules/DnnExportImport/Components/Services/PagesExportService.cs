@@ -19,7 +19,11 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Dto.Workflow;
     using Dnn.ExportImport.Repository;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
@@ -45,11 +49,21 @@ namespace Dnn.ExportImport.Components.Services
     using Util = Dnn.ExportImport.Components.Common.Util;
 
     /// <summary>Service to export/import pages/tabs.</summary>
-    public class PagesExportService : BasePortableService
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="portalAliasService">The portal alias service.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings)
+        : BasePortableService
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
 
-        private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
+        private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private ProgressTotals totals;
         private DataProvider dataProvider;
         private ITabController tabController;
@@ -63,25 +77,38 @@ namespace Dnn.ExportImport.Components.Services
         private List<ImportModuleMapping> importContentList = []; // map the exported module and local module.
 
         /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public PagesExportService()
-            : this(null)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalAliasService. Scheduled removal in v12.0.0.")]
         public PagesExportService(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null, null, null)
         {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="PagesExportService"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="portalAliasService">The portal alias service.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+            : this(businessControllerProvider, portalAliasService, appStatus, eventLogger, null)
+        {
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Pages;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 20;
 
         /// <summary>Gets or sets a value indicating whether to include system pages.</summary>
@@ -116,7 +143,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -146,7 +173,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -174,7 +201,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPointStageCallback(this);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportTab>(x => x.IsSystem == this.IncludeSystem);
@@ -351,7 +378,7 @@ namespace Dnn.ExportImport.Components.Services
                 localTab.IsVisible = otherTab.IsVisible;
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
 
-                // tabController.UpdateTab(localTab); // to clear cache
+                ////tabController.UpdateTab(localTab); // to clear cache
                 // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                 if (!DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                 {
@@ -444,7 +471,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.Description = otherTab.Description;
             localTab.KeyWords = otherTab.KeyWords;
 
-            // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
+            ////localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
             localTab.Url = otherTab.Url;
             localTab.SkinSrc = otherTab.SkinSrc;
             localTab.ContainerSrc = otherTab.ContainerSrc;
@@ -458,7 +485,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
 
-            // localTab.UniqueId = otherTab.UniqueId;
+            ////localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
             localTab.Level = otherTab.Level;
@@ -818,7 +845,7 @@ namespace Dnn.ExportImport.Components.Services
                 var local = isNew ? null : localTabPermissions.FirstOrDefault(
                     x => x.PermissionCode == other.PermissionCode && x.PermissionKey == other.PermissionKey
                     && x.PermissionName.Equals(other.PermissionName, StringComparison.OrdinalIgnoreCase) &&
-                    x.RoleID == roleId && x.UserID == userId);
+                    ((IPermissionInfo)x).RoleId == roleId && ((IPermissionInfo)x).UserId == userId);
                 var isUpdate = false;
                 if (local != null)
                 {
@@ -838,7 +865,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (isUpdate)
                 {
                     // UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
-                    // Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                    ////Result.AddLogEntry("Updated tab permission", other.PermissionKey);
                 }
                 else
                 {
@@ -848,17 +875,17 @@ namespace Dnn.ExportImport.Components.Services
                         local = new TabPermissionInfo
                         {
                             TabID = localTab.TabID,
-                            UserID = Null.NullInteger,
-                            RoleID = noRole,
                             Username = other.Username,
                             RoleName = other.RoleName,
-                            ModuleDefID = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1,
                             PermissionKey = other.PermissionKey,
                             PermissionName = other.PermissionName,
                             AllowAccess = other.AllowAccess,
-                            PermissionID = permissionId.Value,
                         };
-                        if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
+                        ((IPermissionInfo)local).UserId = Null.NullInteger;
+                        ((IPermissionInfo)local).RoleId = noRole;
+                        ((IPermissionInfo)local).ModuleDefId = Util.GeModuleDefIdByFriendltName(other.FriendlyName) ?? -1;
+                        ((IPermissionInfo)local).PermissionId = permissionId.Value;
+                        if (other.UserID is > 0 && !string.IsNullOrEmpty(other.Username))
                         {
                             if (userId == null)
                             {
@@ -869,7 +896,7 @@ namespace Dnn.ExportImport.Components.Services
                                 continue;
                             }
 
-                            local.UserID = userId.Value;
+                            ((IPermissionInfo)local).UserId = userId.Value;
                         }
 
                         if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
@@ -883,15 +910,15 @@ namespace Dnn.ExportImport.Components.Services
                                 continue;
                             }
 
-                            local.RoleID = roleId.Value;
+                            ((IPermissionInfo)local).RoleId = roleId.Value;
                         }
 
                         localTab.TabPermissions.Add(local, true);
 
-                        // UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
-                        // var createdBy = Util.GetUserIdByName(exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        // var modifiedBy = Util.GetUserIdByName(exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        // UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
+                        // UNDONE: none set; not possible until after saving all tab permissions as done before exiting this method
+                        ////var createdBy = Util.GetUserIdByName(exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        ////var modifiedBy = Util.GetUserIdByName(exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        ////UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
                         this.Result.AddLogEntry("Added tab permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
@@ -907,7 +934,7 @@ namespace Dnn.ExportImport.Components.Services
 
             if (count > 0)
             {
-                TabPermissionController.SaveTabPermissions(localTab);
+                TabPermissionController.SaveTabPermissions(this.eventLogger, localTab);
             }
 
             return count;
@@ -948,14 +975,14 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 else
                 {
-                    var alias = PortalAliasController.Instance.GetPortalAliasesByPortalId(this.ImportDto.PortalId).FirstOrDefault(a => a.IsPrimary);
+                    var alias = this.portalAliasService.GetPortalAliasesByPortalId(this.ImportDto.PortalId).FirstOrDefault(a => a.IsPrimary);
                     local = new TabUrlInfo
                     {
                         TabId = localTab.TabID,
                         CultureCode = other.CultureCode,
                         HttpStatus = other.HttpStatus,
                         IsSystem = other.IsSystem,
-                        PortalAliasId = alias?.PortalAliasID ?? -1,
+                        PortalAliasId = alias?.PortalAliasId ?? -1,
                         PortalAliasUsage = (PortalAliasUsageType)(other.PortalAliasUsage ?? 0), // reset to default
                         QueryString = other.QueryString,
                         SeqNum = other.SeqNum,
@@ -1053,7 +1080,7 @@ namespace Dnn.ExportImport.Components.Services
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
 
-                        // UniqueId = other.UniqueId,
+                        ////UniqueId = other.UniqueId,
                         UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -1066,7 +1093,7 @@ namespace Dnn.ExportImport.Components.Services
                         PortalID = this.exportImportJob.PortalId,
                     };
 
-                    // Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
+                    ////Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
                     try
                     {
                         // this will create up to 2 records:  Module (if it is not already there) and TabModule
@@ -1151,7 +1178,7 @@ namespace Dnn.ExportImport.Components.Services
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
 
-                                    // UniqueId = other.UniqueId,
+                                    ////UniqueId = other.UniqueId,
                                     UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -1405,15 +1432,15 @@ namespace Dnn.ExportImport.Components.Services
                     var local = new ModulePermissionInfo
                     {
                         ModuleID = localModule.ModuleID,
-                        UserID = Null.NullInteger,
-                        RoleID = noRole,
                         RoleName = other.RoleName,
                         Username = other.Username,
                         PermissionKey = other.PermissionKey,
                         PermissionName = other.PermissionName,
                         AllowAccess = other.AllowAccess,
-                        PermissionID = permissionId.Value,
                     };
+                    ((IPermissionInfo)local).UserId = Null.NullInteger;
+                    ((IPermissionInfo)local).RoleId = noRole;
+                    ((IPermissionInfo)local).PermissionId = permissionId.Value;
                     if (other.UserID is > 0 && !string.IsNullOrEmpty(other.Username))
                     {
                         if (userId == null)
@@ -1421,7 +1448,7 @@ namespace Dnn.ExportImport.Components.Services
                             continue;
                         }
 
-                        local.UserID = userId.Value;
+                        ((IPermissionInfo)local).UserId = userId.Value;
                     }
 
                     if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
@@ -1431,7 +1458,7 @@ namespace Dnn.ExportImport.Components.Services
                             continue;
                         }
 
-                        local.RoleID = roleId.Value;
+                        ((IPermissionInfo)local).RoleId = roleId.Value;
                     }
 
                     other.LocalId = localModule.ModulePermissions.Add(local, true);
@@ -1458,7 +1485,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(localModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this.exportDto.PortalId);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(this.hostSettings, moduleDef.DesktopModuleID, this.exportDto.PortalId);
             if (string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
             {
                 return 0;
@@ -1907,10 +1934,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             if (!this.exportedModuleDefinitions.Contains(exportModule.ModuleDefID) && this.exportDto.IncludeExtensions)
             {
-                var packageZipFile = $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
+                var packageZipFile = $"{this.appStatus.ApplicationMapPath}{Constants.ExportFolder}{this.exportImportJob.Directory.TrimEnd('\\', '/')}\\{Constants.ExportZipPackages}";
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
                 var desktopModuleId = moduleDefinition.DesktopModuleID;
-                var desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
+                var desktopModule = DesktopModuleController.GetDesktopModule(this.hostSettings, desktopModuleId, Null.NullInteger);
                 var package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID);
 
                 var filePath = InstallerUtil.GetPackageBackupPath(package);
@@ -1979,7 +2006,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var moduleDef = ModuleDefinitionController.GetModuleDefinitionByID(exportModule.ModuleDefID);
-            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(moduleDef.DesktopModuleID, this.exportDto.PortalId);
+            var desktopModuleInfo = DesktopModuleController.GetDesktopModule(this.hostSettings, moduleDef.DesktopModuleID, this.exportDto.PortalId);
             if (string.IsNullOrEmpty(desktopModuleInfo?.BusinessControllerClass))
             {
                 return 0;

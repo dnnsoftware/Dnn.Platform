@@ -17,11 +17,17 @@ using System.Web.Script.Serialization;
 using DNNConnect.CKEditorProvider.Constants;
 using DNNConnect.CKEditorProvider.Objects;
 using DNNConnect.CKEditorProvider.Utilities;
+
+using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Common;
+using DotNetNuke.Common.Extensions;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework.Providers;
 using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.FileSystem;
+
+using Microsoft.Extensions.DependencyInjection;
 
 /// <summary>The File Upload Handler.</summary>
 public class FileUploader : IHttpHandler
@@ -29,7 +35,23 @@ public class FileUploader : IHttpHandler
     /// <summary>The JavaScript Serializer.</summary>
     private readonly JavaScriptSerializer js = new JavaScriptSerializer();
 
+    private readonly IHostSettings hostSettings;
+
     private PortalSettings portalSettings;
+
+    /// <summary>Initializes a new instance of the <see cref="FileUploader"/> class.</summary>
+    [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+    public FileUploader()
+        : this(null)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="FileUploader"/> class.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public FileUploader(IHostSettings hostSettings)
+    {
+        this.hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+    }
 
     /// <summary>Gets a value indicating whether another request can use the <see cref="IHttpHandler" /> instance.</summary>
     public bool IsReusable => false;
@@ -193,7 +215,7 @@ public class FileUploader : IHttpHandler
 
         var providerConfiguration = ProviderConfiguration.GetProviderConfiguration("htmlEditor");
         var objProvider = (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
-        var settingsDictionary = EditorController.GetEditorHostSettings();
+        var settingsDictionary = EditorController.GetEditorHostSettings(this.hostSettings);
         var portalRoles = RoleController.Instance.GetRoles(this.portalSettings.PortalId);
 
         return settingMode switch
@@ -201,6 +223,7 @@ public class FileUploader : IHttpHandler
             SettingsMode.Default =>
                 SettingsUtil.GetDefaultSettings(
                     this.portalSettings,
+                    this.hostSettings,
                     this.portalSettings.HomeDirectoryMapPath,
                     objProvider.Attributes["ck_configFolder"],
                     portalRoles),

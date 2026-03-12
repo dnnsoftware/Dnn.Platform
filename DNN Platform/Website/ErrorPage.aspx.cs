@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Exceptions
             this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Exceptions
             this.InstallStylesheet.Attributes["href"] = this.ResolveUrl("~/Install/install.css");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

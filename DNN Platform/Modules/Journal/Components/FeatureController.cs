@@ -9,6 +9,7 @@ namespace DotNetNuke.Modules.Journal.Components
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -24,8 +25,13 @@ namespace DotNetNuke.Modules.Journal.Components
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Controller class for Journal.</summary>
-    public class FeatureController : ModuleSearchBase, IModuleSearchResultController
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class FeatureController(INavigationManager navigationManager, IHostSettings hostSettings)
+        : ModuleSearchBase, IModuleSearchResultController
     {
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public FeatureController()
@@ -35,48 +41,50 @@ namespace DotNetNuke.Modules.Journal.Components
 
         /// <summary>Initializes a new instance of the <see cref="FeatureController"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public FeatureController(INavigationManager navigationManager)
+            : this(navigationManager, null)
         {
-            this.NavigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
-        protected INavigationManager NavigationManager { get; }
+        /// <summary>Gets the navigation manager.</summary>
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         /// <inheritdoc cref="IPortable.ExportModule" />
         public string ExportModule(int moduleID)
         {
-            // string strXML = "";
+            ////string strXML = "";
 
-            // List<JournalInfo> colJournals = GetJournals(ModuleID);
-            // if (colJournals.Count != 0)
-            // {
-            //    strXML += "<Journals>";
+            ////List<JournalInfo> colJournals = GetJournals(ModuleID);
+            ////if (colJournals.Count != 0)
+            ////{
+            ////   strXML += "<Journals>";
 
-            // foreach (JournalInfo objJournal in colJournals)
-            //    {
-            //        strXML += "<Journal>";
-            //        strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objJournal.Content) + "</content>";
-            //        strXML += "</Journal>";
-            //    }
-            //    strXML += "</Journals>";
-            // }
+            ////foreach (JournalInfo objJournal in colJournals)
+            ////   {
+            ////       strXML += "<Journal>";
+            ////       strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objJournal.Content) + "</content>";
+            ////       strXML += "</Journal>";
+            ////   }
+            ////   strXML += "</Journals>";
+            ////}
 
-            // return strXML;
+            ////return strXML;
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
         /// <inheritdoc cref="IPortable.ImportModule" />
         public void ImportModule(int moduleID, string content, string version, int userId)
         {
-            // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
-            // foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
-            // {
-            //    JournalInfo objJournal = new JournalInfo();
-            //    objJournal.ModuleId = ModuleID;
-            //    objJournal.Content = xmlJournal.SelectSingleNode("content").InnerText;
-            //    objJournal.CreatedByUser = UserID;
-            //    AddJournal(objJournal);
-            // }
+            ////XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
+            ////foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
+            ////{
+            ////   JournalInfo objJournal = new JournalInfo();
+            ////   objJournal.ModuleId = ModuleID;
+            ////   objJournal.Content = xmlJournal.SelectSingleNode("content").InnerText;
+            ////   objJournal.CreatedByUser = UserID;
+            ////   AddJournal(objJournal);
+            ////}
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
@@ -86,7 +94,7 @@ namespace DotNetNuke.Modules.Journal.Components
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<SearchDocument> GetModifiedSearchDocuments(ModuleInfo moduleInfo, DateTime beginDateUtc)
         {
             var searchDocuments = new Dictionary<string, SearchDocument>();
@@ -103,7 +111,7 @@ namespace DotNetNuke.Modules.Journal.Components
                         {
                             var journalId = Convert.ToInt32(reader["JournalId"]);
 
-                            // var journalTypeId = reader["JournalTypeId"].ToString();
+                            ////var journalTypeId = reader["JournalTypeId"].ToString();
                             var userId = Convert.ToInt32(reader["UserId"]);
                             var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
                             var profileId = reader["ProfileId"].ToString();
@@ -171,7 +179,7 @@ namespace DotNetNuke.Modules.Journal.Components
             return searchDocuments.Values.ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HasViewPermission(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
@@ -220,15 +228,15 @@ namespace DotNetNuke.Modules.Journal.Components
 
             if (securityKeys.Any(s => s.StartsWith("F")))
             {
-                var targetUser = UserController.GetUserById(searchResult.PortalId, searchResult.AuthorUserId);
+                var targetUser = UserController.GetUserById(this.hostSettings, searchResult.PortalId, searchResult.AuthorUserId);
 
-                return targetUser != null && targetUser.Social.Friend != null && targetUser.Social.Friend.Status == RelationshipStatus.Accepted;
+                return targetUser?.Social.Friend is { Status: RelationshipStatus.Accepted, };
             }
 
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetDocUrl(SearchResult searchResult)
         {
             if (!searchResult.UniqueKey.StartsWith("JI_", StringComparison.InvariantCultureIgnoreCase))
@@ -237,12 +245,12 @@ namespace DotNetNuke.Modules.Journal.Components
             }
 
             string url;
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
 
-            // var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
+            ////var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
             if (groupId > 0 && tabId > 0)

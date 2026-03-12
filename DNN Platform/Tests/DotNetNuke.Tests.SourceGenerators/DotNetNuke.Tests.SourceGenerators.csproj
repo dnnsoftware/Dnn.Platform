@@ -1,15 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
+      <TargetFramework>net10.0</TargetFramework>
+      <ImplicitUsings>enable</ImplicitUsings>
+      <Nullable>enable</Nullable>
 
-        <IsPackable>false</IsPackable>
+      <IsPackable>false</IsPackable>
 
-        <LangVersion>latest</LangVersion>
-        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-        <NoWarn>$(NoWarn),SA0001</NoWarn>
+      <LangVersion>latest</LangVersion>
+      <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     </PropertyGroup>
   
     <ItemGroup>
@@ -29,10 +28,6 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="coverlet.collector">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-        <PackageReference Include="StyleCop.Analyzers">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>

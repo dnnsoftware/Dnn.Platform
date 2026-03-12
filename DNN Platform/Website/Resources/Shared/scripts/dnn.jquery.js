@@ -1,4 +1,13 @@
-﻿(function ($) {
+﻿document.addEventListener("DOMContentLoaded", function () {
+    console.warn(
+        "Do not reference this file directly.\n" +
+        "Use JavaScript.RequestRegistration(CommonJs.DnnPlugins) instead.\n" +
+        "Or other appropriate CommonJs registration methods as described in https://docs.dnncommunity.org/content/tutorials/client-resources/index.html#javascript-libraries.\n" +
+        "This file is unmaintained, may include breaking changes and will be removed in DNN v12."
+    );
+});
+
+(function ($) {
     $.fn.dnnTabs = function (options) {
         var opts = $.extend({}, $.fn.dnnTabs.defaultOptions, options),
         $wrap = this;

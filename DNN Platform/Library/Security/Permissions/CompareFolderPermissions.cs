@@ -8,7 +8,7 @@ namespace DotNetNuke.Security.Permissions
     /// <summary>Provides a custom <see cref="IComparer"/> implementation for <see cref="FolderPermissionInfo"/> objects.</summary>
     internal class CompareFolderPermissions : IComparer
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(object x, object y)
         {
             return ((FolderPermissionInfo)x).FolderPermissionID.CompareTo(((FolderPermissionInfo)y).FolderPermissionID);

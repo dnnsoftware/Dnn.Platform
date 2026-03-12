@@ -19,13 +19,13 @@ namespace Dnn.PersonaBar.Library.Prompt
     [DnnDeprecated(9, 7, 0, "Moved to DotNetNuke.Prompt in the core library project")]
     public abstract partial class ConsoleCommandBase : IConsoleCommand
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract string LocalResourceFile { get; }
 
         /// <summary>Gets resource key for the result html.</summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ValidationMessage { get; private set; }
 
         protected PortalSettings PortalSettings { get; private set; }
@@ -107,7 +107,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Initialize(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.Args = args;
@@ -120,10 +120,10 @@ namespace Dnn.PersonaBar.Library.Prompt
             this.Init(args, portalSettings, userInfo, activeTabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract ConsoleResultModel Run();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsValid()
         {
             return string.IsNullOrEmpty(this.ValidationMessage);

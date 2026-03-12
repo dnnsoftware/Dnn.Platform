@@ -12,50 +12,108 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI.HtmlControls;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
 
-    /// <summary>
-    /// The DNNRegionEditControl control provides a standard UI component for editing
-    /// Regions.
-    /// </summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The DNNRegionEditControl control provides a standard UI component for editing Regions.</summary>
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
     public class DNNRegionEditControl : EditControl
     {
+        private readonly IClientResourceController clientResourceController;
+        private readonly IServicesFramework servicesFramework;
+        private readonly ListController listController;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
+        private readonly IEventLogger eventLogger;
         private DropDownList regions;
-
         private TextBox region;
-
         private HtmlInputHidden initialValue;
-
         private List<ListEntryInfo> listEntries;
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl()
+            : this(null, null, null, null, null, null, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public DNNRegionEditControl(IServicesFramework servicesFramework)
+            : this(servicesFramework, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public DNNRegionEditControl(IServicesFramework servicesFramework, ListController listController, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IEventLogger eventLogger, IClientResourceController clientResourceController)
+        {
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.Init += this.DnnRegionControl_Init;
         }
 
         /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
         /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public DNNRegionEditControl(string type)
+            : this(type, null, null, null, null, null, null, null)
         {
-            this.Init += this.DnnRegionControl_Init;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public DNNRegionEditControl(string type, IServicesFramework servicesFramework)
+            : this(type, servicesFramework, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRegionEditControl"/> class.</summary>
+        /// <param name="type">A string representing the <see cref="Type"/> being edited.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public DNNRegionEditControl(string type, IServicesFramework servicesFramework, ListController listController, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IEventLogger eventLogger, IClientResourceController clientResourceController)
+            : this(servicesFramework, listController, portalController, appStatus, portalGroupController, eventLogger, clientResourceController)
+        {
             this.SystemType = type;
         }
 
         /// <summary>Gets or sets the parent key of the List to display.</summary>
         public string ParentKey { get; set; }
 
-        protected string OldStringValue
-        {
-            get { return Convert.ToString(this.OldValue, CultureInfo.InvariantCulture); }
-        }
+        protected string OldStringValue => Convert.ToString(this.OldValue, CultureInfo.InvariantCulture);
 
         /// <summary>Gets the ListEntryInfo objects associated with the control.</summary>
         protected IEnumerable<ListEntryInfo> ListEntries
@@ -64,8 +122,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (this.listEntries == null)
                 {
-                    var listController = new ListController();
-                    this.listEntries = listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                    this.listEntries = this.listController.GetListEntryInfoItems("Region", this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
                 }
 
                 return this.listEntries;
@@ -73,9 +130,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+        protected int PortalId => PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, PortalSettings.Current.PortalId);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string StringValue
         {
             get
@@ -134,7 +191,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection postCollection)
         {
             bool dataChanged = false;
@@ -157,9 +214,8 @@ namespace DotNetNuke.UI.WebControls
             {
                 foreach (Attribute attribute in this.CustomAttributes)
                 {
-                    if (attribute is ListAttribute)
+                    if (attribute is ListAttribute listAtt)
                     {
-                        var listAtt = (ListAttribute)attribute;
                         this.ParentKey = listAtt.ParentKey;
                         this.listEntries = null;
                         break;
@@ -168,40 +224,42 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnDataChanged(EventArgs e)
         {
-            PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name);
-            args.Value = this.StringValue;
-            args.OldValue = this.OldStringValue;
-            args.StringValue = this.StringValue;
+            PropertyEditorEventArgs args = new PropertyEditorEventArgs(this.Name)
+            {
+                Value = this.StringValue,
+                OldValue = this.OldStringValue,
+                StringValue = this.StringValue,
+            };
             this.OnValueChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             base.CreateChildControls();
 
             this.Regions.ControlStyle.CopyFrom(this.ControlStyle);
-            this.Regions.ID = this.ID + "_dropdown";
+            this.Regions.ID = $"{this.ID}_dropdown";
             this.Regions.Attributes.Add("data-editor", "DNNRegionEditControl_DropDown");
             this.Regions.Attributes.Add("aria-label", "Region");
-            this.Regions.Items.Add(new ListItem() { Text = "<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", Value = string.Empty });
+            this.Regions.Items.Add(new ListItem { Text = $"<{Localization.GetString("Not_Specified", Localization.SharedResourceFile)}>", Value = string.Empty, });
             this.Controls.Add(this.Regions);
 
             this.Region.ControlStyle.CopyFrom(this.ControlStyle);
-            this.Region.ID = this.ID + "_text";
+            this.Region.ID = $"{this.ID}_text";
             this.Region.Attributes.Add("data-editor", "DNNRegionEditControl_Text");
             this.Controls.Add(this.Region);
 
-            this.RegionCode.ID = this.ID + "_value";
+            this.RegionCode.ID = $"{this.ID}_value";
             this.RegionCode.Attributes.Add("data-editor", "DNNRegionEditControl_Hidden");
             this.Controls.Add(this.RegionCode);
         }
 
-        /// <inheritdoc/>
-        protected override void OnPreRender(System.EventArgs e)
+        /// <inheritdoc />
+        protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
@@ -214,14 +272,14 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             if (this.ListEntries != null && this.ListEntries.Any())
             {
                 foreach (ListEntryInfo item in this.ListEntries)
                 {
-                    this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString(CultureInfo.InvariantCulture), });
+                    this.Regions.Items.Add(new ListItem { Text = item.Text, Value = item.EntryID.ToString(CultureInfo.InvariantCulture), });
                 }
             }
 
@@ -235,13 +293,16 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
         }
 
-        private void DnnRegionControl_Init(object sender, System.EventArgs e)
+        private void DnnRegionControl_Init(object sender, EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
-            ClientResourceManager.RegisterFeatureStylesheet(this.Page, "~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css");
-            JavaScript.RequestRegistration(CommonJs.jQuery);
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
+            this.clientResourceController.RegisterScript("~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.js");
+            this.clientResourceController
+                .CreateStylesheet("~/Resources/Shared/components/CountriesRegions/dnn.CountriesRegions.css")
+                .SetPriority(FileOrder.Css.FeatureCss)
+                .Register();
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalController.GetCurrentSettings(), CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.portalController.GetCurrentSettings(), CommonJs.jQueryUI);
         }
 
         private void LoadControls()

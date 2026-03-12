@@ -9,6 +9,7 @@ namespace DNNConnect.CKEditorProvider.Web
     using System.Collections.Specialized;
     using System.Globalization;
     using System.Linq.Expressions;
+    using System.Net.NetworkInformation;
     using System.Text;
     using System.Web;
     using System.Web.Mvc;
@@ -17,7 +18,9 @@ namespace DNNConnect.CKEditorProvider.Web
 
     using DNNConnect.CKEditorProvider.Utilities;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -46,8 +49,11 @@ namespace DNNConnect.CKEditorProvider.Web
             var attrs = new Dictionary<string, object>();
             attrs.Add("id", id.ToString());
             attrs.Add("data-ckeditor", true);
-
-            var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var hostSettings = controller.DependencyProvider.GetRequiredService<IHostSettings>();
+            var appInfo = controller.DependencyProvider.GetRequiredService<IApplicationInfo>();
+            var appStatus = controller.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            var eventLogger = controller.DependencyProvider.GetRequiredService<IEventLogger>();
+            var portalSettings = (PortalSettings)HttpContextSource.Current.Items["PortalSettings"];
             if (!htmlHelper.ViewContext.HttpContext.Request.IsAjaxRequest())
             {
                 var cdf = controller.DependencyProvider.GetRequiredService<IClientResourceController>();
@@ -61,12 +67,12 @@ namespace DNNConnect.CKEditorProvider.Web
                 const string CsFindName = "CKFindScript";
                 */
 
-                JavaScript.RequestRegistration(CommonJs.jQuery);
+                JavaScript.RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQuery);
 
                 cdf.RegisterScript("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/ckeditor.js");
                 cdf.RegisterScript("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/editorOverride.js");
 
-                LoadEditorSettings(portalSettings, portalSettings.ActiveTab.TabID, moduleId);
+                LoadEditorSettings(portalSettings, hostSettings, appInfo, appStatus, portalSettings.ActiveTab.TabID, moduleId);
             }
 
             var textArea = htmlHelper.TextAreaFor(expression, attrs);
@@ -110,7 +116,7 @@ namespace DNNConnect.CKEditorProvider.Web
                         string.Format("~/Providers/HtmlEditorProviders/DNNConnect.CKE/{0}/Options.aspx.resx", Localization.LocalResourceDirectory));
         }
 
-        private static void LoadEditorSettings(PortalSettings portalSettings, int tabId, int moduleId)
+        private static void LoadEditorSettings(PortalSettings portalSettings, IHostSettings hostSettings, IApplicationInfo appInfo, IApplicationStatusInfo appStatus, int tabId, int moduleId)
         {
             const string ProviderType = "htmlEditor";
 
@@ -121,6 +127,7 @@ namespace DNNConnect.CKEditorProvider.Web
             // Load editor settings
             var currentEditorSettings = SettingsLoader.LoadSettings(
                 portalSettings,
+                hostSettings,
                 moduleId,
                 moduleId.ToString(),
                 configFolder);
@@ -134,6 +141,8 @@ namespace DNNConnect.CKEditorProvider.Web
                 settings,
                 currentEditorSettings,
                 portalSettings,
+                appInfo,
+                appStatus,
                 moduleConfiguration,
                 emptyAttributes,
                 Unit.Empty,

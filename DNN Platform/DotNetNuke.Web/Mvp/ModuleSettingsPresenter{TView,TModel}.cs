@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Mvp
             view.OnSaveSettings += this.OnSaveSettingsInternal;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad()
         {
             base.OnLoad();
@@ -59,8 +59,6 @@ namespace DotNetNuke.Web.Mvp
         /// <summary>Updates the module settings.</summary>
         protected virtual void SaveSettings()
         {
-            var controller = ModuleController.Instance;
-
             foreach (var setting in this.View.Model.ModuleSettings)
             {
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, setting.Key, setting.Value);

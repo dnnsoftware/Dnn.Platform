@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Content
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
@@ -19,24 +20,33 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
-    public class ContentController : ServiceLocator<IContentController, ContentController>, IContentController
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A <see cref="IContentController"/> implementation.</summary>
+    /// <param name="dataService">The data service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class ContentController(IDataService dataService, IHostSettings hostSettings)
+        : ServiceLocator<IContentController, ContentController>, IContentController
     {
-        private readonly IDataService dataService;
+        private readonly IDataService dataService = dataService ?? Util.GetDataService();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentController()
-            : this(Util.GetDataService())
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="ContentController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ContentController(IDataService dataService)
+            : this(dataService, null)
         {
-            this.dataService = dataService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddContentItem(ContentItem contentItem)
         {
             // Argument Contract
@@ -59,7 +69,7 @@ namespace DotNetNuke.Entities.Content
             return contentItem.ContentItemId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteContentItem(ContentItem contentItem)
         {
             // Argument Contract
@@ -80,22 +90,23 @@ namespace DotNetNuke.Entities.Content
             UpdateContentItemsCache(contentItem, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteContentItem(int contentItemId)
         {
             var contentItem = this.GetContentItem(contentItemId);
             this.DeleteContentItem(contentItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ContentItem GetContentItem(int contentItemId)
         {
             // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             return CBO.GetCachedObject<ContentItem>(
+                this.hostSettings,
                 new CacheItemArgs(GetContentItemCacheKey(contentItemId), DataCache.ContentItemsCacheTimeOut, DataCache.ContentItemsCachePriority),
-                c => CBO.FillObject<ContentItem>(this.dataService.GetContentItem(contentItemId)));
+                _ => CBO.FillObject<ContentItem>(this.dataService.GetContentItem(contentItemId)));
         }
 
         public IQueryable<ContentItem> GetContentItems(int contentTypeId, int tabId, int moduleId)
@@ -103,7 +114,7 @@ namespace DotNetNuke.Entities.Content
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItems(contentTypeId, tabId, moduleId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByTerm(string term)
         {
             // Argument Contract
@@ -112,13 +123,13 @@ namespace DotNetNuke.Entities.Content
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByTerm(term));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByTerm(Term term)
         {
             return this.GetContentItemsByTerm(term.Name);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId)
         {
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByContentType(contentTypeId));
@@ -130,13 +141,13 @@ namespace DotNetNuke.Entities.Content
             return this.GetContentItemsByContentType(contentType.ContentTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms)
         {
             return this.GetContentItemsByTerms(terms.Select(t => t.Name).ToArray());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByTerms(string[] terms)
         {
             var union = new List<ContentItem>();
@@ -151,31 +162,31 @@ namespace DotNetNuke.Entities.Content
             return union.AsQueryable();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByTabId(int tabId)
         {
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByTabId(tabId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId)
         {
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByVocabularyId(vocabularyId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetUnIndexedContentItems()
         {
             return CBO.FillQueryable<ContentItem>(this.dataService.GetUnIndexedContentItems());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId)
         {
             return CBO.FillQueryable<ContentItem>(this.dataService.GetContentItemsByModuleId(moduleId));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateContentItem(ContentItem contentItem)
         {
             // Argument Contract
@@ -193,7 +204,7 @@ namespace DotNetNuke.Entities.Content
             UpdateContentItemsCache(contentItem);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddMetaData(ContentItem contentItem, string name, string value)
         {
             // Argument Contract
@@ -206,7 +217,7 @@ namespace DotNetNuke.Entities.Content
             UpdateContentItemsCache(contentItem, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
         {
             // Argument Contract
@@ -219,7 +230,7 @@ namespace DotNetNuke.Entities.Content
             UpdateContentItemsCache(contentItem, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteMetaData(ContentItem contentItem, string name)
         {
             if (contentItem.Metadata.AllKeys.Contains(name))
@@ -228,7 +239,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public NameValueCollection GetMetaData(int contentItemId)
         {
             // Argument Contract
@@ -250,10 +261,10 @@ namespace DotNetNuke.Entities.Content
             return metadata;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IContentController> GetFactory()
         {
-            return () => new ContentController();
+            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IContentController>();
         }
 
         private static bool MetaDataChanged(

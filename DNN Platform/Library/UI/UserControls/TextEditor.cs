@@ -289,7 +289,7 @@ namespace DotNetNuke.UI.UserControls
             this.OptRenderSelectedIndexChanged(this.OptRender, EventArgs.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -318,7 +318,7 @@ namespace DotNetNuke.UI.UserControls
                 this.PopulateLists();
 
                 // Get the current user
-                // UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+                ////UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
                 // Set the width and height of the controls
                 if (this.IsRichEditorAvailable)

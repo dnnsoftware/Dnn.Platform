@@ -16,10 +16,10 @@ namespace DotNetNuke.Web.InternalServices
     using System.Web.Caching;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Tabs;
@@ -29,6 +29,8 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.InternalServices.Views.Search;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A web API controller for searching.</summary>
     [DnnAuthorize(StaticRoles = "Administrators")]
@@ -40,31 +42,42 @@ namespace DotNetNuke.Web.InternalServices
         private const string ModuleTitleCacheKey = "SearchModuleTabTitle_{0}";
         private const CacheItemPriority ModuleTitleCachePriority = CacheItemPriority.Normal;
         private const int ModuleTitleCacheTimeOut = 20;
-        private static readonly Regex GroupedBasicViewRegex = new Regex("userid(/|\\|=)(\\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex GroupedBasicViewRegex = new Regex(@"userid(/|\|=)(\d+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly ISearchController searchController;
-        private int htmlModuleDefinitionId;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly int htmlModuleDefinitionId;
 
         /// <summary>Initializes a new instance of the <see cref="SearchServiceController"/> class.</summary>
         /// <param name="searchController">The search controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public SearchServiceController(ISearchController searchController)
+            : this(searchController, null, null)
         {
-            this.searchController = searchController;
-            var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML");
-            this.htmlModuleDefinitionId = modDef != null ? modDef.ModuleDefID : -1;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SearchServiceController"/> class.</summary>
+        /// <param name="searchController">The search controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public SearchServiceController(ISearchController searchController, IHostSettings hostSettings, IHostSettingsService hostSettingsService)
+            : this(searchController, hostSettings, hostSettingsService, ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Text/HTML")?.ModuleDefID ?? -1)
+        {
         }
 
         /// <summary>Initializes a new instance of the <see cref="SearchServiceController"/> class.</summary>
         /// <remarks>this constructor is for unit tests.</remarks>
         /// <param name="searchController">The search controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="htmlModuleDefinitionId">The ID of the HTML module definition.</param>
-        internal SearchServiceController(ISearchController searchController, int htmlModuleDefinitionId) // , TabController newtabController, ModuleController newmoduleController)
+        internal SearchServiceController(ISearchController searchController, IHostSettings hostSettings, IHostSettingsService hostSettingsService, int htmlModuleDefinitionId)
         {
-            this.searchController = searchController;
+            this.searchController = searchController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ISearchController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
             this.htmlModuleDefinitionId = htmlModuleDefinitionId;
-
-            // _tabController = newtabController;
-            // _moduleController = newmoduleController;
         }
 
         /// <summary>Previews a search.</summary>
@@ -77,16 +90,15 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public HttpResponseMessage Preview(string keywords, string culture, int forceWild = 1, int portal = -1)
         {
-            string cleanedKeywords;
             keywords = (keywords ?? string.Empty).Trim();
-            var tags = SearchQueryStringParser.Instance.GetTags(keywords, out cleanedKeywords);
+            var tags = SearchQueryStringParser.Instance.GetTags(keywords, out var cleanedKeywords);
             var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
             var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(keywords, out cleanedKeywords);
 
             var contentSources = this.GetSearchContentSources(searchTypes);
             var settings = this.GetSearchModuleSettings();
             var searchTypeIds = GetSearchTypeIds(settings, contentSources);
-            var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
+            var moduleDefIds = GetSearchModuleDefIds(settings, contentSources);
             var portalIds = this.GetSearchPortalIds(settings, portal);
 
             var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
@@ -102,7 +114,7 @@ namespace DotNetNuke.Web.InternalServices
                     Tags = tags,
                     PortalIds = portalIds,
                     SearchTypeIds = searchTypeIds,
-                    ModuleDefIds = moduleDefids,
+                    ModuleDefIds = moduleDefIds,
                     BeginModifiedTimeUtc = beginModifiedTimeUtc,
                     PageIndex = 1,
                     PageSize = 5,
@@ -136,19 +148,18 @@ namespace DotNetNuke.Web.InternalServices
         [AllowAnonymous]
         public HttpResponseMessage Search(string search, string culture, int pageIndex, int pageSize, int sortOption)
         {
-            string cleanedKeywords;
             search = (search ?? string.Empty).Trim();
-            var tags = SearchQueryStringParser.Instance.GetTags(search, out cleanedKeywords);
+            var tags = SearchQueryStringParser.Instance.GetTags(search, out var cleanedKeywords);
             var beginModifiedTimeUtc = SearchQueryStringParser.Instance.GetLastModifiedDate(cleanedKeywords, out cleanedKeywords);
             var searchTypes = SearchQueryStringParser.Instance.GetSearchTypeList(cleanedKeywords, out cleanedKeywords);
 
             var contentSources = this.GetSearchContentSources(searchTypes);
             var settings = this.GetSearchModuleSettings();
             var searchTypeIds = GetSearchTypeIds(settings, contentSources);
-            var moduleDefids = GetSearchModuleDefIds(settings, contentSources);
+            var moduleDefIds = GetSearchModuleDefIds(settings, contentSources);
             var portalIds = this.GetSearchPortalIds(settings, -1);
             var userSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("user").SearchTypeId;
-            var maximumPageSize = HostController.Instance.GetInteger("Search_MaxResultPerPage", 100);
+            var maximumPageSize = this.hostSettingsService.GetInteger("Search_MaxResultPerPage", 100);
 
             var more = false;
             var totalHits = 0;
@@ -167,7 +178,7 @@ namespace DotNetNuke.Web.InternalServices
                     Tags = tags,
                     PortalIds = portalIds,
                     SearchTypeIds = searchTypeIds,
-                    ModuleDefIds = moduleDefids,
+                    ModuleDefIds = moduleDefIds,
                     BeginModifiedTimeUtc = beginModifiedTimeUtc,
                     EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
                     PageIndex = pageIndex,
@@ -200,9 +211,8 @@ namespace DotNetNuke.Web.InternalServices
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage AddSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
-            string duplicateWord;
-            var synonymsGroupId = SearchHelper.Instance.AddSynonymsGroup(synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out duplicateWord);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
+            var synonymsGroupId = SearchHelper.Instance.AddSynonymsGroup(synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out var duplicateWord);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord, });
         }
 
         /// <summary>Update a synonyms group.</summary>
@@ -213,9 +223,8 @@ namespace DotNetNuke.Web.InternalServices
         [SupportedModules("SearchAdmin")]
         public HttpResponseMessage UpdateSynonymsGroup(SynonymsGroupDto synonymsGroup)
         {
-            string duplicateWord;
-            var synonymsGroupId = SearchHelper.Instance.UpdateSynonymsGroup(synonymsGroup.Id, synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out duplicateWord);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord });
+            var synonymsGroupId = SearchHelper.Instance.UpdateSynonymsGroup(synonymsGroup.Id, synonymsGroup.Tags, synonymsGroup.PortalId, synonymsGroup.Culture, out var duplicateWord);
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = synonymsGroupId, DuplicateWord = duplicateWord, });
         }
 
         /// <summary>Deletes a synonyms group.</summary>
@@ -239,7 +248,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage AddStopWords(StopWordsDto stopWords)
         {
             var stopWordsId = SearchHelper.Instance.AddSearchStopWords(stopWords.Words, stopWords.PortalId, stopWords.Culture);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId, });
         }
 
         /// <summary>Update search stop words.</summary>
@@ -251,7 +260,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage UpdateStopWords(StopWordsDto stopWords)
         {
             var stopWordsId = SearchHelper.Instance.UpdateSearchStopWords(stopWords.Id, stopWords.Words, stopWords.PortalId, stopWords.Culture);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Id = stopWordsId, });
         }
 
         /// <summary>Delete search stop words.</summary>
@@ -283,7 +292,7 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (var result in searchResults.Results)
             {
-                // var key = result.TabId + result.Url;
+                ////var key = result.TabId + result.Url;
                 var key = result.Url;
                 if (!tabGroups.ContainsKey(key))
                 {
@@ -305,9 +314,10 @@ namespace DotNetNuke.Web.InternalServices
                 }
             }
 
-            var showFriendlyTitle = this.ActiveModule == null
-                                    || !this.ActiveModule.ModuleSettings.ContainsKey("ShowFriendlyTitle")
-                                    || Convert.ToBoolean(this.ActiveModule.ModuleSettings["ShowFriendlyTitle"], CultureInfo.InvariantCulture);
+            var showFriendlyTitle =
+                this.ActiveModule == null ||
+                !this.ActiveModule.ModuleSettings.ContainsKey("ShowFriendlyTitle") ||
+                Convert.ToBoolean(this.ActiveModule.ModuleSettings["ShowFriendlyTitle"], CultureInfo.InvariantCulture);
             foreach (var results in tabGroups.Values)
             {
                 var group = new GroupedDetailView();
@@ -330,7 +340,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                     else if (first.ModuleId > 0)
                     {
-                        var tabTitle = GetTabTitleFromModuleId(first.ModuleId);
+                        var tabTitle = GetTabTitleFromModuleId(this.hostSettings, first.ModuleId);
                         if (!string.IsNullOrEmpty(tabTitle))
                         {
                             @group.Title = tabTitle;
@@ -340,13 +350,13 @@ namespace DotNetNuke.Web.InternalServices
                 else if (first.ModuleDefId > 0 && first.ModuleDefId == this.htmlModuleDefinitionId)
                 {
                     // special handling for Html module
-                    var tabTitle = GetTabTitleFromModuleId(first.ModuleId);
+                    var tabTitle = GetTabTitleFromModuleId(this.hostSettings, first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
                         @group.Title = tabTitle;
                         if (first.Title != "Enter Title" && first.Title != "Text/HTML")
                         {
-                            @group.Title += " > " + first.Title;
+                            @group.Title += $" > {first.Title}";
                         }
 
                         first.Title = @group.Title;
@@ -384,9 +394,8 @@ namespace DotNetNuke.Web.InternalServices
         /// <returns>A list of <see cref="GroupedBasicView"/> instances.</returns>
         internal List<GroupedBasicView> GetGroupedBasicViews(SearchQuery query, SearchContentSource userSearchSource, int portalId)
         {
-            int totalHists;
             var results = new List<GroupedBasicView>();
-            var previews = this.GetBasicViews(query, out totalHists);
+            var previews = this.GetBasicViews(query, out _);
 
             foreach (var preview in previews)
             {
@@ -461,12 +470,13 @@ namespace DotNetNuke.Web.InternalServices
             });
         }
 
-        private static ArrayList GetModulesByDefinition(int portalId, string friendlyName)
+        private static ArrayList GetModulesByDefinition(IHostSettings hostSettings, int portalId, string friendlyName)
         {
             var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleInfosCacheKey, portalId);
             return CBO.GetCachedObject<ArrayList>(
+                hostSettings,
                 new CacheItemArgs(cacheKey, ModuleInfosCacheTimeOut, ModuleInfosCachePriority),
-                args => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName), typeof(ModuleInfo)));
+                _ => CBO.FillCollection(DataProvider.Instance().GetModuleByDefinition(portalId, friendlyName), typeof(ModuleInfo)));
         }
 
         private static List<int> GetSearchTypeIds(Hashtable settings, IEnumerable<SearchContentSource> searchContentSources)
@@ -552,12 +562,15 @@ namespace DotNetNuke.Web.InternalServices
             return result.Title;
         }
 
-        private static string GetTabTitleFromModuleId(int moduleId)
+        private static string GetTabTitleFromModuleId(IHostSettings hostSettings, int moduleId)
         {
             // no manual clearing of the cache exists; let it just expire
             var cacheKey = string.Format(CultureInfo.InvariantCulture, ModuleTitleCacheKey, moduleId);
 
-            return CBO.GetCachedObject<string>(new CacheItemArgs(cacheKey, ModuleTitleCacheTimeOut, ModuleTitleCachePriority, moduleId), GetTabTitleCallBack);
+            return CBO.GetCachedObject<string>(
+                hostSettings,
+                new CacheItemArgs(cacheKey, ModuleTitleCacheTimeOut, ModuleTitleCachePriority, moduleId),
+                GetTabTitleCallBack);
         }
 
         private static object GetTabTitleCallBack(CacheItemArgs cacheItemArgs)
@@ -588,7 +601,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private ModuleInfo GetSearchModule()
         {
-            var arrModules = GetModulesByDefinition(this.PortalSettings.PortalId, "Search Results");
+            var arrModules = GetModulesByDefinition(this.hostSettings, this.PortalSettings.PortalId, "Search Results");
             ModuleInfo findModule = null;
             if (arrModules.Count > 1)
             {
@@ -702,12 +715,12 @@ namespace DotNetNuke.Web.InternalServices
             if (result.ModuleDefId > 0 && result.ModuleDefId == this.htmlModuleDefinitionId)
             {
                 // special handling for Html module
-                var tabTitle = GetTabTitleFromModuleId(result.ModuleId);
+                var tabTitle = GetTabTitleFromModuleId(this.hostSettings, result.ModuleId);
                 if (!string.IsNullOrEmpty(tabTitle))
                 {
                     if (result.Title != "Enter Title" && result.Title != "Text/HTML")
                     {
-                        return tabTitle + " > " + result.Title;
+                        return $"{tabTitle} > {result.Title}";
                     }
 
                     return tabTitle;

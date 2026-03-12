@@ -467,7 +467,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(pid, "ContentLocalizationEnabled", "False");
                 DataCache.ClearPortalCache(pid, true);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -511,7 +511,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                     this.tabController.UpdateTab(page);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -545,7 +545,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 this.localeController.ActivateLanguage(pid, locale.Code, enable);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -579,7 +579,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 this.localeController.PublishLanguage(pid, locale.Code, enable);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -617,7 +617,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 this.localeController.PublishLanguage(pid, locale.Code, false);
 
                 DataCache.ClearPortalCache(pid, true);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {

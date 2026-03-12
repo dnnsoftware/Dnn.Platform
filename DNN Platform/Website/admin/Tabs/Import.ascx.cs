@@ -11,8 +11,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using System.Xml;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -22,7 +24,6 @@ namespace DotNetNuke.Modules.Admin.Tabs
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -32,10 +33,13 @@ namespace DotNetNuke.Modules.Admin.Tabs
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
+        private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
 
         private TabInfo tab;
 
         /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public Import()
             : this(null, null, null)
         {
@@ -54,27 +58,41 @@ namespace DotNetNuke.Modules.Admin.Tabs
         /// <param name="businessControllerProvider">The business controller provider.</param>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPermissionDefinitionService. Scheduled removal in v12.0.0.")]
         public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IEventLogger eventLogger)
+            : this(businessControllerProvider, navigationManager, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
+            : this(businessControllerProvider, navigationManager, eventLogger, permissionDefinitionService, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Import"/> class.</summary>
+        /// <param name="businessControllerProvider">The business controller provider.</param>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Import(IBusinessControllerProvider businessControllerProvider, INavigationManager navigationManager, IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         {
             this.businessControllerProvider = businessControllerProvider ?? this.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
-        public TabInfo Tab
-        {
-            get
-            {
-                if (this.tab == null)
-                {
-                    this.tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
-                }
+        public TabInfo Tab => this.tab ??= TabController.Instance.GetTab(this.TabId, this.PortalId, false);
 
-                return this.tab;
-            }
-        }
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -85,7 +103,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -194,7 +212,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     }
 
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
-                    var tabId = TabController.GetTabByTabPath(objTab.PortalID, objTab.TabPath, Null.NullString);
+                    var tabId = TabController.GetTabByTabPath(this.hostSettings, objTab.PortalID, objTab.TabPath, Null.NullString);
 
                     // Check if tab exists
                     if (tabId != Null.NullInteger)
@@ -229,7 +247,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
                     this.eventLogger.AddLog(objTab, this.PortalSettings, this.UserId, string.Empty, EventLogType.TAB_CREATED);
 
-                    objTab = TabController.DeserializeTab(this.businessControllerProvider, tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
+                    objTab = TabController.DeserializeTab(this.businessControllerProvider, this.permissionDefinitionService, tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 
                     var exceptions = string.Empty;
 
@@ -238,7 +256,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         try
                         {
-                            TabController.DeserializeTab(this.businessControllerProvider, tabNodes[tab], null, this.PortalId, PortalTemplateModuleAction.Replace);
+                            TabController.DeserializeTab(this.businessControllerProvider, this.permissionDefinitionService, tabNodes[tab], null, this.PortalId, PortalTemplateModuleAction.Replace);
                         }
                         catch (Exception ex)
                         {
@@ -256,7 +274,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 else
                 {
                     // Replace Existing Tab
-                    objTab = TabController.DeserializeTab(this.businessControllerProvider, tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
+                    objTab = TabController.DeserializeTab(this.businessControllerProvider, this.permissionDefinitionService, tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
                 }
 
                 switch (this.optRedirect.SelectedValue)

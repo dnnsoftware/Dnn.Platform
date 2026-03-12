@@ -116,7 +116,7 @@ namespace DotNetNuke.Framework
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual bool IsReusable
         {
             get

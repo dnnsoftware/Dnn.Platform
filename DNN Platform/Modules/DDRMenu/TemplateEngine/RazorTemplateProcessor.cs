@@ -13,12 +13,27 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Web.UI;
     using System.Web.WebPages;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.Razor;
 
-    public class RazorTemplateProcessor : ITemplateProcessor
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An <see cref="ITemplateProcessor"/> for Razor files.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class RazorTemplateProcessor(IHostSettings hostSettings) : ITemplateProcessor
     {
-        /// <inheritdoc/>
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="RazorTemplateProcessor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public RazorTemplateProcessor()
+            : this(null)
+        {
+        }
+
+        /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             var virtualPath = baseDefinition.TemplateVirtualPath;
@@ -32,12 +47,12 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
             if (!string.IsNullOrEmpty(liveDefinition.TemplateVirtualPath))
             {
-                var resolver = new PathResolver(liveDefinition.Folder);
+                var resolver = new PathResolver(this.hostSettings, liveDefinition.Folder);
                 dynamic model = new ExpandoObject();
                 model.Source = source;
                 model.ControlID = DNNContext.Current.ClientID;
@@ -104,7 +119,9 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
             else
             {
+#pragma warning disable CS0618 // Type or member is obsolete
                 var razorEngine = new RazorEngine(virtualPath, null, null);
+#pragma warning restore CS0618 // Type or member is obsolete
                 razorEngine.Render<dynamic>(writer, model);
             }
 

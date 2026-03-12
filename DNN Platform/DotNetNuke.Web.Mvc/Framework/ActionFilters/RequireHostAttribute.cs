@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     {
         private UserInfo user;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             base.OnAuthorization(filterContext);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             var principal = Thread.CurrentPrincipal;

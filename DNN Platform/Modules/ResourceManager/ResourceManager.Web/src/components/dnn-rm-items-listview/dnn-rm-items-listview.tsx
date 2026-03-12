@@ -21,19 +21,7 @@ export class DnnRmItemsListview {
   /** Fires when a file is double-clicked and emits the file ID into the event.detail */
   @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
 
-  componentWillLoad() {
-    document.addEventListener("click", void this.dismissContextMenu.bind(this));
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener("click", void this.disconnectedCallback.bind(this));
-  }
-
-  private dismissContextMenu() {
-    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
-    existingMenus?.forEach(existingMenu => this.el.shadowRoot.removeChild(existingMenu));
-  }
-  
+  private contextMenu: HTMLDnnContextMenuElement;
 
   private getLocalDateString(dateString: string) {
     const date = new Date(dateString);
@@ -61,28 +49,6 @@ export class DnnRmItemsListview {
       default:
         break;
     }
-  }
-
-  private handleContextMenu(e: MouseEvent, item: Item): void {
-    e.preventDefault();
-    state.selectedItems = [item];
-    this.dismissContextMenu();
-    
-    const contextMenu: HTMLDnnRmFolderContextMenuElement | HTMLDnnRmFileContextMenuElement =
-      item.isFolder
-        ? document.createElement("dnn-rm-folder-context-menu")
-        : document.createElement("dnn-rm-file-context-menu");
-    const collapsible = document.createElement("dnn-collapsible");
-    contextMenu.item = item;
-    collapsible.appendChild(contextMenu);
-    collapsible.style.left = `${e.pageX}px`;
-    collapsible.style.top = `${e.pageY}px`;
-    collapsible.style.display = "block";
-    this.el.shadowRoot.appendChild(collapsible);
-    setTimeout(() => {
-      collapsible.expanded = true;
-    }, 100);
-    return;
   }
 
   private handleDoubleClick(item: Item): void {
@@ -115,7 +81,10 @@ export class DnnRmItemsListview {
                   tabIndex={0}
                   onKeyDown={e => this.handleRowKeyDown(e, item)}
                   onClick={() => selectionUtilities.toggleItemSelected(item)}
-                  onContextMenu={e => this.handleContextMenu(e, item)}
+                  onContextMenu={e => {
+                    e.preventDefault();
+                    this.contextMenu.open(e as PointerEvent).catch(console.error);
+                  }}
                   onDblClick={() => this.handleDoubleClick(item)}
                 >
                   <td class="radio">
@@ -131,6 +100,17 @@ export class DnnRmItemsListview {
                   <td>{this.getLocalDateString(item.createdOn)}</td>
                   <td>{this.getLocalDateString(item.modifiedOn)}</td>
                   <td class="size">{getFileSize(item.fileSize)}</td>
+                  <dnn-context-menu
+                    ref={el => this.contextMenu = el}
+                    closeOnClick
+                  >
+                    {item.isFolder
+                    ?
+                      <dnn-rm-folder-context-menu item={item} />
+                    :
+                      <dnn-rm-file-context-menu item={item} />
+                    }
+                  </dnn-context-menu>
                 </tr>
               )}
             </tbody>

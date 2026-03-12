@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// <summary>Gets or sets the permission key for the access.</summary>
         public string PermissionKey { get; set; } = "EDIT";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

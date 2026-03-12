@@ -22,12 +22,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_GetRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public int RoleId { get; private set; } = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.RoleId = this.GetFlagValue(FlagId, "Role Id", -1, true, true);
@@ -38,7 +38,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var lst = new List<RoleModel>();

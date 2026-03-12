@@ -9,69 +9,71 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Content.Workflow.Exceptions;
     using DotNetNuke.Framework;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     // TODO: add interface metadata documentation
     // TODO: removed unused SPRoc and DataProvider layer
-    internal class WorkflowRepository : ServiceLocator<IWorkflowRepository, WorkflowRepository>, IWorkflowRepository
+    internal class WorkflowRepository(IHostSettings hostSettings) : ServiceLocator<IWorkflowRepository, WorkflowRepository>, IWorkflowRepository
     {
-        private readonly IWorkflowStateRepository stateRepository;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IWorkflowStateRepository stateRepository = WorkflowStateRepository.Instance;
 
         /// <summary>Initializes a new instance of the <see cref="WorkflowRepository"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public WorkflowRepository()
+            : this(null)
         {
-            this.stateRepository = WorkflowStateRepository.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Entities.Workflow> GetWorkflows(int portalId)
         {
-            using (var context = DataContext.Instance())
+            using var context = DataContext.Instance(this.hostSettings);
+            var rep = context.GetRepository<Entities.Workflow>();
+            var workflows = rep.Find("WHERE (PortalId = @0 OR PortalId IS NULL)", portalId).ToArray();
+
+            // Workflow States eager loading
+            foreach (var workflow in workflows)
             {
-                var rep = context.GetRepository<Entities.Workflow>();
-                var workflows = rep.Find("WHERE (PortalId = @0 OR PortalId IS NULL)", portalId).ToArray();
-
-                // Worfklow States eager loading
-                foreach (var workflow in workflows)
-                {
-                    workflow.States = this.stateRepository.GetWorkflowStates(workflow.WorkflowID);
-                }
-
-                return workflows;
+                workflow.States = this.stateRepository.GetWorkflowStates(workflow.WorkflowID);
             }
+
+            return workflows;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Entities.Workflow> GetSystemWorkflows(int portalId)
         {
-            using (var context = DataContext.Instance())
+            using var context = DataContext.Instance(this.hostSettings);
+            var rep = context.GetRepository<Entities.Workflow>();
+            var workflows = rep.Find("WHERE (PortalId = @0 OR PortalId IS NULL) AND IsSystem = 1", portalId).ToArray();
+
+            // Workflow States eager loading
+            foreach (var workflow in workflows)
             {
-                var rep = context.GetRepository<Entities.Workflow>();
-                var workflows = rep.Find("WHERE (PortalId = @0 OR PortalId IS NULL) AND IsSystem = 1", portalId).ToArray();
-
-                // Worfklow States eager loading
-                foreach (var workflow in workflows)
-                {
-                    workflow.States = this.stateRepository.GetWorkflowStates(workflow.WorkflowID);
-                }
-
-                return workflows;
+                workflow.States = this.stateRepository.GetWorkflowStates(workflow.WorkflowID);
             }
+
+            return workflows;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetWorkflow(int workflowId)
         {
             return CBO.GetCachedObject<Entities.Workflow>(
-                new CacheItemArgs(
-                GetWorkflowItemKey(workflowId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
+                this.hostSettings,
+                new CacheItemArgs(GetWorkflowItemKey(workflowId), DataCache.WorkflowsCacheTimeout, DataCache.WorkflowsCachePriority),
                 _ =>
                 {
                     Entities.Workflow workflow;
-                    using (var context = DataContext.Instance())
+                    using (var context = DataContext.Instance(this.hostSettings))
                     {
                         var rep = context.GetRepository<Entities.Workflow>();
                         workflow = rep.Find("WHERE WorkflowID = @0", workflowId).SingleOrDefault();
@@ -87,7 +89,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public Entities.Workflow GetWorkflow(ContentItem item)
         {
             var state = this.stateRepository.GetWorkflowStateByID(item.StateID);
@@ -96,10 +98,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
 
         // TODO: validation
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddWorkflow(Entities.Workflow workflow)
         {
-            using (var context = DataContext.Instance())
+            using (var context = DataContext.Instance(this.hostSettings))
             {
                 var rep = context.GetRepository<Entities.Workflow>();
 
@@ -111,15 +113,15 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 rep.Insert(workflow);
             }
 
-            CacheWorkflow(workflow);
+            CacheWorkflow(this.hostSettings, workflow);
         }
 
         // TODO: validation
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateWorkflow(Entities.Workflow workflow)
         {
-            using (var context = DataContext.Instance())
+            using (var context = DataContext.Instance(this.hostSettings))
             {
                 var rep = context.GetRepository<Entities.Workflow>();
 
@@ -132,13 +134,13 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             }
 
             DataCache.RemoveCache(GetWorkflowItemKey(workflow.WorkflowID));
-            CacheWorkflow(workflow);
+            CacheWorkflow(this.hostSettings, workflow);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteWorkflow(Entities.Workflow workflow)
         {
-            using (var context = DataContext.Instance())
+            using (var context = DataContext.Instance(this.hostSettings))
             {
                 var rep = context.GetRepository<Entities.Workflow>();
                 rep.Delete(workflow);
@@ -152,10 +154,10 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
             return string.Format(CultureInfo.InvariantCulture, DataCache.ContentWorkflowCacheKey, workflowId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IWorkflowRepository> GetFactory()
         {
-            return () => new WorkflowRepository();
+            return () => ActivatorUtilities.GetServiceOrCreateInstance<WorkflowRepository>(Globals.DependencyProvider);
         }
 
         private static bool DoesExistWorkflow(Entities.Workflow workflow, IRepository<Entities.Workflow> rep)
@@ -168,11 +170,12 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                        .SingleOrDefault() != null;
         }
 
-        private static void CacheWorkflow(Entities.Workflow workflow)
+        private static void CacheWorkflow(IHostSettings hostSettings, Entities.Workflow workflow)
         {
             if (workflow.WorkflowID > 0)
             {
                 CBO.GetCachedObject<Entities.Workflow>(
+                    hostSettings,
                     new CacheItemArgs(
                         GetWorkflowItemKey(workflow.WorkflowID),
                         DataCache.WorkflowsCacheTimeout,

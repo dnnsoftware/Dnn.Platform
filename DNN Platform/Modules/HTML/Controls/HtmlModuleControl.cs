@@ -4,10 +4,13 @@
 namespace DotNetNuke.Modules.Html.Controls
 {
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Modules.Html.Models;
     using DotNetNuke.Security;
@@ -23,13 +26,30 @@ namespace DotNetNuke.Modules.Html.Controls
         private readonly HtmlTextController htmlTextController;
         private readonly IWorkflowManager workflowManager;
         private readonly IClientResourceController clientResourceController;
+        private readonly IPortalAliasService portalAliasService;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IHostSettings hostSettings;
+        private readonly HtmlModuleSettingsRepository settingsRepository;
 
         private HtmlModuleSettings settings;
 
-        public HtmlModuleControl(INavigationManager navigationManager, IClientResourceController clientResourceController)
+        public HtmlModuleControl(
+            INavigationManager navigationManager,
+            IClientResourceController clientResourceController,
+            IPortalAliasService portalAliasService,
+            IPortalController portalController,
+            IApplicationStatusInfo appStatus,
+            IHostSettings hostSettings,
+            HtmlModuleSettingsRepository settingsRepository)
         {
             this.navigationManager = navigationManager;
-            this.htmlTextController = new HtmlTextController(this.navigationManager);
+            this.portalAliasService = portalAliasService;
+            this.portalController = portalController;
+            this.appStatus = appStatus;
+            this.hostSettings = hostSettings;
+            this.settingsRepository = settingsRepository;
+            this.htmlTextController = new HtmlTextController(this.navigationManager, this.portalAliasService, this.portalController, this.appStatus, this.hostSettings, this.settingsRepository);
             this.workflowManager = WorkflowManager.Instance;
             this.clientResourceController = clientResourceController;
         }
@@ -44,8 +64,7 @@ namespace DotNetNuke.Modules.Html.Controls
             {
                 if (this.settings == null)
                 {
-                    var repo = new HtmlModuleSettingsRepository();
-                    this.settings = repo.GetSettings(this.ModuleConfiguration);
+                    this.settings = this.settingsRepository.GetSettings(this.ModuleConfiguration);
                 }
 
                 return this.settings;

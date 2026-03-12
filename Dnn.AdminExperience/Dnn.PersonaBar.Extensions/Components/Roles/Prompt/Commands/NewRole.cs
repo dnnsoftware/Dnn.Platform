@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         public string RoleName { get; set; }
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
 
         public RoleStatus Status { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.RoleName = this.GetFlagValue(FlagRoleName, "Rolename", string.Empty, true, true);
@@ -78,7 +78,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

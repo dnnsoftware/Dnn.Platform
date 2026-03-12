@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.Modules.Html5
             this.moduleContext = moduleContext;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ProcessToken(ModuleLocalizationDto model, UserInfo accessingUser, Scope accessLevel)
         {
             string returnValue = string.Empty;

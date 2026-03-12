@@ -12,7 +12,7 @@ namespace DotNetNuke.Common.Controls
     /// <summary>The Form will reset action to raw url instead of rewrite url.</summary>
     public class Form : HtmlForm
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RenderAttributes(HtmlTextWriter writer)
         {
             var stringWriter = new StringWriter();

@@ -9,33 +9,28 @@ namespace DotNetNuke.Services.GeneratedImage
     using System.Linq;
 
     using DotNetNuke.Abstractions.Portals;
-    using DotNetNuke.Entities.Portals;
 
     /// <summary>Validates urls that could be used in the Image Handler.</summary>
     internal class UriValidator
     {
         private static readonly char[] AliasSeparator = ['/',];
-        private readonly IPortalAliasController portalAliasController;
+        private readonly IPortalAliasService portalAliasService;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="UriValidator"/> class.
-        /// </summary>
-        /// <param name="portalAliasController">Provides services related to portal aliases.</param>
-        public UriValidator(IPortalAliasController portalAliasController)
+        /// <summary>Initializes a new instance of the <see cref="UriValidator"/> class.</summary>
+        /// <param name="portalAliasService">Provides services related to portal aliases.</param>
+        public UriValidator(IPortalAliasService portalAliasService)
         {
-            this.portalAliasController = portalAliasController;
+            this.portalAliasService = portalAliasService;
         }
 
-        /// <summary>
-        /// Checks if a URI belongs to hosted sites.
-        /// </summary>
+        /// <summary>Checks if a URI belongs to hosted sites.</summary>
         /// <param name="uri">The URI to validate.</param>
-        /// <returns>A value indicating whether the provided Uri belongs to the a valid site.</returns>
+        /// <returns>A value indicating whether the provided URI belongs to a valid site.</returns>
         internal bool UriBelongsToSite(Uri uri)
         {
             IEnumerable<string> hostAliases =
-                this.portalAliasController
-                    .GetPortalAliases().Values.Cast<IPortalAliasInfo>()
+                this.portalAliasService
+                    .GetPortalAliases().Values
                     .Select(alias => alias.HttpAlias);
 
             // Extract the host and normalize the path from the incoming URI

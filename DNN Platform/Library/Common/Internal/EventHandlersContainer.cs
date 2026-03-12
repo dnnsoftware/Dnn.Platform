@@ -42,7 +42,7 @@ namespace DotNetNuke.Common.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Lazy<T>> EventHandlers
         {
             get

@@ -14,6 +14,8 @@ namespace DotNetNuke.Entities.Urls
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -164,15 +166,15 @@ namespace DotNetNuke.Entities.Urls
             bool retVal;
             try
             {
-                // var uri = new Uri(requestedPath);
-                // if (uri.PathAndQuery.ToLowerInvariant().StartsWith("/default.aspx"))
-                // {
-                //    retVal = false;
-                //    result.CanRewrite = StateBoolean.True;
-                //    result.RewritePath = uri.PathAndQuery.Substring(1);
-                // }
-                // else
-                // {
+                ////var uri = new Uri(requestedPath);
+                ////if (uri.PathAndQuery.ToLowerInvariant().StartsWith("/default.aspx"))
+                ////{
+                ////   retVal = false;
+                ////   result.CanRewrite = StateBoolean.True;
+                ////   result.RewritePath = uri.PathAndQuery.Substring(1);
+                ////}
+                ////else
+                ////{
                 if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
                     !Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                 {
@@ -185,7 +187,7 @@ namespace DotNetNuke.Entities.Urls
                     result.CanRewrite = StateBoolean.False;
                 }
 
-                // }
+                ////}
             }
             catch (Exception ex)
             {
@@ -265,9 +267,10 @@ namespace DotNetNuke.Entities.Urls
             {
                 // if no rewrite, then the path should have been a non-friendly path, and therefore can be passed in to get the friendly Url
                 pathOnly = requestUri.Authority + requestUri.PathAndQuery;
+                IPortalAliasInfo alias = result.PortalAlias;
                 int aliasEnd =
-                    pathOnly.IndexOf(result.PortalAlias.HTTPAlias, StringComparison.InvariantCultureIgnoreCase) +
-                    result.PortalAlias.HTTPAlias.Length;
+                    pathOnly.IndexOf(alias.HttpAlias, StringComparison.InvariantCultureIgnoreCase) +
+                    alias.HttpAlias.Length;
                 if (aliasEnd > -1)
                 {
                     pathOnly = pathOnly.Substring(aliasEnd);
@@ -279,7 +282,7 @@ namespace DotNetNuke.Entities.Urls
             return pathOnly;
         }
 
-        internal static string GetTabFromDictionary(string url, NameValueCollection querystringCol, FriendlyUrlSettings settings, UrlAction result, Guid parentTraceId)
+        internal static string GetTabFromDictionary(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, string url, NameValueCollection querystringCol, FriendlyUrlSettings settings, UrlAction result, Guid parentTraceId)
         {
             // retrive the tab dictionary from the cache and get the path depth values
             int maxAliasPathDepth;
@@ -375,12 +378,12 @@ namespace DotNetNuke.Entities.Urls
                             bool found = false;
                             if (querystringCol.Count > 0)
                             {
-                                found = CheckTabPath(tabKeyVal.Replace(" ", settings.SpaceEncodingValue) + "?" + querystringCol.ToString().Split('&')[0].ToLowerInvariant(), result, settings, tabDict, ref newUrl);
+                                found = CheckTabPath(hostSettings, portalController, appStatus, portalGroupController, tabKeyVal.Replace(" ", settings.SpaceEncodingValue) + "?" + querystringCol.ToString().Split('&')[0].ToLowerInvariant(), result, settings, tabDict, ref newUrl);
                             }
 
                             if (!found)
                             {
-                                found = CheckTabPath(tabKeyVal.Replace(" ", settings.SpaceEncodingValue), result, settings, tabDict, ref newUrl);
+                                found = CheckTabPath(hostSettings, portalController, appStatus, portalGroupController, tabKeyVal.Replace(" ", settings.SpaceEncodingValue), result, settings, tabDict, ref newUrl);
                             }
 
                             bool isSiteRootMatch = false;
@@ -920,6 +923,10 @@ namespace DotNetNuke.Entities.Urls
         }
 
         internal static bool IdentifyByTabPathEx(
+            IHostSettings hostSettings,
+            IPortalController portalController,
+            IApplicationStatusInfo appStatus,
+            IPortalGroupController portalGroupController,
             string absoluteUri,
             string queryString,
             UrlAction result,
@@ -940,7 +947,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); // decode the incoming request
-            string rewritePath = GetTabFromDictionary(absoluteUri, queryStringCol, settings, result, parentTraceId);
+            string rewritePath = GetTabFromDictionary(hostSettings, portalController, appStatus, portalGroupController, absoluteUri, queryStringCol, settings, result, parentTraceId);
 
             // put the query string back on the end
             rewritePath = AddQueryStringToRewritePath(rewritePath, queryString);
@@ -953,7 +960,8 @@ namespace DotNetNuke.Entities.Urls
                 PortalInfo portal = CacheController.GetPortal(result.PortalId, false);
 
                 // DNN-3789 - culture is defined by GetPageLocale
-                string currentLocale = Localization.GetPageLocale(new PortalSettings(result.TabId, result.PortalAlias)).Name;
+                IPortalSettings portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
+                string currentLocale = Localization.GetPageLocale(portalSettings).Name;
                 if (portal != null && !string.IsNullOrEmpty(currentLocale))
                 {
                     AddLanguageCodeToRewritePath(ref rewritePath, currentLocale);
@@ -1460,7 +1468,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 622 : remove encoding from querystring paths
                         // 699 : reverses 622 because works from Request.QUeryString instead of Request.Url.Query
-                        // string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
+                        ////string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
                         string queryStringPiece = parms[i];
 
                         // no decoding - querystring passes through rewriting process untouched
@@ -1717,10 +1725,11 @@ namespace DotNetNuke.Entities.Urls
             return found;
         }
 
-        private static UserInfo GetUser(int portalId, string vanityUrl)
+        private static UserInfo GetUser(IHostSettings hostSettings, int portalId, string vanityUrl)
         {
             string cacheKey = string.Format(CultureInfo.InvariantCulture, CacheController.VanityUrlLookupKey, portalId);
             var vanityUrlLookupDictionary = CBO.GetCachedObject<Dictionary<string, UserInfo>>(
+                hostSettings,
                 new CacheItemArgs(cacheKey, 20, CacheItemPriority.High, portalId),
                 static c => new Dictionary<string, UserInfo>());
 
@@ -1733,7 +1742,7 @@ namespace DotNetNuke.Entities.Urls
             return user;
         }
 
-        private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
+        private static bool CheckTabPath(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
         {
             bool found;
             string userParam = string.Empty;
@@ -1769,7 +1778,7 @@ namespace DotNetNuke.Entities.Urls
                         string vanityUrl = urlSegments[1];
 
                         // check if its a vanityUrl
-                        var user = GetUser(PortalController.GetEffectivePortalId(result.PortalId), vanityUrl);
+                        var user = GetUser(hostSettings, PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, result.PortalId), vanityUrl);
                         if (user != null)
                         {
                             userParam = "UserId=" + user.UserID.ToString(CultureInfo.InvariantCulture);
@@ -1807,7 +1816,8 @@ namespace DotNetNuke.Entities.Urls
                     var currentLocale = result.CultureCode;
                     if (string.IsNullOrEmpty(currentLocale))
                     {
-                        currentLocale = Localization.GetPageLocale(new PortalSettings(result.PortalId)).Name;
+                        IPortalSettings portalSettings = new PortalSettings(result.PortalId);
+                        currentLocale = Localization.GetPageLocale(portalSettings).Name;
                     }
 
                     if (!newUrl.Contains(currentLocale))

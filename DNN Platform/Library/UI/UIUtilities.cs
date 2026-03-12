@@ -12,6 +12,7 @@ namespace DotNetNuke.UI
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.ControlPanels;
     using DotNetNuke.UI.Modules;
@@ -41,14 +42,15 @@ namespace DotNetNuke.UI
         {
             var request = HttpContext.Current.Request;
             var isLegacyUi = true;
-            var settings = PortalController.Instance.GetCurrentPortalSettings();
+            var currentPage = TabController.CurrentPage;
+            var settings = PortalController.Instance.GetCurrentSettings();
             if (settings != null)
             {
                 isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));
 
                 if (!isLegacyUi && !string.IsNullOrEmpty(key))
                 {
-                    var slaveModule = GetSlaveModule(moduleId, key, settings.ActiveTab.TabID);
+                    var slaveModule = GetSlaveModule(moduleId, key, currentPage.TabID);
                     if (slaveModule != null)
                     {
                         var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??

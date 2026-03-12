@@ -141,7 +141,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             eventLogger ??= Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
             portalSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>().GetCurrentSettings();
 
-            // handle case where script has no javascript library
+            // handle case where script has no JavaScript library
             switch (jsname)
             {
                 case CommonJs.jQuery:

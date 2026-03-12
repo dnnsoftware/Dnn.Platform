@@ -13,13 +13,27 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Xml;
     using System.Xml.Xsl;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
 
-    public class XsltTemplateProcessor : ITemplateProcessor
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>An <see cref="ITemplateProcessor"/> for XSLT files.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class XsltTemplateProcessor(IHostSettings hostSettings) : ITemplateProcessor
     {
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private XslCompiledTransform xsl;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="XsltTemplateProcessor"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public XsltTemplateProcessor()
+            : this(null)
+        {
+        }
+
+        /// <inheritdoc />
         public bool LoadDefinition(TemplateDefinition baseDefinition)
         {
             try
@@ -40,10 +54,10 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Render(object source, HtmlTextWriter htmlWriter, TemplateDefinition liveDefinition)
         {
-            var resolver = new PathResolver(liveDefinition.Folder);
+            var resolver = new PathResolver(this.hostSettings, liveDefinition.Folder);
             var hostPage = DNNContext.Current.Page;
 
             Func<string, string> resolveUrl = hostPage == null ? VirtualPathUtility.ToAbsolute : hostPage.ResolveUrl;

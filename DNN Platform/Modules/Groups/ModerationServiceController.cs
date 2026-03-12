@@ -11,9 +11,13 @@ namespace DotNetNuke.Modules.Groups
     using System.Web.Http;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Modules.Groups.Components;
@@ -24,22 +28,59 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A web API controller for moderation in the Groups module.</summary>
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="roleProvider">The role provider.</param>
+    /// <param name="roleController">The role controller.</param>
+    /// <param name="eventManager">The event manager.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="userController">The user controller.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [DnnAuthorize]
-    public class ModerationServiceController : DnnApiController
+    public class ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
+        private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
+        private readonly IRoleController roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
+        private readonly IEventManager eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private int tabId;
         private int moduleId;
         private int roleId;
         private int memberId;
         private RoleInfo roleInfo;
 
+        /// <summary>Initializes a new instance of the <see cref="ModerationServiceController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
         public ModerationServiceController(INavigationManager navigationManager)
+            : this(navigationManager, null, null, null, null, null, null, null)
         {
-            this.NavigationManager = navigationManager;
         }
 
-        protected INavigationManager NavigationManager { get; }
+        /// <summary>Initializes a new instance of the <see cref="ModerationServiceController"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+            : this(navigationManager, roleProvider, roleController, eventManager, portalController, userController, eventLogger, null)
+        {
+        }
+
+        /// <summary>Gets the navigation manager.</summary>
+        protected INavigationManager NavigationManager { get; } = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -67,18 +108,18 @@ namespace DotNetNuke.Modules.Groups
 
                 this.roleInfo.Status = RoleStatus.Approved;
                 RoleController.Instance.UpdateRole(this.roleInfo);
-                var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
+                var roleCreator = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
 
                 // Update the original creator's role
                 RoleController.Instance.UpdateUserRole(this.PortalSettings.PortalId, roleCreator.UserID, this.roleInfo.RoleID, RoleStatus.Approved, true, false);
                 GroupUtilities.CreateJournalEntry(this.roleInfo, roleCreator);
 
-                var notifications = new Notifications();
-                var siteAdmin = UserController.GetUserById(this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
+                var notifications = new Notifications(this.hostSettings);
+                var siteAdmin = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
                 notifications.AddGroupNotification(Constants.GroupApprovedNotification, this.tabId, this.moduleId, this.roleInfo, siteAdmin, new List<RoleInfo> { this.roleInfo });
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -111,15 +152,15 @@ namespace DotNetNuke.Modules.Groups
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
                 }
 
-                var notifications = new Notifications();
-                var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
-                var siteAdmin = UserController.GetUserById(this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
+                var notifications = new Notifications(this.hostSettings);
+                var roleCreator = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
+                var siteAdmin = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
                 notifications.AddGroupNotification(Constants.GroupRejectedNotification, this.tabId, this.moduleId, this.roleInfo, siteAdmin, new List<RoleInfo> { this.roleInfo }, roleCreator);
 
                 var role = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == this.roleId);
                 RoleController.Instance.DeleteRole(role);
                 NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -160,7 +201,7 @@ namespace DotNetNuke.Modules.Groups
                         if (this.roleInfo.IsPublic && requireApproval)
                         {
                             RoleController.Instance.AddUserRole(this.PortalSettings.PortalId, this.UserInfo.UserID, this.roleInfo.RoleID, RoleStatus.Pending, false, Null.NullDate, Null.NullDate);
-                            var notifications = new Notifications();
+                            var notifications = new Notifications(this.hostSettings);
                             notifications.AddGroupOwnerNotification(Constants.MemberPendingNotification, this.tabId, this.moduleId, this.roleInfo, this.UserInfo);
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = string.Empty });
                         }
@@ -194,7 +235,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         if (this.UserInfo.IsInRole(this.roleInfo.RoleName))
                         {
-                            RoleController.DeleteUserRole(this.UserInfo, this.roleInfo, this.PortalSettings, false);
+                            RoleController.DeleteUserRole(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, this.UserInfo, this.roleInfo, this.PortalSettings, false);
                         }
 
                         success = true;
@@ -239,7 +280,7 @@ namespace DotNetNuke.Modules.Groups
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
                 }
 
-                var member = UserController.GetUserById(this.PortalSettings.PortalId, this.memberId);
+                var member = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.memberId);
 
                 if (member != null)
                 {
@@ -247,12 +288,12 @@ namespace DotNetNuke.Modules.Groups
                     memberRoleInfo.Status = RoleStatus.Approved;
                     RoleController.Instance.UpdateUserRole(this.PortalSettings.PortalId, this.memberId, this.roleInfo.RoleID, RoleStatus.Approved, false, false);
 
-                    var notifications = new Notifications();
-                    var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
+                    var notifications = new Notifications(this.hostSettings);
+                    var groupOwner = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
                     notifications.AddMemberNotification(Constants.MemberApprovedNotification, this.tabId, this.moduleId, this.roleInfo, groupOwner, member);
                     NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                 }
             }
             catch (Exception exc)
@@ -288,17 +329,17 @@ namespace DotNetNuke.Modules.Groups
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
                 }
 
-                var member = UserController.GetUserById(this.PortalSettings.PortalId, this.memberId);
+                var member = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.memberId);
 
                 if (member != null)
                 {
-                    RoleController.DeleteUserRole(member, this.roleInfo, this.PortalSettings, false);
-                    var notifications = new Notifications();
-                    var groupOwner = UserController.GetUserById(this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
+                    RoleController.DeleteUserRole(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, member, this.roleInfo, this.PortalSettings, false);
+                    var notifications = new Notifications(this.hostSettings);
+                    var groupOwner = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, this.roleInfo.CreatedByUserID);
                     notifications.AddMemberNotification(Constants.MemberRejectedNotification, this.tabId, this.moduleId, this.roleInfo, groupOwner, member);
                     NotificationsController.Instance.DeleteAllNotificationRecipients(postData.NotificationId);
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
                 }
             }
             catch (Exception exc)

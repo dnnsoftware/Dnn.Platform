@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+﻿﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Core.Controllers.Portal
@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
     using System.Data;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Portals;
@@ -57,26 +58,6 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             this.serviceProvider.Dispose();
             MockComponentProvider.ResetContainer();
-        }
-
-        [Test]
-        public void PortalGroupController_Constructor_Throws_On_Null_DataService()
-        {
-            // Arrange
-            var mockPortalController = new Mock<IPortalController>();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new PortalGroupController(null, mockPortalController.Object));
-        }
-
-        [Test]
-        public void PortalGroupController_Constructor_Throws_On_Null_PortalController()
-        {
-            // Arrange
-            var mockDataService = new Mock<IDataService>();
-
-            // Act, Assert
-            Assert.Throws<ArgumentNullException>(() => new PortalGroupController(mockDataService.Object, null));
         }
 
         [Test]

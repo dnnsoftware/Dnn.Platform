@@ -8,7 +8,7 @@ namespace DotNetNuke.Services.Localization.Persian
 
     public class PersianCalendar : System.Globalization.PersianCalendar
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetYear(DateTime time)
         {
             try
@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Localization.Persian
             return time.Year;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetMonth(DateTime time)
         {
             try
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Localization.Persian
             return time.Month;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetDayOfMonth(DateTime time)
         {
             try
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Localization.Persian
             return time.Day;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetDayOfYear(DateTime time)
         {
             try
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Localization.Persian
             return time.DayOfYear;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override DayOfWeek GetDayOfWeek(DateTime time)
         {
             try

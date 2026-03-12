@@ -712,7 +712,7 @@ window.dnn.pages = window.dnn.pages || {};
                     uiOnDragStart = null;
 
                     function updateHirerarchy() {
-                        var sourcePageId, sourceUl, sourceIndex, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target;
+                        var sourcePageId, sourceUl, sourceFind, source, sourceData, targetId, targetIndex, targetFind, target;
                         var params, movePage200Callback, movePageErrorCallback;
 
                         pageDropped = {
@@ -758,7 +758,7 @@ window.dnn.pages = window.dnn.pages || {};
                             // Add source page as first child of target page
                             params = {
                                 PageId: sourcePageId,
-                                RelatedPageId: -1, // Not necesary for parent
+                                RelatedPageId: -1, // Not necessary for parent
                                 ParentId: targetId,
                                 Action:   'parent'
                             };
@@ -835,7 +835,7 @@ window.dnn.pages = window.dnn.pages || {};
                                 uiOnDragStart = null;
 
 
-                                viewModel.pagesList()[sourceFind.level].pages.splice(sourceIndex, 0, sourceData);
+                                viewModel.pagesList()[sourceFind.level].pages.splice(undefined, 0, sourceData);
 
                                 dropOnDroppable = false;
 

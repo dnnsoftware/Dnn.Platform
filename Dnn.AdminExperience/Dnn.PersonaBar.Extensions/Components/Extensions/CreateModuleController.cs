@@ -60,7 +60,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             return packageId;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ICreateModuleController> GetFactory()
         {
             return () => new CreateModuleController();

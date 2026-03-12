@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities.Modules
 
         public event UserUpdateErrorEventHandler UserUpdateError;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool AddUser => !this.Request.IsAuthenticated || base.AddUser;
 
         /// <summary>Raises the <see cref="UserCreateCompleted"/> Event.</summary>

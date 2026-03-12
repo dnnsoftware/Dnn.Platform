@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Api
 
         private ConcurrentDictionary<string, HttpControllerDescriptor> DescriptorCache => this.descriptorCache.Value;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public HttpControllerDescriptor SelectController(HttpRequestMessage request)
         {
             Requires.NotNull("request", request);
@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.Api
             throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.Conflict, string.Format(CultureInfo.CurrentCulture, Localization.GetString("AmbiguousController", Localization.ExceptionsResourceFile), controllerName, string.Join(", ", namespaces))));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, HttpControllerDescriptor> GetControllerMapping()
         {
             return this.DescriptorCache;

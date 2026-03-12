@@ -42,18 +42,18 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.DisplayType == 0)
             {
-                PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+                var portalSettings = PortalController.Instance.GetCurrentSettings();
                 string viewTypePersonalizationKey = "ViewType" + portalSettings.PortalId;
                 string viewType = Convert.ToString(Personalization.GetProfile("LanguageDisplayMode", viewTypePersonalizationKey), CultureInfo.InvariantCulture);
                 switch (viewType)

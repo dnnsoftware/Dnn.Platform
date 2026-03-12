@@ -48,6 +48,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         private const string GlobalTabContainer = "[g]TabContainer";
 
         private Mock<IHostController> mockHostController;
+        private Mock<IPortalController> mockPortalController;
+        private Mock<ITabController> mockTabController;
+        private Mock<ILocaleController> mockLocaleController;
         private FakeServiceProvider serviceProvider;
 
         [SetUp]
@@ -57,12 +60,19 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
             this.mockHostController = new Mock<IHostController>();
             this.mockHostController.As<IHostSettingsService>();
+            this.mockPortalController = new Mock<IPortalController>();
+            PortalController.SetTestableInstance(this.mockPortalController.Object);
+            this.mockTabController = new Mock<ITabController>();
+            TabController.SetTestableInstance(this.mockTabController.Object);
+            this.mockLocaleController = new Mock<ILocaleController>();
+            LocaleController.SetTestableInstance(this.mockLocaleController.Object);
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>
                 {
                     services.AddSingleton(this.mockHostController.Object);
                     services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton(this.mockPortalController.Object);
                 });
         }
 
@@ -71,6 +81,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             PortalController.ClearInstance();
             TabController.ClearInstance();
+            LocaleController.ClearInstance();
             this.serviceProvider.Dispose();
         }
 
@@ -91,11 +102,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
             ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
-            var mockPortalController = new Mock<IPortalController>();
-            mockPortalController
+            this.mockPortalController
                 .Setup(c => c.GetPortalSettings(It.IsAny<int>()))
                 .Returns(new Dictionary<string, string>());
-            PortalController.SetTestableInstance(mockPortalController.Object);
 
             mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>()))
                 .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
@@ -146,11 +155,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
             ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
-            var mockPortalController = new Mock<IPortalController>();
-            mockPortalController
+            this.mockPortalController
                 .Setup(c => c.GetPortalSettings(It.IsAny<int>()))
                 .Returns(new Dictionary<string, string> { { settingName, settingValue } });
-            PortalController.SetTestableInstance(mockPortalController.Object);
 
             mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>()))
                 .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
@@ -189,11 +196,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var fakeCachingProvider = new FakeCachingProvider(new Dictionary<string, object>());
             ComponentFactory.RegisterComponentInstance<CachingProvider>(fakeCachingProvider);
 
-            var mockPortalController = new Mock<IPortalController>();
-            mockPortalController
+            this.mockPortalController
                 .Setup(c => c.GetPortalSettings(It.IsAny<int>()))
                 .Returns(new Dictionary<string, string>());
-            PortalController.SetTestableInstance(mockPortalController.Object);
 
             mockHostSettingsService.Setup(c => c.GetString(It.IsAny<string>()))
                             .Returns((string s) => hostSettings.GetValueOrDefault<string>(s));
@@ -223,56 +228,54 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
                 DefaultLanguage = Localization.SystemLocale,
                 HomeDirectory = "Portals/0",
             };
-            var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
+            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString, };
 
             // Act
             controller.LoadPortal(portal, settings);
 
-            Assert.Multiple(() =>
-            {
-                // Assert
-                Assert.That(settings.AdminTabId, Is.EqualTo(portal.AdminTabId));
-                Assert.That(settings.AdministratorId, Is.EqualTo(portal.AdministratorId));
-                Assert.That(settings.AdministratorRoleId, Is.EqualTo(portal.AdministratorRoleId));
-                Assert.That(settings.AdministratorRoleName, Is.EqualTo(portal.AdministratorRoleName));
-                Assert.That(settings.BackgroundFile, Is.EqualTo(portal.BackgroundFile));
-                Assert.That(settings.BannerAdvertising, Is.EqualTo(portal.BannerAdvertising));
-                Assert.That(settings.CultureCode, Is.EqualTo(portal.CultureCode));
-                Assert.That(settings.Currency, Is.EqualTo(portal.Currency));
-                Assert.That(settings.ErrorPage404, Is.EqualTo(portal.Custom404TabId));
-                Assert.That(settings.ErrorPage500, Is.EqualTo(portal.Custom500TabId));
-                Assert.That(settings.TermsTabId, Is.EqualTo(portal.TermsTabId));
-                Assert.That(settings.PrivacyTabId, Is.EqualTo(portal.PrivacyTabId));
-                Assert.That(settings.DefaultLanguage, Is.EqualTo(portal.DefaultLanguage));
-                Assert.That(settings.Description, Is.EqualTo(portal.Description));
-                Assert.That(settings.Email, Is.EqualTo(portal.Email));
-                Assert.That(settings.ExpiryDate, Is.EqualTo(portal.ExpiryDate));
-                Assert.That(settings.FooterText, Is.EqualTo(portal.FooterText));
-                Assert.That(settings.GUID, Is.EqualTo(portal.GUID));
-                Assert.That(settings.HomeDirectory, Is.EqualTo(Globals.ApplicationPath + "/" + portal.HomeDirectory + "/"));
-                Assert.That(settings.HomeDirectoryMapPath, Is.EqualTo(portal.HomeDirectoryMapPath));
-                Assert.That(settings.HomeSystemDirectory, Is.EqualTo(Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/"));
-                Assert.That(settings.HomeSystemDirectoryMapPath, Is.EqualTo(portal.HomeSystemDirectoryMapPath));
-                Assert.That(settings.HomeTabId, Is.EqualTo(portal.HomeTabId));
-                Assert.That(settings.HostFee, Is.EqualTo(portal.HostFee));
-                Assert.That(settings.HostSpace, Is.EqualTo(portal.HostSpace));
-                Assert.That(settings.KeyWords, Is.EqualTo(portal.KeyWords));
-                Assert.That(settings.LoginTabId, Is.EqualTo(portal.LoginTabId));
-                Assert.That(settings.LogoFile, Is.EqualTo(portal.LogoFile));
-                Assert.That(settings.PageQuota, Is.EqualTo(portal.PageQuota));
-                Assert.That(settings.Pages, Is.EqualTo(portal.Pages));
-                Assert.That(settings.PortalName, Is.EqualTo(portal.PortalName));
-                Assert.That(settings.RegisterTabId, Is.EqualTo(portal.RegisterTabId));
-                Assert.That(settings.RegisteredRoleId, Is.EqualTo(portal.RegisteredRoleId));
-                Assert.That(settings.RegisteredRoleName, Is.EqualTo(portal.RegisteredRoleName));
-                Assert.That(settings.SearchTabId, Is.EqualTo(portal.SearchTabId));
-                Assert.That(settings.SplashTabId, Is.EqualTo(portal.SplashTabId));
-                Assert.That(settings.SuperTabId, Is.EqualTo(portal.SuperTabId));
-                Assert.That(settings.UserQuota, Is.EqualTo(portal.UserQuota));
-                Assert.That(settings.UserRegistration, Is.EqualTo(portal.UserRegistration));
-                Assert.That(settings.UserTabId, Is.EqualTo(portal.UserTabId));
-                Assert.That(settings.Users, Is.EqualTo(portal.Users));
-            });
+            // Assert
+            using var _ = Assert.EnterMultipleScope();
+            Assert.That(settings.AdminTabId, Is.EqualTo(portal.AdminTabId));
+            Assert.That(settings.AdministratorId, Is.EqualTo(portal.AdministratorId));
+            Assert.That(settings.AdministratorRoleId, Is.EqualTo(portal.AdministratorRoleId));
+            Assert.That(settings.AdministratorRoleName, Is.EqualTo(portal.AdministratorRoleName));
+            Assert.That(settings.BackgroundFile, Is.EqualTo(portal.BackgroundFile));
+            Assert.That(settings.BannerAdvertising, Is.EqualTo(portal.BannerAdvertising));
+            Assert.That(settings.CultureCode, Is.EqualTo(portal.CultureCode));
+            Assert.That(settings.Currency, Is.EqualTo(portal.Currency));
+            Assert.That(settings.ErrorPage404, Is.EqualTo(portal.Custom404TabId));
+            Assert.That(settings.ErrorPage500, Is.EqualTo(portal.Custom500TabId));
+            Assert.That(settings.TermsTabId, Is.EqualTo(portal.TermsTabId));
+            Assert.That(settings.PrivacyTabId, Is.EqualTo(portal.PrivacyTabId));
+            Assert.That(settings.DefaultLanguage, Is.EqualTo(portal.DefaultLanguage));
+            Assert.That(settings.Description, Is.EqualTo(portal.Description));
+            Assert.That(settings.Email, Is.EqualTo(portal.Email));
+            Assert.That(settings.ExpiryDate, Is.EqualTo(portal.ExpiryDate));
+            Assert.That(settings.FooterText, Is.EqualTo(portal.FooterText));
+            Assert.That(settings.GUID, Is.EqualTo(portal.GUID));
+            Assert.That(settings.HomeDirectory, Is.EqualTo(Globals.ApplicationPath + "/" + portal.HomeDirectory + "/"));
+            Assert.That(settings.HomeDirectoryMapPath, Is.EqualTo(portal.HomeDirectoryMapPath));
+            Assert.That(settings.HomeSystemDirectory, Is.EqualTo(Globals.ApplicationPath + "/" + portal.HomeSystemDirectory + "/"));
+            Assert.That(settings.HomeSystemDirectoryMapPath, Is.EqualTo(portal.HomeSystemDirectoryMapPath));
+            Assert.That(settings.HomeTabId, Is.EqualTo(portal.HomeTabId));
+            Assert.That(settings.HostFee, Is.EqualTo(portal.HostFee));
+            Assert.That(settings.HostSpace, Is.EqualTo(portal.HostSpace));
+            Assert.That(settings.KeyWords, Is.EqualTo(portal.KeyWords));
+            Assert.That(settings.LoginTabId, Is.EqualTo(portal.LoginTabId));
+            Assert.That(settings.LogoFile, Is.EqualTo(portal.LogoFile));
+            Assert.That(settings.PageQuota, Is.EqualTo(portal.PageQuota));
+            Assert.That(settings.Pages, Is.EqualTo(portal.Pages));
+            Assert.That(settings.PortalName, Is.EqualTo(portal.PortalName));
+            Assert.That(settings.RegisterTabId, Is.EqualTo(portal.RegisterTabId));
+            Assert.That(settings.RegisteredRoleId, Is.EqualTo(portal.RegisteredRoleId));
+            Assert.That(settings.RegisteredRoleName, Is.EqualTo(portal.RegisteredRoleName));
+            Assert.That(settings.SearchTabId, Is.EqualTo(portal.SearchTabId));
+            Assert.That(settings.SplashTabId, Is.EqualTo(portal.SplashTabId));
+            Assert.That(settings.SuperTabId, Is.EqualTo(portal.SuperTabId));
+            Assert.That(settings.UserQuota, Is.EqualTo(portal.UserQuota));
+            Assert.That(settings.UserRegistration, Is.EqualTo(portal.UserRegistration));
+            Assert.That(settings.UserTabId, Is.EqualTo(portal.UserTabId));
+            Assert.That(settings.Users, Is.EqualTo(portal.Users));
         }
 
         [Test]
@@ -280,17 +283,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             // Arrange
             var controller = new PortalSettingsController();
-            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString };
-            var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId };
+            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString, };
+            var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, };
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
 
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
 
             // Act
             var tab = controller.GetActiveTab(ValidTabId, settings);
@@ -304,17 +303,13 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             // Arrange
             var controller = new PortalSettingsController();
-            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString };
-            var validTab = new TabInfo { TabID = HostTabId, PortalID = HostPortalId };
+            var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString, };
+            var validTab = new TabInfo { TabID = HostTabId, PortalID = HostPortalId, };
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
 
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection());
 
             // Act
             var tab = controller.GetActiveTab(HostTabId, settings);
@@ -329,15 +324,10 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Arrange
             var controller = new PortalSettingsController();
             var settings = new PortalSettings { PortalId = ValidPortalId, SplashTabId = SplashTabId, CultureCode = Null.NullString };
-            var splashTabId = new TabInfo { TabID = SplashTabId, PortalID = ValidPortalId };
+            var splashTab = new TabInfo { TabID = SplashTabId, PortalID = ValidPortalId };
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { splashTabId }));
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([splashTab,]));
 
             // Act
             var tab = controller.GetActiveTab(InValidTabId, settings);
@@ -351,16 +341,11 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             // Arrange
             var controller = new PortalSettingsController();
-            var settings = new PortalSettings { PortalId = ValidPortalId, HomeTabId = HomeTabId, CultureCode = Null.NullString };
-            var homeTabId = new TabInfo { TabID = HomeTabId, PortalID = ValidPortalId };
+            var settings = new PortalSettings { PortalId = ValidPortalId, HomeTabId = HomeTabId, CultureCode = Null.NullString, };
+            var homeTab = new TabInfo { TabID = HomeTabId, PortalID = ValidPortalId, };
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { homeTabId }));
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([homeTab,]));
 
             // Act
             var tab = controller.GetActiveTab(InValidTabId, settings);
@@ -378,13 +363,8 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var splashTabId = new TabInfo { TabID = SplashTabId, PortalID = ValidPortalId };
             var homeTabId = new TabInfo { TabID = HomeTabId, PortalID = ValidPortalId };
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { splashTabId, homeTabId }));
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([splashTabId, homeTabId,]));
 
             // Act
             var tab = controller.GetActiveTab(InValidTabId, settings);
@@ -401,24 +381,19 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var settings = new PortalSettings { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId };
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
 
             // Act
             var tab = controller.GetActiveTab(ValidTabId, settings);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(tab.StartDate, Is.EqualTo(DateTime.MinValue));
                 Assert.That(tab.EndDate, Is.EqualTo(DateTime.MaxValue));
-            });
+            }
         }
 
         [Test]
@@ -432,15 +407,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
 
             this.mockHostController.Setup(c => c.GetString("DefaultPortalSkin")).Returns(DefaultSkin);
             this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
-
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -458,15 +427,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, SkinSrc = TabSkin };
             settings.ActiveTab = validTab;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
-
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
@@ -485,15 +448,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, SkinSrc = GlobalTabSkin };
             settings.ActiveTab = validTab;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
-
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
@@ -513,15 +470,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             settings.ActiveTab = validTab;
             settings.ActiveTab.SkinSrc = TabSkin;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
-
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
@@ -541,14 +492,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             settings.ActiveTab = validTab;
             settings.ActiveTab.SkinSrc = TabSkin;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -562,19 +508,14 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             // Arrange
             var controller = new PortalSettingsController();
-            var settings = new PortalSettings { PortalId = ValidPortalId, DefaultPortalContainer = DefaultContainer, CultureCode = Null.NullString };
-            var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, ContainerSrc = GlobalTabContainer };
+            var settings = new PortalSettings { PortalId = ValidPortalId, DefaultPortalContainer = DefaultContainer, CultureCode = Null.NullString, };
+            var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, ContainerSrc = GlobalTabContainer, };
             settings.ActiveTab = validTab;
             settings.ActiveTab.SkinSrc = TabSkin;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
 
             // Act
             controller.ConfigureActiveTab(settings);
@@ -592,15 +533,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var validTab = new TabInfo { TabID = ValidTabId, PortalID = ValidPortalId, SkinSrc = GlobalTabSkin };
             settings.ActiveTab = validTab;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
-
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection([validTab,]));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
@@ -622,15 +557,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             settings.ActiveTab = validTab;
             settings.ActiveTab.SkinSrc = TabSkin;
 
-            var mockLocaleController = new Mock<ILocaleController>();
-            mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
-            LocaleController.RegisterInstance(mockLocaleController.Object);
-
-            var mockTabController = new Mock<ITabController>();
-            mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab, parentTab }));
-            mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
-            TabController.SetTestableInstance(mockTabController.Object);
-
+            this.mockLocaleController.Setup(c => c.GetLocales(It.IsAny<int>())).Returns(new Dictionary<string, Locale>());
+            this.mockTabController.Setup(c => c.GetTabsByPortal(ValidPortalId)).Returns(new TabCollection(new List<TabInfo> { validTab, parentTab }));
+            this.mockTabController.Setup(c => c.GetTabsByPortal(HostPortalId)).Returns(new TabCollection());
             this.mockHostController.Setup(c => c.GetString("DefaultPortalContainer")).Returns("DefaultPortalContainer");
 
             // Act
@@ -639,12 +568,12 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Assert
             var actualParent = settings.ActiveTab.BreadCrumbs[0] as TabInfo;
             var actualTab = settings.ActiveTab.BreadCrumbs[1] as TabInfo;
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(settings.ActiveTab.BreadCrumbs, Has.Count.EqualTo(2));
                 Assert.That(actualTab.TabID, Is.EqualTo(ValidTabId));
                 Assert.That(actualParent.TabID, Is.EqualTo(ParentTabId));
-            });
+            }
         }
     }
 }

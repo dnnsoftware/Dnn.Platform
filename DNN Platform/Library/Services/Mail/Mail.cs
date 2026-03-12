@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Mail
             }
 
             pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
-            return Regex.Match(email, pattern).Success;
+            return Regex.IsMatch(email, pattern);
         }
 
         public static void SendEmail(string fromAddress, string toAddress, string subject, string body)

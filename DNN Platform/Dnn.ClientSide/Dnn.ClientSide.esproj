@@ -2,6 +2,7 @@
 	<PropertyGroup>
 	  <ShouldRunNpmInstall>false</ShouldRunNpmInstall>
 	  <ResolveNuGetPackages>false</ResolveNuGetPackages>
+      <ManagePackageVersionsCentrally>false</ManagePackageVersionsCentrally>
 	</PropertyGroup>
 	<Target Name="YarnInstall" BeforeTargets="BeforeRestore">
 	  <Exec Command="yarn install" />

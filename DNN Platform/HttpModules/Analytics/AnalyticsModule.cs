@@ -46,14 +46,14 @@ namespace DotNetNuke.HttpModules.Analytics
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string ModuleName => "AnalyticsModule";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
             application.PreRequestHandlerExecute += this.OnPreRequestHandlerExecute;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
         }

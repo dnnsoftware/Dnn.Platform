@@ -8,6 +8,8 @@ namespace DotNetNuke.Services.Exceptions
     using System.Security.Cryptography;
     using System.Text;
 
+    using DotNetNuke.Common.Utilities;
+
     public static class ExceptionExtensions
     {
         public static string Hash(this Exception exc)
@@ -26,12 +28,7 @@ namespace DotNetNuke.Services.Exceptions
                 AddException(sb, exc.InnerException);
             }
 
-            // DNN-8845: using a FIPS compliant HashAlgorithm
-            using (var hasher = new SHA1CryptoServiceProvider())
-            {
-                var byteArray = hasher.ComputeHash(Encoding.Unicode.GetBytes(sb.ToString().ToLowerInvariant()));
-                return Convert.ToBase64String(byteArray);
-            }
+            return sb.ToString().ToUpperInvariant().GenerateSha256Hash();
         }
 
         private static void AddException(StringBuilder sb, Exception ex)

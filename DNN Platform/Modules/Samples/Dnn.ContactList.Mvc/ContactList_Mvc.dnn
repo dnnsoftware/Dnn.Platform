@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_Mvc" type="Module" version="10.01.02">
+    <package name="Dnn.ContactList_Mvc" type="Module" version="10.02.04">
       <friendlyName>Contact List Mvc</friendlyName>
       <description>DNN Contact List using MVC</description>
       <owner>
@@ -36,20 +36,20 @@
             <moduleName>Dnn.ContactList.Mvc</moduleName>
             <foldername>Dnn/ContactList</foldername>
             <businessControllerClass/>
-            <supportedFeatures />
+            <supportedFeatures/>
             <moduleDefinitions>
               <moduleDefinition>
                 <friendlyName>Contact List Mvc</friendlyName>
                 <defaultCacheTime>0</defaultCacheTime>
                 <moduleControls>
                   <moduleControl>
-                    <controlKey />
+                    <controlKey/>
                     <controlSrc>Dnn.ContactList.Mvc.Controllers/Contact/Index.mvc</controlSrc>
                     <mvcControlClass>Dnn.ContactList.Mvc.Controls.ViewControl, Dnn.ContactList.Mvc</mvcControlClass>
                     <supportsPartialRendering>False</supportsPartialRendering>
-                    <controlTitle />
+                    <controlTitle/>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl/>
                     <supportsPopUps>False</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -61,7 +61,7 @@
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Add/Update Contact</controlTitle>
                     <controlType>View</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl/>
                     <supportsPopUps>True</supportsPopUps>
                     <viewOrder>0</viewOrder>
@@ -72,7 +72,7 @@
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle>Contact List Settings</controlTitle>
                     <controlType>Edit</controlType>
-                    <iconFile />
+                    <iconFile/>
                     <helpUrl/>
                     <viewOrder>0</viewOrder>
                   </moduleControl>

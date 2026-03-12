@@ -410,7 +410,7 @@ namespace Dnn.PersonaBar.Pages.Services
             }
 
             this.pagesController.EditModeForPage(id, this.UserInfo.UserID);
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
         }
 
         /// <summary>Saves the page details.</summary>
@@ -628,7 +628,7 @@ namespace Dnn.PersonaBar.Pages.Services
 
                 var defaultLocale = this.localeController.GetDefaultLocale(this.PortalId);
                 this.tabController.ConvertTabToNeutralLanguage(this.PortalId, pageId, defaultLocale.Code, true);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -664,7 +664,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 this.tabController.LocalizeTab(currentTab, defaultLocale, true);
                 this.tabController.AddMissingLanguagesWithWarnings(this.PortalId, pageId);
                 this.tabController.ClearCache(this.PortalId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -797,7 +797,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 }
 
                 this.SaveNonLocalizedPages(request);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -832,7 +832,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 }
 
                 moduleController.RestoreModule(moduleInfo);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -867,7 +867,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 }
 
                 moduleController.DeleteTabModule(moduleInfo.TabID, moduleInfo.ModuleID, false);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -943,7 +943,7 @@ namespace Dnn.PersonaBar.Pages.Services
                 }
 
                 OutputCachingProvider.Instance(cacheProvider).Remove(pageId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {

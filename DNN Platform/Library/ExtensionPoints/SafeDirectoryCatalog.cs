@@ -49,7 +49,7 @@ namespace DotNetNuke.ExtensionPoints
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IQueryable<ComposablePartDefinition> Parts
         {
             get

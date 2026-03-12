@@ -9,13 +9,15 @@
     <meta name="language" content="en" />
     <title id="title" runat="server">DNNConnect.CKEditorProvider.FileBrowser</title>
     <asp:Placeholder id="favicon" runat="server"></asp:Placeholder>
-    <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss" />
+      <dnncrm:DnnResources runat="server" Provider="DnnPageHeaderProvider" />
+      <asp:PlaceHolder runat="server" ID="ClientDependencyHeadCss" />
     <asp:PlaceHolder runat="server" ID="ClientDependencyHeadJs" />
   </head>
   <body>
     <form id="fBrowser" method="post" runat="server">
+      <dnncrm:DnnResources runat="server" Provider="DnnBodyProvider" />
       <asp:PlaceHolder ID="BodySCRIPTS" runat="server" />
-      <asp:ScriptManager ID="scriptManager1" runat="server"></asp:ScriptManager>
+      <asp:ScriptManager runat="server" />
       <div id="BrowserContainer">
       <h1><asp:Label id="lblModus" runat="server"></asp:Label></h1>
       <hr />
@@ -374,6 +376,8 @@
       </div>
       </asp:Panel>
       <!-- / Loading screen -->
+
+      <dnncrm:DnnResources runat="server" Provider="DnnFormBottomProvider" />
       <asp:PlaceHolder runat="server" ID="ClientResourcesFormBottom" />
     </form>
     <script type="text/javascript">
@@ -436,12 +440,6 @@
     </script>
   
     <asp:PlaceHolder runat="server" id="ClientResourceIncludes" />
-
-    <dnncrm:ClientResourceLoader runat="server" id="ClientResourceLoader">
-      <Paths>
-        <dnncrm:ClientResourcePath Name="SharedScripts" Path="~/Resources/Shared/Scripts/" />
-      </Paths>
-    </dnncrm:ClientResourceLoader>
   </body>
 </html>
 

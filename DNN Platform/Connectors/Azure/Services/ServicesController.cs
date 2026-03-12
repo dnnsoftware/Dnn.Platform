@@ -10,13 +10,17 @@ namespace Dnn.AzureConnector.Services
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Providers.FolderProviders.AzureFolderProvider;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.WindowsAzure.Storage;
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     [DnnAuthorize]
     public class ServicesController : DnnApiController
     {
@@ -38,7 +42,7 @@ namespace Dnn.AzureConnector.Services
             try
             {
                 var containers = new List<string>();
-                var folderProvider = new AzureFolderProvider();
+                var folderProvider = ActivatorUtilities.GetServiceOrCreateInstance<AzureFolderProvider>(HttpContextSource.Current.GetScope().ServiceProvider);
                 var folderMapping = Components.AzureConnector.FindAzureFolderMappingStatic(this.folderMappingController, this.PortalSettings.PortalId, id, false);
                 if (folderMapping != null)
                 {

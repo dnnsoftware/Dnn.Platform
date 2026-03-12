@@ -11,8 +11,10 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web.Mvc;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.UI;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
@@ -63,9 +65,11 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 var localiser = GetDependencyProvider(htmlHelper).GetRequiredService<ILocaliser>();
                 var clientResourceController = GetDependencyProvider(htmlHelper).GetRequiredService<IClientResourceController>();
+                var tabController = GetDependencyProvider(htmlHelper).GetRequiredService<ITabController>();
+                var hostSettings = GetDependencyProvider(htmlHelper).GetRequiredService<IHostSettings>();
                 var pageSpervice = GetDependencyProvider(htmlHelper).GetRequiredService<IPageService>();
                 MvcMenuBase menu;
-                menu = MvcMenuBase.Instantiate(localiser, clientResourceController, pageSpervice, menuStyle, htmlHelper.ViewData.Model.Skin.SkinPath);
+                menu = MvcMenuBase.Instantiate(localiser, hostSettings, tabController, clientResourceController, pageSpervice, menuStyle, htmlHelper.ViewData.Model.Skin.SkinPath);
                 menu.ApplySettings(
                     new Settings
                     {

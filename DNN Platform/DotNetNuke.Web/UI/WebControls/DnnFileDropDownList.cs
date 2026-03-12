@@ -10,16 +10,36 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Common;
     using DotNetNuke.Web.UI.WebControls.Extensions;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A file dropdown control.</summary>
     [ToolboxData("<{0}:DnnFileDropDownList runat='server'></{0}:DnnFileDropDownList>")]
     public class DnnFileDropDownList : DnnDropDownList
     {
+        /// <summary>Initializes a new instance of the <see cref="DnnFileDropDownList"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public DnnFileDropDownList()
+            : this(Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(), Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>())
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFileDropDownList"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnFileDropDownList(IClientResourceController clientResourceController, IServicesFramework servicesFramework)
+            : base(clientResourceController, servicesFramework)
+        {
+        }
+
         /// <summary>Gets or sets the selected Folder in the control, or selects the Folder in the control.</summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -61,7 +81,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to include a "none specified" item.</summary>
         public bool IncludeNoneSpecificItem { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -76,7 +96,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.FolderId = Null.NullInteger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.AddCssClass("file");

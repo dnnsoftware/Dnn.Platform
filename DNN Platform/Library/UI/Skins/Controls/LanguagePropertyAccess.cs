@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.Skins.Controls
             this.objParent = parent;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public CacheLevel Cacheability
         {
             get
@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
@@ -84,7 +84,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private static string GetCleanUrl(string url)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             if (url != cleanUrl)
             {
                 return string.Empty;
@@ -110,7 +112,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var rawQueryStringCollection =
                 HttpUtility.ParseQueryString(new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query);
 
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             string[] arrKeys = queryStringCollection.AllKeys;
 
             for (int i = 0; i <= arrKeys.GetUpperBound(0); i++)
@@ -178,7 +180,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
                                 else
                                 {
-                                    // if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
+                                    ////if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
                                     string[] arrValues = queryStringCollection.GetValues(i);
                                     if (arrValues != null)
                                     {

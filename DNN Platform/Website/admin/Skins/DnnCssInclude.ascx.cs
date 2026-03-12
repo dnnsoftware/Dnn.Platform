@@ -53,7 +53,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// <summary>Gets or sets a value indicating whether the client resource should be preloaded.</summary>
         public bool Preload { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

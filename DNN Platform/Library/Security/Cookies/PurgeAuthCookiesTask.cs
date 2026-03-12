@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Cookies
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void DoWork()
         {
             try

@@ -24,9 +24,9 @@ namespace DotNetNuke.Web.InternalServices
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Common.Utils;
     using DotNetNuke.Entities.Icons;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -40,7 +40,6 @@ namespace DotNetNuke.Web.InternalServices
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using ContentDisposition = System.Net.Mime.ContentDisposition;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     /// <summary>A web API for uploading files.</summary>
@@ -50,19 +49,41 @@ namespace DotNetNuke.Web.InternalServices
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
         private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private static readonly List<string> ImageExtensions = Globals.ImageFileTypes.Split(',').ToList();
+
         private readonly IHostSettings hostSettings;
+        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
 
         /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public FileUploadController()
-            : this(null)
+            : this(null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
         public FileUploadController(IHostSettings hostSettings)
+            : this(hostSettings, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="FileUploadController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public FileUploadController(IHostSettings hostSettings, ICryptographyProvider cryptographyProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
         {
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
         }
 
         /// <summary>Gets the URL for a file.</summary>
@@ -94,17 +115,16 @@ namespace DotNetNuke.Web.InternalServices
                 return this.Request.CreateResponse(HttpStatusCode.BadRequest);
             }
 
-            int userId;
-            if (IsUserFolder(folder.FolderPath, out userId))
+            if (IsUserFolder(folder.FolderPath, out var userId))
             {
-                var user = UserController.GetUserById(effectivePortalId, userId);
-                if (user != null && user.IsSuperUser)
+                var user = UserController.GetUserById(this.hostSettings, effectivePortalId, userId);
+                if (user is { IsSuperUser: true, })
                 {
                     effectivePortalId = Null.NullInteger;
                 }
                 else
                 {
-                    effectivePortalId = PortalController.GetEffectivePortalId(effectivePortalId);
+                    effectivePortalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, effectivePortalId);
                 }
             }
 
@@ -150,11 +170,11 @@ namespace DotNetNuke.Web.InternalServices
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
-            var portalSettings = this.PortalSettings;
+            IPortalSettings portalSettings = this.PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
-                .ContinueWith(o =>
+                .ContinueWith(_ =>
                     {
                         string folder = string.Empty;
                         string filter = string.Empty;
@@ -222,9 +242,9 @@ namespace DotNetNuke.Web.InternalServices
 
                             // The SynchronizationContext keeps the main thread context. Send method is synchronous
                             currentSynchronizationContext.Send(
-                                state =>
+                                _ =>
                                     {
-                                        returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
+                                        returnFileDto = SaveFile(stream, this.portalController, this.appStatus, this.portalGroupController, this.hostSettings, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
                                     },
                                 null);
                         }
@@ -303,7 +323,7 @@ namespace DotNetNuke.Web.InternalServices
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
-                .ContinueWith(o =>
+                .ContinueWith(_ =>
                 {
                     var folder = string.Empty;
                     var filter = string.Empty;
@@ -372,7 +392,7 @@ namespace DotNetNuke.Web.InternalServices
                                     fileName = Path.GetFileName(fileName);
                                 }
 
-                                if (!Globals.FileEscapingRegex.Match(fileName).Success)
+                                if (!Globals.FileEscapingRegex.IsMatch(fileName))
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }
@@ -385,9 +405,9 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         // The SynchronizationContext keeps the main thread context. Send method is synchronous
                         currentSynchronizationContext.Send(
-                            state =>
+                            _ =>
                             {
-                                result = UploadFile(this.hostSettings, stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
+                                result = UploadFile(this.cryptographyProvider, this.hostSettings, stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },
                             null);
                     }
@@ -411,7 +431,11 @@ namespace DotNetNuke.Web.InternalServices
 
         private static SavedFileDTO SaveFile(
             Stream stream,
-            PortalSettings portalSettings,
+            IPortalController portalController,
+            IApplicationStatusInfo appStatus,
+            IPortalGroupController portalGroupController,
+            IHostSettings hostSettings,
+            IPortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
             string filter,
@@ -436,18 +460,17 @@ namespace DotNetNuke.Web.InternalServices
                 var folderManager = FolderManager.Instance;
 
                 // Check if this is a User Folder
-                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalSettings.PortalId);
+                var effectivePortalId = isHostMenu ? Null.NullInteger : PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalSettings.PortalId);
                 var folderInfo = folderManager.GetFolder(effectivePortalId, folder);
                 if (IsUserFolder(folder, out var userId))
                 {
-                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    var user = UserController.GetUserById(hostSettings, effectivePortalId, userId);
                     if (user != null)
                     {
                         folderInfo = folderManager.GetUserFolder(user);
                     }
                 }
 
-                var alreadyCheckedPermissions = false;
                 if (!PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("WRITE"))
                     && !PortalSecurity.IsInRoles(userInfo, portalSettings, folderInfo.FolderPermissions.ToString("ADD")))
                 {
@@ -455,7 +478,7 @@ namespace DotNetNuke.Web.InternalServices
                     return savedFileDto;
                 }
 
-                alreadyCheckedPermissions = true;
+                const bool AlreadyCheckedPermissions = true;
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
                     errorMessage = GetLocalizedString("AlreadyExists");
@@ -465,7 +488,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
 
                 var contentType = FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName));
-                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !alreadyCheckedPermissions, contentType, userInfo.UserID);
+                var file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !AlreadyCheckedPermissions, contentType, userInfo.UserID);
 
                 if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                 {
@@ -529,17 +552,18 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         private static FileUploadDto UploadFile(
-                IHostSettings hostSettings,
-                Stream stream,
-                int portalId,
-                UserInfo userInfo,
-                string folder,
-                string filter,
-                string fileName,
-                bool overwrite,
-                bool isHostPortal,
-                bool extract,
-                string validationCode)
+            ICryptographyProvider cryptographyProvider,
+            IHostSettings hostSettings,
+            Stream stream,
+            int portalId,
+            UserInfo userInfo,
+            string folder,
+            string filter,
+            string fileName,
+            bool overwrite,
+            bool isHostPortal,
+            bool extract,
+            string validationCode)
         {
             var result = new FileUploadDto();
             BinaryReader reader = null;
@@ -558,7 +582,7 @@ namespace DotNetNuke.Web.InternalServices
                     validateParams.Add(portalId);
                 }
 
-                if (!ValidationUtils.ValidationCodeMatched(hostSettings, validateParams, validationCode))
+                if (!ValidationUtils.ValidationCodeMatched(cryptographyProvider, hostSettings, validateParams, validationCode))
                 {
                     throw new InvalidOperationException("Bad Request");
                 }
@@ -578,14 +602,13 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (folderInfo == null && IsUserFolder(folder, out var userId))
                 {
-                    var user = UserController.GetUserById(effectivePortalId, userId);
+                    var user = UserController.GetUserById(hostSettings, effectivePortalId, userId);
                     if (user != null)
                     {
                         folderInfo = folderManager.GetUserFolder(user);
                     }
                 }
 
-                bool alreadyCheckedPermssions = false;
                 if (!FolderPermissionController.HasFolderPermission(portalId, folder, "WRITE")
                     && !FolderPermissionController.HasFolderPermission(portalId, folder, "ADD"))
                 {
@@ -593,8 +616,7 @@ namespace DotNetNuke.Web.InternalServices
                     return result;
                 }
 
-                alreadyCheckedPermssions = true;
-
+                const bool AlreadyCheckedPermissions = true;
                 IFileInfo file;
                 if (!overwrite && FileManager.Instance.FileExists(folderInfo, fileName, true))
                 {
@@ -605,7 +627,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !alreadyCheckedPermssions, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
+                    file = FileManager.Instance.AddFile(folderInfo, fileName, stream, true, !AlreadyCheckedPermissions, FileContentTypeManager.Instance.GetContentType(Path.GetExtension(fileName)), userInfo.UserID);
                     if (extract && extension.Equals("zip", StringComparison.OrdinalIgnoreCase))
                     {
                         var destinationFolder = FolderManager.Instance.GetFolder(file.FolderId);
@@ -684,61 +706,14 @@ namespace DotNetNuke.Web.InternalServices
             }
         }
 
-        private static PortalInfo[] GetMyPortalGroup()
+        private static IPortalInfo[] GetMyPortalGroup()
         {
-            return (from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                into portals
+            return (
+                from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
                 where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                select portals.ToArray()).FirstOrDefault();
-        }
-
-        private static string GetFileName(WebResponse response)
-        {
-            if (!response.Headers.AllKeys.Contains("Content-Disposition"))
-            {
-                return string.Empty;
-            }
-
-            var contentDisposition = response.Headers["Content-Disposition"];
-            return new ContentDisposition(contentDisposition).FileName;
-        }
-
-        private static bool VerifySafeUrl(string url)
-        {
-            Uri uri = new Uri(url);
-            if (uri.Scheme is "http" or "https")
-            {
-                if (!uri.Host.Contains(".", StringComparison.Ordinal))
-                {
-                    return false;
-                }
-
-                if (uri.IsLoopback)
-                {
-                    return false;
-                }
-
-                if (uri.PathAndQuery.Contains("#", StringComparison.Ordinal) || uri.PathAndQuery.Contains(":", StringComparison.Ordinal))
-                {
-                    return false;
-                }
-
-                if (uri.Host.StartsWith("10", StringComparison.Ordinal) || uri.Host.StartsWith("172", StringComparison.Ordinal) || uri.Host.StartsWith("192", StringComparison.Ordinal))
-                {
-                    // check nonroutable IP addresses
-                    if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
-                        NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
-                        NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
+                select portals.Cast<IPortalInfo>().ToArray())
+                .FirstOrDefault();
         }
 
         private bool IsPortalIdValid(int portalId)
@@ -759,8 +734,8 @@ namespace DotNetNuke.Web.InternalServices
                 return false;
             }
 
-            var mygroup = GetMyPortalGroup();
-            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
+            var myGroup = GetMyPortalGroup();
+            return myGroup != null && myGroup.Any(p => p.PortalId == portalId);
         }
 
         /// <summary>A data transfer object with information about a folder.</summary>

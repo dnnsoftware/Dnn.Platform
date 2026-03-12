@@ -8,8 +8,10 @@ using System;
 using System.Collections.Generic;
 using DotNetNuke.Abstractions;
 using DotNetNuke.Abstractions.Application;
+using DotNetNuke.Abstractions.Logging;
 using DotNetNuke.Abstractions.Settings;
 using DotNetNuke.Common;
+using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities;
@@ -21,6 +23,8 @@ using DotNetNuke.Tests.Utilities.Mocks;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
+
+using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
 [TestFixture]
 public class UrlUtilsTests
@@ -38,10 +42,23 @@ public class UrlUtilsTests
         serviceCollection.AddSingleton(Mock.Of<IApplicationStatusInfo>());
         serviceCollection.AddSingleton(Mock.Of<INavigationManager>());
         serviceCollection.AddSingleton(Mock.Of<IPortalSettingsController>());
+        serviceCollection.AddSingleton(new ListController(Mock.Of<IEventLogger>(), Mock.Of<IHostSettings>()));
+        serviceCollection.AddSingleton(Mock.Of<IPortalController>());
+        serviceCollection.AddSingleton(Mock.Of<IPortalGroupController>());
+        serviceCollection.AddSingleton<ICryptographyProvider>(new CoreCryptographyProvider());
         serviceCollection.AddSingleton<IHostSettingsService>(hostController);
         serviceCollection.AddSingleton<IHostSettings>(new HostSettings(hostController));
 
         Globals.DependencyProvider = serviceCollection.BuildServiceProvider();
+    }
+
+    [OneTimeTearDown]
+    public static void OneTimeTearDown()
+    {
+        if (Globals.DependencyProvider is IDisposable disposable)
+        {
+            disposable.Dispose();
+        }
     }
 
     [Test]

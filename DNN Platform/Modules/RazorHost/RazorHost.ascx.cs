@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.RazorHost
     {
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions
         {
             get
@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RazorScriptFile
         {
             get

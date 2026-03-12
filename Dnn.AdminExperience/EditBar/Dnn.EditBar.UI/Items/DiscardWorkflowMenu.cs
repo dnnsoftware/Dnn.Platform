@@ -8,31 +8,45 @@ namespace Dnn.EditBar.UI.Items
 
     using Dnn.EditBar.Library;
 
-    [Serializable]
-    public class DiscardWorkflowMenu : WorkflowBaseMenuItem
-    {
-        /// <inheritdoc/>
-        public override string Name { get; } = "DiscardWorkflow";
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
 
-        /// <inheritdoc/>
+    /// <summary>A <see cref="WorkflowBaseMenuItem"/> for the discard workflow menu item.</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
+    [Serializable]
+    public class DiscardWorkflowMenu(IContentController contentController, IWorkflowEngine workflowEngine)
+        : WorkflowBaseMenuItem(contentController, workflowEngine)
+    {
+        /// <summary>Initializes a new instance of the <see cref="DiscardWorkflowMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        public DiscardWorkflowMenu()
+            : this(null, null)
+        {
+        }
+
+        /// <inheritdoc />
+        public override string Name => "DiscardWorkflow";
+
+        /// <inheritdoc />
         public override string Text => "Discard";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CssClass => string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Template { get; } = string.Empty;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Parent { get; } = Constants.LeftMenu;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Loader { get; } = "DiscardWorkflow";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int Order { get; } = 81;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Visible() => base.Visible()
             && !this.IsDirectPublishWorkflow
             && ((this.IsLastState == false && (this.IsDraftWithPermissions == true || this.IsReviewOrOtherIntermediateStateWithPermissions == true))

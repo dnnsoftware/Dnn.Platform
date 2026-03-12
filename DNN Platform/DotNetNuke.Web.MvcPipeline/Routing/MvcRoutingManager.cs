@@ -169,8 +169,8 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             var ns = new string[] { "DotNetNuke.Website.Controllers" };
 
             var route = new Route(
-                "DesktopModules/Default/Page/{tabid}/{language}",
-                new RouteValueDictionary(new { controller = "Default", action = "Page", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
+                "DesktopModules/MvcPipeline/{controller}/{action}/{tabid}/{language}",
+                null, // new RouteValueDictionary(new { controller = "Default", action = "Page", tabid = UrlParameter.Optional, language = UrlParameter.Optional }),
                 null, // No constraints
                 dataTokens,
                 new DnnMvcPageRouteHandler());
@@ -178,9 +178,21 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             route.SetNameSpaces(ns);
             route.SetName("mvc-pipeline-default");
 
-            Logger.Trace("Mapping route: " + "mvc-pipeline-default" + " @ " + "DesktopModules/{controller}/{action}/{tabid}/{language}");
+            Logger.Trace("Mapping route: " + "mvc-pipeline-default" + " @ " + "DesktopModules/Default/Page/{tabid}/{language}");
 
-            this.routes.Add(route);
+            var routeModuleActions = new Route(
+                "DesktopModules/ModuleActions/{action}",
+                new RouteValueDictionary(new { controller = "ModuleActions" }),
+                null, // No constraints
+                dataTokens,
+                new DnnMvcPageRouteHandler());
+
+            routeModuleActions.SetNameSpaces(ns);
+            routeModuleActions.SetName("mvc-pipeline-moduleActions");
+
+            Logger.Trace("Mapping route: " + "mvc-pipeline-moduleActions" + " @ " + "DesktopModules/ModuleActions/{action}");
+
+            // this.routes.Add(routeModuleActions);
         }
 
         private void LocateServicesAndMapRoutes()

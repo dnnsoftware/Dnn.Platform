@@ -7,6 +7,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
@@ -15,59 +19,62 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Installer.Packages;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
-    public class DnnModuleComboBox : DnnComboBox
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="clientResourceController">The client resource controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class DnnModuleComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController, IHostSettings hostSettings)
+        : DnnComboBox(
+            appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+            eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+            clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>())
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         private DnnComboBox moduleCombo;
         private string originalValue;
+
+        /// <summary>Initializes a new instance of the <see cref="DnnModuleComboBox"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public DnnModuleComboBox()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnModuleComboBox"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public DnnModuleComboBox(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IClientResourceController clientResourceController)
+            : this(appStatus, eventLogger, clientResourceController, null)
+        {
+        }
 
         /// <summary>An event which triggers when the item changes.</summary>
         public event EventHandler ItemChanged;
 
         /// <summary>Gets the item count.</summary>
-        public int ItemCount
-        {
-            get
-            {
-                return this.moduleCombo.Items.Count;
-            }
-        }
+        public int ItemCount => this.moduleCombo.Items.Count;
 
         /// <summary>Gets the client ID of the <see cref="DnnComboBox"/>.</summary>
-        public string RadComboBoxClientId
-        {
-            get
-            {
-                return this.moduleCombo.ClientID;
-            }
-        }
+        public string RadComboBoxClientId => this.moduleCombo.ClientID;
 
         /// <summary>Gets or sets the filter.</summary>
         public Func<KeyValuePair<string, PortalDesktopModuleInfo>, bool> Filter { get; set; }
 
-        /// <inheritdoc/>
-        public override string SelectedValue
-        {
-            get
-            {
-                return this.moduleCombo.SelectedValue;
-            }
-        }
+        /// <inheritdoc />
+        public override string SelectedValue => this.moduleCombo.SelectedValue;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool Enabled
         {
-            get
-            {
-                return this.moduleCombo.Enabled;
-            }
-
-            set
-            {
-                this.moduleCombo.Enabled = value;
-            }
+            get => this.moduleCombo.Enabled;
+            set => this.moduleCombo.Enabled = value;
         }
 
         /// <summary>Binds the portal desktop modules to the list.</summary>
@@ -76,7 +83,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.moduleCombo.SelectedValue = null;
             this.moduleCombo.DataSource = this.GetPortalDesktopModules();
             this.moduleCombo.DataBind();
-            BindPortalDesktopModuleImages();
+            BindPortalDesktopModuleImages(this.hostSettings);
         }
 
         /// <summary>Binds the modules from the page to the list.</summary>
@@ -86,7 +93,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.moduleCombo.SelectedValue = null;
             this.moduleCombo.DataSource = GetTabModules(tabID);
             this.moduleCombo.DataBind();
-            BindTabModuleImages(tabID);
+            BindTabModuleImages(this.hostSettings, tabID);
         }
 
         /// <summary>Sets the module.</summary>
@@ -96,17 +103,17 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.moduleCombo.SelectedIndex = this.moduleCombo.FindItemIndexByValue(code);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            this.moduleCombo = new DnnComboBox();
+            this.moduleCombo = new DnnComboBox(this.AppStatus, this.EventLogger, this.ClientResourceController);
             this.moduleCombo.DataValueField = "key";
             this.moduleCombo.DataTextField = "value";
             this.Controls.Add(this.moduleCombo);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -122,7 +129,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             if (this.moduleCombo.FindItemByValue(this.originalValue) != null)
@@ -158,9 +165,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             }
         }
 
-        private static void BindPortalDesktopModuleImages()
+        private static void BindPortalDesktopModuleImages(IHostSettings hostSettings)
         {
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             ////foreach (var item in _moduleCombo.Items)
@@ -175,11 +182,11 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             ////}
         }
 
-        private static void BindTabModuleImages(int tabID)
+        private static void BindTabModuleImages(IHostSettings hostSettings, int tabId)
         {
-            var tabModules = ModuleController.Instance.GetTabModules(tabID);
-            var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
-            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions();
+            var tabModules = ModuleController.Instance.GetTabModules(tabId);
+            var portalDesktopModules = DesktopModuleController.GetDesktopModules(hostSettings, PortalSettings.Current.PortalId);
+            var moduleDefinitions = ModuleDefinitionController.GetModuleDefinitions(hostSettings);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
             ////foreach (RadComboBoxItem item in _moduleCombo.Items)
@@ -200,13 +207,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             IOrderedEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> portalModulesList;
             if (this.Filter == null)
             {
-                portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+                portalModulesList = DesktopModuleController.GetPortalDesktopModules(this.hostSettings, PortalSettings.Current.PortalId)
                     .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || string.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
                     .OrderBy(c => c.Key);
             }
             else
             {
-                portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+                portalModulesList = DesktopModuleController.GetPortalDesktopModules(this.hostSettings, PortalSettings.Current.PortalId)
                     .Where(this.Filter)
                     .OrderBy(c => c.Key);
             }

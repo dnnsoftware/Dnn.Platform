@@ -126,7 +126,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string this[string name]
         {
             get

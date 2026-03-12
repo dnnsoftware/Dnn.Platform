@@ -12,6 +12,8 @@ namespace Dnn.PersonaBar.Library.Controllers
     using Dnn.PersonaBar.Library.Containers;
     using Dnn.PersonaBar.Library.Permissions;
     using Dnn.PersonaBar.Library.Repository;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -23,41 +25,57 @@ namespace Dnn.PersonaBar.Library.Controllers
     using MenuItem = Dnn.PersonaBar.Library.Model.MenuItem;
     using PersonaBarMenu = Dnn.PersonaBar.Library.Model.PersonaBarMenu;
 
-    public class PersonaBarController : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
+    public class PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository, IHostSettings hostSettings, IPortalController portalController)
+        : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarController));
 
-        private readonly IPersonaBarRepository personaBarRepository;
-        private readonly IServiceScopeFactory serviceScopeFactory;
+        private readonly IServiceScopeFactory serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
+        private readonly IPersonaBarRepository personaBarRepository = personaBarRepository ?? PersonaBarRepository.Instance;
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarController"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IServiceScopeFactory. Scheduled removal in v12.0.0.")]
         public PersonaBarController()
-            : this(Globals.DependencyProvider.GetRequiredService<IServiceScopeFactory>(), PersonaBarRepository.Instance)
+            : this(null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="PersonaBarController"/> class.</summary>
         /// <param name="serviceScopeFactory">The service scope factory.</param>
         /// <param name="personaBarRepository">The Persona Bar repository.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPersonaBarContainer. Scheduled removal in v12.0.0.")]
         public PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository)
+            : this(serviceScopeFactory, personaBarRepository, null, null)
         {
-            this.serviceScopeFactory = serviceScopeFactory;
-            this.personaBarRepository = personaBarRepository;
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="PersonaBarController"/> class.</summary>
+        /// <param name="serviceScopeFactory">The service scope factory.</param>
+        /// <param name="personaBarRepository">The Persona Bar repository.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository, IHostSettings hostSettings)
+            : this(serviceScopeFactory, personaBarRepository, hostSettings, null)
+        {
+        }
+
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public PersonaBarMenu GetMenu(PortalSettings portalSettings, UserInfo user)
         {
             try
             {
+                using var scope = this.serviceScopeFactory.CreateScope();
+                var personaBarContainer = scope.ServiceProvider.GetRequiredService<IPersonaBarContainer>();
                 var personaBarMenu = this.personaBarRepository.GetMenu();
+                var rootItems = personaBarMenu.MenuItems.Where(m => personaBarContainer.RootItems.Contains(m.Identifier)).ToList();
+
                 var filteredMenu = new PersonaBarMenu();
-                var rootItems = personaBarMenu.MenuItems.Where(m => PersonaBarContainer.Instance.RootItems.Contains(m.Identifier)).ToList();
                 this.GetPersonaBarMenuWithPermissionCheck(portalSettings, user, filteredMenu.MenuItems, rootItems);
 
-                PersonaBarContainer.Instance.FilterMenu(filteredMenu);
+                personaBarContainer.FilterMenu(filteredMenu);
                 return filteredMenu;
             }
             catch (Exception e)
@@ -67,12 +85,12 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsVisible(PortalSettings portalSettings, UserInfo user, MenuItem menuItem)
         {
             var visible = menuItem.Enabled
                    && !(user.IsSuperUser && !menuItem.AllowHost)
-                   && MenuPermissionController.CanView(portalSettings.PortalId, menuItem);
+                   && MenuPermissionController.CanView(this.hostSettings, this.portalController, portalSettings.PortalId, menuItem);
 
             if (visible)
             {
@@ -92,25 +110,25 @@ namespace Dnn.PersonaBar.Library.Controllers
             return visible;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPersonaBarController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IPersonaBarController>;
         }
 
-        private static void AddPermissions(MenuItem menuItem, IDictionary<string, object> settings)
+        private static void AddPermissions(IHostSettings hostSettings, IPortalController portalController, MenuItem menuItem, IDictionary<string, object> settings)
         {
             var portalSettings = PortalSettings.Current;
             if (!settings.ContainsKey("permissions") && portalSettings != null)
             {
-                var menuPermissions = MenuPermissionController.GetPermissions(menuItem.MenuId)
+                var menuPermissions = MenuPermissionController.GetPermissions(hostSettings, menuItem.MenuId)
                     .Where(p => p.PermissionKey != "VIEW");
                 var portalId = portalSettings.PortalId;
                 var permissions = new Dictionary<string, bool>();
                 foreach (var permission in menuPermissions)
                 {
                     var key = permission.PermissionKey;
-                    var hasPermission = MenuPermissionController.HasMenuPermission(portalId, menuItem, key);
+                    var hasPermission = MenuPermissionController.HasMenuPermission(hostSettings, portalController, portalId, menuItem, key);
                     permissions.Add(key, hasPermission);
                 }
 
@@ -213,7 +231,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 var menuController = GetMenuItemController(scope, menuItem);
                 settings = menuController?.GetSettings(menuItem) ?? new Dictionary<string, object>();
 
-                AddPermissions(menuItem, settings);
+                AddPermissions(this.hostSettings, this.portalController, menuItem, settings);
             }
             catch (Exception ex)
             {

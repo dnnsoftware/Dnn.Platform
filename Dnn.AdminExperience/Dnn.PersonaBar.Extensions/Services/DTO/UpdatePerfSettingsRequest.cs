@@ -22,7 +22,7 @@ namespace Dnn.PersonaBar.Servers.Services.Dto
 
         public bool SslForCacheSynchronization { get; set; }
 
-        public string ClientResourcesManagementMode { get; set; }
+        public bool CrmOverrideDefaultSettings { get; set; }
 
         public string CurrentHostVersion { get; set; }
 

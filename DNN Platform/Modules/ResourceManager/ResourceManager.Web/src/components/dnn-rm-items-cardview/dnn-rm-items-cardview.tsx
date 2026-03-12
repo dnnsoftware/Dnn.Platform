@@ -1,6 +1,5 @@
 import { Component, Event, EventEmitter, Host, h, Prop, Element } from '@stencil/core';
 import { GetFolderContentResponse, Item } from '../../services/ItemsClient';
-import state from '../../store/store';
 import { selectionUtilities } from '../../utilities/selection-utilities';
 
 @Component({
@@ -21,38 +20,7 @@ export class DnnRmItemsCardview {
   /** Fires when a file is double-clicked and emits the file ID into the event.detail */
   @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
 
-  componentWillLoad() {
-    document.addEventListener("click", void this.dismissContextMenu.bind(this));
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener("click", void this.disconnectedCallback.bind(this));
-  }
-
-  private dismissContextMenu() {
-    const existingMenus = this.el.shadowRoot.querySelectorAll("dnn-collapsible");
-    existingMenus?.forEach(existingMenu => this.el.shadowRoot.removeChild(existingMenu));
-  }
-
-  private handleContextMenu(e: MouseEvent, item: Item): void {
-    e.preventDefault();
-    state.selectedItems = [item];
-    this.dismissContextMenu();
-    const collapsible = document.createElement("dnn-collapsible");
-    const contextMenu = item.isFolder
-      ? document.createElement("dnn-rm-folder-context-menu")
-      : document.createElement("dnn-rm-file-context-menu");
-    collapsible.appendChild(contextMenu);
-    contextMenu.item = item;
-    collapsible.style.left = `${e.pageX}px`;
-    collapsible.style.top = `${e.pageY}px`;
-    collapsible.style.display = "block";
-    this.el.shadowRoot.appendChild(collapsible);
-    setTimeout(() => {
-      collapsible.expanded = true;
-    }, 100);
-    return;
-  }
+  private contextMenu: HTMLDnnContextMenuElement;
 
   private handleDoubleClick(item: Item): void {
     if (item.isFolder) {
@@ -71,8 +39,11 @@ export class DnnRmItemsCardview {
               <button
                 class="card"
                 onClick={() => selectionUtilities.toggleItemSelected(item)}
-                onContextMenu={e => this.handleContextMenu(e, item)}
                 onDblClick={() => this.handleDoubleClick(item)}
+                onContextMenu={e => {
+                  e.preventDefault();
+                  this.contextMenu.open(e as PointerEvent).catch(console.error);
+                }}
               >
                   <div class={selectionUtilities.isItemSelected(item) ? "radio selected" : "radio"}>
                     {selectionUtilities.isItemSelected(item) &&
@@ -89,6 +60,17 @@ export class DnnRmItemsCardview {
                   <span class="item-name">
                     {item.itemName}
                   </span>
+                  <dnn-context-menu
+                    ref={el => this.contextMenu = el}
+                    closeOnClick
+                  >
+                    {item.isFolder
+                      ?
+                        <dnn-rm-folder-context-menu item={item} />
+                      :
+                        <dnn-rm-file-context-menu item={item} />
+                    }
+                  </dnn-context-menu>
               </button>
             )}
           </div>

@@ -51,20 +51,8 @@ class BasicSettingsPanelBody extends Component {
     componentDidUpdate() {
         let { props} = this;
         if (props.basicSettings) {
-            let portalIdChanged = false;
-            let cultureCodeChanged = false;            
-            if (props.portalId === undefined || props.basicSettings.PortalId === props.portalId) {
-                portalIdChanged = false;
-            }
-            else {
-                portalIdChanged = true;
-            }
-            if (props.cultureCode === undefined || props.basicSettings.CultureCode === props.cultureCode) {
-                cultureCodeChanged = false;
-            }
-            else {
-                cultureCodeChanged = true;
-            }
+            let portalIdChanged = props.portalId !== undefined && props.basicSettings.PortalId !== props.portalId;
+            let cultureCodeChanged = props.cultureCode !== undefined && props.basicSettings.CultureCode !== props.cultureCode;
 
             if (portalIdChanged || cultureCodeChanged) {
                 this.getPortalSettings();

@@ -23,10 +23,10 @@ namespace DotNetNuke.UI.Modules
             this.NavigationManager = Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract bool DisplayModule { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int ProfileUserId
         {
             get
@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.Modules
             get { return UserController.GetUserById(this.ModuleContext.PortalId, this.ProfileUserId); }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             if (string.IsNullOrEmpty(this.Request.Params["UserId"]) &&

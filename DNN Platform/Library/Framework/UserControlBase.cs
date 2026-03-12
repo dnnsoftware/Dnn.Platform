@@ -25,7 +25,7 @@ namespace DotNetNuke.Framework
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public PortalSettings PortalSettings
-            => PortalController.Instance.GetCurrentPortalSettings();
+            => PortalSettings.Current;
 
         /// <inheritdoc cref="HtmlUtils.JavaScriptStringEncode(string)"/>
         public static IHtmlString JavaScriptStringEncode(string value)

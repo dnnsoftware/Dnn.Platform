@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Api.Internal
     /// <summary>The <see cref="IAntiForgery"/> service locator.</summary>
     public class AntiForgery : ServiceLocator<IAntiForgery, AntiForgery>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IAntiForgery> GetFactory()
         {
             return () => new AntiForgeryImpl();

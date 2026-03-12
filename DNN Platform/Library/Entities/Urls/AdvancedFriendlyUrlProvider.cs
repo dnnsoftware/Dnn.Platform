@@ -199,19 +199,19 @@ namespace DotNetNuke.Entities.Urls
             return url;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
             return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalController.Instance.GetCurrentSettings());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
             return this.FriendlyUrl(tab, path, pageName, PortalController.Instance.GetCurrentSettings());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
         {
             if (portalSettings == null)
@@ -222,7 +222,7 @@ namespace DotNetNuke.Entities.Urls
             return FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return FriendlyUrlInternal(tab, path, pageName, portalAlias, null);

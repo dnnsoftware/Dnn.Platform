@@ -363,12 +363,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(nodes, Has.Count.EqualTo(3));
 
                 Assert.That(merge.ConfigUpdateChangedNodes, Is.False);
-            });
+            }
         }
 
         [Test]
@@ -382,12 +382,12 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             this.WriteToDebug(targetDoc);
 
             var nodes = targetDoc.SelectNodes("/configuration/appSettings/add");
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(nodes, Has.Count.EqualTo(3));
 
                 Assert.That(merge.ConfigUpdateChangedNodes, Is.True);
-            });
+            }
         }
 
         [Test]

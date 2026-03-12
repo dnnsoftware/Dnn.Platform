@@ -30,30 +30,17 @@ namespace DotNetNuke.Modules.Journal.Controls
     {
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
-        public PortalSettings portalSettings
-        {
-            get
-            {
-                return PortalController.Instance.GetCurrentPortalSettings();
-            }
-        }
+        public PortalSettings portalSettings => PortalSettings.Current;
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
 
         // ReSharper disable once InconsistentNaming
-        public UserInfo userInfo
-        {
-            get
-            {
-                return UserController.Instance.GetCurrentUserInfo();
-            }
-        }
+        public UserInfo userInfo => UserController.Instance.GetCurrentUserInfo();
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -80,7 +67,7 @@ namespace DotNetNuke.Modules.Journal.Controls
 
         public int CurrentIndex { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter output)
         {
             if (this.Enabled)

@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Mvp
     {
         private TModel model;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TModel Model
         {
             get

@@ -6,11 +6,16 @@ namespace DotNetNuke.Modules.Admin.Users
     using System;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
@@ -22,6 +27,12 @@ namespace DotNetNuke.Modules.Admin.Users
     {
         private readonly INavigationManager navigationManager;
         private readonly DataProvider dataProvider;
+        private readonly RoleProvider roleProvider;
+        private readonly IRoleController roleController;
+        private readonly IEventManager eventManager;
+        private readonly IPortalController portalController;
+        private readonly IUserController userController;
+        private readonly IEventLogger eventLogger;
 
         /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with DataProvider. Scheduled removal in v12.0.0.")]
@@ -33,10 +44,49 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="dataProvider">The data provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Membership(INavigationManager navigationManager, DataProvider dataProvider)
+            : this(navigationManager, dataProvider, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public Membership(INavigationManager navigationManager, DataProvider dataProvider, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+            : this(navigationManager, dataProvider, roleProvider, roleController, eventManager, portalController, userController, eventLogger, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Membership"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Membership(INavigationManager navigationManager, DataProvider dataProvider, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, ListController listController, IHostSettings hostSettings)
+            : base(listController, hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
+            this.roleProvider = roleProvider ?? this.DependencyProvider.GetRequiredService<RoleProvider>();
+            this.roleController = roleController ?? this.DependencyProvider.GetRequiredService<IRoleController>();
+            this.eventManager = eventManager ?? this.DependencyProvider.GetRequiredService<IEventManager>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.userController = userController ?? this.DependencyProvider.GetRequiredService<IUserController>();
+            this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Raises the MembershipAuthorized Event</summary>
@@ -71,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipPromoteToSuperuser(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -87,7 +137,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipDemoteFromSuperuser(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
@@ -103,14 +153,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipAuthorized(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipAuthorized != null)
-            {
-                this.MembershipAuthorized(this, e);
+                this.MembershipAuthorized?.Invoke(this, e);
             }
         }
 
@@ -118,14 +163,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipPasswordUpdateChanged != null)
-            {
-                this.MembershipPasswordUpdateChanged(this, e);
+                this.MembershipPasswordUpdateChanged?.Invoke(this, e);
             }
         }
 
@@ -133,14 +173,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipUnAuthorized(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipUnAuthorized != null)
-            {
-                this.MembershipUnAuthorized(this, e);
+                this.MembershipUnAuthorized?.Invoke(this, e);
             }
         }
 
@@ -148,14 +183,9 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         public void OnMembershipUnLocked(EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (this.IsUserOrAdmin)
             {
-                return;
-            }
-
-            if (this.MembershipUnLocked != null)
-            {
-                this.MembershipUnLocked(this, e);
+                this.MembershipUnLocked?.Invoke(this, e);
             }
         }
 
@@ -235,12 +265,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdAuthorize_Click runs when the Authorize User Button is clicked.</summary>
         private void CmdAuthorize_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
@@ -251,12 +281,12 @@ namespace DotNetNuke.Modules.Admin.Users
             this.User.Membership.Approved = true;
 
             // Update User
-            UserController.UpdateUser(this.PortalId, this.User);
+            UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
 
             // Update User Roles if needed
             if (!this.User.IsSuperUser && this.User.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Common.Globals.PortalRegistrationType.VerifiedRegistration)
             {
-                UserController.ApproveUser(this.User);
+                UserController.ApproveUser(this.roleProvider, this.roleController, this.eventManager, this.portalController, this.userController, this.eventLogger, this.PortalSettings, this.User);
             }
 
             Mail.SendMail(this.User, MessageType.UserAuthorized, this.PortalSettings);
@@ -267,12 +297,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdPassword_Click runs when the ChangePassword Button is clicked.</summary>
         private void CmdPassword_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
@@ -286,7 +316,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.User.Membership.UpdatePassword = true;
 
                 // Update User
-                UserController.UpdateUser(this.PortalId, this.User);
+                UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
 
                 this.OnMembershipPasswordUpdateChanged(EventArgs.Empty);
             }
@@ -300,12 +330,12 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked.</summary>
         private void CmdUnAuthorize_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
@@ -316,7 +346,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.User.Membership.Approved = false;
 
             // Update User
-            UserController.UpdateUser(this.PortalId, this.User);
+            UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
 
             this.OnMembershipUnAuthorized(EventArgs.Empty);
         }
@@ -326,17 +356,18 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="e">The event arguments.</param>
         private void CmdToggleSuperuser_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
-            ////ensure only superusers can change user superuser state
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true)
+
+            // ensure only superusers can change user superuser state
+            if (!UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 return;
             }
@@ -345,7 +376,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.User.IsSuperUser = !currentSuperUserState;
 
             // Update User
-            UserController.UpdateUser(this.PortalId, this.User);
+            UserController.UpdateUser(this.eventLogger, this.PortalId, this.User);
             DataCache.ClearCache();
 
             if (currentSuperUserState)
@@ -361,19 +392,18 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>cmdUnlock_Click runs when the Unlock Account Button is clicked.</summary>
         private void CmdUnLock_Click(object sender, EventArgs e)
         {
-            if (this.IsUserOrAdmin == false)
+            if (!this.IsUserOrAdmin)
             {
                 return;
             }
 
-            if (this.Request.IsAuthenticated != true)
+            if (!this.Request.IsAuthenticated)
             {
                 return;
             }
 
             // update the user record in the database
-            bool isUnLocked = UserController.UnLockUser(this.User);
-
+            bool isUnLocked = UserController.UnLockUser(this.eventLogger, this.User);
             if (isUnLocked)
             {
                 this.User.Membership.LockedOut = false;

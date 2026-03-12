@@ -17,11 +17,23 @@ public class DnnDeprecatedAttribute : Attribute
     /// <param name="patchVersion">The patch version in which the type or member was deprecated.</param>
     /// <param name="replacement">The suggested replacement or alternative.</param>
     public DnnDeprecatedAttribute(int majorVersion, int minorVersion, int patchVersion, string replacement)
+        : this(majorVersion, minorVersion, patchVersion, replacement, false)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="DnnDeprecatedAttribute"/> class.</summary>
+    /// <param name="majorVersion">The major version in which the type or member was deprecated.</param>
+    /// <param name="minorVersion">The minor version in which the type or member was deprecated.</param>
+    /// <param name="patchVersion">The patch version in which the type or member was deprecated.</param>
+    /// <param name="replacement">The suggested replacement or alternative.</param>
+    /// <param name="error"><see langword="true"/> if the obsolete element usage generates a compiler error; <see langword="false"/> if it generates a compiler warning.</param>
+    public DnnDeprecatedAttribute(int majorVersion, int minorVersion, int patchVersion, string replacement, bool error)
     {
         this.MajorVersion = majorVersion;
         this.MinorVersion = minorVersion;
         this.PatchVersion = patchVersion;
         this.Replacement = replacement;
+        this.IsError = error;
         this.RemovalVersion = majorVersion + 2;
     }
 
@@ -39,4 +51,7 @@ public class DnnDeprecatedAttribute : Attribute
 
     /// <summary>Gets or sets the major version in which the type or member will be removed.</summary>
     public int RemovalVersion { get; set; }
+
+    /// <summary>Gets or sets a value indicating whether the compiler will treat usage of the obsolete program element as an error.</summary>
+    public bool IsError { get; set; }
 }

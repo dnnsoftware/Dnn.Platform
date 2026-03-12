@@ -9,25 +9,44 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using System.Web.UI;
     using System.Web.UI.HtmlControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.UserControls;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Manages the Authentication settings.</summary>
     public partial class Authentication : PortalModuleBase
     {
+        private readonly IHostSettings hostSettings;
         private readonly List<AuthenticationSettingsBase> settingControls = new List<AuthenticationSettingsBase>();
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="Authentication"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public Authentication()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Authentication"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        public Authentication(IHostSettings hostSettings)
+        {
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+        }
+
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
 
             this.cmdUpdate.Click += this.OnUpdateClick;
 
-            var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+            var authSystems = AuthenticationController.GetEnabledAuthenticationServices(this.hostSettings);
 
             foreach (var authSystem in authSystems)
             {
@@ -77,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
             // Validate Enabled
             var enabled = false;
-            var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+            var authSystems = AuthenticationController.GetEnabledAuthenticationServices(this.hostSettings);
             foreach (var authSystem in authSystems)
             {
                 var authLoginControl = (AuthenticationLoginBase)this.LoadControl("~/" + authSystem.LoginControlSrc);

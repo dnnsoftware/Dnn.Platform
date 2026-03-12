@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.tabController = TabController.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string SaveAsTemplate(PageTemplate template)
         {
             string filename;
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return filename;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Template> GetTemplates()
         {
             var portalSettings = PortalController.Instance.GetCurrentSettings();
@@ -105,7 +105,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return LoadTemplates(portalSettings.PortalId, templateFolder);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int GetDefaultTemplateId(IEnumerable<Template> templates)
         {
             var firstOrDefault = templates.FirstOrDefault(t => t.Id == "Default");
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return Null.NullInteger;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void CreatePageFromTemplate(int templateId, TabInfo tab, int portalId)
         {
             // create the page from a template
@@ -194,7 +194,7 @@ namespace Dnn.PersonaBar.Pages.Components
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ITemplateController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<ITemplateController>;

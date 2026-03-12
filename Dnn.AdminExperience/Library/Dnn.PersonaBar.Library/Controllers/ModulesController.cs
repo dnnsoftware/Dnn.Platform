@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             this.contentVerifier = contentVerifier;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return moduleList;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInfo CopyModule(PortalSettings portalSettings, int moduleId, int sourcePageId, int targetPageId, string pane, bool includeSettings, out KeyValuePair<HttpStatusCode, string> message, bool moveBahaviour = false)
         {
             var sourceModule = this.GetModule(portalSettings, moduleId, sourcePageId, out message);
@@ -137,8 +137,6 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 return null;
             }
-
-            var currentPortalSetting = PortalController.Instance.GetCurrentPortalSettings();
 
             if (this.contentVerifier.IsContentExistsForRequestedPortal(targetPage.PortalID, portalSettings))
             {
@@ -170,7 +168,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteModule(PortalSettings portalSettings, int moduleId, int pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             var module = this.GetModule(portalSettings, moduleId, pageId, out message);
@@ -190,7 +188,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
             message = default(KeyValuePair<HttpStatusCode, string>);
@@ -200,8 +198,6 @@ namespace Dnn.PersonaBar.Library.Controllers
 
                 if (module != null)
                 {
-                    var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
-
                     if (this.contentVerifier.IsContentExistsForRequestedPortal(module.PortalID, portalSettings, true))
                     {
                         return module;
@@ -226,7 +222,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<ModuleInfo> GetModules(PortalSettings portalSettings, bool? deleted, out int total, string moduleName = null, string moduleTitle = null, int? pageId = null, int pageIndex = 0, int pageSize = 10)
         {
@@ -264,7 +260,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             return moduleInfos.Skip(pageIndex * pageSize).Take(pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IModulesController> GetFactory()
         {
             return () => new ModulesController();

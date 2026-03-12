@@ -7,18 +7,19 @@ namespace DotNetNuke.Services.Personalization
     using System.Globalization;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Security;
+    using DotNetNuke.Internal.SourceGenerators;
 
     using Microsoft.Extensions.DependencyInjection;
 
     using static DotNetNuke.Entities.Portals.PortalSettings;
 
     /// <summary>Provides access to user personalization.</summary>
-    public class Personalization
+    public partial class Personalization
     {
         /// <summary>load users profile and extract value base on naming container and key.</summary>
         /// <param name="namingContainer">Container for related set of values.</param>
@@ -76,12 +77,28 @@ namespace DotNetNuke.Services.Personalization
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         /// <returns>The profile as an object.</returns>
-        public static object GetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key)
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial object GetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key)
+            => GetSecureProfile(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), personalization, namingContainer, key);
+
+        /// <summary>
+        /// extract value base on naming container and key from PersonalizationInfo object
+        /// function will automatically decrypt value to plaintext.
+        /// </summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="personalization">Object containing user personalization info.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <returns>The profile as an object.</returns>
+        public static object GetSecureProfile(ICryptographyProvider cryptographyProvider, PersonalizationInfo personalization, string namingContainer, string key)
         {
             if (personalization != null)
             {
-                var ps = PortalSecurity.Instance;
-                return ps.DecryptString(personalization.Profile[namingContainer + ":" + key].ToString(), Config.GetDecryptionkey());
+                return cryptographyProvider.DecryptString(
+                    personalization.Profile[$"{namingContainer}:{key}"].ToString(),
+                    Config.GetDecryptionkey(),
+                    personalization.Profile[$"{namingContainer}:{key}:algorithmName"] as string,
+                    personalization.Profile[$"{namingContainer}:{key}:initializationVector"] as string);
             }
 
             return string.Empty;
@@ -185,19 +202,34 @@ namespace DotNetNuke.Services.Personalization
         }
 
         /// <summary>
-        /// persist profile value from PersonalizationInfo object, using naming container and key to organise
+        /// persist profile value from PersonalizationInfo object, using naming container and key to organize
         /// function will automatically encrypt the value to plaintext.
         /// </summary>
         /// <param name="personalization">Object containing user personalization info.</param>
         /// <param name="namingContainer">Container for related set of values.</param>
         /// <param name="key">Individual profile key.</param>
         /// <param name="value">Individual profile value.</param>
-        public static void SetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key, object value)
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial void SetSecureProfile(PersonalizationInfo personalization, string namingContainer, string key, object value)
+            => SetSecureProfile(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), personalization, namingContainer, key, value);
+
+        /// <summary>
+        /// persist profile value from PersonalizationInfo object, using naming container and key to organize
+        /// function will automatically encrypt the value to plaintext.
+        /// </summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="personalization">Object containing user personalization info.</param>
+        /// <param name="namingContainer">Container for related set of values.</param>
+        /// <param name="key">Individual profile key.</param>
+        /// <param name="value">Individual profile value.</param>
+        public static void SetSecureProfile(ICryptographyProvider cryptographyProvider, PersonalizationInfo personalization, string namingContainer, string key, object value)
         {
             if (personalization != null)
             {
-                var ps = PortalSecurity.Instance;
-                personalization.Profile[namingContainer + ":" + key] = ps.EncryptString(value.ToString(), Config.GetDecryptionkey());
+                var (encryptedValue, algorithmName, initializationVector) = cryptographyProvider.EncryptString(value.ToString(), Config.GetDecryptionkey());
+                personalization.Profile[$"{namingContainer}:{key}"] = encryptedValue;
+                personalization.Profile[$"{namingContainer}:{key}:algorithmName"] = algorithmName;
+                personalization.Profile[$"{namingContainer}:{key}:initializationVector"] = initializationVector;
                 personalization.IsModified = true;
             }
         }

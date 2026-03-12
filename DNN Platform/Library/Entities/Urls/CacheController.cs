@@ -229,7 +229,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
 
-                // System.Diagnostics.Trace.Assert(k != null, "k == " + k);
+                ////System.Diagnostics.Trace.Assert(k != null, "k == " + k);
                 LogController.Instance.AddLog(log);
             }
 #endif

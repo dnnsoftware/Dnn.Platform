@@ -10,6 +10,8 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.IO;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -23,6 +25,8 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Globals = DotNetNuke.Common.Globals;
 
@@ -176,6 +180,30 @@ namespace DotNetNuke.Web.UI.WebControls
         private string localResourceFile;
         private PortalInfo objPortal;
 
+        /// <summary>Initializes a new instance of the <see cref="DnnUrlControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        protected DnnUrlControl()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnUrlControl"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        protected DnnUrlControl(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnUrlControl"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        protected DnnUrlControl(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+        {
+            this.AppStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        }
+
         /// <summary>Gets a value indicating whether to add logging to the URL.</summary>
         public bool Log
         {
@@ -306,15 +334,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to open the URL in a new window.</summary>
         public bool NewWindow
         {
-            get
-            {
-                return this.chkNewWindow.Visible && this.chkNewWindow.Checked;
-            }
-
-            set
-            {
-                this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
-            }
+            get => this.chkNewWindow.Visible && this.chkNewWindow.Checked;
+            set => this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
         }
 
         /// <summary>Gets or sets a value indicating whether selecting a URL is required.</summary>
@@ -395,29 +416,15 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether to show the log option.</summary>
         public bool ShowLog
         {
-            get
-            {
-                return this.chkLog.Visible;
-            }
-
-            set
-            {
-                this.chkLog.Visible = value;
-            }
+            get => this.chkLog.Visible;
+            set => this.chkLog.Visible = value;
         }
 
         /// <summary>Gets or sets a value indicating whether to show the new window option.</summary>
         public bool ShowNewWindow
         {
-            get
-            {
-                return this.chkNewWindow.Visible;
-            }
-
-            set
-            {
-                this.chkNewWindow.Visible = value;
-            }
+            get => this.chkNewWindow.Visible;
+            set => this.chkNewWindow.Visible = value;
         }
 
         /// <summary>Gets or sets a value indicating whether to show a None option.</summary>
@@ -473,15 +480,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets a value indicating whether a tracking option.</summary>
         public bool ShowTrack
         {
-            get
-            {
-                return this.chkTrack.Visible;
-            }
-
-            set
-            {
-                this.chkTrack.Visible = value;
-            }
+            get => this.chkTrack.Visible;
+            set => this.chkTrack.Visible = value;
         }
 
         /// <summary>Gets or sets a value indicating whether to show an upload option.</summary>
@@ -630,7 +630,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     case "M":
                         if (!string.IsNullOrEmpty(this.txtUser.Text))
                         {
-                            UserInfo objUser = UserController.GetCachedUser(this.objPortal.PortalID, this.txtUser.Text);
+                            UserInfo objUser = UserController.GetCachedUser(this.HostSettings, ((IPortalInfo)this.objPortal).PortalId, this.txtUser.Text);
                             if (objUser != null)
                             {
                                 r = "UserID=" + objUser.UserID;
@@ -704,21 +704,29 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <summary>Gets the application status.</summary>
+        protected IApplicationStatusInfo AppStatus { get; }
+
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
+
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             // prevent unauthorized access
-            if (this.Request.IsAuthenticated == false)
+            if (!this.Request.IsAuthenticated)
             {
                 this.Visible = false;
             }
 
+#pragma warning disable CS0618 // Type or member is obsolete
             ClientResourceManager.EnableAsyncPostBackHandler();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -761,7 +769,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -828,7 +836,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.cboUrls.SelectedItem != null)
             {
                 var objUrls = new UrlController();
-                objUrls.DeleteUrl(this.objPortal.PortalID, this.cboUrls.SelectedItem.Value);
+                objUrls.DeleteUrl(((IPortalInfo)this.objPortal).PortalId, this.cboUrls.SelectedItem.Value);
                 this.LoadUrls(); // we must reload the url list
             }
 
@@ -881,7 +889,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             var objUrls = new UrlController();
             this.cboUrls.Items.Clear();
-            this.cboUrls.DataSource = objUrls.GetUrls(this.objPortal.PortalID);
+            this.cboUrls.DataSource = objUrls.GetUrls(((IPortalInfo)this.objPortal).PortalId);
             this.cboUrls.DataBind();
         }
 
@@ -917,7 +925,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         // to handle legacy scenarios before the introduction of the FileServerHandler
                         var fileName = Path.GetFileName(url);
                         var folderPath = url.Substring(0, url.LastIndexOf(fileName, StringComparison.OrdinalIgnoreCase));
-                        var folder = FolderManager.Instance.GetFolder(this.objPortal.PortalID, folderPath);
+                        var folder = FolderManager.Instance.GetFolder(((IPortalInfo)this.objPortal).PortalId, folderPath);
                         var fileId = -1;
                         if (folder != null)
                         {
@@ -936,7 +944,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     if (url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
                     {
-                        UserInfo objUser = UserController.GetUserById(this.objPortal.PortalID, int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
+                        UserInfo objUser = UserController.GetUserById(this.HostSettings, ((IPortalInfo)this.objPortal).PortalId, int.Parse(url.Substring(7), CultureInfo.InvariantCulture));
                         if (objUser != null)
                         {
                             url = objUser.Username;
@@ -944,7 +952,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
 
-                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.objPortal.PortalID, trackingUrl, this.ModuleID);
+                UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(((IPortalInfo)this.objPortal).PortalId, trackingUrl, this.ModuleID);
                 if (objUrlTracking != null)
                 {
                     this.chkNewWindow.Checked = objUrlTracking.NewWindow;
@@ -1175,7 +1183,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         this.cboImages.Items.Clear();
 
-                        string strImagesFolder = Path.Combine(Globals.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
+                        string strImagesFolder = Path.Combine(this.AppStatus.ApplicationMapPath, this.PortalSettings.DefaultIconLocation.Replace('/', '\\'));
                         foreach (string strImage in Directory.GetFiles(strImagesFolder))
                         {
                             string img = strImage.Replace(strImagesFolder, string.Empty).Trim('/').Trim('\\');
@@ -1226,7 +1234,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         if (!string.IsNullOrEmpty(url))
                         {
-                            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+                            var settings = PortalController.Instance.GetCurrentSettings();
                             var tabId = int.Parse(url, CultureInfo.InvariantCulture);
                             var page = TabController.Instance.GetTab(tabId, settings.PortalId);
                             this.cboTabs.SelectedPage = page;

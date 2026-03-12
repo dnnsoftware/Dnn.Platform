@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using System.Linq;
     using System.Text.RegularExpressions;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -27,12 +28,12 @@ namespace DotNetNuke.Services.Search.Controllers
         private static readonly Regex SearchResultMatchRegex = new Regex(@"^(\d+)_", RegexOptions.Compiled);
         private static readonly char[] RoleSeparator = [',',];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool HasViewPermission(SearchResult searchResult)
         {
             var userId = GetUserId(searchResult);
@@ -91,7 +92,7 @@ namespace DotNetNuke.Services.Search.Controllers
             return false;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string GetDocUrl(SearchResult searchResult)
         {
             var url = TestableGlobals.Instance.NavigateURL(PortalSettings.UserTabId, string.Empty, "userid=" + GetUserId(searchResult));

@@ -4,18 +4,30 @@
 
 namespace DotNetNuke.Services.FileSystem
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.ComponentModel;
 
-    public class FileContentTypeManager : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
+    using Microsoft.Extensions.DependencyInjection;
+
+    public class FileContentTypeManager(ListController listController) : ComponentBase<IFileContentTypeManager, FileContentTypeManager>, IFileContentTypeManager
     {
         private static readonly object ThreadLocker = new object();
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         private Dictionary<string, string> contentTypes;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="FileContentTypeManager"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public FileContentTypeManager()
+            : this(null)
+        {
+        }
+
+        /// <inheritdoc />
         public virtual IDictionary<string, string> ContentTypes
         {
             get
@@ -26,8 +38,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         if (this.contentTypes == null)
                         {
-                            var listController = new ListController();
-                            var listEntries = listController.GetListEntryInfoItems("ContentTypes");
+                            var listEntries = this.listController.GetListEntryInfoItems("ContentTypes");
                             if (listEntries == null || !listEntries.Any())
                             {
                                 this.contentTypes = GetDefaultContentTypes();
@@ -51,7 +62,7 @@ namespace DotNetNuke.Services.FileSystem
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual string GetContentType(string extension)
         {
             if (string.IsNullOrEmpty(extension))

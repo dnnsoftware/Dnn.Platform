@@ -265,7 +265,7 @@ namespace DotNetNuke.UI.WebControls
             this.pnlRoleSlections = new Panel { CssClass = "dnnRolesGrid" };
 
             // Optionally Add Role Group Filter
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+            var portalSettings = PortalController.Instance.GetCurrentSettings();
             ArrayList arrGroups = RoleController.GetRoleGroups(portalSettings.PortalId);
             if (arrGroups.Count > 0)
             {

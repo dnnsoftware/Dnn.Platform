@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddFcnModeStep));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Execute()
         {
             this.Percentage = 0;

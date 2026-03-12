@@ -21,17 +21,20 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     [TestFixture]
     public class FileLockingControllerTests
     {
-        private Mock<IWorkflowEngine> _mockWorkFlowEngine;
-        private Mock<IUserSecurityController> _mockUserSecurityController;
+        private Mock<IWorkflowEngine> mockWorkFlowEngine;
+        private Mock<IUserSecurityController> mockUserSecurityController;
+        private FileLockingController fileLockingController;
 
         [SetUp]
         public void Setup()
         {
-            this._mockWorkFlowEngine = new Mock<IWorkflowEngine>();
-            this._mockUserSecurityController = new Mock<IUserSecurityController>();
+            this.mockWorkFlowEngine = new Mock<IWorkflowEngine>();
+            this.mockUserSecurityController = new Mock<IUserSecurityController>();
 
-            WorkflowEngine.SetTestableInstance(this._mockWorkFlowEngine.Object);
-            UserSecurityController.SetTestableInstance(this._mockUserSecurityController.Object);
+            WorkflowEngine.SetTestableInstance(this.mockWorkFlowEngine.Object);
+            UserSecurityController.SetTestableInstance(this.mockUserSecurityController.Object);
+
+            this.fileLockingController = new FileLockingController();
         }
 
         [TearDown]
@@ -45,30 +48,30 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         public void IsFileLocked_ReturnsTrue_WhenPublishPeriodIsOut()
         {
             // Arrange
-            // _fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
-            // _fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
-            // _fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
-            // _fileInfo.Setup(fi => fi.EnablePublishPeriod).Returns(true);
-            // _fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Today.AddDays(-2));
-            // _fileInfo.Setup(fi => fi.EndDate).Returns(DateTime.Today.AddDays(-1));
-            // _fileInfo.Setup(fi => fi.ContentItemID).Returns(Null.NullInteger);
+            ////_fileInfo.Setup(fi => fi.PortalId).Returns(Constants.CONTENT_ValidPortalId);
+            ////_fileInfo.Setup(fi => fi.FolderId).Returns(Constants.FOLDER_ValidFolderId);
+            ////_fileInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
+            ////_fileInfo.Setup(fi => fi.EnablePublishPeriod).Returns(true);
+            ////_fileInfo.Setup(fi => fi.StartDate).Returns(DateTime.Today.AddDays(-2));
+            ////_fileInfo.Setup(fi => fi.EndDate).Returns(DateTime.Today.AddDays(-1));
+            ////_fileInfo.Setup(fi => fi.ContentItemID).Returns(Null.NullInteger);
             var fileInfo = new FileInfoBuilder()
                 .WithStartDate(DateTime.Today.AddDays(-2))
                 .WithEndDate(DateTime.Today.AddDays(-1))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
 
             // Act
             string someReason;
-            var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
+            var result = this.fileLockingController.IsFileLocked(fileInfo, out someReason);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result, Is.True);
                 Assert.That(someReason, Is.EqualTo("FileLockedOutOfPublishPeriodError"));
-            });
+            }
         }
 
         [Test]
@@ -81,19 +84,19 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithContentItemId(It.IsAny<int>())
                 .Build();
 
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
-            this._mockWorkFlowEngine.Setup(mwc => mwc.IsWorkflowCompleted(It.IsAny<int>())).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
+            this.mockWorkFlowEngine.Setup(mwc => mwc.IsWorkflowCompleted(It.IsAny<int>())).Returns(false);
 
             // Act
             string someReason;
-            var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
+            var result = this.fileLockingController.IsFileLocked(fileInfo, out someReason);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
                 Assert.That(result, Is.True);
                 Assert.That(someReason, Is.EqualTo("FileLockedRunningWorkflowError"));
-            });
+            }
         }
 
         [Test]
@@ -105,11 +108,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(-1))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(true);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(true);
 
             // Act
             string someReason;
-            var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
+            var result = this.fileLockingController.IsFileLocked(fileInfo, out someReason);
 
             // Assert
             Assert.That(result, Is.False);
@@ -123,11 +126,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
 
             // Act
             string someReason;
-            var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
+            var result = this.fileLockingController.IsFileLocked(fileInfo, out someReason);
 
             // Assert
             Assert.That(result, Is.False);
@@ -141,11 +144,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
 
             // Act
             string someReason;
-            var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
+            var result = this.fileLockingController.IsFileLocked(fileInfo, out someReason);
 
             // Assert
             Assert.That(result, Is.False);
@@ -156,11 +159,11 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(Constants.CONTENT_ValidPortalId)).Returns(false);
 
             // Act
             string someReason;
-            var result = FileLockingController.Instance.IsFileLocked(fileInfo, out someReason);
+            var result = this.fileLockingController.IsFileLocked(fileInfo, out someReason);
 
             // Assert
             Assert.That(result, Is.False);
@@ -175,10 +178,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(-1))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 
             // Act
-            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
+            var result = this.fileLockingController.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
             Assert.That(result, Is.True);
@@ -193,10 +196,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(-1))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(true);
 
             // Act
-            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
+            var result = this.fileLockingController.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
             Assert.That(result, Is.False);
@@ -210,10 +213,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 
             // Act
-            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
+            var result = this.fileLockingController.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
             Assert.That(result, Is.False);
@@ -227,10 +230,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 .WithEndDate(DateTime.Today.AddDays(2))
                 .WithEnablePublishPeriod(true)
                 .Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 
             // Act
-            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
+            var result = this.fileLockingController.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
             Assert.That(result, Is.False);
@@ -241,10 +244,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         {
             // Arrange
             var fileInfo = new FileInfoBuilder().Build();
-            this._mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
+            this.mockUserSecurityController.Setup(msc => msc.IsHostAdminUser(It.IsAny<int>(), It.IsAny<int>())).Returns(false);
 
             // Act
-            var result = FileLockingController.Instance.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
+            var result = this.fileLockingController.IsFileOutOfPublishPeriod(fileInfo, It.IsAny<int>(), It.IsAny<int>());
 
             // Assert
             Assert.That(result, Is.False);

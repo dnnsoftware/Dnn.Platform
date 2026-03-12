@@ -5,22 +5,34 @@
 namespace Dnn.PersonaBar.Users.Components.Dto
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
-    using System.Web;
 
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Profile;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     [DataContract]
     public class ProfileDefinitionDto
     {
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitionDto"/> class.</summary>
         public ProfileDefinitionDto()
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitionDto"/> class.</summary>
+        /// <param name="definition">The property definition.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileDefinitionDto(ProfilePropertyDefinition definition)
+            : this(null, definition)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitionDto"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="definition">The property definition.</param>
+        public ProfileDefinitionDto(ListController listController, ProfilePropertyDefinition definition)
         {
             this.PropertyCategory = definition.PropertyCategory;
             this.PropertyName = definition.PropertyName;
@@ -31,7 +43,6 @@ namespace Dnn.PersonaBar.Users.Components.Dto
             this.Length = definition.Length;
 
             var dataTypeId = definition.DataType;
-            var listController = new ListController();
             var dataTypes = listController.GetListEntryInfoDictionary("DataType");
             if (dataTypes.Any(i => i.Value.EntryID == dataTypeId))
             {

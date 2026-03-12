@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             return string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
             if (!this.IsAuthenticated(httpContext))

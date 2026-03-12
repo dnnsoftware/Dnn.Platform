@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("pane", "Prompt_MoveModule_FlagPane", "String", "ContentPane")]
         private const string FlagPane = "pane";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int ModuleId { get; set; }
@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
 
         private string Pane { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var modules = new List<ModuleInfoModel>();

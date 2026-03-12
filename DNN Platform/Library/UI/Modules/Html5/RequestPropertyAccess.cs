@@ -23,13 +23,13 @@ namespace DotNetNuke.UI.Modules.Html5
             this.request = request;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual CacheLevel Cacheability
         {
             get { return CacheLevel.notCacheable; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
         {
             switch (propertyName.ToLowerInvariant())

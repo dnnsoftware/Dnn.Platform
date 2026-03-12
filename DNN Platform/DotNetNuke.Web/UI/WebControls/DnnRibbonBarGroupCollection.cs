@@ -16,7 +16,7 @@ public class DnnRibbonBarGroupCollection : TypedControlCollection<DnnRibbonBarGr
     {
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void ThrowOnInvalidControlType()
     {
         throw new ArgumentException("DnnRibbonBarGroupCollection must contain controls of type DnnRibbonBarGroup");

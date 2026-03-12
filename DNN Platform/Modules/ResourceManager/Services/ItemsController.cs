@@ -20,10 +20,13 @@ namespace Dnn.Modules.ResourceManager.Services
     using Dnn.Modules.ResourceManager.Services.Attributes;
     using Dnn.Modules.ResourceManager.Services.Dto;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Icons;
+    using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Permissions;
@@ -33,6 +36,8 @@ namespace Dnn.Modules.ResourceManager.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using CreateNewFolderRequest = Dnn.Modules.ResourceManager.Services.Dto.CreateNewFolderRequest;
 
@@ -50,6 +55,8 @@ namespace Dnn.Modules.ResourceManager.Services
         private readonly IPermissionDefinitionService permissionDefinitionService;
         private readonly IHostSettings hostSettings;
         private readonly RoleProvider roleProvider;
+        private readonly ICryptographyProvider cryptographyProvider;
+        private readonly IModuleController moduleController;
 
         /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
         /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
@@ -57,18 +64,36 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <param name="permissionDefinitionService">The permission service.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="roleProvider">The role provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Use overload with ICryptographyProvider. Scheduled for removal in v12.0.0.")]
+        public ItemsController(IModuleControlPipeline modulePipeline, IApplicationStatusInfo applicationStatusInfo, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings, RoleProvider roleProvider)
+            : this(modulePipeline, applicationStatusInfo, permissionDefinitionService, hostSettings, roleProvider, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ItemsController"/> class.</summary>
+        /// <param name="modulePipeline">An instance of an <see cref="IModuleControlPipeline"/> used to hook into the EditUrl of the webforms folders provider settings UI.</param>
+        /// <param name="applicationStatusInfo">The application status info.</param>
+        /// <param name="permissionDefinitionService">The permission service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="moduleController">The module controller.</param>
         public ItemsController(
             IModuleControlPipeline modulePipeline,
             IApplicationStatusInfo applicationStatusInfo,
             IPermissionDefinitionService permissionDefinitionService,
             IHostSettings hostSettings,
-            RoleProvider roleProvider)
+            RoleProvider roleProvider,
+            ICryptographyProvider cryptographyProvider,
+            IModuleController moduleController)
         {
             this.modulePipeline = modulePipeline;
             this.applicationStatusInfo = applicationStatusInfo;
             this.permissionDefinitionService = permissionDefinitionService;
             this.hostSettings = hostSettings;
             this.roleProvider = roleProvider;
+            this.cryptographyProvider = cryptographyProvider ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ICryptographyProvider>();
+            this.moduleController = moduleController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IModuleController>();
         }
 
         /// <summary>Gets the content for a specific folder.</summary>
@@ -97,13 +122,12 @@ namespace Dnn.Modules.ResourceManager.Services
         [HttpGet]
         public HttpResponseMessage GetFolderContent(int folderId, int startIndex, int numItems, string sorting, string sortingOrder)
         {
-            ContentPage p;
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
             var permissionsManager = PermissionsManager.Instance;
 
-            p = ItemsManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting, sortingOrder, moduleMode);
+            var p = ItemsManager.Instance.GetFolderContent(folderId, startIndex, numItems, sorting, sortingOrder, moduleMode);
 
             return this.Request.CreateResponse(HttpStatusCode.OK, new
             {
@@ -131,7 +155,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var settings = new SettingsManager(moduleId, groupId);
+            var settings = new SettingsManager(this.moduleController, moduleId, groupId);
             return this.Ok(settings);
         }
 
@@ -286,7 +310,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
 
             var folder = ItemsManager.Instance.CreateNewFolder(request.FolderName, request.ParentFolderId, request.FolderMappingId, request.MappedName, moduleMode);
 
@@ -310,7 +334,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
 
             ItemsManager.Instance.DeleteFolder(request.FolderId, request.UnlinkAllowedStatus, moduleMode);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
@@ -325,7 +349,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
 
             ItemsManager.Instance.DeleteFile(request.FileId, moduleMode, groupId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
@@ -350,7 +374,7 @@ namespace Dnn.Modules.ResourceManager.Services
 
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
 
             var searchResults = SearchController.Instance.SearchFolderContent(moduleId, folder, true, search, pageIndex, pageSize, sorting, moduleMode, out int totalHits);
 
@@ -510,7 +534,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
 
             ItemsManager.Instance.MoveFile(moveFileRequest.SourceFileId, moveFileRequest.DestinationFolderId, moduleMode, groupId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
@@ -525,7 +549,7 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var groupId = this.FindGroupId(this.Request);
             var moduleId = this.Request.FindModuleId();
-            var moduleMode = new SettingsManager(moduleId, groupId).Mode;
+            var moduleMode = new SettingsManager(this.moduleController, moduleId, groupId).Mode;
 
             ItemsManager.Instance.MoveFolder(moveFolderRequest.SourceFolderId, moveFolderRequest.DestinationFolderId, moduleMode, groupId);
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Status = 0 });
@@ -656,7 +680,7 @@ namespace Dnn.Modules.ResourceManager.Services
                 parameters.Add(this.PortalSettings.PortalId);
             }
 
-            var validationCode = ValidationUtils.ComputeValidationCode(this.hostSettings, parameters);
+            var validationCode = ValidationUtils.ComputeValidationCode(this.cryptographyProvider, this.hostSettings, parameters);
 
             var maxUploadFileSize = Config.GetMaxUploadSize(this.applicationStatusInfo);
 

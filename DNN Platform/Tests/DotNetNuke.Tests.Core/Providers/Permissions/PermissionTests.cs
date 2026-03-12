@@ -5,17 +5,22 @@
 namespace DotNetNuke.Tests.Core.Providers.Permissions
 {
     using System.Collections.Generic;
-    using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
     using DotNetNuke.Security;
-    using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Tests.Utilities;
-    using DotNetNuke.Tests.Utilities.Mocks;
+    using DotNetNuke.Tests.Utilities.Fakes;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
@@ -23,6 +28,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
     public class PermissionTests : DnnUnitTest
     {
         private const int UserId = 400;
+        private FakeServiceProvider serviceProvider;
 
         [OneTimeSetUp]
         public override void OneTimeSetUp()
@@ -30,9 +36,23 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             base.OneTimeSetUp();
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(services =>
+            {
+                services.AddSingleton(Mock.Of<ICryptographyProvider>());
+                services.AddSingleton(new ListController(Mock.Of<IEventLogger>(), Mock.Of<IHostSettings>()));
+                services.AddSingleton(Mock.Of<IPortalController>());
+                services.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+                services.AddSingleton(Mock.Of<IPortalGroupController>());
+            });
+        }
+
         [TearDown]
         public void TearDown()
         {
+            this.serviceProvider?.Dispose();
             PortalController.ClearInstance();
             RoleController.ClearInstance();
             RelationshipController.ClearInstance();
@@ -267,44 +287,45 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             Assert.That(PortalSecurity.IsInRoles(user, portalSettings, roles), Is.False);
         }
 
-        // [Test]
-        // public void CorePermissionProvider_HasModuleAccess_Super_User_Is_Always_True()
-        // {
-        //    CreateUser(true, new List<string>() { "SomeRoleName" });
+        ////[Test]
+        ////public void CorePermissionProvider_HasModuleAccess_Super_User_Is_Always_True()
+        ////{
+        ////   CreateUser(true, new List<string>() { "SomeRoleName" });
 
-        // var permissionProvider = new CorePermissionProvider();
-        //    Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
-        // }
+        ////var permissionProvider = new CorePermissionProvider();
+        ////   Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
+        ////}
 
-        // [Test]
-        // public void CorePermissionProvider_HasModuleAccess_SecurityLevelAnonymous_Is_Always_True()
-        // {
-        //    CreateUser(false, new List<string>() { "SomeRoleName" });
+        ////[Test]
+        ////public void CorePermissionProvider_HasModuleAccess_SecurityLevelAnonymous_Is_Always_True()
+        ////{
+        ////   CreateUser(false, new List<string>() { "SomeRoleName" });
 
-        // var permissionProvider = new CorePermissionProvider();
-        //    Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
-        // }
+        ////var permissionProvider = new CorePermissionProvider();
+        ////   Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
+        ////}
 
-        // [Test]
-        // public void CorePermissionProvider_HasModuleAccess_SecurityLevelHost_Is_False_For_Non_SuperUser()
-        // {
-        //    CreateUser(false, new List<string>() { "SomeRoleName" });
+        ////[Test]
+        ////public void CorePermissionProvider_HasModuleAccess_SecurityLevelHost_Is_False_For_Non_SuperUser()
+        ////{
+        ////   CreateUser(false, new List<string>() { "SomeRoleName" });
 
-        // var permissionProvider = new CorePermissionProvider();
-        //    Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.Host, "", new ModuleInfo()));
-        // }
+        ////var permissionProvider = new CorePermissionProvider();
+        ////   Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.Host, "", new ModuleInfo()));
+        ////}
 
-        // [Test]
-        // public void CorePermissionProvider_HasModuleAccess_SecurityLevelView_Is_False_For_User_Without_View_Role()
-        // {
-        //    CreateUser(false, new List<string>() { "RoleWithoutViewPermission" });
-        //    var modulePermissionCollection = new ModulePermissionCollection();
-        //    AddModulePermission(modulePermissionCollection, "View", Convert.ToInt32(SetupPortalSettings().AdministratorRoleId));
-        //    var module = new ModuleInfo {InheritViewPermissions = false, ModulePermissions = modulePermissionCollection};
+        ////[Test]
+        ////public void CorePermissionProvider_HasModuleAccess_SecurityLevelView_Is_False_For_User_Without_View_Role()
+        ////{
+        ////   CreateUser(false, new List<string>() { "RoleWithoutViewPermission" });
+        ////   var modulePermissionCollection = new ModulePermissionCollection();
+        ////   AddModulePermission(modulePermissionCollection, "View", Convert.ToInt32(SetupPortalSettings().AdministratorRoleId));
+        ////   var module = new ModuleInfo {InheritViewPermissions = false, ModulePermissions = modulePermissionCollection};
 
-        // var permissionProvider = new CorePermissionProvider();
-        //    Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.View, "", module));
-        // }
+        ////var permissionProvider = new CorePermissionProvider();
+        ////   Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.View, "", module));
+        ////}
+
         private static PortalSettings SetupPortalSettings()
         {
             var mockPortalController = new Mock<IPortalController>();
@@ -314,30 +335,29 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             return portalSettings;
         }
 
-        private static void AddModulePermission(ModulePermissionCollection permissions, string key, int roleId)
-        {
-            var permissionController = new PermissionController();
-            var permission = (PermissionInfo)permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", key)[0];
-            var modulePermission = new ModulePermissionInfo { PermissionID = permission.PermissionID, RoleID = roleId, AllowAccess = true };
-            permissions.Add(modulePermission);
-        }
+        ////private static void AddModulePermission(IPermissionDefinitionService permissionDefinitionService, ModulePermissionCollection permissions, string key, int roleId)
+        ////{
+        ////    var permission = permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_MODULE_DEFINITION", key).First();
+        ////    var modulePermission = new ModulePermissionInfo { PermissionID = permission.PermissionId, RoleID = roleId, AllowAccess = true };
+        ////    permissions.Add(modulePermission);
+        ////}
 
-        private void CreateUser(bool isSuperUser, IEnumerable<string> Roles)
-        {
-            var user = new UserInfo { IsSuperUser = isSuperUser, UserID = UserId };
-            var mockRoleProvider = MockComponentProvider.CreateRoleProvider();
-            var userRoles = new List<UserRoleInfo>();
-            foreach (var role in Roles)
-            {
-                userRoles.Add(new UserRoleInfo() { RoleName = role, Status = RoleStatus.Approved });
-            }
+        ////private void CreateUser(bool isSuperUser, IEnumerable<string> Roles)
+        ////{
+        ////    var user = new UserInfo { IsSuperUser = isSuperUser, UserID = UserId };
+        ////    var mockRoleProvider = MockComponentProvider.CreateRoleProvider();
+        ////    var userRoles = new List<UserRoleInfo>();
+        ////    foreach (var role in Roles)
+        ////    {
+        ////        userRoles.Add(new UserRoleInfo() { RoleName = role, Status = RoleStatus.Approved });
+        ////    }
 
-            mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == UserId), It.IsAny<bool>())).Returns(userRoles);
-            var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator(this.WebsitePhysicalAppPath);
-            simulator.SimulateRequest();
-            HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
-            HttpContextSource.RegisterInstance(httpContextBase);
-            HttpContext.Current.Items["UserInfo"] = user;
-        }
+        ////    mockRoleProvider.Setup(rp => rp.GetUserRoles(It.Is<UserInfo>(u => u.UserID == UserId), It.IsAny<bool>())).Returns(userRoles);
+        ////    var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator(this.WebsitePhysicalAppPath);
+        ////    simulator.SimulateRequest();
+        ////    HttpContextBase httpContextBase = new HttpContextWrapper(HttpContext.Current);
+        ////    HttpContextSource.RegisterInstance(httpContextBase);
+        ////    HttpContext.Current.Items["UserInfo"] = user;
+        ////}
     }
 }

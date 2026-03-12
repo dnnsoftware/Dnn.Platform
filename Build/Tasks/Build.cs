@@ -23,7 +23,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(BuildNpmPackages))]
     public sealed class Build : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var cleanLog = context.ArtifactsDir.Path.CombineWithFilePath("clean.binlog");

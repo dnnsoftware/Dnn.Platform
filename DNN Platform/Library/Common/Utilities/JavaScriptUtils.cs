@@ -11,7 +11,7 @@ namespace DotNetNuke.Common.Utilities
 
     public class JavaScriptUtils : ServiceLocator<IJavaScriptUtils, JavaScriptUtils>, IJavaScriptUtils
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RegisterJavascriptVariable(string variableName, object value, Page page, Type type)
         {
             var valueAsJson = Json.Serialize(value);
@@ -29,7 +29,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IJavaScriptUtils> GetFactory()
         {
             return () => new JavaScriptUtils();

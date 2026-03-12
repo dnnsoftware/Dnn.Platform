@@ -74,7 +74,7 @@ namespace DotNetNuke.Common
             var log = new LogInfo
             {
                 BypassBuffering = true,
-                LogTypeKey = EventLogType.APPLICATION_START.ToString(),
+                LogTypeKey = nameof(EventLogType.APPLICATION_START),
             };
             LogController.Instance.AddLog(log);
         }

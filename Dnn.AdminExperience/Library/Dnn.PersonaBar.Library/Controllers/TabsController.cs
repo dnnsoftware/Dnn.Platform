@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Library.Controllers
     using Dnn.PersonaBar.Library.Security;
 
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -42,7 +43,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private static string AllUsersIcon => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Everyone.png");
 
-        private static PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public TabDto GetPortalTabs(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
         {
@@ -113,7 +114,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 var nodeIcon = this.GetNodeIcon(tab, out tooltip);
                 var node = new TabDto
                 {
-                    Name = tab.LocalizedTabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    Name = tab.LocalizedTabName, ////$"{tab.TabName} {GetNodeStatusIcon(tab)}",
                     TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                     ImageUrl = nodeIcon,
                     Tooltip = tooltip,
@@ -248,7 +249,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 var nodeIcon = this.GetNodeIcon(tab, out tooltip);
                 var node = new TabDto
                 {
-                    Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    Name = tab.TabName, ////$"{tab.TabName} {GetNodeStatusIcon(tab)}",
                     TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                     ImageUrl = nodeIcon,
                     Tooltip = tooltip,
@@ -307,11 +308,9 @@ namespace Dnn.PersonaBar.Library.Controllers
                 filterTabs.AddRange(
                     tabs.Where(
                         t =>
-                            t.TabPermissions.Cast<TabPermissionInfo>()
-                                .Any(
-                                    p =>
-                                        roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger &&
-                                        p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
+                            t.TabPermissions.Cast<IPermissionInfo>()
+                                .Any(p => roleList.Contains(p.RoleId) && p.UserId == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess))
+                        .ToList()
                         .Where(t => !disabledNotSelectable || !t.DisableLink)
                         .Select(t => t.TabID));
             }
@@ -442,7 +441,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             var nodeIcon = this.GetNodeIcon(tab, out var tooltip);
             return new TabDto
             {
-                Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                Name = tab.TabName, ////$"{tab.TabName} {GetNodeStatusIcon(tab)}",
                 TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                 ImageUrl = nodeIcon,
                 Tooltip = tooltip,

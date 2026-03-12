@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.Upgrade
     using System.Xml.XPath;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Portals.Templates;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -45,7 +46,6 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals;
-    using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
 
@@ -63,13 +63,7 @@ namespace DotNetNuke.Services.Upgrade
         private static readonly object ThreadLocker = new object();
         private static DateTime startTime;
 
-        public static string DefaultProvider
-        {
-            get
-            {
-                return Config.GetDefaultProvider("data").Name;
-            }
-        }
+        public static string DefaultProvider => Config.GetDefaultProvider("data").Name;
 
         public static TimeSpan RunTime
         {
@@ -80,13 +74,7 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
-        private static Version ApplicationVersion
-        {
-            get
-            {
-                return Assembly.GetExecutingAssembly().GetName().Version;
-            }
-        }
+        private static Version ApplicationVersion => Assembly.GetExecutingAssembly().GetName().Version;
 
         public static int RemoveModule(string desktopModuleName, string tabName, int parentId, bool removeTab)
         {
@@ -123,7 +111,16 @@ namespace DotNetNuke.Services.Upgrade
             return moduleDefId;
         }
 
-        public static void MakeModulePremium(string moduleName)
+        /// <summary>Make the module premium.</summary>
+        /// <param name="moduleName">The desktop module name.</param>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void MakeModulePremium(string moduleName)
+            => MakeModulePremium(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), moduleName);
+
+        /// <summary>Make the module premium.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="moduleName">The desktop module name.</param>
+        public static void MakeModulePremium(IEventLogger eventLogger, string moduleName)
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, -1);
             if (desktopModule != null)
@@ -133,7 +130,7 @@ namespace DotNetNuke.Services.Upgrade
                 DesktopModuleController.SaveDesktopModule(desktopModule, false, true);
 
                 // Remove Portal/Module to PortalDesktopModules
-                DesktopModuleController.RemoveDesktopModuleFromPortals(desktopModule.DesktopModuleID);
+                DesktopModuleController.RemoveDesktopModuleFromPortals(eventLogger, desktopModule.DesktopModuleID);
             }
         }
 
@@ -147,7 +144,22 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="moduleTitle">The Module's title.</param>
         /// <param name="moduleIconFile">The Module's icon.</param>
         /// <param name="inheritPermissions">Modules Inherit the Pages View Permissions.</param>
-        public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
+            => AddAdminPages(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), tabName, description, tabIconFile, tabIconFileLarge, isVisible, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
+
+        /// <summary>AddAdminPages adds an Admin Page and an associated Module to all configured Portals.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
+        /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        /// <param name="moduleDefId">The Module Definition ID for the module to be added to this tab.</param>
+        /// <param name="moduleTitle">The Module's title.</param>
+        /// <param name="moduleIconFile">The Module's icon.</param>
+        /// <param name="inheritPermissions">Modules Inherit the Pages View Permissions.</param>
+        public static void AddAdminPages(IPermissionDefinitionService permissionDefinitionService, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
             ArrayList portals = PortalController.Instance.GetPortals();
 
@@ -157,7 +169,7 @@ namespace DotNetNuke.Services.Upgrade
                 var portal = (PortalInfo)portals[index];
 
                 // Create New Admin Page (or get existing one)
-                var newPage = AddAdminPage(portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+                var newPage = AddAdminPage(permissionDefinitionService, portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
 
                 // Add Module To Page
                 AddModuleToPage(newPage, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -172,16 +184,29 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
         /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
-        public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IPermissionDefinitionService")]
+        public static partial TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
+            => AddAdminPage(Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>(), portal, tabName, description, tabIconFile, tabIconFileLarge, isVisible);
+
+        /// <summary>AddAdminPage adds an Admin Tab Page.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="portal">The Portal.</param>
+        /// <param name="tabName">The Name to give this new tab.</param>
+        /// <param name="description">The page description.</param>
+        /// <param name="tabIconFile">The icon for this new tab.</param>
+        /// <param name="tabIconFileLarge">The large icon for this new tab.</param>
+        /// <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        /// <returns>A <see cref="TabInfo"/> instance or <see langword="null"/>.</returns>
+        public static TabInfo AddAdminPage(IPermissionDefinitionService permissionDefinitionService, IPortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddAdminPage:" + tabName);
-            TabInfo adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
+            var adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalId, false);
 
             if (adminPage != null)
             {
                 var tabPermissionCollection = new TabPermissionCollection();
-                AddPagePermission(tabPermissionCollection, "View", Convert.ToInt32(portal.AdministratorRoleId));
-                AddPagePermission(tabPermissionCollection, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
+                AddPagePermission(permissionDefinitionService, tabPermissionCollection, "View", Convert.ToInt32(portal.AdministratorRoleId));
+                AddPagePermission(permissionDefinitionService, tabPermissionCollection, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
                 return AddPage(adminPage, tabName, description, tabIconFile, tabIconFileLarge, isVisible, tabPermissionCollection, true);
             }
 
@@ -259,12 +284,12 @@ namespace DotNetNuke.Services.Upgrade
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions, bool displayTitle, string paneName)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
-            ModuleInfo moduleInfo;
             int moduleId = Null.NullInteger;
 
             if (page != null)
             {
                 bool isDuplicate = false;
+                ModuleInfo moduleInfo;
                 foreach (var kvp in ModuleController.Instance.GetTabModules(page.TabID))
                 {
                     moduleInfo = kvp.Value;
@@ -326,10 +351,10 @@ namespace DotNetNuke.Services.Upgrade
         {
             int moduleId = Null.NullInteger;
 
-            int tabID = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
-            if (tabID != Null.NullInteger)
+            int tabId = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
+            if (tabId != Null.NullInteger)
             {
-                TabInfo tab = TabController.Instance.GetTab(tabID, portalId, true);
+                TabInfo tab = TabController.Instance.GetTab(tabId, portalId, true);
                 if (tab != null)
                 {
                     moduleId = AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -342,12 +367,12 @@ namespace DotNetNuke.Services.Upgrade
         public static void AddModuleToPages(string tabPath, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
             var portals = PortalController.Instance.GetPortals();
-            foreach (PortalInfo portal in portals)
+            foreach (IPortalInfo portal in portals)
             {
-                int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                if (tabID != Null.NullInteger)
+                int tabId = TabController.GetTabByTabPath(portal.PortalId, tabPath, Null.NullString);
+                if (tabId != Null.NullInteger)
                 {
-                    var tab = TabController.Instance.GetTab(tabID, portal.PortalID, true);
+                    var tab = TabController.Instance.GetTab(tabId, portal.PortalId, true);
                     if (tab != null)
                     {
                         AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
@@ -362,7 +387,19 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="indent">The indentation level of the status messages.</param>
         /// <param name="superUser">The admin user for the portal or <see langword="null"/> to create a new user.</param>
         /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public static int AddPortal(XmlNode node, bool status, int indent, UserInfo superUser = null)
+            => AddPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), node, status, indent, superUser);
+
+        /// <summary>AddPortal manages the Installation of a new DotNetNuke Portal.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="node">The portal XML node.</param>
+        /// <param name="status">Whether to write status messages to the HTTP response.</param>
+        /// <param name="indent">The indentation level of the status messages.</param>
+        /// <param name="superUser">The admin user for the portal or <see langword="null"/> to create a new user.</param>
+        /// <returns>The ID of the new portal, or <c>-1</c> to indicate failure.</returns>
+        public static int AddPortal(IEventLogger eventLogger, IApplicationStatusInfo appStatus, XmlNode node, bool status, int indent, UserInfo superUser = null)
         {
             int portalId = -1;
             try
@@ -397,7 +434,7 @@ namespace DotNetNuke.Services.Upgrade
                     string description = XmlUtils.GetNodeValue(node.CreateNavigator(), "description");
                     string keyWords = XmlUtils.GetNodeValue(node.CreateNavigator(), "keywords");
                     string templateFileName = XmlUtils.GetNodeValue(node.CreateNavigator(), "templatefile");
-                    string serverPath = Globals.ApplicationMapPath + @"\";
+                    string serverPath = appStatus.ApplicationMapPath + @"\";
                     bool isChild = bool.Parse(XmlUtils.GetNodeValue(node.CreateNavigator(), "ischild"));
                     string homeDirectory = XmlUtils.GetNodeValue(node.CreateNavigator(), "homedirectory");
 
@@ -474,7 +511,7 @@ namespace DotNetNuke.Services.Upgrade
                         PortalInfo portal = PortalController.Instance.GetPortal(portalId);
                         UserInfo adminUser = UserController.GetUserById(portalId, portal.AdministratorId);
                         adminUser.Membership.UpdatePassword = true;
-                        UserController.UpdateUser(portalId, adminUser);
+                        UserController.UpdateUser(eventLogger, portalId, adminUser);
                     }
 
                     return portalId;
@@ -508,7 +545,7 @@ namespace DotNetNuke.Services.Upgrade
             return AddPortal(node, status, indent, null);
         }
 
-        /// <summary>DeleteInstallerFiles - clean up install config and installwizard files. If installwizard is ran again this will be recreated via the dotnetnuke.install.config.resources file.</summary>
+        /// <summary>DeleteInstallerFiles - clean up install config and installwizard files. If installwizard is run again this will be recreated via the dotnetnuke.install.config.resources file.</summary>
         /// <remarks>uses FileSystemUtils.DeleteFile as it checks for readonly attribute status and changes it if required, as well as verifying file exists.</remarks>
         public static void DeleteInstallerFiles()
         {
@@ -855,10 +892,10 @@ namespace DotNetNuke.Services.Upgrade
                             Logger.TraceFormat(CultureInfo.InvariantCulture, "GetUpgradedScripts including {0}", file);
                         }
 
-                        // else
-                        // {
-                        //    Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
-                        // }
+                        ////else
+                        ////{
+                        ////   Logger.TraceFormat("GetUpgradedScripts excluding {0}", file);
+                        ////}
                     }
                 }
             }
@@ -1360,7 +1397,7 @@ namespace DotNetNuke.Services.Upgrade
                 Logger.Error(ex);
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                     BypassBuffering = true,
                 };
                 log.AddProperty("Upgraded DotNetNuke", "General");
@@ -1816,10 +1853,10 @@ namespace DotNetNuke.Services.Upgrade
 
                 var log = new LogInfo
                 {
-                    LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString(),
+                    LogTypeKey = nameof(EventLogType.HOST_ALERT),
                     BypassBuffering = true,
                 };
-                log.AddProperty("Upgraded DotNetNuke", "Version: " + Globals.FormatVersion(version) + ", Iteration:" + version.Revision);
+                log.AddProperty("Upgraded DotNetNuke", $"Version: {Globals.FormatVersion(version)}, Iteration:{version.Revision}");
                 if (exceptions.Length > 0)
                 {
                     log.AddProperty("Warnings", exceptions);
@@ -1983,9 +2020,9 @@ namespace DotNetNuke.Services.Upgrade
                 exceptions += InstallMemberRoleProviderScript(providerPath, "InstallMembership", writeFeedback);
 
                 // Install Profile
-                // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
+                ////exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
                 // Install Roles
-                // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
+                ////exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
             }
 
             if (string.IsNullOrEmpty(exceptions))
@@ -2319,14 +2356,14 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>AddPagePermission adds a TabPermission to a TabPermission Collection.</summary>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
         /// <param name="permissions">Page Permissions Collection for this page.</param>
         /// <param name="key">The Permission key.</param>
         /// <param name="roleId">The role given the permission.</param>
-        private static void AddPagePermission(TabPermissionCollection permissions, string key, int roleId)
+        private static void AddPagePermission(IPermissionDefinitionService permissionDefinitionService, TabPermissionCollection permissions, string key, int roleId)
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "AddPagePermission:" + key);
-            IPermissionDefinitionService permissionController = new PermissionController();
-            var permission = permissionController.GetDefinitionsByCodeAndKey("SYSTEM_TAB", key).First();
+            var permission = permissionDefinitionService.GetDefinitionsByCodeAndKey("SYSTEM_TAB", key).First();
 
             var tabPermission = new TabPermissionInfo();
             ((IPermissionInfo)tabPermission).PermissionId = permission.PermissionId;

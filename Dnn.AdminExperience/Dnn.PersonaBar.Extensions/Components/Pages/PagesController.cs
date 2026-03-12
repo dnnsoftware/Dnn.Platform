@@ -15,7 +15,7 @@ namespace Dnn.PersonaBar.Pages.Components
     [DnnDeprecated(10, 0, 0, "Please resolve IPagesController via dependency injection.")]
     public partial class PagesController : ServiceLocator<IPagesController, PagesController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPagesController> GetFactory()
         {
             return Globals.DependencyProvider.GetRequiredService<IPagesController>;

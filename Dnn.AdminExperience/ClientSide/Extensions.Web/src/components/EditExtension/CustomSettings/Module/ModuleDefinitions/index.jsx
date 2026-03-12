@@ -111,8 +111,8 @@ class ModuleDefinitions extends Component {
     }
     onSave() {
         const { props, state } = this;
-        let { triedToSave, error } = state;
-        triedToSave = true;
+        let { error, } = state;
+        let triedToSave = true;
         this.setState({
             triedToSave
         });

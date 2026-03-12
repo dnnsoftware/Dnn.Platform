@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>An event which is fired just before the handler's contents are rendered.</summary>
         public event PreRenderEventHandler PreRender;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         bool IHttpHandler.IsReusable => false;
 
         /// <summary>Gets the channel.</summary>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>Gets the HTTP context.</summary>
         protected HttpContext Context { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         void IHttpHandler.ProcessRequest(HttpContext context)
         {
             this.InternalInit(context);

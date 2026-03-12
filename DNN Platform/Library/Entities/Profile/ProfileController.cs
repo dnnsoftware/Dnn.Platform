@@ -10,6 +10,7 @@ namespace DotNetNuke.Entities.Profile
     using System.IO;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
@@ -21,7 +22,6 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Security.Profile;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
@@ -38,50 +38,84 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Adds the default property definitions for a portal.</summary>
         /// <param name="portalId">ID of the Portal.</param>
-        public static void AddDefaultDefinitions(int portalId)
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
+        public static partial void AddDefaultDefinitions(int portalId)
+            => AddDefaultDefinitions(
+                Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId);
+
+        /// <summary>Adds the default property definitions for a portal.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">ID of the Portal.</param>
+        public static void AddDefaultDefinitions(ListController listController, IEventLogger eventLogger, IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId)
         {
-            portalId = GetEffectivePortalId(portalId);
+            portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId);
 
             orderCounter = 1;
-            var listController = new ListController();
-            Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
+            var dataTypes = listController.GetListEntryInfoDictionary("DataType");
 
-            AddDefaultDefinition(portalId, "Name", "Prefix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "FirstName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "MiddleName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "LastName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Name", "Suffix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Unit", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Street", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "City", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Region", "Region", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "Country", "Country", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Address", "PostalCode", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Telephone", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Cell", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Fax", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "Website", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Contact Info", "IM", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "Biography", "Multi-line Text", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "TimeZone", "TimeZone", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "PreferredTimeZone", "TimeZoneInfo", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
-            AddDefaultDefinition(portalId, "Preferences", "Photo", "Image", 0, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Name", "Prefix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Name", "FirstName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Name", "MiddleName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Name", "LastName", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Name", "Suffix", "Text", 50, UserVisibilityMode.AllUsers, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Address", "Unit", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Address", "Street", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Address", "City", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Address", "Region", "Region", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Address", "Country", "Country", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Address", "PostalCode", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Contact Info", "Telephone", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Contact Info", "Cell", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Contact Info", "Fax", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Contact Info", "Website", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Contact Info", "IM", "Text", 50, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Preferences", "Biography", "Multi-line Text", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Preferences", "TimeZone", "TimeZone", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Preferences", "PreferredTimeZone", "TimeZoneInfo", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, "Preferences", "Photo", "Image", 0, UserVisibilityMode.AllUsers, dataTypes);
 
             // 6.0 requires the old TimeZone property to be marked as Deleted
-            ProfilePropertyDefinition pdf = GetPropertyDefinitionByName(portalId, "TimeZone");
-            if (pdf != null)
+            var timeZoneProperty = GetPropertyDefinitionByName(hostSettings, portalController, appStatus, portalGroupController, portalId, "TimeZone");
+            if (timeZoneProperty != null)
             {
-                DeletePropertyDefinition(pdf);
+                DeletePropertyDefinition(eventLogger, portalController, appStatus, portalGroupController, timeZoneProperty);
             }
         }
 
         /// <summary>Adds a Property Definition to the Data Store.</summary>
         /// <param name="definition">An ProfilePropertyDefinition object.</param>
-        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
-        public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
+        /// <returns>The ID of the definition (or if negative the errorcode of the error).</returns>
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial int AddPropertyDefinition(ProfilePropertyDefinition definition)
+            => AddPropertyDefinition(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                definition);
+
+        /// <summary>Adds a Property Definition to the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="definition">An ProfilePropertyDefinition object.</param>
+        /// <returns>The ID of the definition (or if negative the errorcode of the error).</returns>
+        public static int AddPropertyDefinition(IEventLogger eventLogger, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, ProfilePropertyDefinition definition)
         {
-            int portalId = GetEffectivePortalId(definition.PortalId);
+            int portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, definition.PortalId);
             if (definition.Required)
             {
                 definition.Visible = true;
@@ -102,26 +136,61 @@ namespace DotNetNuke.Entities.Profile
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_CREATED);
-            ClearProfileDefinitionCache(definition.PortalId);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_CREATED);
+            ClearProfileDefinitionCache(portalController, appStatus, portalGroupController, definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
             return intDefinition;
         }
 
         /// <summary>Clears the Profile Definitions Cache.</summary>
-        /// <param name="portalId">Id of the Portal.</param>
-        public static void ClearProfileDefinitionCache(int portalId)
+        /// <param name="portalId">ID of the Portal.</param>
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void ClearProfileDefinitionCache(int portalId)
+            => ClearProfileDefinitionCache(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId);
+
+        /// <summary>Clears the Profile Definitions Cache.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">ID of the Portal.</param>
+        public static void ClearProfileDefinitionCache(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId)
         {
-            DataCache.ClearDefinitionsCache(GetEffectivePortalId(portalId));
+            DataCache.ClearDefinitionsCache(PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId));
         }
 
         /// <summary>Deletes a Property Definition from the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
-        public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void DeletePropertyDefinition(ProfilePropertyDefinition definition)
+            => DeletePropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Deletes a Property Definition from the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void DeletePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
+            => DeletePropertyDefinition(
+                eventLogger,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                definition);
+
+        /// <summary>Deletes a Property Definition from the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
+        public static void DeletePropertyDefinition(IEventLogger eventLogger, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, ProfilePropertyDefinition definition)
         {
             DataProvider.DeletePropertyDefinition(definition.PropertyDefinitionId);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_DELETED);
-            ClearProfileDefinitionCache(definition.PortalId);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_DELETED);
+            ClearProfileDefinitionCache(portalController, appStatus, portalGroupController, definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
@@ -133,24 +202,42 @@ namespace DotNetNuke.Entities.Profile
             DataCache.ClearCache(string.Format(CultureInfo.InvariantCulture, DataCache.UserProfileCacheKey, portalId, string.Empty));
         }
 
-        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
-        /// <param name="portalId">Portal Id.</param>
+        /// <summary>Gets a Property Definition from the Data Store by ID.</summary>
+        /// <param name="definitionId">The ID of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
         public static partial ProfilePropertyDefinition GetPropertyDefinition(int definitionId, int portalId)
             => GetPropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), definitionId, portalId);
 
-        /// <summary>Gets a Property Definition from the Data Store by id.</summary>
+        /// <summary>Gets a Property Definition from the Data Store by ID.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
-        /// <param name="portalId">Portal Id.</param>
+        /// <param name="definitionId">The ID of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
-        public static ProfilePropertyDefinition GetPropertyDefinition(IHostSettings hostSettings, int definitionId, int portalId)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial ProfilePropertyDefinition GetPropertyDefinition(IHostSettings hostSettings, int definitionId, int portalId)
+            => GetPropertyDefinition(
+                hostSettings,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                definitionId,
+                portalId);
+
+        /// <summary>Gets a Property Definition from the Data Store by ID.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="definitionId">The ID of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <param name="portalId">Portal ID.</param>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
+        public static ProfilePropertyDefinition GetPropertyDefinition(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int definitionId, int portalId)
         {
             bool bFound = Null.NullBoolean;
             ProfilePropertyDefinition definition = null;
-            foreach (ProfilePropertyDefinition def in GetPropertyDefinitions(hostSettings, GetEffectivePortalId(portalId)))
+            foreach (ProfilePropertyDefinition def in GetPropertyDefinitions(hostSettings, PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId)))
             {
                 if (def.PropertyDefinitionId == definitionId)
                 {
@@ -170,7 +257,7 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Gets a Property Definition from the Data Store by name.</summary>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
@@ -179,12 +266,30 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Gets a Property Definition from the Data Store by name.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
         /// <returns>The ProfilePropertyDefinition object.</returns>
-        public static ProfilePropertyDefinition GetPropertyDefinitionByName(IHostSettings hostSettings, int portalId, string name)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial ProfilePropertyDefinition GetPropertyDefinitionByName(IHostSettings hostSettings, int portalId, string name)
+            => GetPropertyDefinitionByName(
+                hostSettings,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId,
+                name);
+
+        /// <summary>Gets a Property Definition from the Data Store by name.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
+        public static ProfilePropertyDefinition GetPropertyDefinitionByName(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, string name)
         {
-            portalId = GetEffectivePortalId(portalId);
+            portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId);
 
             bool bFound = Null.NullBoolean;
             ProfilePropertyDefinition definition = null;
@@ -208,7 +313,7 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Gets a collection of Property Definitions from the Data Store by category.</summary>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="category">The category of the Property Definitions to retrieve.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettings")]
@@ -217,12 +322,30 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Gets a collection of Property Definitions from the Data Store by category.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="category">The category of the Property Definitions to retrieve.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(IHostSettings hostSettings, int portalId, string category)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(IHostSettings hostSettings, int portalId, string category)
+            => GetPropertyDefinitionsByCategory(
+                hostSettings,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId,
+                category);
+
+        /// <summary>Gets a collection of Property Definitions from the Data Store by category.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="category">The category of the Property Definitions to retrieve.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
+        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, string category)
         {
-            portalId = GetEffectivePortalId(portalId);
+            portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId);
 
             var definitions = new ProfilePropertyDefinitionCollection();
             foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(hostSettings, portalId))
@@ -237,24 +360,54 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId)
-        {
-            return GetPropertyDefinitionsByPortal(portalId, true);
-        }
+        [DnnDeprecated(10, 2, 4, "Please use overload with IHostSettings")]
+        public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId)
+            => GetPropertyDefinitionsByPortal(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId);
 
         /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
+        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId)
+            => GetPropertyDefinitionsByPortal(hostSettings, portalController, appStatus, portalGroupController, portalId, true);
+
+        /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone)
-        {
-            return GetPropertyDefinitionsByPortal(portalId, clone, true);
-        }
+        [DnnDeprecated(10, 2, 4, "Please use overload with IHostSettings")]
+        public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone)
+            => GetPropertyDefinitionsByPortal(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId,
+                clone);
 
         /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="clone">Whether to use a clone object.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
+        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, bool clone)
+            => GetPropertyDefinitionsByPortal(hostSettings, portalController, appStatus, portalGroupController, portalId, clone, true);
+
+        /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
@@ -264,13 +417,33 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
         /// <param name="hostSettings">The host settings.</param>
-        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
         /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
-        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, int portalId, bool clone, bool includeDeleted)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, int portalId, bool clone, bool includeDeleted)
+            => GetPropertyDefinitionsByPortal(
+                hostSettings,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId,
+                clone,
+                includeDeleted);
+
+        /// <summary>Gets a collection of Property Definitions from the Data Store by portal.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="clone">Whether to use a clone object.</param>
+        /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
+        public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, bool clone, bool includeDeleted)
         {
-            portalId = GetEffectivePortalId(portalId);
+            portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId);
 
             var definitions = new ProfilePropertyDefinitionCollection();
             foreach (ProfilePropertyDefinition definition in GetPropertyDefinitions(hostSettings, portalId))
@@ -286,10 +459,23 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Gets the Profile Information for the User.</summary>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
-        public static void GetUserProfile(ref UserInfo user)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void GetUserProfile(ref UserInfo user)
+            => GetUserProfile(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                ref user);
+
+        /// <summary>Gets the Profile Information for the User.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="user">The user whose Profile information we are retrieving.</param>
+        public static void GetUserProfile(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, ref UserInfo user)
         {
             int portalId = user.PortalID;
-            user.PortalID = GetEffectivePortalId(portalId);
+            user.PortalID = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, portalId);
 
             ProfileProvider.GetUserProfile(ref user);
             user.PortalID = portalId;
@@ -297,7 +483,29 @@ namespace DotNetNuke.Entities.Profile
 
         /// <summary>Updates a Property Definition in the Data Store.</summary>
         /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
-        public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
+            => UpdatePropertyDefinition(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), definition);
+
+        /// <summary>Updates a Property Definition in the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void UpdatePropertyDefinition(IEventLogger eventLogger, ProfilePropertyDefinition definition)
+            => UpdatePropertyDefinition(
+                eventLogger,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                definition);
+
+        /// <summary>Updates a Property Definition in the Data Store.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
+        public static void UpdatePropertyDefinition(IEventLogger eventLogger, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, ProfilePropertyDefinition definition)
         {
             if (definition.Required)
             {
@@ -318,21 +526,34 @@ namespace DotNetNuke.Entities.Profile
                 definition.Length,
                 (int)definition.DefaultVisibility,
                 UserController.Instance.GetCurrentUserInfo().UserID);
-            EventLogController.Instance.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.PROFILEPROPERTY_UPDATED);
-            ClearProfileDefinitionCache(definition.PortalId);
+            eventLogger.AddLog(definition, PortalController.Instance.GetCurrentSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogType.PROFILEPROPERTY_UPDATED);
+            ClearProfileDefinitionCache(portalController, appStatus, portalGroupController, definition.PortalId);
             ClearAllUsersInfoProfileCacheByPortal(definition.PortalId);
         }
 
         /// <summary>Updates a User's Profile.</summary>
         /// <param name="user">The use to update.</param>
-        public static void UpdateUserProfile(UserInfo user)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void UpdateUserProfile(UserInfo user)
+            => UpdateUserProfile(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                user);
+
+        /// <summary>Updates a User's Profile.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="user">The use to update.</param>
+        public static void UpdateUserProfile(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, UserInfo user)
         {
             if (!user.Profile.IsDirty)
             {
                 return;
             }
 
-            var portalId = GetEffectivePortalId(user.PortalID);
+            var portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, user.PortalID);
             user.PortalID = portalId;
 
             var oldUser = new UserInfo { UserID = user.UserID, PortalID = user.PortalID, IsSuperUser = user.IsSuperUser };
@@ -351,9 +572,27 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="user">The use to update.</param>
         /// <param name="profileProperties">The collection of profile properties.</param>
         /// <returns>The updated User.</returns>
-        public static UserInfo UpdateUserProfile(UserInfo user, ProfilePropertyDefinitionCollection profileProperties)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial UserInfo UpdateUserProfile(UserInfo user, ProfilePropertyDefinitionCollection profileProperties)
+            => UpdateUserProfile(
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                user,
+                profileProperties);
+
+        /// <summary>Updates a User's Profile.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The use to update.</param>
+        /// <param name="profileProperties">The collection of profile properties.</param>
+        /// <returns>The updated User.</returns>
+        public static UserInfo UpdateUserProfile(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IEventLogger eventLogger, UserInfo user, ProfilePropertyDefinitionCollection profileProperties)
         {
-            int portalId = GetEffectivePortalId(user.PortalID);
+            int portalId = PortalController.GetEffectivePortalId(portalController, appStatus, portalGroupController, user.PortalID);
             user.PortalID = portalId;
 
             var photoChanged = Null.NullBoolean;
@@ -395,20 +634,29 @@ namespace DotNetNuke.Entities.Profile
                 }
             }
 
-            UserController.UpdateUser(portalId, user);
+            UserController.UpdateUser(eventLogger, portalId, user);
 
             return user;
         }
 
         /// <summary>Validates the Profile properties for the User (determines if all required properties have been set).</summary>
-        /// <param name="portalId">The Id of the portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="objProfile">The profile.</param>
         /// <returns><see langword="true"/> if the profile is valid, otherwise <see langword="false"/>.</returns>
-        public static bool ValidateProfile(int portalId, UserProfile objProfile)
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
+        public static partial bool ValidateProfile(int portalId, UserProfile objProfile)
+            => ValidateProfile(Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(), portalId, objProfile);
+
+        /// <summary>Validates the Profile properties for the User (determines if all required properties have been set).</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="profile">The profile.</param>
+        /// <returns><see langword="true"/> if the profile is valid, otherwise <see langword="false"/>.</returns>
+        public static bool ValidateProfile(ListController listController, int portalId, UserProfile profile)
         {
             var isValid = true;
-            var imageType = new ListController().GetListEntryInfo("DataType", "Image");
-            foreach (ProfilePropertyDefinition propertyDefinition in objProfile.ProfileProperties)
+            var imageType = listController.GetListEntryInfo("DataType", "Image");
+            foreach (ProfilePropertyDefinition propertyDefinition in profile.ProfileProperties)
             {
                 if (propertyDefinition.Required && string.IsNullOrEmpty(propertyDefinition.PropertyValue) && propertyDefinition.DataType != imageType.EntryID)
                 {
@@ -421,15 +669,37 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>Searches the profile property values for a string (doesn't need to be the beginning).</summary>
-        /// <param name="portalId">The portal identifier.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="searchString">The search string.</param>
         /// <returns>List of matching values.</returns>
-        public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
+        [DnnDeprecated(10, 2, 4, "Please use overload with ListController")]
+        public static partial List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
+            => SearchProfilePropertyValues(
+                Globals.GetCurrentServiceProvider().GetRequiredService<ListController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>(),
+                portalId,
+                propertyName,
+                searchString);
+
+        /// <summary>Searches the profile property values for a string (doesn't need to be the beginning).</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <param name="searchString">The search string.</param>
+        /// <returns>List of matching values.</returns>
+        public static List<string> SearchProfilePropertyValues(ListController listController, IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, string propertyName, string searchString)
         {
             var res = new List<string>();
-            var autoCompleteType = new ListController().GetListEntryInfo("DataType", "AutoComplete");
-            var def = GetPropertyDefinitionByName(portalId, propertyName);
+            var autoCompleteType = listController.GetListEntryInfo("DataType", "AutoComplete");
+            var def = GetPropertyDefinitionByName(hostSettings, portalController, appStatus, portalGroupController, portalId, propertyName);
             if (def.DataType != autoCompleteType.EntryID)
             {
                 return res;
@@ -451,7 +721,7 @@ namespace DotNetNuke.Entities.Profile
             return CBO.FillObject<ProfilePropertyDefinition>(DataProvider.GetPropertyDefinition(definitionId));
         }
 
-        internal static void AddDefaultDefinition(int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
+        internal static void AddDefaultDefinition(IEventLogger eventLogger, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, string category, string name, string type, int length, int viewOrder, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
         {
             ListEntryInfo typeInfo = types[$"DataType:{type}"] ?? types["DataType:Unknown"];
             var propertyDefinition = new ProfilePropertyDefinition(portalId)
@@ -467,13 +737,13 @@ namespace DotNetNuke.Entities.Profile
                 Length = length,
                 DefaultVisibility = defaultVisibility,
             };
-            AddPropertyDefinition(propertyDefinition);
+            AddPropertyDefinition(eventLogger, portalController, appStatus, portalGroupController, propertyDefinition);
         }
 
-        private static void AddDefaultDefinition(int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
+        private static void AddDefaultDefinition(IEventLogger eventLogger, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, int portalId, string category, string name, string strType, int length, UserVisibilityMode defaultVisibility, Dictionary<string, ListEntryInfo> types)
         {
             orderCounter += 2;
-            AddDefaultDefinition(portalId, category, name, strType, length, orderCounter, defaultVisibility, types);
+            AddDefaultDefinition(eventLogger, portalController, appStatus, portalGroupController, portalId, category, name, strType, length, orderCounter, defaultVisibility, types);
         }
 
         private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr)
@@ -565,11 +835,6 @@ namespace DotNetNuke.Entities.Profile
             }
 
             return arr;
-        }
-
-        private static int GetEffectivePortalId(int portalId)
-        {
-            return PortalController.GetEffectivePortalId(portalId);
         }
 
         private static List<ProfilePropertyDefinition> GetPropertyDefinitions(IHostSettings hostSettings, int portalId)

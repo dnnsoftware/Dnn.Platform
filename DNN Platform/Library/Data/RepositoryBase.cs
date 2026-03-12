@@ -10,19 +10,33 @@ namespace DotNetNuke.Data
     using System.Linq;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel.DataAnnotations;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public abstract class RepositoryBase<T> : IRepository<T>
         where T : class
     {
         /// <summary>Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         protected RepositoryBase()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        protected RepositoryBase(IHostSettings hostSettings)
+        {
+            this.HostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.InitializeInternal();
         }
+
+        protected IHostSettings HostSettings { get; }
 
         protected CacheItemArgs CacheArgs { get; private set; }
 
@@ -32,31 +46,31 @@ namespace DotNetNuke.Data
 
         protected bool IsScoped { get; private set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Delete(T item)
         {
             this.DeleteInternal(item);
             this.ClearCache(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract void Delete(string sqlCondition, params object[] args);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract IEnumerable<T> Find(string sqlCondition, params object[] args);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract IPagedList<T> Find(int pageIndex, int pageSize, string sqlCondition, params object[] args);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<T> Get()
         {
             return this.IsCacheable && !this.IsScoped
-                ? DataCache.GetCachedData<IEnumerable<T>>(this.CacheArgs, c => this.GetInternal())
+                ? DataCache.GetCachedData<IEnumerable<T>>(this.HostSettings, this.CacheArgs, _ => this.GetInternal())
                 : this.GetInternal();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<T> Get<TScopeType>(TScopeType scopeValue)
         {
             this.CheckIfScoped();
@@ -67,11 +81,11 @@ namespace DotNetNuke.Data
             }
 
             return this.IsCacheable
-                ? DataCache.GetCachedData<IEnumerable<T>>(this.CacheArgs, c => this.GetByScopeInternal(scopeValue))
+                ? DataCache.GetCachedData<IEnumerable<T>>(this.HostSettings, this.CacheArgs, _ => this.GetByScopeInternal(scopeValue))
                 : this.GetByScopeInternal(scopeValue);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public T GetById<TProperty>(TProperty id)
         {
             return this.IsCacheable && !this.IsScoped
@@ -79,7 +93,7 @@ namespace DotNetNuke.Data
                         : this.GetByIdInternal(id);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public T GetById<TProperty, TScopeType>(TProperty id, TScopeType scopeValue)
         {
             this.CheckIfScoped();
@@ -87,7 +101,7 @@ namespace DotNetNuke.Data
             return this.Get(scopeValue).SingleOrDefault(t => this.CompareTo(this.GetPrimaryKey<TProperty>(t), id) == 0);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IPagedList<T> GetPage(int pageIndex, int pageSize)
         {
             return this.IsCacheable && !this.IsScoped
@@ -95,7 +109,7 @@ namespace DotNetNuke.Data
                 : this.GetPageInternal(pageIndex, pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IPagedList<T> GetPage<TScopeType>(TScopeType scopeValue, int pageIndex, int pageSize)
         {
             this.CheckIfScoped();
@@ -105,21 +119,21 @@ namespace DotNetNuke.Data
                 : this.GetPageByScopeInternal(scopeValue, pageIndex, pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Insert(T item)
         {
             this.InsertInternal(item);
             this.ClearCache(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Update(T item)
         {
             this.UpdateInternal(item);
             this.ClearCache(item);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public abstract void Update(string sqlCondition, params object[] args);
 
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
@@ -131,7 +145,7 @@ namespace DotNetNuke.Data
             {
                 if (this.IsScoped)
                 {
-                    cacheKey += "_" + this.Scope + "_{0}";
+                    cacheKey += $"_{this.Scope}_{{0}}";
                 }
 
                 this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);

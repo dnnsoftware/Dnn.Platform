@@ -4,15 +4,31 @@
 
 namespace DotNetNuke.Modules.Groups.Components
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Services.Social.Notifications;
 
-    public class GroupsBusinessController : IUpgradeable
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The business controller class for the Groups module.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class GroupsBusinessController(IHostSettings hostSettings) : IUpgradeable
     {
-        /// <inheritdoc/>
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="GroupsBusinessController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public GroupsBusinessController()
+            : this(null)
+        {
+        }
+
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             switch (version)
@@ -76,7 +92,7 @@ namespace DotNetNuke.Modules.Groups.Components
             var actions = new List<NotificationTypeAction>();
 
             // DesktopModule should not be null
-            var deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName("Social Groups").DesktopModuleID;
+            var deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName(this.hostSettings, "Social Groups").DesktopModuleID;
 
             // GroupPendingNotification
             var type = new NotificationType { Name = "GroupPendingNotification", Description = "Group Pending Notification", DesktopModuleId = deskModuleId };

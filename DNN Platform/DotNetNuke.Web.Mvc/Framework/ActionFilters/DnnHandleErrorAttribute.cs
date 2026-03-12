@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
     public class DnnHandleErrorAttribute : HandleErrorAttribute
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnException(ExceptionContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;

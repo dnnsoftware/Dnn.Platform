@@ -22,16 +22,16 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>An export service for vocabularies.</summary>
     public class VocabularyService : BasePortableService
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string Category => Constants.Category_Vocabularies;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 5;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -70,8 +70,8 @@ namespace Dnn.ExportImport.Components.Services
 
                     this.Repository.CreateItems(scopeTypes);
 
-                    // Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-                    // CheckPoint.ProcessedItems += scopeTypes.Count;
+                    ////Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                    ////CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
 
                 this.CheckPoint.Progress = 25;
@@ -90,8 +90,8 @@ namespace Dnn.ExportImport.Components.Services
 
                     this.Repository.CreateItems(vocabularyTypes);
 
-                    // Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-                    // CheckPoint.ProcessedItems += vocabularyTypes.Count;
+                    ////Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+                    ////CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 }
 
                 this.Repository.CreateItems(taxonomyTerms);
@@ -119,7 +119,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckPoint.Stage > 0)
@@ -139,7 +139,7 @@ namespace Dnn.ExportImport.Components.Services
                 var otherScopeTypes = this.Repository.GetAllItems<TaxonomyScopeType>().ToList();
 
                 // the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
-                // CheckPoint.Progress = 10;
+                ////CheckPoint.Progress = 10;
 
                 // var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
                 // the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
@@ -164,7 +164,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<TaxonomyVocabulary>() + this.Repository.GetCount<TaxonomyTerm>();
@@ -251,7 +251,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             var dataService = Util.GetDataService();
 
-            // var vocabularyController = new VocabularyController();
+            ////var vocabularyController = new VocabularyController();
             var localTaxonomyTerms = GetTaxonomyTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null);
             foreach (var other in otherTaxonomyTerms)
             {

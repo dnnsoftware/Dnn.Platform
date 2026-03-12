@@ -62,7 +62,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         /// <summary>Gets or sets the job summary.</summary>
         public ImportExportSummary Summary { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {
             if (userInfo == null)

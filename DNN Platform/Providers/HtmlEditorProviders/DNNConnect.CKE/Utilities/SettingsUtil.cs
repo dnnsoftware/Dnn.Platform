@@ -16,17 +16,18 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
     using DNNConnect.CKEditorProvider.Constants;
     using DNNConnect.CKEditorProvider.Objects;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
-    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
 
     /// <summary>Settings Base Helper Class.</summary>
-    public class SettingsUtil
+    public partial class SettingsUtil
     {
         /// <summary>Checks the exists portal or page settings.</summary>
         /// <param name="editorHostSettings">The editor host settings.</param>
@@ -1510,13 +1511,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
         /// <summary>Gets the default settings.</summary>
         /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="hostSettings">The host settings.</param>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="alternateSubFolder">The alternate Sub Folder.</param>
         /// <param name="portalRoles">The portal roles.</param>
-        /// <returns>
-        /// Returns the Default Provider Settings.
-        /// </returns>
-        internal static EditorProviderSettings GetDefaultSettings(IPortalSettings portalSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
+        /// <returns>Returns the Default Provider Settings.</returns>
+        internal static EditorProviderSettings GetDefaultSettings(IPortalSettings portalSettings, IHostSettings hostSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
         {
             var roles = new ArrayList();
 
@@ -1535,8 +1535,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
             // Check if old Settings File Exists
             if (File.Exists(Path.Combine(homeDirPath, SettingConstants.XmlDefaultFileName)))
             {
-                // Import Old SettingsBase Xml File
-                ImportSettingBaseXml(homeDirPath);
+                // Import Old SettingsBase XML File
+#pragma warning disable CS0618 // Type or member is obsolete
+                ImportSettingBaseXml(homeDirPath, false);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             if (!File.Exists(Path.Combine(homeDirPath, SettingConstants.XmlSettingsFileName)))
@@ -1547,8 +1549,10 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
                 else
                 {
-                    // Import Old SettingBase Xml File
+                    // Import Old SettingBase XML File
+#pragma warning disable CS0618 // Type or member is obsolete
                     ImportSettingBaseXml(Globals.HostMapPath, true);
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
 
                 File.Copy(Path.Combine(Globals.HostMapPath, SettingConstants.XmlDefaultFileName), Path.Combine(homeDirPath, SettingConstants.XmlSettingsFileName));
@@ -1585,7 +1589,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                     {
                         if (Utility.IsNumeric(sRoleName))
                         {
-                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings?.PortalId ?? Host.HostPortalID, int.Parse(sRoleName));
+                            RoleInfo roleInfo = RoleController.Instance.GetRoleById(portalSettings?.PortalId ?? hostSettings.HostPortalId, int.Parse(sRoleName));
 
                             if (roleInfo != null)
                             {
@@ -1718,10 +1722,11 @@ namespace DNNConnect.CKEditorProvider.Utilities
                         && !info.Name.Equals("DefaultLinkProtocol"));
         }
 
-        /// <summary>Imports the old SettingsBase Xml File.</summary>
+        /// <summary>Imports the old SettingsBase XML File.</summary>
         /// <param name="homeDirPath">The home folder path.</param>
         /// <param name="isDefaultXmlFile">if set to <see langword="true"/> [is default XML file].</param>
-        internal static void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile = false)
+        [DnnDeprecated(7, 0, 0, "Please use EditorProviderSettings Class instead", RemovalVersion = 11)]
+        internal static partial void ImportSettingBaseXml(string homeDirPath, bool isDefaultXmlFile)
         {
             var oldXmlPath = Path.Combine(homeDirPath, SettingConstants.XmlDefaultFileName);
             var oldSerializer = new XmlSerializer(typeof(SettingBase));

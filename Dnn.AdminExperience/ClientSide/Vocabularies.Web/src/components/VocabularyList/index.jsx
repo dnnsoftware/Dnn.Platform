@@ -87,7 +87,7 @@ class VocabularyListComponent extends Component {
             props.dispatch(VocabularyTermListActions.updateVocabularyTerm(getTermUpdates(termBeingEdited), index, callback));
         } else {
             let {totalTermCount} = props;
-            props.dispatch(VocabularyTermListActions.addVocabularyTerm(getTermUpdates(termBeingEdited), ++totalTermCount, callback));
+            props.dispatch(VocabularyTermListActions.addVocabularyTerm(getTermUpdates(termBeingEdited), totalTermCount + 1, callback));
         }
     }
 
@@ -102,7 +102,7 @@ class VocabularyListComponent extends Component {
 
         const {props} = this;
         let {pageIndex} = props.pagination; //copy page index
-        let nextPage = this.getNextPage(++pageIndex, props.pagination.pageSize, props.pagination.scopeTypeId);
+        let nextPage = this.getNextPage(pageIndex + 1, props.pagination.pageSize, props.pagination.scopeTypeId);
         props.dispatch(PaginationActions.loadMore(nextPage));
     }
     handleSelect(index /*,last*/) {
@@ -120,7 +120,7 @@ class VocabularyListComponent extends Component {
                 if (callback) {
                     callback();
                 }
-                props.dispatch(VocabularyActions.deleteVocabulary(vocabulary.VocabularyId, index, --totalCount, () => {
+                props.dispatch(VocabularyActions.deleteVocabulary(vocabulary.VocabularyId, index, totalCount - 1, () => {
                     if (props.vocabularyList.length < props.totalCount) {
                         let {pageIndex} = props.pagination; //copy page index
                         let currentPage = this.getNextPage(pageIndex, props.pagination.pageSize, props.pagination.scopeTypeId);

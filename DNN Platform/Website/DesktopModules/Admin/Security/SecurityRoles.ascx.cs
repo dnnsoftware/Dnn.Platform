@@ -14,6 +14,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private readonly IPortalController portalController;
         private readonly IUserController userController;
         private readonly IEventLogger eventLogger;
+        private readonly IHostSettings hostSettings;
 
         private int roleId = Null.NullInteger;
         private int userId = Null.NullInteger;
@@ -67,7 +69,22 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <param name="portalController">The portal controller.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public SecurityRoles(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger)
+            : this(navigationManager, roleProvider, roleController, eventManager, portalController, userController, eventLogger, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SecurityRoles"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventManager">The event manager.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public SecurityRoles(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.roleProvider = roleProvider ?? this.DependencyProvider.GetRequiredService<RoleProvider>();
@@ -76,9 +93,10 @@ namespace DotNetNuke.Modules.Admin.Security
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.userController = userController ?? this.DependencyProvider.GetRequiredService<IUserController>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ModuleActionCollection ModuleActions => new();
 
         /// <summary>Gets or sets the ParentModule (if one exists).</summary>
@@ -145,7 +163,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.userId != Null.NullInteger)
                     {
-                        this.user = UserController.GetUserById(this.PortalId, this.userId);
+                        this.user = UserController.GetUserById(this.hostSettings, this.PortalId, this.userId);
                     }
                     else if (this.UsersControl == UsersControl.TextBox && !string.IsNullOrEmpty(this.txtUsers.Text))
                     {
@@ -153,7 +171,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else if (this.UsersControl == UsersControl.Combo && (this.cboUsers.SelectedItem != null))
                     {
-                        this.user = UserController.GetUserById(this.PortalId, Convert.ToInt32(this.cboUsers.SelectedItem.Value));
+                        this.user = UserController.GetUserById(this.hostSettings, this.PortalId, Convert.ToInt32(this.cboUsers.SelectedItem.Value));
                     }
                 }
 
@@ -429,7 +447,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.Role != null)
                     {
-                        // cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
+                        ////cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
                         this.cboRoles.AddItem(this.Role.RoleName, this.Role.RoleID.ToString());
                         this.cboRoles.Items[0].Selected = true;
                         this.lblTitle.Text = string.Format(CultureInfo.CurrentCulture, Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
@@ -459,7 +477,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         foreach (UserInfo objUser in UserController.GetUsers(this.PortalId))
                         {
-                            // cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
+                            ////cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
                             this.cboUsers.AddItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString());
                         }
                     }

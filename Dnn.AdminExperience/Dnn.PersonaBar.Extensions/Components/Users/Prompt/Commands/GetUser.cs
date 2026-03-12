@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             this.userControllerWrapper = userControllerWrapper;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int? UserId { get; set; }
@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
 
         private string Username { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.UserId = this.GetFlagValue<int?>(FlagId, "User Id", null);
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var lst = new List<UserModel>();
@@ -117,7 +117,7 @@ namespace Dnn.PersonaBar.Users.Components.Prompt.Commands
                     // search against superusers if no regular user found
                     if (userId == UserIdZero)
                     {
-                        // userId = (UserController.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? UserIdZero;
+                        ////userId = (UserController.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true).ToArray().FirstOrDefault() as UserInfo)?.UserID ?? UserIdZero;
                         userId = this.userControllerWrapper.GetUsersByUserName(-1, searchTerm, -1, int.MaxValue, ref recCount, true, true) ?? UserIdZero;
                     }
                 }

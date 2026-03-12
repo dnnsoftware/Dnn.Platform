@@ -25,18 +25,18 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
 
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GetTask));
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int TaskId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.TaskId = this.GetFlagValue(FlagId, "Task Id", -1, true, true, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             try

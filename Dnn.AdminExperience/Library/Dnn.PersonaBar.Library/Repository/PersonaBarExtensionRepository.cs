@@ -21,7 +21,7 @@ namespace Dnn.PersonaBar.Library.Repository
         private static readonly object ThreadLocker = new object();
         private readonly DataService dataService = new DataService();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void SaveExtension(PersonaBarExtension extension)
         {
             this.dataService.SavePersonaBarExtension(
@@ -38,13 +38,13 @@ namespace Dnn.PersonaBar.Library.Repository
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteExtension(PersonaBarExtension extension)
         {
             this.DeleteExtension(extension.Identifier);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteExtension(string identifier)
         {
             this.dataService.DeletePersonaBarExtension(identifier);
@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Library.Repository
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PersonaBarExtension> GetExtensions()
         {
             var extensions = DataCache.GetCache<IList<PersonaBarExtension>>(PersonaBarExtensionsCacheKey);
@@ -74,13 +74,13 @@ namespace Dnn.PersonaBar.Library.Repository
             return extensions;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<PersonaBarExtension> GetExtensions(int menuId)
         {
             return this.GetExtensions().Where(t => t.MenuId == menuId).ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IPersonaBarExtensionRepository> GetFactory()
         {
             return () => new PersonaBarExtensionRepository();

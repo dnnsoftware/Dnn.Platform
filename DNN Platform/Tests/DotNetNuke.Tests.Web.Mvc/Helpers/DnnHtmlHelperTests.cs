@@ -9,17 +9,44 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
     using System.Web;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Framework;
+    using DotNetNuke.Tests.Utilities.Fakes;
     using DotNetNuke.Tests.Web.Mvc.Fakes;
     using DotNetNuke.UI.Modules;
     using DotNetNuke.Web.Mvc.Framework;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
     using DotNetNuke.Web.Mvc.Helpers;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class DnnHtmlHelperTests
     {
+        private FakeServiceProvider serviceProvider;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.serviceProvider = FakeServiceProvider.Setup(services =>
+            {
+                services.AddSingleton(Mock.Of<IClientResourceController>());
+                services.AddSingleton(Mock.Of<IApplicationStatusInfo>());
+                services.AddSingleton(Mock.Of<IEventLogger>());
+            });
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            this.serviceProvider.Dispose();
+        }
+
         [Test]
         public void Constructor_Throws_On_Null_ViewContext()
         {
@@ -61,7 +88,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var viewDataContainer = new Mock<IViewDataContainer>();
 
             // Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper(new ViewContext(), viewDataContainer.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper(new ViewContext(), viewDataContainer.Object, null, Mock.Of<IServicesFramework>()));
         }
 
         [Test]
@@ -71,7 +98,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var viewDataContainer = new Mock<IViewDataContainer>();
 
             // Act,Assert
-            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper<Dog>(new ViewContext(), viewDataContainer.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DnnHtmlHelper<Dog>(new ViewContext(), viewDataContainer.Object, null, Mock.Of<IServicesFramework>()));
         }
 
         [Test]

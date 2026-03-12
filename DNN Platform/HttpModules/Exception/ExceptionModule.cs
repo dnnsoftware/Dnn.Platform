@@ -28,7 +28,7 @@ namespace DotNetNuke.HttpModules.Exceptions
             application.Error += this.OnErrorRequest;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
         }

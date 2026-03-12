@@ -11,22 +11,51 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>Implements the Dnn interfaces for the module.</summary>
-    public class Controller : IUpgradeable, IPortable
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Controller(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
+        : IUpgradeable, IPortable
     {
         private const string DdrMenuModuleName = "DDRMenu";
-        private const string DdrMenuMmoduleDefinitionName = "DDR Menu";
+        private const string DdrMenuModuleDefinitionName = "DDR Menu";
+        private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
+        public Controller()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Controller"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public Controller(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService)
+            : this(eventLogger, permissionDefinitionService, null)
+        {
+        }
+
+        /// <inheritdoc />
         public string UpgradeModule(string version)
         {
             UpdateWebConfig();
 
-            TidyModuleDefinitions();
+            TidyModuleDefinitions(this.eventLogger, this.permissionDefinitionService, this.hostSettings);
 
             CleanOldAssemblies();
 
@@ -35,7 +64,7 @@ namespace DotNetNuke.Web.DDRMenu
             return "UpgradeModule completed OK";
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string ExportModule(int moduleId)
         {
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, true);
@@ -58,7 +87,7 @@ namespace DotNetNuke.Web.DDRMenu
             return settings.ToXml();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ImportModule(int moduleId, string content, string version, int userId)
         {
             var settings = Settings.FromXml(content);
@@ -114,17 +143,17 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        private static void TidyModuleDefinitions()
+        private static void TidyModuleDefinitions(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         {
-            RemoveLegacyModuleDefinitions(DdrMenuModuleName, DdrMenuMmoduleDefinitionName);
-            RemoveLegacyModuleDefinitions("DDRMenuAdmin", "N/A");
+            RemoveLegacyModuleDefinitions(eventLogger, permissionDefinitionService, hostSettings, DdrMenuModuleName, DdrMenuModuleDefinitionName);
+            RemoveLegacyModuleDefinitions(eventLogger, permissionDefinitionService, hostSettings, "DDRMenuAdmin", "N/A");
         }
 
-        private static void RemoveLegacyModuleDefinitions(string moduleName, string currentModuleDefinitionName)
+        private static void RemoveLegacyModuleDefinitions(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings, string moduleName, string currentModuleDefinitionName)
         {
-            var mdc = new ModuleDefinitionController();
+            var mdc = new ModuleDefinitionController(permissionDefinitionService);
 
-            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, Null.NullInteger);
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, moduleName, Null.NullInteger);
             if (desktopModule == null)
             {
                 return;
@@ -163,13 +192,13 @@ namespace DotNetNuke.Web.DDRMenu
             modDefs = ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId);
             if (modDefs.Count == 0)
             {
-                new DesktopModuleController().DeleteDesktopModule(desktopModuleId);
+                new DesktopModuleController(eventLogger).DeleteDesktopModule(desktopModuleId);
             }
         }
 
         private static void CleanOldAssemblies()
         {
-            var assembliesToRemove = new[] { "DNNDoneRight.DDRMenu.dll", "DNNGarden.DDRMenu.dll" };
+            var assembliesToRemove = new[] { "DNNDoneRight.DDRMenu.dll", "DNNGarden.DDRMenu.dll", };
 
             var server = HttpContext.Current.Server;
             var assemblyPath = server.MapPath("~/bin/");

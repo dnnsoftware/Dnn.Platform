@@ -11,6 +11,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     using System.Text;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -25,13 +26,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static readonly SharedDictionary<int, string> CacheFolderPath = new SharedDictionary<int, string>(LockingStrategy.ReaderWriter);
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetItemCount(int tabId)
         {
             return GetCachedItemCount(tabId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
@@ -49,13 +50,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override OutputCacheResponseFilter GetResponseFilter(int tabId, int maxVaryByCount, Stream responseFilter, string cacheKey, TimeSpan cacheDuration)
         {
             return new FileResponseFilter(tabId, maxVaryByCount, responseFilter, cacheKey, cacheDuration);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeCache(int portalId)
         {
             string cacheFolder = GetCacheFolder(portalId);
@@ -65,7 +66,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void PurgeExpiredItems(int portalId)
         {
             var filesNotDeleted = new StringBuilder();
@@ -97,7 +98,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Remove(int tabId)
         {
             try
@@ -125,14 +126,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
                         if (filesNotDeleted.Length > 0)
                         {
-                            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                            var log = new LogInfo { LogTypeKey = nameof(EventLogType.HOST_ALERT), };
 
                             var logDetail = new LogDetailInfo
                             {
                                 PropertyName = "FileOutputCacheProvider",
                                 PropertyValue = $"Deleted {i} files, however, some files are locked.  Could not delete the following files: {filesNotDeleted}",
                             };
-                            var properties = new LogProperties { logDetail };
+                            var properties = new LogProperties { logDetail, };
                             log.LogProperties = properties;
 
                             LogController.Instance.AddLog(log);
@@ -146,7 +147,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void SetOutput(int tabId, string cacheKey, TimeSpan duration, byte[] output)
         {
             string attribFile = GetAttribFileName(tabId, cacheKey);
@@ -182,7 +183,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool StreamOutput(int tabId, string cacheKey, HttpContext context)
         {
             bool foundFile = false;
@@ -239,7 +240,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
 
         private static string GetCacheFolder()
         {
-            int portalId = PortalController.Instance.GetCurrentPortalSettings().PortalId;
+            int portalId = PortalController.Instance.GetCurrentSettings().PortalId;
             return GetCacheFolder(portalId);
         }
 

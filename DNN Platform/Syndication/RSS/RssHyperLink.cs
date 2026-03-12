@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Syndication
         /// <summary>Gets or sets a value indicating whether the current user's name is passed to RssHttpHandler.</summary>
         public bool IncludeUserName { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             // modify the NavigateUrl to include optional user name and channel name

@@ -14,6 +14,7 @@ namespace Dnn.Modules.Console
 
     using Dnn.Modules.Console.Components;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -36,6 +37,7 @@ namespace Dnn.Modules.Console
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly IHostSettings hostSettings;
 
         private string defaultSize = string.Empty;
         private string defaultView = string.Empty;
@@ -43,6 +45,7 @@ namespace Dnn.Modules.Console
         private IList<TabInfo> tabs;
 
         /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewConsole()
             : this(null, null, null)
         {
@@ -52,52 +55,44 @@ namespace Dnn.Modules.Console
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : this(navigationManager, javaScript, clientResourceController, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ViewConsole"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public ViewConsole(INavigationManager navigationManager, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IHostSettings hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         /// <summary>Gets a value indicating whether the module settings allow size change.</summary>
-        public bool AllowSizeChange
-        {
-            get { return !this.Settings.ContainsKey("AllowSizeChange") || bool.Parse(this.Settings["AllowSizeChange"].ToString()); }
-        }
+        public bool AllowSizeChange => !this.Settings.ContainsKey("AllowSizeChange") || bool.Parse(this.Settings["AllowSizeChange"].ToString());
 
         /// <summary>Gets a value indicating whether the module settings allow to change view.</summary>
-        public bool AllowViewChange
-        {
-            get { return !this.Settings.ContainsKey("AllowViewChange") || bool.Parse(this.Settings["AllowViewChange"].ToString()); }
-        }
+        public bool AllowViewChange => !this.Settings.ContainsKey("AllowViewChange") || bool.Parse(this.Settings["AllowViewChange"].ToString());
 
         /// <summary>Gets a value indicating whether the module settings indicate to include hidden pages.</summary>
-        public bool IncludeHiddenPages
-        {
-            get { return this.Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(this.Settings["IncludeHiddenPages"].ToString()); }
-        }
+        public bool IncludeHiddenPages => this.Settings.ContainsKey("IncludeHiddenPages") && bool.Parse(this.Settings["IncludeHiddenPages"].ToString());
 
         /// <summary>Gets the id of the page (tab) for the root node of the console display.</summary>
-        public int ConsoleTabID
-        {
-            get
-            {
-                return (this.Mode == "Profile")
-                                   ? this.PortalSettings.UserTabId
-                                   : (this.Settings.ContainsKey("ParentTabID")
-                                        ? int.Parse(this.Settings["ParentTabID"].ToString())
-                                        : this.TabId);
-            }
-        }
+        public int ConsoleTabID =>
+            (this.Mode == "Profile")
+                ? this.PortalSettings.UserTabId
+                : (this.Settings.ContainsKey("ParentTabID")
+                    ? int.Parse(this.Settings["ParentTabID"].ToString())
+                    : this.TabId);
 
         /// <summary>Gets the configured console width or an empty string if not specified in the settings.</summary>
-        public string ConsoleWidth
-        {
-            get
-            {
-                return this.Settings.ContainsKey("ConsoleWidth") ? this.Settings["ConsoleWidth"].ToString() : string.Empty;
-            }
-        }
+        public string ConsoleWidth => this.Settings.ContainsKey("ConsoleWidth") ? this.Settings["ConsoleWidth"].ToString() : string.Empty;
 
         /// <summary>Gets the default size for the console icons.</summary>
         public string DefaultSize
@@ -161,22 +156,10 @@ namespace Dnn.Modules.Console
         }
 
         /// <summary>Gets a value indicating whether the parent should be shown.</summary>
-        public bool IncludeParent
-        {
-            get
-            {
-                return (this.Mode == "Profile") || (this.Settings.ContainsKey("IncludeParent") && bool.Parse(this.Settings["IncludeParent"].ToString()));
-            }
-        }
+        public bool IncludeParent => (this.Mode == "Profile") || (this.Settings.ContainsKey("IncludeParent") && bool.Parse(this.Settings["IncludeParent"].ToString()));
 
         /// <summary>Gets the module display mode.</summary>
-        public string Mode
-        {
-            get
-            {
-                return this.Settings.ContainsKey("Mode") ? this.Settings["Mode"].ToString() : "Normal";
-            }
-        }
+        public string Mode => this.Settings.ContainsKey("Mode") ? this.Settings["Mode"].ToString() : "Normal";
 
         /// <summary>Gets the id of the user when used in a user profile page, if not used on a user profile returns <see cref="Null.NullInteger"/>.</summary>
         public int ProfileUserId
@@ -194,21 +177,12 @@ namespace Dnn.Modules.Console
         }
 
         /// <summary>Gets a value indicating whether the tooltips should be shown.</summary>
-        public bool ShowTooltip
-        {
-            get { return !this.Settings.ContainsKey("ShowTooltip") || bool.Parse(this.Settings["ShowTooltip"].ToString()); }
-        }
+        public bool ShowTooltip => !this.Settings.ContainsKey("ShowTooltip") || bool.Parse(this.Settings["ShowTooltip"].ToString());
 
         /// <summary>Gets a value indicating whether the pages (tabs) should by ordered by their hierarchy.</summary>
-        public bool OrderTabsByHierarchy
-        {
-            get
-            {
-                return this.Settings.ContainsKey("OrderTabsByHierarchy") && bool.Parse(this.Settings["OrderTabsByHierarchy"].ToString());
-            }
-        }
+        public bool OrderTabsByHierarchy => this.Settings.ContainsKey("OrderTabsByHierarchy") && bool.Parse(this.Settings["OrderTabsByHierarchy"].ToString());
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -230,7 +204,7 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -322,9 +296,9 @@ namespace Dnn.Modules.Console
             }
         }
 
-        /// <summary>Gets the html rendering of the console view according to the module settings.</summary>
+        /// <summary>Gets the HTML rendering of the console view according to the module settings.</summary>
         /// <param name="tab">The root page to render the console from, <see cref="TabInfo"/>.</param>
-        /// <returns>A string containing the rendered html.</returns>
+        /// <returns>A string containing the rendered HTML.</returns>
         protected string GetHtml(TabInfo tab)
         {
             string returnValue = string.Empty;
@@ -368,7 +342,7 @@ namespace Dnn.Modules.Console
                 sb.Append("<div>{4}</div>");
                 sb.Append("</div>");
 
-                // const string contentHtml = "<div>" + "<a href=\"{0}\"><img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/><img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/></a>" + "<h3>{3}</h3>" + "<div>{4}</div>" + "</div>";
+                ////const string contentHtml = "<div>" + "<a href=\"{0}\"><img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/><img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/></a>" + "<h3>{3}</h3>" + "<div>{4}</div>" + "</div>";
                 var tabUrl = tab.FullUrl;
                 if (this.ProfileUserId > -1)
                 {
@@ -423,7 +397,7 @@ namespace Dnn.Modules.Console
 
             if (canShowTab)
             {
-                var key = string.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
+                var key = $"TabVisibility{tab.TabPath.Replace("//", "-")}";
                 var visibility = this.Settings.ContainsKey(key) ? this.Settings[key].ToString() : "AllUsers";
 
                 switch (visibility)
@@ -432,12 +406,12 @@ namespace Dnn.Modules.Console
                         canShowTab = this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == this.GroupId && ur.IsOwner) != null;
                         break;
                     case "Members":
-                        var group = RoleController.Instance.GetRole(this.PortalId, (r) => r.RoleID == this.GroupId);
+                        var group = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == this.GroupId);
                         canShowTab = (group != null) && this.UserInfo.IsInRole(group.RoleName);
                         break;
                     case "Friends":
-                        var profileUser = UserController.GetUserById(this.PortalId, this.ProfileUserId);
-                        canShowTab = ((profileUser != null) && (profileUser.Social.Friend != null)) || (this.UserId == this.ProfileUserId);
+                        var profileUser = UserController.GetUserById(this.hostSettings, this.PortalId, this.ProfileUserId);
+                        canShowTab = profileUser?.Social.Friend != null || this.UserId == this.ProfileUserId;
                         break;
                     case "User":
                         canShowTab = this.UserId == this.ProfileUserId;

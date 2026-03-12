@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -50,8 +51,22 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalController">The portal controller.</param>
-        /// <param name="mailSettings">The host settings.</param>
+        /// <param name="mailSettings">The mail settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public SendPassword(INavigationManager navigationManager, IEventLogger eventLogger, IPortalController portalController, IMailSettings mailSettings)
+            : this(navigationManager, eventLogger, portalController, mailSettings, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="SendPassword"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="mailSettings">The mail settings.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public SendPassword(INavigationManager navigationManager, IEventLogger eventLogger, IPortalController portalController, IMailSettings mailSettings, ListController listController, IHostSettings hostSettings)
+            : base(listController, hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
@@ -128,7 +143,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private bool ShowEmailField => MembershipProviderConfig.RequiresUniqueEmail || this.UsernameDisabled;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);

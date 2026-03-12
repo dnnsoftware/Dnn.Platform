@@ -8,283 +8,306 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Reflection;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Modules.NavigationProvider;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.DDRMenu.Localisation;
     using DotNetNuke.Web.DDRMenu.TemplateEngine;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements the DDR Menu navigation provider.</summary>
     public class DDRMenuNavigationProvider : NavigationProvider
     {
         private readonly ILocaliser localiser;
+        private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private DDRMenuControl menuControl;
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider()
-            : this(null)
+            : this(null, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
         /// <param name="localiser">The localizer.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider(ILocaliser localiser)
+            : this(localiser, null, null, null, null)
         {
-            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
+        /// <param name="localiser">The localizer.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        public DDRMenuNavigationProvider(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService)
+        {
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
+        }
+
+        /// <inheritdoc />
         public override Control NavigationControl
         {
             get { return this.menuControl; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool SupportsPopulateOnDemand
         {
             get { return false; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Alignment ControlAlignment { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IndicateChildren { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool PopulateNodesFromClient { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override decimal MouseOutHideDelay { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override decimal StyleBorderWidth { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override decimal StyleControlHeight { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override decimal StyleFontSize { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override decimal StyleIconWidth { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override decimal StyleNodeHeight { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override double EffectsDuration { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HoverAction MouseOverAction { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override HoverDisplay MouseOverDisplay { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int EffectsShadowStrength { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override Orientation ControlOrientation { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSBreadCrumbRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSBreadCrumbSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSBreak { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSContainerRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSContainerSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSIcon { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSIndicateChildRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSIndicateChildSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSLeftSeparator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSLeftSeparatorBreadCrumb { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSLeftSeparatorSelection { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNode { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNodeHover { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNodeHoverRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNodeHoverSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNodeRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNodeSelectedRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSNodeSelectedSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSRightSeparator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSRightSeparatorBreadCrumb { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSRightSeparatorSelection { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSSeparator { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EffectsShadowColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EffectsShadowDirection { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EffectsStyle { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string EffectsTransition { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ForceCrawlerDisplay { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ForceDownLevel { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string IndicateChildImageExpandedRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string IndicateChildImageExpandedSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string IndicateChildImageRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string IndicateChildImageSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeLeftHTMLBreadCrumbRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeLeftHTMLBreadCrumbSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeLeftHTMLRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeLeftHTMLSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeRightHTMLBreadCrumbRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeRightHTMLBreadCrumbSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeRightHTMLRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string NodeRightHTMLSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string PathImage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string PathSystemImage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string PathSystemScript { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorHTML { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorLeftHTML { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorLeftHTMLActive { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorLeftHTMLBreadCrumb { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorRightHTML { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorRightHTMLActive { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string SeparatorRightHTMLBreadCrumb { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleBackColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleFontBold { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleFontNames { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleForeColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleHighlightColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleIconBackColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleRoot { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleSelectionBorderColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleSelectionColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleSelectionForeColor { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string StyleSub { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string WorkImage { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override List<CustomAttribute> CustomAttributes { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ControlID { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string CSSControl { get; set; }
 
         /// <summary>Gets or sets the style of the menu.</summary>
@@ -293,14 +316,19 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Gets or sets the template arguments, <see cref="TemplateArgument"/>.</summary>
         public List<TemplateArgument> TemplateArguments { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Initialize()
         {
-            this.menuControl = new DDRMenuControl(this.localiser) { ID = this.ControlID, EnableViewState = false };
+            this.menuControl = new DDRMenuControl(
+                this.localiser,
+                this.hostSettings,
+                this.tabController,
+                this.clientResourceController,
+                this.pageService) { ID = this.ControlID, EnableViewState = false, };
             this.menuControl.NodeClick += this.RaiseEvent_NodeClick;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Bind(DNNNodeCollection objNodes)
         {
             this.Bind(objNodes, true);

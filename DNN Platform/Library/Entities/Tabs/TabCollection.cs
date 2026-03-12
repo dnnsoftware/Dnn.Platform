@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Tabs
             this.AddRange(tabs);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void OnDeserialization(object sender)
         {
             base.OnDeserialization(sender);
@@ -269,10 +269,9 @@ namespace DotNetNuke.Entities.Tabs
 
         private int AddToChildren(TabInfo tab)
         {
-            List<TabInfo> childList;
-            if (!this.children.TryGetValue(tab.ParentId, out childList))
+            if (!this.children.TryGetValue(tab.ParentId, out var childList))
             {
-                childList = new List<TabInfo>();
+                childList = [];
                 this.children.Add(tab.ParentId, childList);
             }
 
@@ -283,12 +282,10 @@ namespace DotNetNuke.Entities.Tabs
 
         private void AddToLocalizedTabCollection(TabInfo tab, string cultureCode)
         {
-            List<TabInfo> localizedTabCollection;
-
             var key = cultureCode.ToLowerInvariant();
-            if (!this.localizedTabs.TryGetValue(key, out localizedTabCollection))
+            if (!this.localizedTabs.TryGetValue(key, out var localizedTabCollection))
             {
-                localizedTabCollection = new List<TabInfo>();
+                localizedTabCollection = [];
                 this.localizedTabs.Add(key, localizedTabCollection);
             }
 
@@ -320,7 +317,7 @@ namespace DotNetNuke.Entities.Tabs
                 TabInfo parentTab = this.list[index];
                 if (parentTab.TabID == tabId)
                 {
-                    // Found Parent - so add descendents
+                    // Found Parent - so add descendants
                     for (int descendantIndex = index + 1; descendantIndex <= this.list.Count - 1; descendantIndex++)
                     {
                         TabInfo descendantTab = this.list[descendantIndex];

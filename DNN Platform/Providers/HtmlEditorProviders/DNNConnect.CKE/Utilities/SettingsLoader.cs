@@ -12,6 +12,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using System.IO;
     using System.Linq;
     using System.Reflection;
+    using System.Runtime.CompilerServices;
     using System.Text;
     using System.Threading;
     using System.Web;
@@ -23,6 +24,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
     using DNNConnect.CKEditorProvider.Constants;
     using DNNConnect.CKEditorProvider.Extensions;
     using DNNConnect.CKEditorProvider.Objects;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -44,11 +46,12 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Loads the settings.
         /// </summary>
         /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="hostSettings">The hosthost settings.</param>
         /// <param name="parentModuleId">The parent module identifier.</param>
         /// <param name="controlId">The control identifier.</param>
         /// <param name="configFolder">The configuration folder.</param>
         /// <returns>The EditorProviderSettings.</returns>
-        public static EditorProviderSettings LoadSettings(PortalSettings portalSettings, int parentModuleId, string controlId, string configFolder)
+        public static EditorProviderSettings LoadSettings(PortalSettings portalSettings, IHostSettings hostSettings, int parentModuleId, string controlId, string configFolder)
         {
             var currentEditorSettings = new EditorProviderSettings();
 
@@ -75,12 +78,13 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 }
             }
 
-            var settingsDictionary = EditorController.GetEditorHostSettings();
+            var settingsDictionary = EditorController.GetEditorHostSettings(hostSettings);
             var portalRoles = RoleController.Instance.GetRoles(portalSettings.PortalId);
 
             // Load Default Settings
             currentEditorSettings = SettingsUtil.GetDefaultSettings(
                 portalSettings,
+                hostSettings,
                 portalSettings.HomeDirectoryMapPath,
                 configFolder,
                 portalRoles);
@@ -96,7 +100,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             // Load Host Settings ?!
             if (SettingsUtil.CheckSettingsExistByKey(settingsDictionary, hostKey))
             {
-                var hostPortalRoles = RoleController.Instance.GetRoles(Host.HostPortalID);
+                var hostPortalRoles = RoleController.Instance.GetRoles(hostSettings.HostPortalId);
                 currentEditorSettings = SettingsUtil.LoadEditorSettingsByKey(
                     portalSettings,
                     currentEditorSettings,
@@ -108,7 +112,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 currentEditorSettings.SettingMode = SettingsMode.Host;
 
                 // reset the roles to the correct portal
-                if (portalSettings.PortalId != Host.HostPortalID)
+                if (portalSettings.PortalId != hostSettings.HostPortalId)
                 {
                     foreach (var toolbarRole in currentEditorSettings.ToolBarRoles)
                     {
@@ -210,6 +214,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="settings">The settings.</param>
         /// <param name="currentEditorSettings">The current editor settings.</param>
         /// <param name="portalSettings">The portal settings.</param>
+        /// <param name="appInfo">The application info.</param>
+        /// <param name="appStatus">The application status info.</param>
         /// <param name="moduleConfiguration">The module configuration.</param>
         /// <param name="attributes">The attributes.</param>
         /// <param name="width">The width.</param>
@@ -221,6 +227,8 @@ namespace DNNConnect.CKEditorProvider.Utilities
             NameValueCollection settings,
             EditorProviderSettings currentEditorSettings,
             PortalSettings portalSettings,
+            IApplicationInfo appInfo,
+            IApplicationStatusInfo appStatus,
             ModuleInfo moduleConfiguration,
             NameValueCollection attributes,
             Unit width,
@@ -449,7 +457,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             cssFiles.Add("~" + portalSettings.HomeDirectory + "portal.css");
             cssFiles.Add("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CkEditorContents.css");
 
-            var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(Globals.ApplicationMapPath + Globals.ResolveUrl(cssFile).Replace("/", "\\"))).Select(Globals.ResolveUrl).ToList();
+            var resolvedCssFiles = cssFiles.Where(cssFile => File.Exists(appStatus.ApplicationMapPath + Globals.ResolveUrl(cssFile).Replace("/", "\\"))).Select(Globals.ResolveUrl).ToList();
 
             if (!string.IsNullOrEmpty(currentEditorSettings.Config.ContentsCss))
             {

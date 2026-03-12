@@ -4,25 +4,52 @@
 
 namespace DotNetNuke.Web.InternalServices
 {
+    using System;
     using System.Globalization;
     using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A web API controller for pages.</summary>
     [DnnAuthorize]
     [DnnPageEditor]
     public class PageServiceController : DnnApiController
     {
+        private readonly IPortalController portalController;
+        private readonly IHostSettings hostSettings;
+        private readonly IHostSettingsService hostSettingsService;
         private int? portalId;
+
+        /// <summary>Initializes a new instance of the <see cref="PageServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public PageServiceController()
+            : this(null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageServiceController"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        public PageServiceController(IPortalController portalController, IHostSettings hostSettings, IHostSettingsService hostSettingsService)
+        {
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+        }
 
         /// <summary>Gets the portal ID.</summary>
         protected int PortalId
@@ -61,13 +88,12 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage UpdateCustomUrl(SaveUrlDto dto)
         {
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
-            bool modified;
 
             // Clean Url
-            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId)));
+            var options = UrlRewriterUtils.ExtendOptionsForCustomURLs(UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, this.PortalSettings.PortalId)));
 
             // now clean the path
-            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
+            urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out var modified);
             if (modified)
             {
                 return this.Request.CreateResponse(

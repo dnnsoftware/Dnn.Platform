@@ -12,10 +12,10 @@ namespace DotNetNuke.Services.Search.Internals
     /// <remarks>This is an Internal interface and should not be used outside of Core.</remarks>
     public interface ISearchHelper
     {
-        // /// <summary>
-        // /// Commits the added search documents into the search database
-        // /// </summary>
-        // void Commit();
+        /////// <summary>
+        /////// Commits the added search documents into the search database
+        /////// </summary>
+        ////void Commit();
 
         /// <summary>Returns a list of SearchTypes defined in the system.</summary>
         /// <returns>A sequence of <see cref="SearchType"/> instances.</returns>

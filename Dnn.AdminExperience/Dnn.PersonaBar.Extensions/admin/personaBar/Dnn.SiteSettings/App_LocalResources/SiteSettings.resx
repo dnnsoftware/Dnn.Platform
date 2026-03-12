@@ -1489,13 +1489,13 @@
     <value>Inject Module Anchor</value>
   </data>
   <data name="plAllowJsInModuleHeaders.Help" xml:space="preserve">
-    <value>When switched on, no javascript will be allowed in the value set for a module header.</value>
+    <value>When switched on, javascript will be allowed in the value set for a module header.</value>
   </data>
   <data name="plAllowJsInModuleHeaders.Text" xml:space="preserve">
     <value>Allow Javascript in Module Header</value>
   </data>
   <data name="plAllowJsInModuleFooters.Help" xml:space="preserve">
-    <value>When switched on, no javascript will be allowed in the value set for a module footer.</value>
+    <value>When switched on, javascript will be allowed in the value set for a module footer.</value>
   </data>
   <data name="plAllowJsInModuleFooters.Text" xml:space="preserve">
     <value>Allow Javascript in Module Footer</value>

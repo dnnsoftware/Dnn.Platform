@@ -9,30 +9,57 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Linq;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A file upload control.</summary>
     [ToolboxData("<{0}:DnnFileUpload runat='server'></{0}:DnnFileUpload>")]
     public class DnnFileUpload : Control, INamingContainer
     {
-        private readonly Lazy<DnnFileUploadOptions> options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions());
+        private readonly IClientResourceController clientResourceController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IServicesFramework servicesFramework;
+        private readonly Lazy<DnnFileUploadOptions> options;
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFileUpload"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        public DnnFileUpload()
+            : this(null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFileUpload"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public DnnFileUpload(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings, ICryptographyProvider cryptographyProvider, IServicesFramework servicesFramework)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+            this.options = new Lazy<DnnFileUploadOptions>(() => new DnnFileUploadOptions(hostSettings, this.appStatus, cryptographyProvider));
+        }
 
         /// <summary>Gets the options.</summary>
-        public DnnFileUploadOptions Options
-        {
-            get
-            {
-                return this.options.Value;
-            }
-        }
+        public DnnFileUploadOptions Options => this.options.Value;
 
         /// <summary>Sets the module ID.</summary>
         public int ModuleId
@@ -48,13 +75,13 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Sets the parent client ID.</summary>
         public string ParentClientId
         {
-            set { this.Options.ParentClientId = value; }
+            set => this.Options.ParentClientId = value;
         }
 
         /// <summary>Sets a value indicating whether to show on startup.</summary>
         public bool ShowOnStartup
         {
-            set { this.Options.ShowOnStartup = value; }
+            set => this.Options.ShowOnStartup = value;
         }
 
         /// <summary>Gets or sets the skin.</summary>
@@ -66,15 +93,15 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>Gets or sets the width in pixels.</summary>
         public int Width
         {
-            get { return this.Options.Width; }
-            set { this.Options.Width = value; }
+            get => this.Options.Width;
+            set => this.Options.Width = value;
         }
 
         /// <summary>Gets or sets the height in pixels.</summary>
         public int Height
         {
-            get { return this.Options.Height; }
-            set { this.Options.Height = value; }
+            get => this.Options.Height;
+            set => this.Options.Height = value;
         }
 
         /// <summary>Gets the current upload control.</summary>
@@ -85,39 +112,39 @@ namespace DotNetNuke.Web.UI.WebControls
             return page.Items[typeof(DnnFileUpload)] as DnnFileUpload;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQueryFileUpload);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
 
-            RegisterClientScript(this.Page, this.Skin);
+            RegisterClientScript(this.clientResourceController, this.appStatus, this.eventLogger, PortalSettings.Current, this.Skin);
             this.RegisterStartupScript();
         }
 
-        private static void RegisterClientScript(Page page, string skin)
+        private static void RegisterClientScript(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, string skin)
         {
-            DnnDropDownList.RegisterClientScript(page, skin);
+            DnnDropDownList.RegisterClientScript(clientResourceController, skin);
 
-            ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.css", FileOrder.Css.ResourceCss);
+            clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/FileUpload/dnn.FileUpload.css", FileOrder.Css.ResourceCss);
             if (!string.IsNullOrEmpty(skin))
             {
-                ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload." + skin + ".css", FileOrder.Css.ResourceCss);
+                clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/FileUpload/dnn.FileUpload." + skin + ".css", FileOrder.Css.ResourceCss);
             }
 
-            JavaScript.RequestRegistration(CommonJs.jQueryUI);
+            JavaScript.RequestRegistration(appStatus, eventLogger, portalSettings, CommonJs.jQueryUI);
 
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
-            ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Components/FileUpload/dnn.FileUpload.js", FileOrder.Js.DefaultPriority + 4);
+            clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.WebResourceUrl.js", FileOrder.Js.DefaultPriority + 2);
+            clientResourceController.RegisterScript("~/Resources/Shared/scripts/dnn.jquery.extensions.js", FileOrder.Js.DefaultPriority + 3);
+            clientResourceController.RegisterScript("~/Resources/Shared/Components/FileUpload/dnn.FileUpload.js", FileOrder.Js.DefaultPriority + 4);
         }
 
         private void RegisterStartupScript()

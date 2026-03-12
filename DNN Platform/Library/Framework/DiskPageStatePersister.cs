@@ -26,7 +26,7 @@ namespace DotNetNuke.Framework
         /// Directory for the Portal.
         /// </summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        public string CacheDirectory => PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath + "Cache";
+        public string CacheDirectory => PortalController.Instance.GetCurrentSettings().HomeSystemDirectoryMapPath + "Cache";
 
         /// <summary>Gets the StateFileName property is used to store the FileName for the State.</summary>
         public string StateFileName

@@ -23,19 +23,22 @@ namespace DotNetNuke.Modules.Admin.EditExtension
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>The EditExtension control is used to edit a Extension.</summary>
+    /// <summary>The EditExtension control is used to edit an Extension.</summary>
     public partial class EditExtension : ModuleUserControlBase
     {
+        private readonly IServiceProvider serviceProvider;
         private readonly INavigationManager navigationManager;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IHostSettings hostSettings;
 
         private Control control;
         private PackageInfo package;
 
         /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditExtension()
-        : this(null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -43,20 +46,39 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript)
+            : this(navigationManager, appStatus, javaScript, null, null)
         {
-            this.navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
         }
 
-        public string Mode
+        /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IServiceProvider. Scheduled removal in v12.0.0.")]
+        public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings)
+            : this(navigationManager, appStatus, javaScript, hostSettings, null)
         {
-            get
-            {
-                return Convert.ToString(this.ModuleContext.Settings["Extensions_Mode"]);
-            }
         }
+
+        /// <summary>Initializes a new instance of the <see cref="EditExtension"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="serviceProvider">The dependency injection container.</param>
+        public EditExtension(INavigationManager navigationManager, IApplicationStatusInfo appStatus, IJavaScriptLibraryHelper javaScript, IHostSettings hostSettings, IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
+            this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
+            this.appStatus = appStatus ?? this.serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.javaScript = javaScript ?? this.serviceProvider.GetRequiredService<IJavaScriptLibraryHelper>();
+            this.hostSettings = hostSettings ?? this.serviceProvider.GetRequiredService<IHostSettings>();
+        }
+
+        public string Mode => Convert.ToString(this.ModuleContext.Settings["Extensions_Mode"]);
 
         public int PackageID
         {
@@ -72,23 +94,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             }
         }
 
-        protected bool IsSuperTab
-        {
-            get
-            {
-                return this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
-            }
-        }
+        protected bool IsSuperTab => this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
 
         protected string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
 
-        protected PackageInfo Package
-        {
-            get
-            {
-                return this.package ?? (this.package = this.PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID, true));
-            }
-        }
+        protected PackageInfo Package => this.package ??= this.PackageID == Null.NullInteger ? new PackageInfo() : PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.PackageID, true);
 
         protected IPackageEditor PackageEditor
         {
@@ -126,11 +136,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
         protected string ReturnUrl
         {
-            get { return (string)this.ViewState["ReturnUrl"]; }
-            set { this.ViewState["ReturnUrl"] = value; }
+            get => (string)this.ViewState["ReturnUrl"];
+            set => this.ViewState["ReturnUrl"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -147,14 +157,14 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             this.cmdDelete.Click += this.OnDeleteClick;
             this.cmdPackage.Click += this.OnPackageClick;
             this.cmdUpdate.Click += this.OnUpdateClick;
-            this.Page.PreRenderComplete += (sender, args) =>
-                                          {
-                                              if (UrlUtils.InPopUp())
-                                              {
-                                                  var title = string.Format("{0} > {1}", this.Page.Title, this.Package.FriendlyName);
-                                                  this.Page.Title = title;
-                                              }
-                                          };
+            this.Page.PreRenderComplete += (_, _) =>
+            {
+                if (UrlUtils.InPopUp())
+                {
+                    var title = $"{this.Page.Title} > {this.Package.FriendlyName}";
+                    this.Page.Title = title;
+                }
+            };
 
             this.BindData();
 
@@ -257,8 +267,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this.phEditor.Controls.Clear();
                     this.phEditor.Controls.Add(this.PackageEditor as Control);
-                    var moduleControl = this.PackageEditor as IModuleControl;
-                    if (moduleControl != null)
+                    if (this.PackageEditor is IModuleControl moduleControl)
                     {
                         moduleControl.ModuleContext.Configuration = this.ModuleContext.Configuration;
                     }
@@ -290,10 +299,10 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
 
                 // Determine if Package is ready for packaging
-                PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
+                PackageWriterBase writer = PackageWriterFactory.GetWriter(this.serviceProvider, this.Package);
                 this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(this.appStatus.ApplicationMapPath, writer.BasePath));
 
-                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings);
+                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && PackageController.CanDeletePackage(this.hostSettings, this.appStatus, this.Package, this.ModuleContext.PortalSettings);
                 this.ctlAudit.Entity = this.Package;
 
                 this.packageForm.DataSource = this.Package;
@@ -313,12 +322,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             if (this.packageForm.IsValid)
             {
-                var package = this.packageForm.DataSource as PackageInfo;
-                if (package != null)
+                if (this.packageForm.DataSource is PackageInfo packageInfo)
                 {
-                    var pkgIconFile = Util.ParsePackageIconFileName(package);
-                    package.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(package) : null;
-                    PackageController.Instance.SaveExtensionPackage(package);
+                    var pkgIconFile = Util.ParsePackageIconFileName(packageInfo);
+                    packageInfo.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(packageInfo) : null;
+                    PackageController.Instance.SaveExtensionPackage(packageInfo);
                 }
 
                 if (displayMessage)
@@ -327,10 +335,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 }
             }
 
-            if (this.PackageEditor != null)
-            {
-                this.PackageEditor.UpdatePackage();
-            }
+            this.PackageEditor?.UpdatePackage();
         }
     }
 }

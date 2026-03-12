@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.subscriptionSecurityController = SubscriptionSecurityController.Instance;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Subscription> GetUserSubscriptions(UserInfo user, int portalId, int subscriptionTypeId = -1)
         {
             var subscriptions = CBO.FillCollection<Subscription>(this.dataService.GetSubscriptionsByUser(
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return subscriptions.Where(s => this.subscriptionSecurityController.HasPermission(s));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IEnumerable<Subscription> GetContentSubscriptions(int portalId, int subscriptionTypeId, string objectKey)
         {
             var subscriptions = CBO.FillCollection<Subscription>(this.dataService.GetSubscriptionsByContent(
@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return subscriptions.Where(s => this.subscriptionSecurityController.HasPermission(s));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsSubscribed(Subscription subscription)
         {
             var fetchedSubscription = CBO.FillObject<Subscription>(this.dataService.IsSubscribed(
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return fetchedSubscription != null && this.subscriptionSecurityController.HasPermission(fetchedSubscription);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSubscription(Subscription subscription)
         {
             Requires.NotNull("subscription", subscription);
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 subscription.ObjectData);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSubscription(Subscription subscription)
         {
             Requires.NotNull("subscription", subscription);
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
             this.dataService.DeleteSubscription(subscriptionToDelete.SubscriptionId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription)
         {
             Requires.PropertyNotNull("objectKey", objectKey);
@@ -112,13 +112,13 @@ namespace DotNetNuke.Services.Social.Subscriptions
             return this.dataService.UpdateSubscriptionDescription(objectKey, portalId, newDescription);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSubscriptionsByObjectKey(int portalId, string objectKey)
         {
             this.dataService.DeleteSubscriptionsByObjectKey(portalId, objectKey);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ISubscriptionController> GetFactory()
         {
             return () => new SubscriptionController();

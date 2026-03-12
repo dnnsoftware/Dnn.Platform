@@ -14,8 +14,12 @@ namespace DotNetNuke.Web.InternalServices
     using System.Runtime.Serialization;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Content.Common;
+    using DotNetNuke.Data;
+    using DotNetNuke.Entities.Content.Taxonomy;
     using DotNetNuke.Entities.DataStructures;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
@@ -27,14 +31,51 @@ namespace DotNetNuke.Web.InternalServices
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Common;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    using Globals = DotNetNuke.Common.Globals;
+
     /// <summary>A web API controller for lists of items.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="dataProvider">The data provider.</param>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="appStatus">The application status.</param>
+    /// <param name="portalGroupController">The portal group controller.</param>
+    /// <param name="vocabularyController">The vocabulary controller.</param>
+    /// <param name="termController">The term controller.</param>
     [DnnAuthorize]
-    public class ItemListServiceController : DnnApiController
+    public class ItemListServiceController(IHostSettings hostSettings, DataProvider dataProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IVocabularyController vocabularyController, ITermController termController)
+        : DnnApiController
     {
         private const string PortalPrefix = "P-";
         private const string RootKey = "Root";
-
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+        private readonly IVocabularyController vocabularyController = vocabularyController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IVocabularyController>();
+        private readonly ITermController termController = termController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITermController>();
+
+        /// <summary>Initializes a new instance of the <see cref="ItemListServiceController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ItemListServiceController()
+            : this(null, null, null, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ItemListServiceController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IVocabularyController. Scheduled removal in v12.0.0.")]
+        public ItemListServiceController(IHostSettings hostSettings, DataProvider dataProvider, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+            : this(hostSettings, dataProvider, portalController, appStatus, portalGroupController, null, null)
+        {
+        }
 
         /// <summary>Gets a list of page descendants.</summary>
         /// <param name="parentId">The parent ID.</param>
@@ -98,7 +139,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInternal(portalId, treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
+                Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInternal(portalId, treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages)
                             : this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
                 IgnoreRoot = true,
             };
@@ -121,7 +162,7 @@ namespace DotNetNuke.Web.InternalServices
             var response = new
             {
                 Success = true,
-                Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInPortalGroupInternal(treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles)
+                Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInPortalGroupInternal(treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages)
                     : this.SearchPagesInPortalGroupInternal(treeAsJson, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
                 IgnoreRoot = true,
             };
@@ -421,7 +462,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             try
             {
-                var portalId = PortalController.GetEffectivePortalId(this.PortalSettings.PortalId);
+                var portalId = PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, this.PortalSettings.PortalId);
                 const int numResults = 5;
 
                 // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
@@ -458,11 +499,8 @@ namespace DotNetNuke.Web.InternalServices
         {
             var portalId = PortalSettings.Current.PortalId;
 
-            var vocabRep = Util.GetVocabularyController();
-            var termRep = Util.GetTermController();
-
             var terms = new ArrayList();
-            var vocabularies = from v in vocabRep.GetVocabularies()
+            var vocabularies = from v in this.vocabularyController.GetVocabularies()
                                where (v.ScopeType.ScopeType == "Application"
                                       || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
                                      && (!v.IsSystem || includeSystem)
@@ -473,7 +511,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 terms.AddRange(new[]
                 {
-                    from t in termRep.GetTermsByVocabulary(v.VocabularyId)
+                    from t in this.termController.GetTermsByVocabulary(v.VocabularyId)
                     where string.IsNullOrEmpty(q) || t.Name.Contains(q, StringComparison.OrdinalIgnoreCase)
                     select new { text = t.Name, value = t.TermId },
                 });
@@ -547,8 +585,8 @@ namespace DotNetNuke.Web.InternalServices
                 filterTabs.AddRange(
                     tabs.Where(
                             t =>
-                                t.TabPermissions.Cast<TabPermissionInfo>()
-                                    .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
+                                t.TabPermissions.Cast<IPermissionInfo>()
+                                    .Any(p => roleList.Contains(p.RoleId) && p.UserId == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
                         .Where(t => !disabledNotSelectable || !t.DisableLink)
                         .Select(t => t.TabID));
             }
@@ -587,10 +625,10 @@ namespace DotNetNuke.Web.InternalServices
 
         private IEnumerable<ItemDto> GetPortalGroup(int sortOrder)
         {
-            var mygroup = this.GetMyPortalGroup();
-            var portals = mygroup.Select(p => new ItemDto
+            var myGroup = this.GetMyPortalGroup();
+            var portals = myGroup.Select(p => new ItemDto
             {
-                Key = PortalPrefix + p.PortalID.ToString(CultureInfo.InvariantCulture),
+                Key = PortalPrefix + p.PortalId.ToString(CultureInfo.InvariantCulture),
                 Value = p.PortalName,
                 HasChildren = true,
                 Selectable = false,
@@ -598,22 +636,21 @@ namespace DotNetNuke.Web.InternalServices
             return ApplySort(portals, sortOrder);
         }
 
-        private IEnumerable<PortalInfo> GetMyPortalGroup()
+        private IEnumerable<IPortalInfo> GetMyPortalGroup()
         {
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
             if (groups.Length != 0)
             {
-                var mygroup = (from @group in groups
-                               select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId)
-                    into portals
-                               where portals.Any(x => x.PortalID == PortalSettings.Current.PortalId)
-                               select portals.ToArray()).FirstOrDefault();
-                return mygroup;
+                return (
+                    from @group in groups
+                    select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+                    where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+                    select portals.ToArray())
+                    .FirstOrDefault();
             }
 
-            var currentPortal = new List<PortalInfo>();
-            currentPortal.Add(PortalController.Instance.GetPortal(this.PortalSettings.PortalId));
-            return currentPortal;
+            var currentPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
+            return new List<PortalInfo> { currentPortal, };
         }
 
         private NTree<ItemDto> GetPagesInternal(int portalId, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "", bool disabledNotSelectable = false)
@@ -623,7 +660,7 @@ namespace DotNetNuke.Web.InternalServices
                 portalId = this.GetActivePortalId();
             }
 
-            var tabs = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            var tabs = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages);
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (tabs == null)
             {
@@ -696,7 +733,7 @@ namespace DotNetNuke.Web.InternalServices
             Func<TabInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
             {
-                searchFunc = page => true;
+                searchFunc = _ => true;
             }
             else
             {
@@ -705,7 +742,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                tabs = TabController.GetPortalTabs(portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+                tabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
                     .Where(tab => searchFunc(tab)
                                   && tab.ParentId == parentId
                                   && (includeDisabled || !tab.DisableLink)
@@ -770,7 +807,7 @@ namespace DotNetNuke.Web.InternalServices
             Func<TabInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
             {
-                searchFunc = page => true;
+                searchFunc = _ => true;
             }
             else
             {
@@ -826,7 +863,7 @@ namespace DotNetNuke.Web.InternalServices
             return tree;
         }
 
-        private List<TabInfo> GetPortalPages(int portalId, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
+        private List<TabInfo> GetPortalPages(int portalId, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false)
         {
             List<TabInfo> tabs = null;
             if (portalId == -1)
@@ -843,7 +880,7 @@ namespace DotNetNuke.Web.InternalServices
 
             if (portalId > -1)
             {
-                tabs = TabController.GetPortalTabs(portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
+                tabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalId, includeActive ? Null.NullInteger : this.PortalSettings.ActiveTab.TabID, false, null, true, false, includeAllTypes, true, false)
                     .Where(t => (!t.DisableLink || includeDisabled) && !t.IsSystem)
                     .ToList();
 
@@ -863,15 +900,15 @@ namespace DotNetNuke.Web.InternalServices
             return tabs;
         }
 
-        private NTree<ItemDto> SortPagesInternal(int portalId, string treeAsJson, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
+        private NTree<ItemDto> SortPagesInternal(int portalId, string treeAsJson, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false)
         {
             var tree = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
-            return this.SortPagesInternal(portalId, tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            return this.SortPagesInternal(portalId, tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages);
         }
 
-        private NTree<ItemDto> SortPagesInternal(int portalId, NTree<ItemIdDto> openedNodesTree, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
+        private NTree<ItemDto> SortPagesInternal(int portalId, NTree<ItemIdDto> openedNodesTree, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false)
         {
-            var pages = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            var pages = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages);
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (pages == null)
             {
@@ -937,13 +974,13 @@ namespace DotNetNuke.Web.InternalServices
             return treeNode;
         }
 
-        private NTree<ItemDto> SortPagesInPortalGroupInternal(string treeAsJson, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
+        private NTree<ItemDto> SortPagesInPortalGroupInternal(string treeAsJson, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false)
         {
             var tree = DotNetNuke.Common.Utilities.Json.Deserialize<NTree<ItemIdDto>>(treeAsJson);
-            return this.SortPagesInPortalGroupInternal(tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            return this.SortPagesInPortalGroupInternal(tree, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages);
         }
 
-        private NTree<ItemDto> SortPagesInPortalGroupInternal(NTree<ItemIdDto> openedNode, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false, string roles = "")
+        private NTree<ItemDto> SortPagesInPortalGroupInternal(NTree<ItemIdDto> openedNode, int sortOrder, bool includeDisabled = false, bool includeAllTypes = false, bool includeActive = false, bool includeHostPages = false)
         {
             var treeNode = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (openedNode == null)
@@ -970,7 +1007,7 @@ namespace DotNetNuke.Web.InternalServices
                         portalId = -1;
                     }
 
-                    var treeOfPages = this.SortPagesInternal(portalId, openedNodeChild, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+                    var treeOfPages = this.SortPagesInternal(portalId, openedNodeChild, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages);
                     treeNodeChild.Children = treeOfPages.Children;
                 }
             }
@@ -997,7 +1034,7 @@ namespace DotNetNuke.Web.InternalServices
                 return tree;
             }
 
-            var portals = PortalController.GetPortalDictionary();
+            var portals = PortalController.GetPortalDictionary(this.hostSettings, this.dataProvider);
             int portalId;
             if (portals.TryGetValue(itemIdAsInt, out var pid))
             {
@@ -1020,7 +1057,7 @@ namespace DotNetNuke.Web.InternalServices
                 return tree;
             }
 
-            var pages = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
+            var pages = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages);
 
             if (pages == null)
             {
@@ -1104,7 +1141,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         Data = new ItemDto
                         {
-                            Key = PortalPrefix + portal.PortalID.ToString(CultureInfo.InvariantCulture),
+                            Key = PortalPrefix + portal.PortalId.ToString(CultureInfo.InvariantCulture),
                             Value = portal.PortalName,
                             HasChildren = true,
                             Selectable = false,
@@ -1379,7 +1416,7 @@ namespace DotNetNuke.Web.InternalServices
             Func<IFolderInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
             {
-                searchFunc = folder => true;
+                searchFunc = _ => true;
             }
             else
             {
@@ -1402,7 +1439,7 @@ namespace DotNetNuke.Web.InternalServices
             Func<IFolderInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
             {
-                searchFunc = folder => true;
+                searchFunc = _ => true;
             }
             else
             {
@@ -1507,7 +1544,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             var mygroup = this.GetMyPortalGroup();
-            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
+            return mygroup != null && mygroup.Any(p => p.PortalId == portalId);
         }
 
         private int GetActivePortalId(int pageId)

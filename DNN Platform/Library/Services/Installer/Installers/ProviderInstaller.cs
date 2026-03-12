@@ -18,30 +18,30 @@ namespace DotNetNuke.Services.Installer.Installers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Commit()
         {
             this.Completed = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Install()
         {
             this.Completed = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ReadManifest(XPathNavigator manifestNav)
         {
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Rollback()
         {
             this.Completed = true;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UnInstall()
         {
             this.Completed = true;

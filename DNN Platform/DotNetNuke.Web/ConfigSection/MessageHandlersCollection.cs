@@ -62,13 +62,13 @@ namespace DotNetNuke.Web.ConfigSection
             return new ConfigurationElementEnumerator(this.GetEnumerator());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override ConfigurationElement CreateNewElement()
         {
             return new MessageHandlerEntry();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override object GetElementKey(ConfigurationElement element)
         {
             return (element as MessageHandlerEntry ?? new MessageHandlerEntry()).Name;

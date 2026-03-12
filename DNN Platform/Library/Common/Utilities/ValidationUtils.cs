@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Utilities
     using System.Security.Cryptography;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
 
@@ -24,15 +25,29 @@ namespace DotNetNuke.Common.Utilities
         public static partial string ComputeValidationCode(IList<object> parameters)
         {
             using var scope = Globals.GetOrCreateServiceScope();
+            var cryptographyProvider = scope.ServiceProvider.GetRequiredService<ICryptographyProvider>();
             var hostSettings = scope.ServiceProvider.GetRequiredService<IHostSettings>();
-            return ComputeValidationCode(hostSettings, parameters);
+            return ComputeValidationCode(cryptographyProvider, hostSettings, parameters);
         }
 
         /// <summary>Generates the validation code for the given <paramref name="parameters"/>.</summary>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="parameters">The parameters to use to generate the code.</param>
         /// <returns>The validation code.</returns>
-        public static string ComputeValidationCode(IHostSettings hostSettings, IList<object> parameters)
+        [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+        public static partial string ComputeValidationCode(IHostSettings hostSettings, IList<object> parameters)
+        {
+            using var scope = Globals.GetOrCreateServiceScope();
+            var cryptographyProvider = scope.ServiceProvider.GetRequiredService<ICryptographyProvider>();
+            return ComputeValidationCode(cryptographyProvider, hostSettings, parameters);
+        }
+
+        /// <summary>Generates the validation code for the given <paramref name="parameters"/>.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="parameters">The parameters to use to generate the code.</param>
+        /// <returns>The validation code.</returns>
+        public static string ComputeValidationCode(ICryptographyProvider cryptographyProvider, IHostSettings hostSettings, IList<object> parameters)
         {
             if (parameters != null && parameters.Any())
             {
@@ -48,7 +63,7 @@ namespace DotNetNuke.Common.Utilities
                     return p.ToString();
                 }));
 
-                return PortalSecurity.Instance.Encrypt(GetDecryptionKey(hostSettings, HashAlgorithmName.SHA512), checkString);
+                return cryptographyProvider.EncryptParameter(checkString, GetDecryptionKey(hostSettings, HashAlgorithmName.SHA512)).EncryptedMessage;
             }
 
             return string.Empty;
@@ -66,13 +81,14 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>Determines whether the <paramref name="validationCode"/> matches the given <paramref name="parameters"/>.</summary>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="parameters">The parameters.</param>
         /// <param name="validationCode">The code to validate.</param>
         /// <returns>Whether <paramref name="validationCode"/> matches the <paramref name="parameters"/>.</returns>
-        internal static bool ValidationCodeMatched(IHostSettings hostSettings, IList<object> parameters, string validationCode)
+        internal static bool ValidationCodeMatched(ICryptographyProvider cryptographyProvider, IHostSettings hostSettings, IList<object> parameters, string validationCode)
         {
-            return validationCode.Equals(ComputeValidationCode(hostSettings, parameters), System.StringComparison.Ordinal);
+            return validationCode.Equals(ComputeValidationCode(cryptographyProvider, hostSettings, parameters), System.StringComparison.Ordinal);
         }
     }
 }

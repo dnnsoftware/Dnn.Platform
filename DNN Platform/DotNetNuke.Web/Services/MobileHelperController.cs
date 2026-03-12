@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.Services
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -21,12 +22,32 @@ namespace DotNetNuke.Web.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Models;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A web API controller for getting information about modules in the site.</summary>
     [AllowAnonymous]
     public class MobileHelperController : DnnApiController
     {
         private static readonly char[] ModuleSeparator = [',',];
         private readonly string dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
+        private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
+
+        /// <summary>Initializes a new instance of the <see cref="MobileHelperController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public MobileHelperController()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="MobileHelperController"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
+        public MobileHelperController(IHostSettings hostSettings, ITabController tabController)
+        {
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+        }
 
         /// <summary>Gets the various defined monikers for the various tab modules in the system.</summary>
         /// <param name="moduleList">A comma-delimited list of module names.</param>
@@ -34,8 +55,8 @@ namespace DotNetNuke.Web.Services
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)
         {
-            var monikers = GetMonikersForList(moduleList);
-            return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value }));
+            var monikers = GetMonikersForList(this.hostSettings, moduleList);
+            return this.Ok(monikers.Select(kpv => new { tabModuleId = kpv.Key, moniker = kpv.Value, }));
         }
 
         /// <summary>Gets the details about the modules in the site.</summary>
@@ -48,7 +69,7 @@ namespace DotNetNuke.Web.Services
             return this.Request.CreateResponse(HttpStatusCode.OK, siteDetails);
         }
 
-        private static IEnumerable<KeyValuePair<int, string>> GetMonikersForList(string moduleList)
+        private static IEnumerable<KeyValuePair<int, string>> GetMonikersForList(IHostSettings hostSettings, string moduleList)
         {
             var portalId = PortalSettings.Current.PortalId;
             var tabsController = TabController.Instance;
@@ -63,7 +84,7 @@ namespace DotNetNuke.Web.Services
             {
                 foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
                 {
-                    var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+                    var dtmRecord = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, moduleName, portalId);
                     if (dtmRecord != null)
                     {
                         var allowedTabs = modules.Where(m => m.DesktopModuleID == dtmRecord.DesktopModuleID)
@@ -81,17 +102,16 @@ namespace DotNetNuke.Web.Services
             return monikers.Where(kpv => resultIds.Contains(kpv.Key));
         }
 
-        private static IEnumerable<TabModule> GetTabModules(string moduleName)
+        private static IEnumerable<TabModule> GetTabModules(IHostSettings hostSettings, ITabController tabController, string moduleName)
         {
             var portalId = PortalController.Instance.GetCurrentSettings().PortalId;
-            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+            var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, moduleName, portalId);
             if (desktopModule != null)
             {
-                var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId) + "_" +
-                               desktopModule.DesktopModuleID;
-                var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule);
+                var cacheKey = $"{string.Format(CultureInfo.InvariantCulture, DataCache.DesktopModuleCacheKey, portalId)}_{desktopModule.DesktopModuleID}";
+                var args = new CacheItemArgs(cacheKey, DataCache.DesktopModuleCacheTimeOut, DataCache.DesktopModuleCachePriority, portalId, desktopModule, tabController);
 
-                return CBO.GetCachedObject<IList<TabModule>>(args, GetTabModulesCallback);
+                return CBO.GetCachedObject<IList<TabModule>>(hostSettings, args, GetTabModulesCallback);
             }
 
             return new List<TabModule>();
@@ -103,8 +123,8 @@ namespace DotNetNuke.Web.Services
 
             var portalId = (int)cacheItemArgs.ParamList[0];
             var desktopModule = (DesktopModuleInfo)cacheItemArgs.ParamList[1];
+            var tabController = (ITabController)cacheItemArgs.ParamList[2];
 
-            var tabController = new TabController();
             var tabsWithModule = tabController.GetTabsByPackageID(portalId, desktopModule.PackageID, false);
             var allPortalTabs = tabController.GetTabsByPortal(portalId);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
@@ -158,23 +178,23 @@ namespace DotNetNuke.Web.Services
 
             foreach (var moduleName in (moduleList ?? string.Empty).Split(ModuleSeparator, StringSplitOptions.RemoveEmptyEntries))
             {
-                var modulesCollection = GetTabModules((moduleName ?? string.Empty).Trim())
-                    .Where(tabmodule => TabPermissionController.CanViewPage(tabmodule.TabInfo) &&
-                                        ModulePermissionController.CanViewModule(tabmodule.ModuleInfo));
-                foreach (var tabmodule in modulesCollection)
+                var modulesCollection = GetTabModules(this.hostSettings, this.tabController, (moduleName ?? string.Empty).Trim())
+                    .Where(tabModule => TabPermissionController.CanViewPage(tabModule.TabInfo) &&
+                                        ModulePermissionController.CanViewModule(tabModule.ModuleInfo));
+                foreach (var tabModule in modulesCollection)
                 {
                     var moduleDetail = new ModuleDetail
                     {
                         ModuleName = moduleName,
-                        ModuleVersion = tabmodule.ModuleVersion,
+                        ModuleVersion = tabModule.ModuleVersion,
                     };
 
                     moduleDetail.ModuleInstances.Add(new ModuleInstance
                     {
-                        TabId = tabmodule.TabInfo.TabID,
-                        ModuleId = tabmodule.ModuleInfo.ModuleID,
-                        PageName = tabmodule.TabInfo.TabName,
-                        PagePath = tabmodule.TabInfo.TabPath,
+                        TabId = tabModule.TabInfo.TabID,
+                        ModuleId = tabModule.ModuleInfo.ModuleID,
+                        PageName = tabModule.TabInfo.TabName,
+                        PagePath = tabModule.TabInfo.TabPath,
                     });
                     siteDetails.Modules.Add(moduleDetail);
                 }

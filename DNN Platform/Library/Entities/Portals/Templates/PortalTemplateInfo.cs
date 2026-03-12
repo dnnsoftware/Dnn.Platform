@@ -37,7 +37,9 @@ namespace DotNetNuke.Entities.Portals.Templates
             {
                 if (this.resourceFilePath == null)
                 {
+#pragma warning disable CS0618 // Type or member is obsolete
                     this.resourceFilePath = PortalTemplateIO.Instance.GetResourceFilePath(this.TemplateFilePath);
+#pragma warning restore CS0618 // Type or member is obsolete
                 }
 
                 return this.resourceFilePath;

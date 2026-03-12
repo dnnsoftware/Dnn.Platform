@@ -2,20 +2,16 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-// ReSharper disable ConvertPropertyToExpressionBody
-// ReSharper disable InconsistentNaming
-
-// ReSharper disable CheckNamespace
 namespace DotNetNuke.Admin.Containers
-
-// ReSharper restore CheckNamespace
 {
     using System;
     using System.Collections.Generic;
     using System.Web.Script.Serialization;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
@@ -34,16 +30,26 @@ namespace DotNetNuke.Admin.Containers
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which renders module actions.</summary>
-    public partial class ModuleActions : ActionBase
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="moduleControlPipeline">The module control pipeline.</param>
+    /// <param name="javaScript">The JavaScript library helper.</param>
+    /// <param name="clientResourceController">The client resources controller.</param>
+    /// <param name="servicesFramework">The web API service framework.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public partial class ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework, IHostSettings hostSettings)
+        : ActionBase(eventLogger)
     {
-        private readonly List<int> validIDs = new List<int>();
-        private readonly IModuleControlPipeline moduleControlPipeline;
-        private readonly IJavaScriptLibraryHelper javaScript;
-        private readonly IClientResourceController clientResourceController;
+        private readonly List<int> validIDs = [];
+        private readonly IModuleControlPipeline moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
+        private readonly IJavaScriptLibraryHelper javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
+        private readonly IClientResourceController clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+        private readonly IServicesFramework servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ModuleActions()
-            : this(null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -51,27 +57,29 @@ namespace DotNetNuke.Admin.Containers
         /// <param name="moduleControlPipeline">The module control pipeline.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ModuleActions(IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : this(null, moduleControlPipeline, javaScript, clientResourceController, null)
         {
-            this.moduleControlPipeline = moduleControlPipeline ?? Globals.GetCurrentServiceProvider().GetRequiredService<IModuleControlPipeline>();
-            this.javaScript = javaScript ?? Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
-        protected string AdminText
+        /// <summary>Initializes a new instance of the <see cref="ModuleActions"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="moduleControlPipeline">The module control pipeline.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public ModuleActions(IEventLogger eventLogger, IModuleControlPipeline moduleControlPipeline, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IServicesFramework servicesFramework)
+            : this(eventLogger, moduleControlPipeline, javaScript, clientResourceController, servicesFramework, null)
         {
-            get { return Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile); }
         }
 
-        protected string CustomText
-        {
-            get { return Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile); }
-        }
+        protected string AdminText => Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile);
 
-        protected string MoveText
-        {
-            get { return Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile); }
-        }
+        protected string CustomText => Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile);
+
+        protected string MoveText => Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile);
 
         protected string AdminActionsJSON { get; set; }
 
@@ -94,7 +102,7 @@ namespace DotNetNuke.Admin.Containers
             return Localization.GetString(key, Localization.GlobalResourceFile);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -109,10 +117,10 @@ namespace DotNetNuke.Admin.Containers
             this.clientResourceController.RegisterStylesheet("~/Resources/Shared/stylesheets/dnnicons/css/dnnicon.min.css", FileOrder.Css.ModuleCss);
             this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/ModuleActions.js");
 
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -126,7 +134,7 @@ namespace DotNetNuke.Admin.Containers
                 this.DisplayQuickSettings = false;
                 this.ModuleTitle = this.ModuleContext.Configuration.ModuleTitle;
                 var moduleDefinitionId = this.ModuleContext.Configuration.ModuleDefID;
-                var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey("QuickSettings", moduleDefinitionId);
+                var quickSettingsControl = ModuleControlController.GetModuleControlByControlKey(this.hostSettings, "QuickSettings", moduleDefinitionId);
 
                 if (quickSettingsControl != null)
                 {
@@ -212,7 +220,7 @@ namespace DotNetNuke.Admin.Containers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);

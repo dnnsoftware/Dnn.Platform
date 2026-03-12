@@ -8,11 +8,14 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
     using System.Data;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.FileSystem.Internal;
-    using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Tests.Core.Providers.Builders;
     using DotNetNuke.Tests.Utilities;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -66,8 +69,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             FileDeletionController.SetTestableInstance(this.mockFileDeletionController.Object);
 
             this.mockFolderManager = new Mock<FolderManager> { CallBase = true };
-
-            this.folderManager = new FolderManager();
+            this.folderManager = new FolderManager(Mock.Of<IEventLogger>(), Mock.Of<IPermissionDefinitionService>(), Mock.Of<IHostSettings>(), Mock.Of<IPortalController>());
 
             this.folderInfo = new Mock<IFolderInfo>();
 
@@ -81,6 +83,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                     services.AddSingleton(this.pathUtils.Object);
                     services.AddSingleton(this.mockUserSecurityController.Object);
                     services.AddSingleton(this.mockFileDeletionController.Object);
+                    services.AddSingleton(Mock.Of<IPortalController>());
                 });
         }
 
@@ -822,7 +825,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void UpdateFolder_Calls_DataProvider_UpdateFolder()
         {
-            this.mockFolderManager.Setup(mfm => mfm.AddLogEntry(this.folderInfo.Object, It.IsAny<EventLogController.EventLogType>()));
+            this.mockFolderManager.Setup(mfm => mfm.AddLogEntry(this.folderInfo.Object, It.IsAny<EventLogType>()));
             this.mockFolderManager.Setup(mfm => mfm.SaveFolderPermissions(this.folderInfo.Object));
             this.mockFolderManager.Setup(mfm => mfm.ClearFolderCache(It.IsAny<int>()));
 

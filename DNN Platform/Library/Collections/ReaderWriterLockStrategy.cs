@@ -51,7 +51,7 @@ namespace DotNetNuke.Collections.Internal
             this.Dispose(false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ThreadCanRead
         {
             get
@@ -61,7 +61,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool ThreadCanWrite
         {
             get
@@ -71,7 +71,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SupportsConcurrentReads
         {
             get
@@ -100,13 +100,13 @@ namespace DotNetNuke.Collections.Internal
             info.AddValue("_lockRecursionPolicy", this.lockRecursionPolicy, typeof(LockRecursionPolicy));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetReadLock()
         {
             return this.GetReadLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetReadLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
@@ -121,13 +121,13 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetWriteLock()
         {
             return this.GetWriteLock(TimeSpan.FromMilliseconds(-1));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public ISharedCollectionLock GetWriteLock(TimeSpan timeout)
         {
             this.EnsureNotDisposed();
@@ -142,7 +142,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Dispose()
         {
             // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.

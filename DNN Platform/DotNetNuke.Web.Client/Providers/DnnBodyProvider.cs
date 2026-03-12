@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Client.Providers
             base.Initialize(name, config);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!jsDependencies.Any())
@@ -72,13 +72,13 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderSingleJsFile(string js, IDictionary<string, string> htmlAttributes)
         {
             return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.ScriptEmbedWithSource, js, htmlAttributes.ToHtmlAttributes());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!cssDependencies.Any())
@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Client.Providers
             return sb.ToString();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string RenderSingleCssFile(string css, IDictionary<string, string> htmlAttributes)
         {
             return string.Format(CultureInfo.InvariantCulture, HtmlEmbedContants.CssEmbedWithSource, css, htmlAttributes.ToHtmlAttributes());

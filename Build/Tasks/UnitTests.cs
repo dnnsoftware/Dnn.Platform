@@ -13,7 +13,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>Runs units tests on solution. Make sure to build the solution before running this task.</summary>
     public sealed class UnitTests : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             var testAssemblies = context.GetFiles(@"**\bin\**\DotNetNuke.Tests.*.dll");

@@ -171,13 +171,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             InstallController.Instance.RemoveFromInstallConfig("//dotnetnuke/superuser/password");
         }
 
-        // private void CreateFolderMappingConfig(string folderMappinsSettings)
-        // {
-        //    string folderMappingsConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
-        //    if (!File.Exists(folderMappingsConfigPath))
-        //    {
-        //        File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
-        //    }
-        // }
+        ////private void CreateFolderMappingConfig(string folderMappinsSettings)
+        ////{
+        ////   string folderMappingsConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
+        ////   if (!File.Exists(folderMappingsConfigPath))
+        ////   {
+        ////       File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
+        ////   }
+        ////}
     }
 }

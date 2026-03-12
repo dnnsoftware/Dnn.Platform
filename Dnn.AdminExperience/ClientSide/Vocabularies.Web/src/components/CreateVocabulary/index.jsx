@@ -89,7 +89,7 @@ class CreateVocabulary extends Component {
         }
 
         let totalCount = props.totalCount;
-        props.dispatch(VocabularyActions.addVocabulary(state.term, ++totalCount, () => {
+        props.dispatch(VocabularyActions.addVocabulary(state.term, totalCount + 1, () => {
             this.onCloseVocabulary();
             props.dispatch(PaginationActions.loadTab(this.getNextPage(0, 10000, state.term.ScopeTypeId)));   //index acts as scopeTypeId 
         }));

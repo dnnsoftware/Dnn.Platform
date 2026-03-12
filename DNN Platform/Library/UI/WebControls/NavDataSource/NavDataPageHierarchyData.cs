@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ToString()
         {
             return this.objNode.Text;

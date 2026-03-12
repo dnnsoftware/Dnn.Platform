@@ -60,6 +60,7 @@ export class DnnRmUploadFile {
         </label>
         <dnn-dropzone
           onFilesSelected={e => this.handleFilesDropped(e.detail)}
+          multiple
         />
         {this.allowedExtensions && this.validationCode && this.queuedFiles.map(file => 
           <dnn-rm-queued-file

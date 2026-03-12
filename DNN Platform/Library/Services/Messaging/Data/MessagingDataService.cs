@@ -13,26 +13,26 @@ namespace DotNetNuke.Services.Messaging.Data
     {
         private readonly DataProvider provider = DataProvider.Instance();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IDataReader GetMessageByID(int messageId)
         {
             return this.provider.ExecuteReader("Messaging_GetMessage", messageId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetUserInbox(int portalID, int userID, int pageNumber, int pageSize)
         {
             return this.provider.ExecuteReader("Messaging_GetInbox", portalID, userID, pageNumber, pageSize);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int GetInboxCount(int portalID, int userID)
         {
             return this.provider.ExecuteScalar<int>("Messaging_GetInboxCount", portalID, userID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public long SaveMessage(Message objMessaging)
         {
             return this.provider.ExecuteScalar<long>(
@@ -51,25 +51,25 @@ namespace DotNetNuke.Services.Messaging.Data
                 objMessaging.SkipInbox);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int GetNewMessageCount(int portalID, int userID)
         {
             return this.provider.ExecuteScalar<int>("Messaging_GetNewMessageCount", portalID, userID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNextMessageForDispatch(Guid schedulerInstance)
         {
             return this.provider.ExecuteReader("Messaging_GetNextMessageForDispatch", schedulerInstance);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void MarkMessageAsDispatched(int messageID)
         {
             this.provider.ExecuteNonQuery("Messaging_MarkMessageAsDispatched", messageID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateMessage(Message message)
         {
             this.provider.ExecuteNonQuery(

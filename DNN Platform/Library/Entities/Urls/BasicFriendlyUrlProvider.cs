@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Urls
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
 
@@ -51,27 +52,26 @@ namespace DotNetNuke.Entities.Urls
             get { return this.regexMatch; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, portalSettings);
+            return this.FriendlyUrl(tab, path, Globals.glbDefaultPage, PortalSettings.Current);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName)
         {
-            PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            return this.FriendlyUrl(tab, path, pageName, portalSettings);
+            return this.FriendlyUrl(tab, path, pageName, PortalSettings.Current);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
-            return this.FriendlyUrl(tab, path, pageName, ((PortalSettings)settings)?.PortalAlias.HTTPAlias, settings);
+            IPortalAliasInfo portalAliasInfo = ((PortalSettings)settings)?.PortalAlias;
+            return this.FriendlyUrl(tab, path, pageName, portalAliasInfo?.HttpAlias, settings);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         internal override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias)
         {
             return this.FriendlyUrl(tab, path, pageName, portalAlias, null);
@@ -384,13 +384,15 @@ namespace DotNetNuke.Entities.Urls
 
             // Replace http:// by https:// if SSL is enabled and site is marked as secure
             // (i.e. requests to http://... will be redirected to https://...)
-            portalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
-            if (tab != null && portalSettings != null && portalSettings.SSLEnabled && (tab.IsSecure || portalSettings.SSLSetup == Abstractions.Security.SiteSslSetup.On) &&
-                friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+            portalSettings ??= PortalController.Instance.GetCurrentSettings();
+            if (tab != null
+                && portalSettings is { SSLEnabled: true, }
+                && (tab.IsSecure || portalSettings.SSLSetup == Abstractions.Security.SiteSslSetup.On)
+                && friendlyPath.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
                 friendlyPath = "https://" + friendlyPath.Substring("http://".Length);
 
-                // If portal's "SSL URL" setting is defined: Use "SSL URL" instaed of current portal alias
+                // If portal's "SSL URL" setting is defined: Use "SSL URL" instead of current portal alias
                 var sslUrl = portalSettings.SSLURL;
                 if (!string.IsNullOrEmpty(sslUrl))
                 {

@@ -129,22 +129,22 @@ namespace DotNetNuke.UI.WebControls
         [DefaultValue("0")]
         public int TotalRecords { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             this.CurrentPage = int.Parse(eventArgument.Replace("Page_", string.Empty), CultureInfo.InvariantCulture);
             this.OnPageChanged(EventArgs.Empty);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CreateChildControls()
         {
             this.tablePageNumbers = new Table();
             this.cellDisplayStatus = new TableCell();
             this.cellDisplayLinks = new TableCell();
 
-            // cellDisplayStatus.CssClass = "Normal";
-            // cellDisplayLinks.CssClass = "Normal";
+            ////cellDisplayStatus.CssClass = "Normal";
+            ////cellDisplayLinks.CssClass = "Normal";
             this.tablePageNumbers.CssClass = string.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
             var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
             this.PageNumbers = new Repeater();
@@ -153,10 +153,10 @@ namespace DotNetNuke.UI.WebControls
             this.BindPageNumbers(this.TotalRecords, this.PageSize);
             this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
 
-            // cellDisplayStatus.Width = new Unit("50%");
+            ////cellDisplayStatus.Width = new Unit("50%");
             this.cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
 
-            // cellDisplayLinks.Width = new Unit("50%");
+            ////cellDisplayLinks.Width = new Unit("50%");
             var intTotalPages = this.totalPages;
             if (intTotalPages == 0)
             {
@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.WebControls
             this.PageChanged?.Invoke(this, e);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         protected override void Render(HtmlTextWriter output)
         {
@@ -368,7 +368,7 @@ namespace DotNetNuke.UI.WebControls
                 this.pagingControl = ctlPagingControl;
             }
 
-            /// <inheritdoc/>
+            /// <inheritdoc />
             void ITemplate.InstantiateIn(Control container)
             {
                 var l = new Literal();

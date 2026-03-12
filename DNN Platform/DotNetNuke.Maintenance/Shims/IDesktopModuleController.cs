@@ -10,6 +10,6 @@ namespace DotNetNuke.Maintenance.Shims
     internal interface IDesktopModuleController
     {
         /// <inheritdoc cref="DesktopModuleController.GetDesktopModuleByModuleName(string, int)" />
-        DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID);
+        DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalId);
     }
 }

@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Localization
             this.compare = compareBy;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int Compare(object x, object y)
         {
             return this.compare.ToUpperInvariant() switch

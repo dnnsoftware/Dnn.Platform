@@ -136,7 +136,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     LogController.Instance.DeleteLog(objLogInfo);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -198,7 +198,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
             try
             {
                 this.controller.ClearLog();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -480,7 +480,7 @@ namespace Dnn.PersonaBar.AdminLogs.Services
                     });
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

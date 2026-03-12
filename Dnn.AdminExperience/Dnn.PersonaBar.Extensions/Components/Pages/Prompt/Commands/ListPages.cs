@@ -61,7 +61,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.pagesController = pagesController;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourceFile;
 
         private int? ParentId { get; set; } = -1;
@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
 
         private int Max { get; set; } = 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.ParentId = this.GetFlagValue<int?>(FlagParentId, "Parent Id", null, false, true, true);
@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.Pages.Components.Prompt.Commands
             this.Max = this.GetFlagValue(FlagMax, "Max", 10);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var max = this.Max <= 0 ? 10 : (this.Max > 500 ? 500 : this.Max);

@@ -4,6 +4,7 @@
 namespace DotNetNuke.HttpModules.Membership
 {
     using System;
+    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
     using System.Runtime.CompilerServices;
@@ -13,14 +14,18 @@ namespace DotNetNuke.HttpModules.Membership
     using System.Web.Security;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Collections;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.HttpModules.Services;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
@@ -32,19 +37,12 @@ namespace DotNetNuke.HttpModules.Membership
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Information about membership.</summary>
-    public class MembershipModule : IHttpModule
+    public partial class MembershipModule : IHttpModule
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
-        private readonly IHostSettingsService hostSettingsService;
-        private readonly IPortalController portalController;
-        private readonly IUserRequestIPAddressController ipAddressController;
-        private readonly IRoleController roleController;
-        private readonly IUserController userController;
 
         /// <summary>Initializes a new instance of the <see cref="MembershipModule"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
         public MembershipModule()
-            : this(null, null, null, null, null)
         {
         }
 
@@ -54,13 +52,11 @@ namespace DotNetNuke.HttpModules.Membership
         /// <param name="ipAddressController">The IP address controller.</param>
         /// <param name="roleController">The role controller.</param>
         /// <param name="userController">The user controller.</param>
-        public MembershipModule(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IUserController userController)
+        /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload without parameters. Scheduled removal in v12.0.0.")]
+        public MembershipModule(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IUserController userController, IEventLogger eventLogger)
+            : this()
         {
-            this.hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
-            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
-            this.ipAddressController = ipAddressController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserRequestIPAddressController>();
-            this.roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
-            this.userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
         }
 
         /// <summary>Gets the name of the module.</summary>
@@ -81,8 +77,8 @@ namespace DotNetNuke.HttpModules.Membership
         /// <summary>Authenticates the request.</summary>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensions">if set to <see langword="true"/> to allow unknown extensions.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettingsService. Scheduled removal in v12.0.0.")]
-        public static void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
+        [DnnDeprecated(10, 0, 2, "Use overload taking IHostSettingsService")]
+        public static partial void AuthenticateRequest(HttpContextBase context, bool allowUnknownExtensions)
             => AuthenticateRequest(
                 Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(),
                 Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(),
@@ -98,7 +94,32 @@ namespace DotNetNuke.HttpModules.Membership
         /// <param name="roleController">The role controller.</param>
         /// <param name="context">The context.</param>
         /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensions.</param>
-        public static void AuthenticateRequest(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, HttpContextBase context, bool allowUnknownExtensions)
+        [DnnDeprecated(10, 2, 2, "Use overload taking IEventLogger")]
+        public static partial void AuthenticateRequest(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, HttpContextBase context, bool allowUnknownExtensions)
+            => AuthenticateRequest(hostSettingsService, portalController, ipAddressController, roleController, Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), context, allowUnknownExtensions);
+
+        /// <summary>Authenticates the request.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="ipAddressController">The user request IP address controller.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensions.</param>
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial void AuthenticateRequest(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IEventLogger eventLogger, HttpContextBase context, bool allowUnknownExtensions)
+            => AuthenticateRequest(hostSettingsService, portalController, ipAddressController, roleController, eventLogger, Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), context, allowUnknownExtensions);
+
+        /// <summary>Authenticates the request.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="ipAddressController">The user request IP address controller.</param>
+        /// <param name="roleController">The role controller.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="context">The context.</param>
+        /// <param name="allowUnknownExtensions">if set to <c>true</c> to allow unknown extensions.</param>
+        public static void AuthenticateRequest(IHostSettingsService hostSettingsService, IPortalController portalController, IUserRequestIPAddressController ipAddressController, IRoleController roleController, IEventLogger eventLogger, IHostSettings hostSettings, HttpContextBase context, bool allowUnknownExtensions)
         {
             HttpRequestBase request = context.Request;
             HttpResponseBase response = context.Response;
@@ -114,7 +135,7 @@ namespace DotNetNuke.HttpModules.Membership
 
             if (request.IsAuthenticated && !IsActiveDirectoryAuthHeaderPresent() && portalSettings != null)
             {
-                var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
+                var user = UserController.GetCachedUser(hostSettings, portalSettings.PortalId, context.User.Identity.Name);
 
                 // if current login is from windows authentication, the ignore the process
                 if (user == null && context.User is WindowsPrincipal)
@@ -148,7 +169,7 @@ namespace DotNetNuke.HttpModules.Membership
                     // update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
                     user.LastIPAddress = ipAddressController.GetUserRequestIPAddress(request);
-                    UserController.UpdateUser(portalSettings.PortalId, user, false, false);
+                    UserController.UpdateUser(eventLogger, portalSettings.PortalId, user, false, false);
                 }
 
                 // check for RSVP code
@@ -191,9 +212,9 @@ namespace DotNetNuke.HttpModules.Membership
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public void Init(HttpApplication application)
         {
-            application.AuthenticateRequest += this.OnAuthenticateRequest;
-            application.PreRequestHandlerExecute += this.Context_PreRequestHandlerExecute;
-            application.PreSendRequestHeaders += this.OnPreSendRequestHeaders;
+            application.AuthenticateRequest += OnAuthenticateRequest;
+            application.PreRequestHandlerExecute += Context_PreRequestHandlerExecute;
+            application.PreSendRequestHeaders += OnPreSendRequestHeaders;
         }
 
         /// <summary>Disposes of the resources (other than memory) used by the module that implements <see cref="System.Web.IHttpModule" />.</summary>
@@ -248,24 +269,36 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        private void OnAuthenticateRequest(object sender, EventArgs e)
+        private static void OnAuthenticateRequest(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
-            AuthenticateRequest(this.hostSettingsService, this.portalController, this.ipAddressController, this.roleController, new HttpContextWrapper(application.Context), false);
+            var serviceProvider = application.Context.GetScope().ServiceProvider;
+
+            AuthenticateRequest(
+                serviceProvider.GetRequiredService<IHostSettingsService>(),
+                serviceProvider.GetRequiredService<IPortalController>(),
+                serviceProvider.GetRequiredService<IUserRequestIPAddressController>(),
+                serviceProvider.GetRequiredService<IRoleController>(),
+                serviceProvider.GetRequiredService<IEventLogger>(),
+                serviceProvider.GetRequiredService<IHostSettings>(),
+                new HttpContextWrapper(application.Context),
+                false);
         }
 
         // DNN-6973: if the authentication cookie set by cookie slide in membership,
         // then use SignIn method instead if current portal is in portal group.
-        private void OnPreSendRequestHeaders(object sender, EventArgs e)
+        private static void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
+            var serviceProvider = GetOrCreateServiceProvider(application.Context);
+            var portalController = serviceProvider.GetRequiredService<IPortalController>();
 
-            var portalSettings = this.portalController.GetCurrentSettings();
+            var portalSettings = portalController.GetCurrentSettings();
             var hasAuthCookie = application.Response.Headers["Set-Cookie"] != null
                                     && application.Response.Headers["Set-Cookie"].Contains(FormsAuthentication.FormsCookieName);
             if (portalSettings != null && hasAuthCookie && !application.Context.Items.Contains("DNN_UserSignIn"))
             {
-                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(this.portalController, portalSettings.PortalId);
+                var isInPortalGroup = PortalController.IsMemberOfPortalGroup(portalController, portalSettings.PortalId);
                 if (isInPortalGroup)
                 {
                     var authCookie = application.Response.Cookies[FormsAuthentication.FormsCookieName];
@@ -278,11 +311,16 @@ namespace DotNetNuke.HttpModules.Membership
             }
         }
 
-        private void Context_PreRequestHandlerExecute(object sender, EventArgs e)
+        private static void Context_PreRequestHandlerExecute(object sender, EventArgs e)
         {
-            var portalSettings = this.portalController.GetCurrentSettings();
-            var request = HttpContext.Current.Request;
-            var user = this.userController.GetCurrentUserInfo();
+            var content = HttpContextSource.Current;
+            var request = content.Request;
+            var serviceProvider = content.GetScope().ServiceProvider;
+            var portalController = serviceProvider.GetRequiredService<IPortalController>();
+            var userController = serviceProvider.GetRequiredService<IUserController>();
+
+            var portalSettings = portalController.GetCurrentSettings();
+            var user = userController.GetCurrentUserInfo();
             if (!request.IsAuthenticated || IsActiveDirectoryAuthHeaderPresent() || portalSettings == null)
             {
                 return;
@@ -299,6 +337,13 @@ namespace DotNetNuke.HttpModules.Membership
                 contextItems.Add(Skin.OnInitMessage, Localization.GetString("VerificationSuccess", Localization.SharedResourceFile, Thread.CurrentThread.CurrentCulture.Name));
                 contextItems.Add(Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
             }
+        }
+
+        private static IServiceProvider GetOrCreateServiceProvider(HttpContext context)
+        {
+            // NOTE: Using HttpContextDependencyInjectionExtensions.GetScope can cause an infinite loop/stack overflow, presumably due to timing issues
+            var scope = context.Items[typeof(IServiceScope)] as IServiceScope ?? Globals.DependencyProvider.CreateScope();
+            return scope.ServiceProvider;
         }
     }
 }

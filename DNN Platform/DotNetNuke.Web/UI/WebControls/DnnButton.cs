@@ -8,14 +8,30 @@ namespace DotNetNuke.Web.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>A button control.</summary>
     public class DnnButton : Button, ILocalizable
     {
+        private readonly IClientResourceController clientResourceController;
         private bool localize = true;
 
         /// <summary>Initializes a new instance of the <see cref="DnnButton"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnButton()
+            : this(null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnButton"/> class.</summary>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public DnnButton(IClientResourceController clientResourceController)
+        {
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+
             this.CssClass = "CommandButton";
             this.DisabledCssClass = "CommandButtonDisabled";
         }
@@ -27,15 +43,8 @@ namespace DotNetNuke.Web.UI.WebControls
         [Localizable(true)]
         public string ConfirmMessage
         {
-            get
-            {
-                return this.ViewState["ConfirmMessage"] == null ? string.Empty : this.ViewState["ConfirmMessage"].ToString();
-            }
-
-            set
-            {
-                this.ViewState["ConfirmMessage"] = value;
-            }
+            get => this.ViewState["ConfirmMessage"] == null ? string.Empty : this.ViewState["ConfirmMessage"].ToString();
+            set => this.ViewState["ConfirmMessage"] = value;
         }
 
         /// <summary>Gets or sets the CSS class to use when the control is disabled.</summary>
@@ -45,40 +54,21 @@ namespace DotNetNuke.Web.UI.WebControls
         [Localizable(true)]
         public new string DisabledCssClass
         {
-            get
-            {
-                return this.ViewState["DisabledCssClass"] == null ? string.Empty : this.ViewState["DisabledCssClass"].ToString();
-            }
-
-            set
-            {
-                this.ViewState["DisabledCssClass"] = value;
-            }
+            get => this.ViewState["DisabledCssClass"] == null ? string.Empty : this.ViewState["DisabledCssClass"].ToString();
+            set => this.ViewState["DisabledCssClass"] = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool Localize
         {
-            get
-            {
-                if (this.DesignMode)
-                {
-                    return false;
-                }
-
-                return this.localize;
-            }
-
-            set
-            {
-                this.localize = value;
-            }
+            get => !this.DesignMode && this.localize;
+            set => this.localize = value;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string LocalResourceFile { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public virtual void LocalizeStrings()
         {
             if (this.Localize)
@@ -109,7 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -128,11 +118,11 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
 
                 // must be done before render
-                this.OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
+                this.OnClientClick = Utilities.GetOnClientClickConfirm(this.clientResourceController, this, msg);
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter writer)
         {
             this.LocalizeStrings();

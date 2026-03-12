@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.Journal
     /// <summary>The EditJournal class is used to manage content.</summary>
     public partial class Edit : JournalModuleBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();

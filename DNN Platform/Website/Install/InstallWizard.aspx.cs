@@ -38,7 +38,6 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.UI.Utilities;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -241,7 +240,7 @@ namespace DotNetNuke.Services.Install
         [WebMethod]
         public static object GetInstallationLog(int startRow)
         {
-            var maxLines = 500;
+            const int maxLines = 500;
             var logFile = InstallController.Instance.InstallerLogName;
             try
             {
@@ -293,7 +292,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Validates the information provided for the install.</summary>
         /// <param name="installInfo">The information about the installation.</param>
         /// <returns>A value indicating if the input is valid and an error message if not.</returns>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static Tuple<bool, string> ValidateInput(Dictionary<string, string> installInfo)
         {
             var result = true;
@@ -323,7 +322,7 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Validates file access permissions.</summary>
         /// <returns>Returns if the permissions are valid or an error message.</returns>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static Tuple<bool, string> ValidatePermissions()
         {
             var permissionsValid = true;
@@ -352,7 +351,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Validates the password for password requirements.</summary>
         /// <param name="password">The entered password.</param>
         /// <returns>A value indicating whether the password is valid.</returns>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static bool ValidatePassword(string password)
         {
             // Check Length
@@ -376,7 +375,7 @@ namespace DotNetNuke.Services.Install
 
         /// <summary>Checks if the application can connect to the database on load.</summary>
         /// <returns>A value indicating whether the application can connect to the database.</returns>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static bool VerifyDatabaseConnectionOnLoad()
         {
             return CheckDatabaseConnection();
@@ -385,7 +384,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Verifies that the application can connect to the database with the provided settings.</summary>
         /// <param name="installInfo">The install information.</param>
         /// <returns>Returns if the connection is valid and an error message if not.</returns>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static Tuple<bool, string> VerifyDatabaseConnection(Dictionary<string, string> installInfo)
         {
             var connectionConfig = new ConnectionConfig();
@@ -431,7 +430,7 @@ namespace DotNetNuke.Services.Install
         /// <summary>Indicate if the Installer is running.</summary>
         /// <returns>True or False.</returns>
         /// <remarks>Checks the local static variable or the existence of status file.</remarks>
-        [System.Web.Services.WebMethod]
+        [WebMethod]
         public static bool IsInstallerRunning()
         {
             bool isRunning;
@@ -539,14 +538,14 @@ namespace DotNetNuke.Services.Install
             return Localization.GetString(key, localResourceFile, culture);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnError(EventArgs e)
         {
             HttpContext.Current.Response.Clear();
             HttpContext.Current.Server.Transfer("~/ErrorPage.aspx");
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
@@ -566,7 +565,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -606,7 +605,7 @@ namespace DotNetNuke.Services.Install
             this.Page.ClientScript.RegisterStartupScript(this.GetType(), "ConfirmPassword", confirmScript, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             if (InstallBlocker.Instance.IsInstallInProgress())
@@ -626,13 +625,13 @@ namespace DotNetNuke.Services.Install
                 File.CreateText(StatusFile).Close();
             }
 
-            if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall"))
+            if (HttpContext.Current.Request.RawUrl.EndsWith("&initiateinstall=1"))
             {
                 var synchConnectionString = new SynchConnectionStringStep();
                 synchConnectionString.Execute();
-                this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&initiateinstall", "&executeinstall"), true);
+                this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&initiateinstall=1", "&executeinstall=1"), true);
             }
-            else if (HttpContext.Current.Request.RawUrl.EndsWith("&executeinstall"))
+            else if (HttpContext.Current.Request.RawUrl.EndsWith("&executeinstall=1"))
             {
                 try
                 {
@@ -642,7 +641,7 @@ namespace DotNetNuke.Services.Install
                 catch (Exception)
                 {
                     // Redirect back to first page
-                    this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall", string.Empty), true);
+                    this.Response.Redirect(HttpContext.Current.Request.RawUrl.Replace("&executeinstall=1", string.Empty), true);
                 }
             }
             else if (!this.Page.IsPostBack)

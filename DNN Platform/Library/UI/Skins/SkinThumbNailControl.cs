@@ -274,8 +274,8 @@ namespace DotNetNuke.UI.Skins
             // check if image has changed
             if (File.Exists(strThumbnail))
             {
-                // var d1 = File.GetLastWriteTime(strThumbnail);
-                // var d2 = File.GetLastWriteTime(strImage);
+                ////var d1 = File.GetLastWriteTime(strThumbnail);
+                ////var d2 = File.GetLastWriteTime(strImage);
                 if (File.GetLastWriteTime(strThumbnail) == File.GetLastWriteTime(strImage))
                 {
                     blnCreate = false;

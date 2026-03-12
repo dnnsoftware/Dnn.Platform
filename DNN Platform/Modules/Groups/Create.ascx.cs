@@ -36,6 +36,7 @@ public partial class Create : GroupsModuleBase
     private readonly IApplicationStatusInfo appStatus;
     private readonly IEventLogger eventLogger;
     private readonly DataProvider dataProvider;
+    private readonly IHostSettings hostSettings;
 
     /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
     [Obsolete("Deprecated in DotNetNuke 10.1.1. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
@@ -53,7 +54,23 @@ public partial class Create : GroupsModuleBase
     /// <param name="applicationStatusInfo">The application status info.</param>
     /// <param name="eventLogger">The event logger.</param>
     /// <param name="dataProvider">The data provider.</param>
+    [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public Create(INavigationManager navigationManager, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IRoleController roleController, IApplicationStatusInfo applicationStatusInfo, IEventLogger eventLogger, DataProvider dataProvider)
+        : this(navigationManager, fileManager, folderManager, fileContentTypeManager, roleController, applicationStatusInfo, eventLogger, dataProvider, null)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="fileManager">The file manager.</param>
+    /// <param name="folderManager">The folder manager.</param>
+    /// <param name="fileContentTypeManager">The file content type manager.</param>
+    /// <param name="roleController">The role controller.</param>
+    /// <param name="applicationStatusInfo">The application status info.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="dataProvider">The data provider.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public Create(INavigationManager navigationManager, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IRoleController roleController, IApplicationStatusInfo applicationStatusInfo, IEventLogger eventLogger, DataProvider dataProvider, IHostSettings hostSettings)
     {
         this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
         this.fileManager = fileManager ?? this.DependencyProvider.GetRequiredService<IFileManager>();
@@ -63,9 +80,10 @@ public partial class Create : GroupsModuleBase
         this.appStatus = applicationStatusInfo ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
         this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
+        this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     protected override void OnInit(EventArgs e)
     {
         this.Load += this.Page_Load;
@@ -90,11 +108,13 @@ public partial class Create : GroupsModuleBase
     private void Create_Click(object sender, EventArgs e)
     {
         var ps = Security.PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
         this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoScripting);
         this.txtGroupName.Text = ps.InputFilter(this.txtGroupName.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
 
         this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoScripting);
         this.txtDescription.Text = ps.InputFilter(this.txtDescription.Text, Security.PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         if (this.roleController.GetRoleByName(this.PortalId, this.txtGroupName.Text) != null)
         {
             this.lblInvalidGroupName.Visible = true;
@@ -113,7 +133,7 @@ public partial class Create : GroupsModuleBase
                 }
                 else if (modulePermissionInfo.UserId > Null.NullInteger)
                 {
-                    modUsers.Add(UserController.GetUserById(this.PortalId, modulePermissionInfo.UserId));
+                    modUsers.Add(UserController.GetUserById(this.hostSettings, this.PortalId, modulePermissionInfo.UserId));
                 }
             }
         }
@@ -182,7 +202,7 @@ public partial class Create : GroupsModuleBase
             }
         }
 
-        var notifications = new Notifications();
+        var notifications = new Notifications(this.hostSettings);
 
         this.roleController.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
         if (roleInfo.Status == RoleStatus.Pending)

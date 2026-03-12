@@ -265,7 +265,7 @@ namespace DotNetNuke.Services.Tokens
 
         private void DeterminePortal(PortalSettings portalSettings)
         {
-            this.PortalSettings = portalSettings ?? PortalController.Instance.GetCurrentPortalSettings();
+            this.PortalSettings = portalSettings ?? PortalSettings.Current;
         }
 
         private void DetermineUser(UserInfo user)

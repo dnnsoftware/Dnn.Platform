@@ -30,13 +30,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             this.CaptureStream = new MemoryStream();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddItemToCache(int itemId, string output)
         {
             DataProvider.Instance().AddOutputCacheItem(itemId, this.CacheKey, output, DateTime.UtcNow.Add(this.CacheDuration));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RemoveItemFromCache(int itemId)
         {
             DataProvider.Instance().RemoveOutputCacheItem(itemId);

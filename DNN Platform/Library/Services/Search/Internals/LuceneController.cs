@@ -5,15 +5,18 @@ namespace DotNetNuke.Services.Search.Internals
 {
     using System;
 
+    using DotNetNuke.Common;
     using DotNetNuke.Framework;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Low-level APIs to manage Lucene Layer. This is an Internal class and should not be used outside of Core.</summary>
     internal class LuceneController : ServiceLocator<ILuceneController, LuceneController>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<ILuceneController> GetFactory()
         {
-            return () => new LuceneControllerImpl();
+            return () => ActivatorUtilities.GetServiceOrCreateInstance<LuceneControllerImpl>(Globals.DependencyProvider);
         }
     }
 }

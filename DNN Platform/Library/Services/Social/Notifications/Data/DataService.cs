@@ -15,61 +15,61 @@ namespace DotNetNuke.Services.Social.Notifications.Data
         private const string Prefix = "CoreMessaging_";
         private readonly DataProvider provider = DataProvider.Instance();
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int CreateNotificationType(string name, string description, int timeToLive, int desktopModuleId, int createUpdateUserId, bool isTask)
         {
             return this.provider.ExecuteScalar<int>(GetFullyQualifiedName("CreateNotificationType"), name, this.provider.GetNull(description), this.provider.GetNull(timeToLive), this.provider.GetNull(desktopModuleId), createUpdateUserId, isTask);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteNotificationType(int notificationTypeId)
         {
             this.provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotificationType"), notificationTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotificationType(int notificationTypeId)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotificationType"), notificationTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotificationTypeByName(string name)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeByName"), name);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int AddNotificationTypeAction(int notificationTypeId, string nameResourceKey, string descriptionResourceKey, string confirmResourceKey, string apiCall, int createdByUserId)
         {
             return this.provider.ExecuteScalar<int>(GetFullyQualifiedName("AddNotificationTypeAction"), notificationTypeId, nameResourceKey, this.provider.GetNull(descriptionResourceKey), this.provider.GetNull(confirmResourceKey), apiCall, createdByUserId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteNotificationTypeAction(int notificationTypeActionId)
         {
             this.provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotificationTypeAction"), notificationTypeActionId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotificationTypeAction(int notificationTypeActionId)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeAction"), notificationTypeActionId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotificationTypeActionByName(int notificationTypeId, string name)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeActionByName"), notificationTypeId, name);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotificationTypeActions(int notificationTypeId)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotificationTypeActions"), notificationTypeId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int SendNotification(Notification notification, int portalId)
         {
             var createdByUserId = UserController.Instance.GetCurrentUserInfo().UserID;
@@ -88,43 +88,43 @@ namespace DotNetNuke.Services.Social.Notifications.Data
                 notification.Context);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteNotification(int notificationId)
         {
             this.provider.ExecuteNonQuery(GetFullyQualifiedName("DeleteNotification"), notificationId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int DeleteUserNotifications(int userId, int portalId)
         {
             return userId <= 0 ? 0 : this.provider.ExecuteScalar<int>(GetFullyQualifiedName("DeleteUserNotifications"), userId, portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int CountNotifications(int userId, int portalId)
         {
             return userId <= 0 ? 0 : this.provider.ExecuteScalar<int>(GetFullyQualifiedName("CountNotifications"), userId, portalId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotifications(int userId, int portalId, int afterNotificationId, int numberOfRecords)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotifications"), userId, portalId, afterNotificationId, numberOfRecords);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotification(int notificationId)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotification"), notificationId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetNotificationByContext(int notificationTypeId, string context)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetNotificationByContext"), notificationTypeId, context);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsToastPending(int notificationId)
         {
             return this.provider.ExecuteScalar<bool>(
@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.Social.Notifications.Data
             this.provider.ExecuteNonQuery(GetFullyQualifiedName("MarkToastSent"), notificationId, userId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDataReader GetToasts(int userId, int portalId)
         {
             return this.provider.ExecuteReader(GetFullyQualifiedName("GetToasts"), userId, portalId);

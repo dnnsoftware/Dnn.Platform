@@ -12,9 +12,13 @@ namespace Dnn.ExportImport.Components.Providers
     using Dnn.ExportImport.Components.Common;
     using Dnn.ExportImport.Components.Entities;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Security.Permissions;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A data provider.</summary>
     internal sealed class DataProvider
@@ -22,15 +26,16 @@ namespace Dnn.ExportImport.Components.Providers
         private static readonly DataProvider Provider;
 
         private readonly DotNetNuke.Data.DataProvider dataProvider = DotNetNuke.Data.DataProvider.Instance();
+        private readonly IHostSettings hostSettings;
 
         static DataProvider()
         {
-            Provider = new DataProvider();
+            Provider = new DataProvider(Globals.DependencyProvider.GetRequiredService<IHostSettings>());
         }
 
-        private DataProvider()
+        private DataProvider(IHostSettings hostSettings)
         {
-            // so it can't be instantiated outside this class
+            this.hostSettings = hostSettings;
         }
 
         /// <summary>Gets the singleton instance of <see cref="DataProvider"/>.</summary>
@@ -470,18 +475,17 @@ namespace Dnn.ExportImport.Components.Providers
         /// <returns>The permission ID or <see langword="null"/>.</returns>
         public int? GetPermissionId(string permissionCode, string permissionKey, string permissionName)
         {
+            var permissions = CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
+                this.hostSettings,
+                new CacheItemArgs(DataCache.PermissionsCacheKey, DataCache.PermissionsCacheTimeout, DataCache.PermissionsCachePriority),
+                c => CBO.FillCollection<PermissionInfo>(this.dataProvider.ExecuteReader("GetPermissions")));
             return
-                CBO.GetCachedObject<IEnumerable<PermissionInfo>>(
-                    new CacheItemArgs(
-                    DataCache.PermissionsCacheKey,
-                    DataCache.PermissionsCacheTimeout,
-                    DataCache.PermissionsCachePriority),
-                    c =>
-                        CBO.FillCollection<PermissionInfo>(
-                            this.dataProvider.ExecuteReader("GetPermissions")))
-                    .FirstOrDefault(x => x.PermissionCode == permissionCode &&
-                    x.PermissionKey == permissionKey
-                    && x.PermissionName.Equals(permissionName, StringComparison.OrdinalIgnoreCase))?.PermissionID;
+                (from IPermissionDefinitionInfo x in permissions
+                where x.PermissionCode == permissionCode
+                where x.PermissionKey == permissionKey
+                where x.PermissionName.Equals(permissionName, StringComparison.OrdinalIgnoreCase)
+                select (int?)x.PermissionId)
+                .FirstOrDefault();
         }
 
         /// <summary>Get all portal tabs.</summary>

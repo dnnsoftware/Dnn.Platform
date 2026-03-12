@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.SearchResults
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             try
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.SearchResults
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             try
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.SearchResults
                     ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ScopeForFilters", selectedFilters.ToString());
 
                     var selectedRoles = this.comboBoxRoles.Value;
-                    PortalController.UpdatePortalSetting(this.PortalId, "SearchResult_ScopeForRoles", selectedRoles);
+                    PortalController.UpdatePortalSetting(this.portalController, this.PortalId, "SearchResult_ScopeForRoles", selectedRoles);
 
                     ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "EnableWildSearch", this.chkEnableWildSearch.Checked.ToString());
                     ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ShowDescription", this.chkShowDescription.Checked.ToString());

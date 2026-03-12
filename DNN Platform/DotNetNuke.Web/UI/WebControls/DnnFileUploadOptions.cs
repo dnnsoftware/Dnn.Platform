@@ -3,12 +3,14 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.UI.WebControls
 {
+    using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Runtime.Serialization;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
@@ -95,22 +97,37 @@ namespace DotNetNuke.Web.UI.WebControls
         private const int DefaultHeight = 630;
 
         private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly ICryptographyProvider cryptographyProvider;
         private Dictionary<string, string> parameters;
 
         /// <summary>Initializes a new instance of the <see cref="DnnFileUploadOptions"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnFileUploadOptions()
-            : this(null)
+            : this(null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DnnFileUploadOptions"/> class.</summary>
         /// <param name="hostSettings">The host settings.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public DnnFileUploadOptions(IHostSettings hostSettings)
+            : this(hostSettings, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DnnFileUploadOptions"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public DnnFileUploadOptions(IHostSettings hostSettings, IApplicationStatusInfo appStatus, ICryptographyProvider cryptographyProvider)
         {
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
             this.FolderPicker = new DnnDropDownListOptions();
-            this.MaxFileSize = (int)Config.GetMaxUploadSize();
-            this.Extensions = new List<string>();
+            this.MaxFileSize = (int)Config.GetMaxUploadSize(this.appStatus);
+            this.Extensions = [];
             this.Width = DefaultWidth;
             this.Height = DefaultHeight;
             this.Resources = new DnnFileUploadResources
@@ -145,13 +162,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>Gets the parameters.</summary>
         [DataMember(Name = "parameters")]
-        public Dictionary<string, string> Parameters
-        {
-            get
-            {
-                return this.parameters ?? (this.parameters = new Dictionary<string, string>());
-            }
-        }
+        public Dictionary<string, string> Parameters => this.parameters ??= new Dictionary<string, string>();
 
         /// <summary>Gets the validation code.</summary>
         [DataMember(Name = "validationCode")]
@@ -170,7 +181,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                 }
 
-                return ValidationUtils.ComputeValidationCode(this.hostSettings, parameters);
+                return ValidationUtils.ComputeValidationCode(this.cryptographyProvider, this.hostSettings, parameters);
             }
         }
     }

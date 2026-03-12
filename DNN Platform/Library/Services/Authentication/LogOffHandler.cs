@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Authentication
     /// <summary>The LogOffHandler class provides a replacement for the LogOff page.</summary>
     public class LogOffHandler : IHttpHandler
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable
         {
             get
@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Authentication
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             context.Response.Redirect(TestableGlobals.Instance.NavigateURL("LogOff"));

@@ -217,14 +217,17 @@ namespace DotNetNuke.Services.Messaging.Data
             get
             {
                 var ps = PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
                 return ps.InputFilter(this.subject, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
 
             set
             {
                 var ps = PortalSecurity.Instance;
-                ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning disable CS0618 // Type or member is obsolete
                 this.subject = ps.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
             }
         }
 
@@ -280,7 +283,7 @@ namespace DotNetNuke.Services.Messaging.Data
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public int KeyID
         {
             get
@@ -311,7 +314,7 @@ namespace DotNetNuke.Services.Messaging.Data
             };
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Fill(IDataReader dr)
         {
             this.MessageID = Null.SetNullInteger(dr["MessageID"]);
@@ -320,7 +323,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.FromUserName = Null.SetNullString(dr["FromUserName"]);
             this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
 
-            // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
+            ////'_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
             this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
             this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
             this.Body = Null.SetNullString(dr["Body"]);
@@ -336,7 +339,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.EmailSchedulerInstance = Null.SetNullGuid(dr["EmailSchedulerInstance"]);
             this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
-            // 'Conversation = New Guid(g)
+            ////'Conversation = New Guid(g)
         }
     }
 }

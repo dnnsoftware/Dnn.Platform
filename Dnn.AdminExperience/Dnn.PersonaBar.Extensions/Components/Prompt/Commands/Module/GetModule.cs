@@ -26,21 +26,21 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Module
         [FlagParameter("pageid", "Prompt_GetModule_FlagPageId", "Integer", true)]
         private const string FlagPageId = "pageid";
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
         private int ModuleId { get; set; }
 
         private int PageId { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Init(string[] args, PortalSettings portalSettings, UserInfo userInfo, int activeTabId)
         {
             this.ModuleId = this.GetFlagValue(FlagId, "Module Id", -1, true, true, true);
             this.PageId = this.GetFlagValue(FlagPageId, "Page Id", -1, true, false, true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override ConsoleResultModel Run()
         {
             var lst = new List<ModuleInfoModel>();

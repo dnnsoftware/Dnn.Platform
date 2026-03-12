@@ -15,11 +15,11 @@ namespace DotNetNuke.Tests.Web.InternalServices
     using System.Web.Http.Hosting;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Portals.Data;
@@ -84,7 +84,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private readonly double readerStaleTimeSpan = TimeSpan.FromMilliseconds(100).TotalSeconds;
         private Mock<ICBO> mockCBO;
-        private Mock<IHostController> mockHostController;
+        private FakeHostController fakeHostController;
         private Mock<CachingProvider> mockCachingProvider;
         private Mock<DataProvider> mockDataProvider;
         private Mock<ILocaleController> mockLocaleController;
@@ -113,8 +113,6 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.mockUserController = new Mock<IUserController>();
             this.mockModuleController = new Mock<IModuleController>();
             this.mockTabController = new Mock<ITabController>();
-            this.mockHostController = new Mock<IHostController>();
-            this.mockHostController.As<IHostSettingsService>();
 
             this.SetupDataProvider();
             this.SetupHostController();
@@ -128,8 +126,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.mockCBO = new Mock<ICBO>();
             var tabKey = $"{TabSearchTypeId}-{0}-{CultureEnUs}";
             var userKey = $"{UserSearchTypeId}-{0}-{CultureEnUs}";
-            this.mockCBO.Setup(c => c.GetCachedObject<IDictionary<string, string>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
-                    .Returns(new Dictionary<string, string>() { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
+            this.mockCBO
+                .Setup(c => c.GetCachedObject<IDictionary<string, string>>(It.IsAny<CacheItemArgs>(), It.IsAny<CacheItemExpiredCallback>(), It.IsAny<bool>()))
+                .Returns(new Dictionary<string, string> { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
             CBO.SetTestableInstance(this.mockCBO.Object);
 
             // create instance of the SearchServiceController
@@ -150,13 +149,21 @@ namespace DotNetNuke.Tests.Web.InternalServices
                     services.AddSingleton(this.mockUserController.Object);
                     services.AddSingleton(this.mockModuleController.Object);
                     services.AddSingleton(this.mockTabController.Object);
-                    services.AddSingleton(this.mockHostController.Object);
-                    services.AddSingleton((IHostSettingsService)this.mockHostController.Object);
+                    services.AddSingleton<IHostController>(this.fakeHostController);
+                    services.AddSingleton<IHostSettingsService>(this.fakeHostController);
                     services.AddSingleton(this.mockCBO.Object);
-                    services.AddSingleton<IApplicationStatusInfo>(new ApplicationStatusInfo(Mock.Of<IApplicationInfo>()));
+                    services.AddSingleton<IApplicationStatusInfo>(new FakeApplicationStatusInfo());
+                    services.AddSingleton<IInternalSearchController>(ActivatorUtilities.GetServiceOrCreateInstance<InternalSearchControllerImpl>);
                 });
 
-            this.searchServiceController = new SearchServiceController(new SearchControllerImpl(this.serviceProvider), HtmlModDefId) { Request = request };
+            this.searchServiceController = new SearchServiceController(
+                new SearchControllerImpl(this.serviceProvider),
+                new HostSettings(this.fakeHostController),
+                this.fakeHostController,
+                HtmlModDefId)
+            {
+                Request = request,
+            };
 
             this.internalSearchController = InternalSearchController.Instance;
             this.CreateNewLuceneControllerInstance();
@@ -175,6 +182,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             UserController.ClearInstance();
             PortalController.ClearInstance();
             ModuleController.ClearInstance();
+            HostController.ClearInstance();
         }
 
         [Test]
@@ -187,27 +195,27 @@ namespace DotNetNuke.Tests.Web.InternalServices
             const string tabUrl2 = "mysite/AboutUs";
 
             // first tab with 2 modules
-            var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
-            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId2, Body = moduleBody, RoleId = 731 };
-            var doc3 = new SearchDocument { UniqueKey = "key03", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId1, Body = moduleBody, RoleId = 731 };
+            var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, };
+            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId2, Body = moduleBody, RoleId = 731, };
+            var doc3 = new SearchDocument { UniqueKey = "key03", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId1, Body = moduleBody, RoleId = 731, };
 
             // second tab with 1 module
-            var doc4 = new SearchDocument { UniqueKey = "key04", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0 };
-            var doc5 = new SearchDocument { UniqueKey = "key05", TabId = TabId2, Title = keyword, Url = tabUrl2, SearchTypeId = ModuleSearchTypeId, ModuleDefId = HtmlModuleId, ModuleId = HtmlModuleId3, ModifiedTimeUtc = DateTime.UtcNow, Body = moduleBody, RoleId = 731 };
+            var doc4 = new SearchDocument { UniqueKey = "key04", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0, };
+            var doc5 = new SearchDocument { UniqueKey = "key05", TabId = TabId2, Title = keyword, Url = tabUrl2, SearchTypeId = ModuleSearchTypeId, ModuleDefId = HtmlModuleId, ModuleId = HtmlModuleId3, ModifiedTimeUtc = DateTime.UtcNow, Body = moduleBody, RoleId = 731, };
 
             // user doc
-            var userdoc = new SearchDocument { UniqueKey = "key06", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
+            var userDoc = new SearchDocument { UniqueKey = "key06", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731, };
             this.internalSearchController.AddSearchDocument(doc1);
             this.internalSearchController.AddSearchDocument(doc2);
             this.internalSearchController.AddSearchDocument(doc3);
             this.internalSearchController.AddSearchDocument(doc4);
             this.internalSearchController.AddSearchDocument(doc5);
-            this.internalSearchController.AddSearchDocument(userdoc);
+            this.internalSearchController.AddSearchDocument(userDoc);
 
             var query = new SearchQuery
             {
                 KeyWords = keyword,
-                SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId },
+                SearchTypeIds = [ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId,],
                 RoleId = 731,
             };
 
@@ -217,20 +225,20 @@ namespace DotNetNuke.Tests.Web.InternalServices
             // Assert
             var groupedDetailViews = search as List<GroupedDetailView> ?? search.ToList();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Overall 3 groups - tab1, tab2 and user
-                Assert.That(groupedDetailViews.Count(), Is.EqualTo(3));
+                Assert.That(groupedDetailViews, Has.Count.EqualTo(3));
 
                 // Tab 1 has 2 DetailViews
-                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == tabUrl1).Results.Count(), Is.EqualTo(2));
+                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == tabUrl1).Results, Has.Count.EqualTo(2));
 
                 // Tab 2 has 1 DetailViews
-                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == tabUrl2).Results.Count(), Is.EqualTo(1));
+                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == tabUrl2).Results, Has.One.Items);
 
                 // UserUrl has 1 DetailViews
-                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == userUrl).Results.Count(), Is.EqualTo(1));
-            });
+                Assert.That(groupedDetailViews.Single(x => x.DocumentUrl == userUrl).Results, Has.One.Items);
+            }
         }
 
         [Test]
@@ -242,20 +250,20 @@ namespace DotNetNuke.Tests.Web.InternalServices
             const string tabUrl2 = "mysite/AboutUs";
 
             var now = DateTime.UtcNow;
-            var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId731 };
-            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId0 };
-            var userdoc = new SearchDocument { UniqueKey = "key03", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId0 };
+            var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId731, };
+            var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId0, };
+            var userDoc = new SearchDocument { UniqueKey = "key03", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = now, PortalId = PortalId0, RoleId = RoleId0, };
 
             this.internalSearchController.AddSearchDocument(doc1);
             this.internalSearchController.AddSearchDocument(doc2);
-            this.internalSearchController.AddSearchDocument(userdoc);
+            this.internalSearchController.AddSearchDocument(userDoc);
             this.internalSearchController.Commit();
 
             var query = new SearchQuery
             {
                 KeyWords = keyword,
-                PortalIds = new List<int> { PortalId0 },
-                SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId },
+                PortalIds = [PortalId0,],
+                SearchTypeIds = [ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId,],
                 BeginModifiedTimeUtc = now.AddMinutes(-1),
                 EndModifiedTimeUtc = now.AddMinutes(+1),
                 PageIndex = 1,
@@ -271,19 +279,22 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             // Assert - overall 2 groups: tabs and users
             var groupedBasicViews = search as List<GroupedBasicView> ?? search.ToList();
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
-                Assert.That(groupedBasicViews.Count(), Is.EqualTo(2));
+                Assert.That(groupedBasicViews, Has.Count.EqualTo(2));
+
+                var userResults = groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results;
+                var tabResults = groupedBasicViews.Single(x => x.DocumentTypeName == "tab").Results;
 
                 // 1 User results
-                Assert.That(groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.Count(), Is.EqualTo(1));
+                Assert.That(userResults, Has.One.Items);
 
                 // User result should have 1 attribute(avatar)
-                Assert.That(groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.ElementAt(0).Attributes.Count(), Is.EqualTo(1));
+                Assert.That(userResults[0].Attributes, Has.One.Items);
 
                 // 2 Tabs results
-                Assert.That(groupedBasicViews.Single(x => x.DocumentTypeName == "tab").Results.Count(), Is.EqualTo(2));
-            });
+                Assert.That(tabResults, Has.Count.EqualTo(2));
+            }
         }
 
         [Test]
@@ -336,8 +347,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
             var query = new SearchQuery
             {
                 KeyWords = title,
-                PortalIds = new List<int> { PortalId0 },
-                SearchTypeIds = new[] { ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId },
+                PortalIds = [PortalId0,],
+                SearchTypeIds = [ModuleSearchTypeId, TabSearchTypeId, UserSearchTypeId,],
                 BeginModifiedTimeUtc = now.AddMinutes(-1),
                 EndModifiedTimeUtc = now.AddMinutes(+1),
                 PageIndex = 1,
@@ -351,17 +362,18 @@ namespace DotNetNuke.Tests.Web.InternalServices
             // Run
             var searchResults = this.GetGroupedDetailViewResults(query).ToList();
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 // Assert
-                Assert.That(searchResults.Count(), Is.EqualTo(1));
-                Assert.That(searchResults.First().Results, Has.Count.EqualTo(1));
-            });
-            Assert.Multiple(() =>
+                Assert.That(searchResults, Has.One.Items);
+                Assert.That(searchResults[0].Results, Has.One.Items);
+            }
+
+            using (Assert.EnterMultipleScope())
             {
-                Assert.That(searchResults.First().Results.First().DocumentUrl, Is.EqualTo(tabUrl));
-                Assert.That(searchResults.First().Results.First().Title, Is.EqualTo(titleModified));
-            });
+                Assert.That(searchResults[0].Results.First().DocumentUrl, Is.EqualTo(tabUrl));
+                Assert.That(searchResults[0].Results.First().Title, Is.EqualTo(titleModified));
+            }
         }
 
         private void CreateNewLuceneControllerInstance()
@@ -372,40 +384,35 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 this.luceneController.Dispose();
             }
 
-            this.luceneController = new LuceneControllerImpl();
+            this.luceneController = new LuceneControllerImpl(this.fakeHostController, new FakeApplicationStatusInfo());
             LuceneController.SetTestableInstance(this.luceneController);
         }
 
         private void SetupUserController()
         {
-            this.mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
-            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile(), });
+            this.mockUserController
+                .Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>()))
+                .Returns(new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile(), });
             UserController.SetTestableInstance(this.mockUserController.Object);
         }
 
         private void SetupHostController()
         {
-            this.mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(
-                SearchIndexFolder);
-            this.mockHostController.Setup(c => c.GetDouble(Constants.SearchReaderRefreshTimeKey, It.IsAny<double>())).
-                Returns(this.readerStaleTimeSpan);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTitleBoostSetting, It.IsAny<int>())).Returns(
-                Constants.DefaultSearchTitleBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchTagBoostSetting, It.IsAny<int>())).Returns(
-                Constants.DefaultSearchTagBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(
-                Constants.DefaultSearchKeywordBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).
-                Returns(Constants.DefaultSearchDescriptionBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(
-                Constants.DefaultSearchAuthorBoost);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMinLengthKey, It.IsAny<int>())).Returns(
-                Constants.DefaultMinLen);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchMaxLengthKey, It.IsAny<int>())).Returns(
-                Constants.DefaultMaxLen);
-            this.mockHostController.Setup(c => c.GetInteger(Constants.SearchRetryTimesKey, It.IsAny<int>())).Returns(
-                DefaultSearchRetryTimes);
-            HostController.RegisterInstance(this.mockHostController.Object);
+            this.fakeHostController = new FakeHostController(new Dictionary<string, string>
+            {
+                { Constants.SearchIndexFolderKey, SearchIndexFolder },
+                { Constants.SearchReaderRefreshTimeKey, this.readerStaleTimeSpan.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchTitleBoostSetting, Constants.DefaultSearchTitleBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchTagBoostSetting, Constants.DefaultSearchTagBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchMinLengthKey, Constants.DefaultMinLen.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchMaxLengthKey, Constants.DefaultMaxLen.ToString(CultureInfo.InvariantCulture) },
+                { Constants.SearchRetryTimesKey, DefaultSearchRetryTimes.ToString(CultureInfo.InvariantCulture) },
+            });
+
+            HostController.SetTestableInstance(this.fakeHostController);
         }
 
         private void SetupDataProvider()
@@ -427,21 +434,26 @@ namespace DotNetNuke.Tests.Web.InternalServices
         private void SetupPortalSettings()
         {
             var mockPortalController = new Mock<IPortalController>();
-            mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(new PortalInfo { PortalID = PortalId0, PortalGroupID = -1, UserTabId = TabId1, });
+            mockPortalController
+                .Setup(x => x.GetPortal(It.IsAny<int>()))
+                .Returns(new PortalInfo { PortalID = PortalId0, PortalGroupID = -1, UserTabId = TabId1, });
             PortalController.SetTestableInstance(mockPortalController.Object);
         }
 
         private void SetupModuleController()
         {
-            this.mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId1), It.Is<int>(p => p == PortalId0), false)).Returns(
-    new ModuleInfo { ModuleID = HtmlModuleId1, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle1 });
-            this.mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId2), It.Is<int>(p => p == PortalId0), false)).Returns(
-            new ModuleInfo { ModuleID = HtmlModuleId2, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle2 });
-            this.mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId3), It.Is<int>(p => p == PortalId0), false)).Returns(
-            new ModuleInfo { ModuleID = HtmlModuleId3, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle3 });
-
-            this.mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId4), It.Is<int>(p => p == PortalId0), false)).Returns(
-            new ModuleInfo { ModuleID = HtmlModuleId4, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle4 });
+            this.mockModuleController
+                .Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId1), It.Is<int>(p => p == PortalId0), false))
+                .Returns(new ModuleInfo { ModuleID = HtmlModuleId1, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle1, });
+            this.mockModuleController
+                .Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId2), It.Is<int>(p => p == PortalId0), false))
+                .Returns(new ModuleInfo { ModuleID = HtmlModuleId2, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle2, });
+            this.mockModuleController
+                .Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId3), It.Is<int>(p => p == PortalId0), false))
+                .Returns(new ModuleInfo { ModuleID = HtmlModuleId3, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle3, });
+            this.mockModuleController
+                .Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId4), It.Is<int>(p => p == PortalId0), false))
+                .Returns(new ModuleInfo { ModuleID = HtmlModuleId4, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle4, });
             ModuleController.SetTestableInstance(this.mockModuleController.Object);
         }
 
@@ -486,9 +498,28 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("LastModifiedByUserID", typeof(int));
             table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
 
-            table.Rows.Add(1, null, UserName1, UserName1, UserName1, UserName1, 1, "host@changeme.invalid", null, null, 0, null,
-                           "127.0.0.1", 0, "8D3C800F-7A40-45D6-BA4D-E59A393F9800", DateTime.Now, null, -1, DateTime.Now,
-                           -1, DateTime.Now);
+            table.Rows.Add(
+                1,
+                null,
+                UserName1,
+                UserName1,
+                UserName1,
+                UserName1,
+                1,
+                "host@changeme.invalid",
+                null,
+                null,
+                0,
+                null,
+                "127.0.0.1",
+                0,
+                "8D3C800F-7A40-45D6-BA4D-E59A393F9800",
+                DateTime.Now,
+                null,
+                -1,
+                DateTime.Now,
+                -1,
+                DateTime.Now);
             return table.CreateDataReader();
         }
 
@@ -504,7 +535,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("CreatedOnDate", typeof(DateTime));
             table.Columns.Add("LastModifiedByUserID", typeof(int));
             table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
-            table.PrimaryKey = new[] { pkId };
+            table.PrimaryKey = [pkId,];
 
             table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
             return table.CreateDataReader();
@@ -619,45 +650,233 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("localizedVersionGuid", typeof(Guid));
             table.Columns.Add("CultureCode", typeof(string));
 
-            table.Rows.Add(0, 0, 56, 57, 368, 116, 1, "contentpane", "Text/HTML", 1200,
-                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Aperture/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
-                           74, 1200, 238,
-                           "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 92,
-                           "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
-                           "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
-                           "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
+            table.Rows.Add(
+                0,
+                0,
+                56,
+                57,
+                368,
+                116,
+                1,
+                "contentpane",
+                "Text/HTML",
+                1200,
+                "FileModuleCachingProvider",
+                null,
+                null,
+                null,
+                string.Empty,
+                0,
+                0,
+                0,
+                null,
+                null,
+                null,
+                null,
+                "[G]Containers/Aperture/none.ascx",
+                1,
+                0,
+                0,
+                0,
+                null,
+                null,
+                0,
+                1,
+                1,
+                1,
+                74,
+                1200,
+                238,
+                "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html",
+                0,
+                7,
+                92,
+                "Text/HTML",
+                2,
+                null,
+                0,
+                null,
+                -1,
+                "2014-02-18 10:39:45.170",
+                -1,
+                "2014-02-18 10:39:45.170",
+                "2014-02-18 10:39:45.190",
+                "A0B23459-676C-4DE4-BCA1-33E222F8405A",
+                "85AF4947-EB80-475D-9D8D-0BAD6B026A2B",
+                null,
+                "664BAA98-7E24-461F-8180-36527619D042",
+                string.Empty);
 
-            table.Rows.Add(0, 0, 56, 56, 367, 116, 1, "contentpane", "Header Images", 1200,
-                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Aperture/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
-                           74, 1200, 238,
-                           "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 91,
-                           "Header Images", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
-                           "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
-                           "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
+            table.Rows.Add(
+                0,
+                0,
+                56,
+                56,
+                367,
+                116,
+                1,
+                "contentpane",
+                "Header Images",
+                1200,
+                "FileModuleCachingProvider",
+                null,
+                null,
+                null,
+                string.Empty,
+                0,
+                0,
+                0,
+                null,
+                null,
+                null,
+                null,
+                "[G]Containers/Aperture/none.ascx",
+                1,
+                0,
+                0,
+                0,
+                null,
+                null,
+                0,
+                1,
+                1,
+                1,
+                74,
+                1200,
+                238,
+                "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html",
+                0,
+                7,
+                91,
+                "Header Images",
+                2,
+                null,
+                0,
+                null,
+                -1,
+                "2014-02-18 10:39:45.170",
+                -1,
+                "2014-02-18 10:39:45.170",
+                "2014-02-18 10:39:45.190",
+                "A0B23459-676C-4DE4-BCA1-33E222F8405A",
+                "85AF4947-EB80-475D-9D8D-0BAD6B026A2B",
+                null,
+                "664BAA98-7E24-461F-8180-36527619D042",
+                string.Empty);
 
-            table.Rows.Add(0, 0, 56, 59, 370, 116, 1, "contentpane", "Customer Support", 1200,
-                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Apterure/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
-                           74, 1200, 238,
-                           "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 94,
-                           "Customer Support", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
-                           "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
-                           "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
+            table.Rows.Add(
+                0,
+                0,
+                56,
+                59,
+                370,
+                116,
+                1,
+                "contentpane",
+                "Customer Support",
+                1200,
+                "FileModuleCachingProvider",
+                null,
+                null,
+                null,
+                string.Empty,
+                0,
+                0,
+                0,
+                null,
+                null,
+                null,
+                null,
+                "[G]Containers/Apterure/none.ascx",
+                1,
+                0,
+                0,
+                0,
+                null,
+                null,
+                0,
+                1,
+                1,
+                1,
+                74,
+                1200,
+                238,
+                "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html",
+                0,
+                7,
+                94,
+                "Customer Support",
+                2,
+                null,
+                0,
+                null,
+                -1,
+                "2014-02-18 10:39:45.170",
+                -1,
+                "2014-02-18 10:39:45.170",
+                "2014-02-18 10:39:45.190",
+                "A0B23459-676C-4DE4-BCA1-33E222F8405A",
+                "85AF4947-EB80-475D-9D8D-0BAD6B026A2B",
+                null,
+                "664BAA98-7E24-461F-8180-36527619D042",
+                string.Empty);
 
-            table.Rows.Add(0, 0, 57, 67, 378, 116, 1, "contentpane", "About Us", 1200,
-                           "FileModuleCachingProvider", null, null, null, string.Empty, 0, 0, 0, null, null, null, null,
-                           "[G]Containers/Aperture/none.ascx", 1, 0, 0, 0, null, null, 0, 1, 1, 1,
-                           74, 1200, 238,
-                           "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html", 0, 7, 103,
-                           "Text/HTML", 2, null, 0, null, -1, "2014-02-18 10:39:45.170", -1,
-                           "2014-02-18 10:39:45.170", "2014-02-18 10:39:45.190",
-                           "A0B23459-676C-4DE4-BCA1-33E222F8405A", "85AF4947-EB80-475D-9D8D-0BAD6B026A2B", null,
-                           "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
+            table.Rows.Add(
+                0,
+                0,
+                57,
+                67,
+                378,
+                116,
+                1,
+                "contentpane",
+                "About Us",
+                1200,
+                "FileModuleCachingProvider",
+                null,
+                null,
+                null,
+                string.Empty,
+                0,
+                0,
+                0,
+                null,
+                null,
+                null,
+                null,
+                "[G]Containers/Aperture/none.ascx",
+                1,
+                0,
+                0,
+                0,
+                null,
+                null,
+                0,
+                1,
+                1,
+                1,
+                74,
+                1200,
+                238,
+                "DotNetNuke.Modules.Html.HtmlTextController, DotNetNuke.Modules.Html",
+                0,
+                7,
+                103,
+                "Text/HTML",
+                2,
+                null,
+                0,
+                null,
+                -1,
+                "2014-02-18 10:39:45.170",
+                -1,
+                "2014-02-18 10:39:45.170",
+                "2014-02-18 10:39:45.190",
+                "A0B23459-676C-4DE4-BCA1-33E222F8405A",
+                "85AF4947-EB80-475D-9D8D-0BAD6B026A2B",
+                null,
+                "664BAA98-7E24-461F-8180-36527619D042",
+                string.Empty);
             return table.CreateDataReader();
         }
 
@@ -674,7 +893,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("LastModifiedByUserID", typeof(int));
             table.Columns.Add("LastModifiedOnDate", typeof(DateTime));
             table.Columns.Add("DefinitionName", typeof(string));
-            table.PrimaryKey = new[] { pkId };
+            table.PrimaryKey = [pkId,];
 
             table.Rows.Add(116, "Text/HTML", 74, 1200, -1, DateTime.Now, -1, DateTime.Now, "Text/HTML");
             table.Rows.Add(117, "Journal", 75, 0, -1, DateTime.Now, -1, DateTime.Now, "Journal");
@@ -690,7 +909,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Columns.Add("SearchTypeName", typeof(string));
             table.Columns.Add("SearchResultClass", typeof(string));
             table.Columns.Add("IsPrivate", typeof(byte));
-            table.PrimaryKey = new[] { pkId };
+            table.PrimaryKey = [pkId,];
 
             table.Rows.Add(1, "module", FakeResultControllerClass, 0);
             table.Rows.Add(2, "tab", FakeResultControllerClass, 0);
@@ -726,13 +945,53 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 table.Columns.Add(col);
             }
 
-            var homePage = 1;
-            table.Rows.Add(portalId, null, "My Website", "Logo.png", "Copyright 2011 by DotNetNuke Corporation", null,
-                           "2", "0", "2", "USD", "0", "0", "0", "0", "0", "1", "My Website",
-                           "DotNetNuke, DNN, Content, Management, CMS", null, "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
-                           null, null, null, "0", "admin@changeme.invalid", "en-US", "-8", "58", "Portals/0", null,
-                           homePage.ToString(), null, null, "57", "56", "-1", "-1", null, null, "7", "-1", "2011-08-25 07:34:11",
-                           "-1", "2011-08-25 07:34:29", culture);
+            const int homePage = 1;
+            table.Rows.Add(
+                portalId,
+                null,
+                "My Website",
+                "Logo.png",
+                "Copyright 2011 by DotNetNuke Corporation",
+                null,
+                "2",
+                "0",
+                "2",
+                "USD",
+                "0",
+                "0",
+                "0",
+                "0",
+                "0",
+                "1",
+                "My Website",
+                "DotNetNuke, DNN, Content, Management, CMS",
+                null,
+                "1057AC7A-3C08-4849-A3A6-3D2AB4662020",
+                null,
+                null,
+                null,
+                "0",
+                "admin@changeme.invalid",
+                "en-US",
+                "-8",
+                "58",
+                "Portals/0",
+                null,
+                homePage.ToString(),
+                null,
+                null,
+                "57",
+                "56",
+                "-1",
+                "-1",
+                null,
+                null,
+                "7",
+                "-1",
+                "2011-08-25 07:34:11",
+                "-1",
+                "2011-08-25 07:34:29",
+                culture);
 
             return table.CreateDataReader();
         }

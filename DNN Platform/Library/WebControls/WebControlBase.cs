@@ -31,11 +31,9 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in DotNetNuke 9.8.0. Use PortalController.Instance.GetCurrentSettings() instead, if you need access to the ActiveTab, use TabController.CurrentPage. Scheduled for removal in v11.0.0.")]
-#pragma warning disable 612, 618 // GetCurrentPortalSettings is obsolete
-        public PortalSettings PortalSettings => PortalController.Instance.GetCurrentPortalSettings();
-#pragma warning restore 612, 618
+        public PortalSettings PortalSettings => PortalSettings.Current;
 
-        /// <summary>Gets the Html content for this WebControl rendering.</summary>
+        /// <summary>Gets the HTML content for this WebControl rendering.</summary>
         public abstract string HtmlOutput { get; }
 
         /// <summary>Gets a value indicating whether this WebControl is currently displayed in the admin menu.</summary>

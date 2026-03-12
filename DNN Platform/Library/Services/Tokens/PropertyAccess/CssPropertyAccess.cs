@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Tokens
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ProcessToken(StylesheetDto model, UserInfo accessingUser, Scope accessLevel)
         {
             if (string.IsNullOrEmpty(model.Path))

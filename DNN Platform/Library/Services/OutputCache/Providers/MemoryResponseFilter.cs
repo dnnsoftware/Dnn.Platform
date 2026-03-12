@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// <summary>FileResponseFilter implements <see cref="OutputCacheResponseFilter"/> to capture the response into memory.</summary>
     public class MemoryResponseFilter : OutputCacheResponseFilter
     {
-        // Private _content As StringBuilder
+        ////Private _content As StringBuilder
         private static System.Web.Caching.Cache runtimeCache;
 
         /// <summary>Initializes a new instance of the <see cref="MemoryResponseFilter"/> class.</summary>
@@ -47,13 +47,13 @@ namespace DotNetNuke.Services.OutputCache.Providers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void AddItemToCache(int itemId, string output)
         {
             Cache.Insert(this.CacheKey, output, null, DateTime.UtcNow.Add(this.CacheDuration), System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, null);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void RemoveItemFromCache(int itemId)
         {
             Cache.Remove(this.CacheKey);

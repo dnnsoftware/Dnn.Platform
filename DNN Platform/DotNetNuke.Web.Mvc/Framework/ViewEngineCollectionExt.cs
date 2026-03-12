@@ -10,14 +10,38 @@ namespace DotNetNuke.Web.Mvc.Framework
     using System.Web.Caching;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Web.Mvc.Framework.Controllers;
 
-    public static class ViewEngineCollectionExt
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Extension methods for <see langword="ViewEngineCollection"/>.</summary>
+    public static partial class ViewEngineCollectionExt
     {
-        // Enable the call to ViewEngineCollection FindView method with useCache=false
-        public static ViewEngineResult FindView(this ViewEngineCollection viewEngineCollection, ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+        /// <summary>Finds the specified view by using the specified controller context.</summary>
+        /// <param name="viewEngineCollection">The view engine collection.</param>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="viewName">The name of the view.</param>
+        /// <param name="masterName">The name of the master.</param>
+        /// <param name="useCache"><see langword="true"/> to specify that the view engine returns the cached view, if a cached view exists; otherwise, <see langword="false"/>.</param>
+        /// <returns>The page view.</returns>
+        [DnnDeprecated(10, 2, 2, "Please use overload taking IHostSettings")]
+        public static partial ViewEngineResult FindView(this ViewEngineCollection viewEngineCollection, ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+            => viewEngineCollection.FindView(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), controllerContext, viewName, masterName, useCache);
+
+        /// <summary>Finds the specified view by using the specified controller context.</summary>
+        /// <param name="viewEngineCollection">The view engine collection.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="viewName">The name of the view.</param>
+        /// <param name="masterName">The name of the master.</param>
+        /// <param name="useCache"><see langword="true"/> to specify that the view engine returns the cached view, if a cached view exists; otherwise, <see langword="false"/>.</param>
+        /// <returns>The page view.</returns>
+        public static ViewEngineResult FindView(this ViewEngineCollection viewEngineCollection, IHostSettings hostSettings, ControllerContext controllerContext, string viewName, string masterName, bool useCache)
         {
             try
             {
@@ -29,7 +53,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                 };
                 var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default, "Find", viewEngineCollection, parameters);
 
-                return useCache ? CBO.GetCachedObject<ViewEngineResult>(cacheArg, CallFind) : CallFind(cacheArg);
+                return useCache ? CBO.GetCachedObject<ViewEngineResult>(hostSettings, cacheArg, CallFind) : CallFind(cacheArg);
             }
             catch (Exception)
             {
@@ -37,8 +61,17 @@ namespace DotNetNuke.Web.Mvc.Framework
             }
         }
 
-        // Enable the call to ViewEngineCollection FindPartialView method with useCache=false
-        public static ViewEngineResult FindPartialView(this ViewEngineCollection viewEngineCollection, ControllerContext controllerContext, string partialViewName, bool useCache)
+        /// <summary>Finds the specified partial view by using the specified controller context.</summary>
+        /// <param name="viewEngineCollection">The view engine collection.</param>
+        /// <param name="controllerContext">The controller context.</param>
+        /// <param name="partialViewName">The name of the partial view.</param>
+        /// <param name="useCache"><see langword="true"/> to specify that the view engine returns the cached view, if a cached view exists; otherwise, <see langword="true"/>.</param>
+        /// <returns>The partial view.</returns>
+        [DnnDeprecated(10, 2, 2, "Please use overload taking IHostSettings")]
+        public static partial ViewEngineResult FindPartialView(this ViewEngineCollection viewEngineCollection, ControllerContext controllerContext, string partialViewName, bool useCache)
+            => viewEngineCollection.FindPartialView(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), controllerContext, partialViewName, useCache);
+
+        public static ViewEngineResult FindPartialView(this ViewEngineCollection viewEngineCollection, IHostSettings hostSettings, ControllerContext controllerContext, string partialViewName, bool useCache)
         {
             try
             {
@@ -50,7 +83,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                 };
                 var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default, "Find", viewEngineCollection, parameters);
 
-                return useCache ? CBO.GetCachedObject<ViewEngineResult>(cacheArg, CallFind) : CallFind(cacheArg);
+                return useCache ? CBO.GetCachedObject<ViewEngineResult>(hostSettings, cacheArg, CallFind) : CallFind(cacheArg);
             }
             catch (Exception)
             {

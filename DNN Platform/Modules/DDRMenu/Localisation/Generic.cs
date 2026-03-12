@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using System.Linq;
     using System.Reflection;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Modules;
@@ -18,9 +19,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Implements generic localization support.</summary>
-    public class Generic : ILocalisation
+    /// <param name="businessControllerProvider">The business controller provider.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Generic(IBusinessControllerProvider businessControllerProvider, IHostSettings hostSettings)
+        : ILocalisation
     {
-        private readonly IBusinessControllerProvider businessControllerProvider;
+        private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.DependencyProvider.GetRequiredService<IHostSettings>();
         private bool haveChecked;
         private object locApi;
         private MethodInfo locTab;
@@ -29,29 +34,30 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         /// <summary>Initializes a new instance of the <see cref="Generic"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IBusinessControllerProvider. Scheduled removal in v12.0.0.")]
         public Generic()
-            : this(null)
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="Generic"/> class.</summary>
         /// <param name="businessControllerProvider">The business controller provider.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Generic(IBusinessControllerProvider businessControllerProvider)
+            : this(businessControllerProvider, null)
         {
-            this.businessControllerProvider = businessControllerProvider ?? Globals.DependencyProvider.GetRequiredService<IBusinessControllerProvider>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool HaveApi()
         {
             if (!this.haveChecked)
             {
-                var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
+                var modules = DesktopModuleController.GetDesktopModules(this.hostSettings, PortalSettings.Current.PortalId);
                 foreach (var module in modules.Values.Where(m => !string.IsNullOrEmpty(m.BusinessControllerClass)))
                 {
                     try
                     {
                         var controllerType = Reflection.CreateType(module.BusinessControllerClass);
-                        this.locTab = controllerType.GetMethod("LocaliseTab", new[] { typeof(TabInfo), typeof(int) });
+                        this.locTab = controllerType.GetMethod("LocaliseTab", [typeof(TabInfo), typeof(int),]);
                         if (this.locTab != null)
                         {
                             if (!this.locTab.IsStatic)
@@ -62,7 +68,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                             break;
                         }
 
-                        this.locNodes = controllerType.GetMethod("LocaliseNodes", new[] { typeof(DNNNodeCollection) });
+                        this.locNodes = controllerType.GetMethod("LocaliseNodes", [typeof(DNNNodeCollection),]);
                         if (this.locNodes != null)
                         {
                             if (!this.locNodes.IsStatic)
@@ -86,16 +92,16 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
             return this.locTab != null || this.locNodes != null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public TabInfo LocaliseTab(TabInfo tab, int portalId)
         {
-            return (TabInfo)this.locTab?.Invoke(this.locApi, new object[] { tab, portalId });
+            return (TabInfo)this.locTab?.Invoke(this.locApi, [tab, portalId,]);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public DNNNodeCollection LocaliseNodes(DNNNodeCollection nodes)
         {
-            return (DNNNodeCollection)this.locNodes?.Invoke(this.locApi, new object[] { nodes });
+            return (DNNNodeCollection)this.locNodes?.Invoke(this.locApi, [nodes,]);
         }
     }
 }

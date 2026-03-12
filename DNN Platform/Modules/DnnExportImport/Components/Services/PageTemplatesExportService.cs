@@ -12,11 +12,16 @@ namespace Dnn.ExportImport.Components.Services
     using Dnn.ExportImport.Components.Dto;
     using Dnn.ExportImport.Components.Entities;
     using Dnn.ExportImport.Dto.PageTemplates;
+
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
+
     using Newtonsoft.Json;
 
     using DataProvider = Dnn.ExportImport.Components.Providers.DataProvider;
@@ -24,19 +29,43 @@ namespace Dnn.ExportImport.Components.Services
     /// <summary>An export service for templates.</summary>
     public class PageTemplatesExportService : AssetsExportService
     {
-        private readonly string templatesFolder =
-            $"{Globals.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
+        private readonly string templatesFolder;
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
+        public PageTemplatesExportService()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public PageTemplatesExportService(IApplicationStatusInfo appStatus)
+            : this(appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public PageTemplatesExportService(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : base(appStatus, hostSettings)
+        {
+            appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.templatesFolder = $"{appStatus.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";
+        }
+
+        /// <inheritdoc />
         public override string Category => Constants.Category_Templates;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override string ParentCategory => null;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override uint Priority => 10;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob))
@@ -118,7 +147,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob))
@@ -187,7 +216,7 @@ namespace Dnn.ExportImport.Components.Services
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override int GetImportTotal()
         {
             return this.Repository.GetCount<ExportPageTemplate>();

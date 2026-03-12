@@ -13,11 +13,11 @@ namespace DotNetNuke.Services.Search.Internals
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Definitions;
     using DotNetNuke.Entities.Portals;
@@ -29,6 +29,8 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Documents;
     using Lucene.Net.Index;
     using Lucene.Net.Search;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -52,6 +54,8 @@ namespace DotNetNuke.Services.Search.Internals
         private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
 
+        private readonly IHostSettings hostSettings;
+        private readonly IServiceProvider serviceProvider;
         private readonly int titleBoost;
         private readonly int tagBoost;
         private readonly int contentBoost;
@@ -60,17 +64,29 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly int moduleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         /// <summary>Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public InternalSearchControllerImpl()
+            : this(null, null, null)
         {
-            var hostController = HostController.Instance;
-            this.titleBoost = hostController.GetInteger(Constants.SearchTitleBoostSetting, Constants.DefaultSearchTitleBoost);
-            this.tagBoost = hostController.GetInteger(Constants.SearchTagBoostSetting, Constants.DefaultSearchTagBoost);
-            this.contentBoost = hostController.GetInteger(Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost);
-            this.descriptionBoost = hostController.GetInteger(Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost);
-            this.authorBoost = hostController.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
         }
 
-        /// <inheritdoc/>
+        /// <summary>Initializes a new instance of the <see cref="InternalSearchControllerImpl"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="serviceProvider">The service provider.</param>
+        public InternalSearchControllerImpl(IHostSettingsService hostSettingsService, IHostSettings hostSettings, IServiceProvider serviceProvider)
+        {
+            hostSettingsService ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
+            this.titleBoost = hostSettingsService.GetInteger(Constants.SearchTitleBoostSetting, Constants.DefaultSearchTitleBoost);
+            this.tagBoost = hostSettingsService.GetInteger(Constants.SearchTagBoostSetting, Constants.DefaultSearchTagBoost);
+            this.contentBoost = hostSettingsService.GetInteger(Constants.SearchContentBoostSetting, Constants.DefaultSearchKeywordBoost);
+            this.descriptionBoost = hostSettingsService.GetInteger(Constants.SearchDescriptionBoostSetting, Constants.DefaultSearchDescriptionBoost);
+            this.authorBoost = hostSettingsService.GetInteger(Constants.SearchAuthorBoostSetting, Constants.DefaultSearchAuthorBoost);
+        }
+
+        /// <inheritdoc />
         public IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId)
         {
             var searchableModuleDefsCacheArgs = new CacheItemArgs(
@@ -83,30 +99,32 @@ namespace DotNetNuke.Services.Search.Internals
                 120,
                 CacheItemPriority.Default);
 
-            var list = CBO.GetCachedObject<IList<SearchContentSource>>(
-                searchableModuleDefsCacheArgs, this.SearchContentSourceCallback);
-
-            return list;
+            return CBO.GetCachedObject<IList<SearchContentSource>>(
+                this.hostSettings,
+                searchableModuleDefsCacheArgs,
+                this.SearchContentSourceCallback);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
             // ModuleDefId will be zero for non-module
             var key = $"{searchResult.SearchTypeId}-{searchResult.ModuleDefId}-{Thread.CurrentThread.CurrentCulture}";
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
-                            new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
+                new CacheItemArgs(key, 120, CacheItemPriority.Default),
+                this.SearchDocumentTypeDisplayNameCallBack,
+                false);
 
             return keys.TryGetValue(key, out var documentTypeDisplayName) ? documentTypeDisplayName : string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSearchDocument(SearchDocument searchDocument)
         {
             this.AddSearchDocumentInternal(searchDocument, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void AddSearchDocuments(IEnumerable<SearchDocument> searchDocuments)
         {
             var searchDocs = searchDocuments as IList<SearchDocument> ?? searchDocuments.ToList();
@@ -115,14 +133,14 @@ namespace DotNetNuke.Services.Search.Internals
                 const int commitBatchSize = 1024 * 16;
                 var idx = 0;
 
-                // var added = false;
+                ////var added = false;
                 foreach (var searchDoc in searchDocs)
                 {
                     try
                     {
                         this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
 
-                        // added = true;
+                        ////added = true;
                     }
                     catch (Exception ex)
                     {
@@ -132,20 +150,20 @@ namespace DotNetNuke.Services.Search.Internals
 
                 // Note: modified to do commit only once at the end of scheduler job
                 // check so we don't commit again
-                // if (added && (idx % commitBatchSize) != 0)
-                // {
-                //    Commit();
-                // }
+                ////if (added && (idx % commitBatchSize) != 0)
+                ////{
+                ////   Commit();
+                ////}
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSearchDocument(SearchDocument searchDocument)
         {
             this.DeleteSearchDocumentInternal(searchDocument, false);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId)
         {
             Requires.NotNegative("PortalId", portalId);
@@ -159,7 +177,7 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void DeleteAllDocuments(int portalId, int searchTypeId)
         {
             Requires.NotNegative("SearchTypeId", searchTypeId);
@@ -171,20 +189,20 @@ namespace DotNetNuke.Services.Search.Internals
             });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Commit()
         {
             LuceneController.Instance.Commit();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool OptimizeSearchIndex()
         {
             // run optimization in background
             return LuceneController.Instance.OptimizeSearchIndex(true);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public SearchStatistics GetSearchStatistics()
         {
             return LuceneController.Instance.GetSearchStatistics();
@@ -239,7 +257,7 @@ namespace DotNetNuke.Services.Search.Internals
                     default:
 
                         var resultControllerType = Reflection.CreateType(crawler.SearchResultClass);
-                        var resultController = (BaseResultController)Reflection.CreateObject(resultControllerType);
+                        var resultController = (BaseResultController)Reflection.CreateObject(this.serviceProvider, resultControllerType);
                         var localizedName = Localization.GetSafeJSString(resultController.LocalizedSearchTypeName);
 
                         results.Add(new SearchContentSource

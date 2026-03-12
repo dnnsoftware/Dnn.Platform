@@ -90,6 +90,10 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
             {
                 return path;
             }
+            else if (path.StartsWith("//", StringComparison.OrdinalIgnoreCase))
+            {
+                return path;
+            }
             else if (path.StartsWith("~", StringComparison.Ordinal))
             {
                 if (string.IsNullOrEmpty(applicationPath))
@@ -113,7 +117,7 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderBlocking(StringBuilder htmlString)
         {
-            if (this.Blocking)
+            if (this.Blocking && !this.Attributes.ContainsKey("blocking"))
             {
                 htmlString.Append(" blocking=\"render\"");
             }
@@ -123,6 +127,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderCrossOriginAttribute(StringBuilder htmlString)
         {
+            if (this.Attributes.ContainsKey("crossorigin"))
+            {
+                return;
+            }
+
             switch (this.CrossOrigin)
             {
                 case CrossOrigin.UseCredentials:
@@ -142,6 +151,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderFetchPriority(StringBuilder htmlString)
         {
+            if (this.Attributes.ContainsKey("fetchpriority"))
+            {
+                return;
+            }
+
             switch (this.FetchPriority)
             {
                 case FetchPriority.High:
@@ -161,9 +175,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderIntegrity(StringBuilder htmlString)
         {
-            if (!string.IsNullOrEmpty(this.Integrity))
+            if (!string.IsNullOrEmpty(this.Integrity) && !this.Attributes.ContainsKey("integrity"))
             {
-                htmlString.Append($" integrity=\"{WebUtility.HtmlEncode(this.Integrity)}\"");
+                htmlString.Append($" integrity=\"{this.Integrity}\"");
             }
         }
 
@@ -171,6 +185,11 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderReferrerPolicy(StringBuilder htmlString)
         {
+            if (this.Attributes.ContainsKey("referrerpolicy"))
+            {
+                return;
+            }
+
             switch (this.ReferrerPolicy)
             {
                 case ReferrerPolicy.NoReferrer:
@@ -208,9 +227,9 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         /// <param name="htmlString">The HTML string builder to append to.</param>
         protected void RenderType(StringBuilder htmlString)
         {
-            if (!string.IsNullOrEmpty(this.Type))
+            if (!string.IsNullOrEmpty(this.Type) && !this.Attributes.ContainsKey("type"))
             {
-                htmlString.Append($" type=\"{WebUtility.HtmlEncode(this.Type)}\"");
+                htmlString.Append($" type=\"{this.Type}\"");
             }
         }
 
@@ -220,7 +239,14 @@ namespace DotNetNuke.Web.Client.ResourceManager.Models
         {
             foreach (var attribute in this.Attributes)
             {
-                htmlString.Append($" {attribute.Key}=\"{WebUtility.HtmlEncode(attribute.Value)}\"");
+                if (attribute.Value is null)
+                {
+                    htmlString.Append($" {attribute.Key}");
+                }
+                else
+                {
+                    htmlString.Append($" {attribute.Key}=\"{attribute.Value}\"");
+                }
             }
         }
     }

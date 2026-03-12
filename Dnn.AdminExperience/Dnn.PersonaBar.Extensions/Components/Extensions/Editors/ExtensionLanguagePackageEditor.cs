@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
         protected INavigationManager NavigationManager { get; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
         {
             var languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             return detail;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool SavePackageSettings(PackageSettingsDto packageSettings, out string errorMessage)
         {
             errorMessage = string.Empty;

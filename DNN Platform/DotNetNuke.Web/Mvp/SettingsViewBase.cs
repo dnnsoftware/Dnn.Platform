@@ -12,13 +12,13 @@ namespace DotNetNuke.Web.Mvp
     [DnnDeprecated(9, 2, 0, "Replace WebFormsMvp and DotNetNuke.Web.Mvp with MVC or SPA patterns instead")]
     public partial class SettingsViewBase : ModuleViewBase, ISettingsView, ISettingsControl
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event EventHandler OnLoadSettings;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public event EventHandler OnSaveSettings;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void LoadSettings()
         {
             if (this.OnLoadSettings != null)
@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Mvp
             this.OnSettingsLoaded();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void UpdateSettings()
         {
             this.OnSavingSettings();

@@ -550,7 +550,11 @@
     <value>Caching Provider</value>
   </data>
   <data name="PerformanceTab_ClientResourceManagementInfo.Text" xml:space="preserve">
-    <value>The Super User dictates the default Client Resource Management behavior, but if you choose to do so, you may configure your site to behave differently. The host-level settings are currently set as follows:</value>
+    <value>DNN appends a version number (called CDV) to each client resource (e.g. css, js file) being served through its Client Resource Management.
+Clients (i.e. browsers) will typically cache these files to enhance performance of your site.
+Changing the version number forces all clients to reload these resources as the url will be (slightly) different.
+The CDV is managed by default at host level (i.e. one version number for all portals).
+You can opt to manage this at portal level so that any changes to portal specific resources (e.g. portal.css) will only force reload of resources just for clients accessing this portal.</value>
   </data>
   <data name="PerformanceTab_ClientResourceManagementTitle.Text" xml:space="preserve">
     <value>Client Resource Management</value>
@@ -814,5 +818,11 @@ Are you sure you want to increment the version number for your site?</value>
   </data>
   <data name="MinDnnVersion.Text" xml:space="preserve">
     <value>Req DNN Version</value>
+  </data>
+  <data name="PerformanceTab_CrmOverrideDefaultSettings.Help" xml:space="preserve">
+    <value>If switched on this portal will emit its own client resources version number and ignore the global one.</value>
+  </data>
+  <data name="PerformanceTab_CrmOverrideDefaultSettings.Text" xml:space="preserve">
+    <value>Override Global CDV</value>
   </data>
 </root>

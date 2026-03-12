@@ -23,7 +23,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private static readonly string[] IncludeAll = ["**/*",];
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.CreateDirectory(context.ArtifactsFolder);

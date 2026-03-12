@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Tokens
             this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override string ProcessToken(JavaScriptDto model, UserInfo accessingUser, Scope accessLevel)
         {
             if (string.IsNullOrEmpty(model.JsName) && string.IsNullOrEmpty(model.Path))

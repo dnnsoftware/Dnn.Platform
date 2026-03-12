@@ -13,15 +13,17 @@ namespace DotNetNuke.Website.Controllers
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Blocker;
     using DotNetNuke.Services.Localization;
-
     using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Controllers;
     using DotNetNuke.Web.MvcPipeline.Exceptions;
@@ -40,6 +42,12 @@ namespace DotNetNuke.Website.Controllers
         private readonly IClientResourceController clientResourceController;
         private readonly IPageService pageService;
         private readonly IHostSettings hostSettings;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+        private readonly IUserController userController;
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IServicesFramework servicesFramework;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultController"/> class.
@@ -50,13 +58,25 @@ namespace DotNetNuke.Website.Controllers
         /// <param name="pageService">The service for page-related operations.</param>
         /// <param name="serviceProvider">The service provider for dependency resolution.</param>
         /// <param name="hostSettings">The host settings configuration.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
         public DefaultController(
                                 INavigationManager navigationManager,
                                 IPageModelFactory pageModelFactory,
                                 IClientResourceController clientResourceController,
                                 IPageService pageService,
                                 IServiceProvider serviceProvider,
-                                IHostSettings hostSettings)
+                                IHostSettings hostSettings,
+                                IApplicationStatusInfo appStatus,
+                                IEventLogger eventLogger,
+                                IPortalController portalController,
+                                IUserController userController,
+                                IHostSettingsService hostSettingsService,
+                                IServicesFramework servicesFramework)
             : base(serviceProvider)
         {
             this.navigationManager = navigationManager;
@@ -64,6 +84,12 @@ namespace DotNetNuke.Website.Controllers
             this.clientResourceController = clientResourceController;
             this.pageService = pageService;
             this.hostSettings = hostSettings;
+            this.appStatus = appStatus;
+            this.eventLogger = eventLogger;
+            this.portalController = portalController;
+            this.userController = userController;
+            this.hostSettingsService = hostSettingsService;
+            this.servicesFramework = servicesFramework;
         }
 
         /// <summary>
@@ -111,7 +137,7 @@ namespace DotNetNuke.Website.Controllers
             if (PortalSettings.Current.UserId > 0)
             {
                 // TODO: should we do this? It creates a dependency towards the PersonaBar which is probably not a great idea
-                MvcContentEditorManager.CreateManager(this);
+                MvcContentEditorManager.CreateManager(this, this.clientResourceController, this.appStatus, this.eventLogger, this.portalController, this.hostSettings, this.userController, this.hostSettingsService, this.servicesFramework);
             }
 
             // Configure the ActiveTab with Skin/Container information

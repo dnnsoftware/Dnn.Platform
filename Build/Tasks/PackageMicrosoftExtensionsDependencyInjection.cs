@@ -20,7 +20,7 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
     private static readonly string[] AllFiles = ["*",];
     private static readonly string[] ManifestFiles = ["*.dnn",];
 
-    /// <inheritdoc/>
+    /// <inheritdoc />
     public override void Run(Context context)
     {
         var binDir = context.WebsiteDir.Path.Combine("bin");

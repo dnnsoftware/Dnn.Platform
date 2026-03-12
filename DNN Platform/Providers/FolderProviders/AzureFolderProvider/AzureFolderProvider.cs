@@ -12,11 +12,16 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     using System.Threading;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Providers.FolderProviders.Components;
     using DotNetNuke.Services.FileSystem;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.Blob;
@@ -29,10 +34,24 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         internal const string ProviderType = "folder";
 
         private readonly ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
+        private readonly ICryptographyProvider cryptographyProvider;
         private readonly string cacheControl = string.Empty;
 
+        /// <summary>Initializes a new instance of the <see cref="AzureFolderProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public AzureFolderProvider()
+            : this(null, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="AzureFolderProvider"/> class.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="cryptographyProvider">The cryptography provider.</param>
+        public AzureFolderProvider(IHostSettings hostSettings, ICryptographyProvider cryptographyProvider)
+            : base(hostSettings)
+        {
+            this.cryptographyProvider = cryptographyProvider ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<ICryptographyProvider>();
+
             ServicePointManager.DefaultConnectionLimit = 100;
             ServicePointManager.UseNagleAlgorithm = false;
             ServicePointManager.Expect100Continue = false;
@@ -46,26 +65,14 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        /// <inheritdoc/>
-        protected override string FileNotFoundMessage
-        {
-            get
-            {
-                return "Azure File Not Found";
-            }
-        }
+        /// <inheritdoc />
+        protected override string FileNotFoundMessage => "Azure File Not Found";
 
-        /// <inheritdoc/>
-        protected override string ObjectCacheKey
-        {
-            get { return "Azure_Object_{0}_{1}"; }
-        }
+        /// <inheritdoc />
+        protected override string ObjectCacheKey => "Azure_Object_{0}_{1}";
 
-        /// <inheritdoc/>
-        protected override string ListObjectsCacheKey
-        {
-            get { return "Azure_ListObjects_{0}"; }
-        }
+        /// <inheritdoc />
+        protected override string ListObjectsCacheKey => "Azure_ListObjects_{0}";
 
         /// <remarks>
         /// Azure Storage doesn't support folders, so we create a file in order for the folder to not be deleted during future synchronizations.
@@ -96,7 +103,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 var container = this.GetContainer(folderMapping);
                 var blob = container.GetBlobReference(uri);
                 var absuri = blob.Uri.AbsoluteUri;
-                var customDomain = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.CustomDomain);
+                var customDomain = GetEncryptedSetting(this.cryptographyProvider, this.HostSettings, folderMapping.FolderMappingSettings, Constants.CustomDomain);
 
                 if (!string.IsNullOrEmpty(customDomain))
                 {
@@ -162,9 +169,9 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
         public List<string> GetAllContainers(FolderMappingInfo folderMapping)
         {
-            List<string> containers = new List<string>();
-            var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
-            var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
+            List<string> containers = [];
+            var accountName = GetEncryptedSetting(this.cryptographyProvider, this.HostSettings, folderMapping.FolderMappingSettings, Constants.AccountName);
+            var accountKey = GetEncryptedSetting(this.cryptographyProvider, this.HostSettings, folderMapping.FolderMappingSettings, Constants.AccountKey);
             var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
 
             var sc = new StorageCredentials(accountName, accountKey);
@@ -194,7 +201,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void CopyFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -207,7 +214,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DeleteFileInternal(FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);
@@ -218,13 +225,13 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void DeleteFolderInternal(FolderMappingInfo folderMapping, IFolderInfo folder)
         {
             this.DeleteFileInternal(folderMapping, folder.MappedPath + Constants.PlaceHolderFileName);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Stream GetFileStreamInternal(FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);
@@ -237,46 +244,56 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             return memoryStream;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override IList<IRemoteStorageItem> GetObjectList(FolderMappingInfo folderMapping)
         {
             var cacheKey = string.Format(this.ListObjectsCacheKey, folderMapping.FolderMappingID);
 
             return CBO.GetCachedObject<IList<IRemoteStorageItem>>(
+                this.HostSettings,
                 new CacheItemArgs(
-                cacheKey,
-                this.ListObjectsCacheTimeout,
-                CacheItemPriority.Default,
-                folderMapping.FolderMappingID),
-                c =>
-                                        {
-                                            var container = this.GetContainer(folderMapping);
-                                            var synchBatchSize = GetIntegerSetting(folderMapping, Constants.SyncBatchSize, Constants.DefaultSyncBatchSize);
+                    cacheKey,
+                    this.ListObjectsCacheTimeout,
+                    CacheItemPriority.Default,
+                    folderMapping.FolderMappingID),
+                _ =>
+                {
+                    var container = this.GetContainer(folderMapping);
+                    var synchBatchSize = GetIntegerSetting(
+                        folderMapping,
+                        Constants.SyncBatchSize,
+                        Constants.DefaultSyncBatchSize);
 
-                                            BlobContinuationToken continuationToken = null;
-                                            BlobResultSegment resultSegment = null;
+                    BlobContinuationToken continuationToken = null;
 
-                                            var list = new List<IRemoteStorageItem>();
-                                            do
-                                            {
-                                                // This overload allows control of the page size. You can return all remaining results by passing null for the maxResults parameter,
-                                                // or by calling a different overload.
-                                                resultSegment = container.ListBlobsSegmented(string.Empty, true, BlobListingDetails.All, synchBatchSize, continuationToken, null, null);
-                                                foreach (var blobItem in resultSegment.Results)
-                                                {
-                                                    list.Add(new AzureRemoteStorageItem { Blob = new AzureBlob(blobItem as CloudBlob) });
-                                                }
+                    var list = new List<IRemoteStorageItem>();
+                    do
+                    {
+                        // This overload allows control of the page size. You can return all remaining results by passing null for the maxResults parameter,
+                        // or by calling a different overload.
+                        var resultSegment = container.ListBlobsSegmented(
+                            string.Empty,
+                            true,
+                            BlobListingDetails.All,
+                            synchBatchSize,
+                            continuationToken,
+                            null,
+                            null);
+                        foreach (var blobItem in resultSegment.Results)
+                        {
+                            list.Add(new AzureRemoteStorageItem { Blob = new AzureBlob(blobItem as CloudBlob), });
+                        }
 
-                                                // Get the continuation token.
-                                                continuationToken = resultSegment.ContinuationToken;
-                                            }
-                                            while (continuationToken != null);
+                        // Get the continuation token.
+                        continuationToken = resultSegment.ContinuationToken;
+                    }
+                    while (continuationToken != null);
 
-                                            return list;
-                                        });
+                    return list;
+                });
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void MoveFileInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -290,7 +307,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void MoveFolderInternal(FolderMappingInfo folderMapping, string sourceUri, string newUri)
         {
             var container = this.GetContainer(folderMapping);
@@ -308,7 +325,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             this.ClearCache(folderMapping.FolderMappingID);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void UpdateFileInternal(Stream stream, FolderMappingInfo folderMapping, string uri)
         {
             var container = this.GetContainer(folderMapping);
@@ -348,8 +365,8 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         {
             CheckSettings(folderMapping);
 
-            var accountName = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountName);
-            var accountKey = this.GetEncryptedSetting(folderMapping.FolderMappingSettings, Constants.AccountKey);
+            var accountName = GetEncryptedSetting(this.cryptographyProvider, this.HostSettings, folderMapping.FolderMappingSettings, Constants.AccountName);
+            var accountKey = GetEncryptedSetting(this.cryptographyProvider, this.HostSettings, folderMapping.FolderMappingSettings, Constants.AccountKey);
             var container = GetSetting(folderMapping, Constants.Container);
             var useHttps = GetBooleanSetting(folderMapping, Constants.UseHttps);
 

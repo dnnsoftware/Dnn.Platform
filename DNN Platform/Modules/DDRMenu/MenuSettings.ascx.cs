@@ -11,7 +11,7 @@ namespace DotNetNuke.Web.DDRMenu
     /// <summary>Implements the settings view of the module.</summary>
     public partial class MenuSettings : ModuleSettingsBase
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void LoadSettings()
         {
             if (this.IsPostBack)
@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.ClientOptions.Value = this.Settings["ClientOptions"] ?? string.Empty;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "MenuStyle", (this.MenuStyle.Value ?? string.Empty).ToString());
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.DDRMenu
             ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "ClientOptions", (this.ClientOptions.Value ?? string.Empty).ToString());
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             this.IncludeHiddenSection.Visible = DNNAbstract.IncludeHiddenSupported();

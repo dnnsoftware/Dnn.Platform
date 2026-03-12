@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Null.NullString;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool IncludeAssemblies
         {
             get
@@ -131,14 +131,14 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
             // Language file starts at the root
             this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void ParseFiles(DirectoryInfo folder, string rootPath)
         {
             if (this.LanguagePack.PackageType == LanguagePackType.Core)
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteFilesToManifest(XmlWriter writer)
         {
             LanguageComponentWriter languageFileWriter;

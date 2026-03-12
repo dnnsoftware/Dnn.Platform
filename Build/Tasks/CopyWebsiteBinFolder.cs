@@ -12,7 +12,7 @@ namespace DotNetNuke.Build.Tasks
     /// <summary>A cake task to copy files into the website's <c>bin</c> directory.</summary>
     public sealed class CopyWebsiteBinFolder : FrostingTask<Context>
     {
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void Run(Context context)
         {
             context.CopyFiles(

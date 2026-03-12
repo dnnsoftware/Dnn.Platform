@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Runtime.CompilerServices;
     using System.Web;
     using System.Web.Caching;
     using System.Web.Compilation;
@@ -15,8 +16,10 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml;
     using System.Xml.Serialization;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Host;
@@ -43,6 +46,8 @@ namespace DotNetNuke.Web.DDRMenu
         private readonly ILocaliser localiser;
         private readonly IClientResourceController clientResourceController;
         private readonly IPageService pageService;
+        private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
         private Settings menuSettings;
 
         private HttpContext currentContext;
@@ -51,11 +56,15 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Initializes a new instance of the <see cref="MvcMenuBase"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
         /// <param name="clientResourceController">The clientResourceController.</param>
         /// <param name="pageService">The pageService.</param>
-        public MvcMenuBase(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService)
+        public MvcMenuBase(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
             this.clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.pageService = Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
@@ -84,12 +93,14 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Instantiates the MenuBase.</summary>
         /// <param name="localiser">The localiser.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
         /// <param name="clientResourceController">The clientResourceController.</param>
         /// <param name="pageService">The pageService.</param>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <param name="dirName">The skinpath.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
-        public static MvcMenuBase Instantiate(ILocaliser localiser, IClientResourceController clientResourceController, IPageService pageService, string menuStyle, string dirName)
+        public static MvcMenuBase Instantiate(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService, string menuStyle, string dirName)
         {
             try
             {
@@ -101,8 +112,8 @@ namespace DotNetNuke.Web.DDRMenu
                     resolvedPath = (dirName + menuStyle + "/" + Path.GetFileName(matches[0])).Replace('\\', '/');
                 }
 
-                var templateDef = TemplateDefinition.FromManifest(resolvedPath);
-                return new MvcMenuBase(localiser, clientResourceController, pageService) { TemplateDef = templateDef };
+                var templateDef = TemplateDefinition.FromManifest(hostSettings, resolvedPath);
+                return new MvcMenuBase(localiser, hostSettings, tabController, clientResourceController, pageService) { TemplateDef = templateDef };
             }
             catch (Exception exc)
             {
@@ -164,7 +175,7 @@ namespace DotNetNuke.Web.DDRMenu
             var imagePathOption =
                 this.menuSettings.ClientOptions.Find(o => o.Name.Equals("PathImage", StringComparison.InvariantCultureIgnoreCase));
             this.RootNode.ApplyContext(
-                imagePathOption == null ? this.HostPortalSettings.HomeDirectory : imagePathOption.Value);
+                 imagePathOption == null ? DNNContext.Current.PortalSettings.HomeDirectory : imagePathOption.Value);
 
             this.TemplateDef.PreRender(this.clientResourceController, this.pageService);
         }
@@ -173,7 +184,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="htmlWriter">The html writer to which to render the menu.</param>
         internal void Render(HtmlTextWriter htmlWriter)
         {
-            if (Host.DebugMode)
+            if (this.hostSettings.DebugMode)
             {
                 htmlWriter.Write("<!-- DDRmenu v07.04.01 - {0} template -->", this.menuSettings.MenuStyle);
             }
@@ -207,7 +218,7 @@ namespace DotNetNuke.Web.DDRMenu
         {
             this.menuSettings.NodeXmlPath =
                 this.MapPath(
-                    new PathResolver(this.TemplateDef.Folder).Resolve(
+                    new PathResolver(this.hostSettings, this.TemplateDef.Folder).Resolve(
                         this.menuSettings.NodeXmlPath,
                         PathResolver.RelativeTo.Manifest,
                         PathResolver.RelativeTo.Skin,
@@ -235,7 +246,6 @@ namespace DotNetNuke.Web.DDRMenu
         {
             var nodeTextStrings = SplitAndTrim(nodeString);
             var filteredNodes = new List<MenuNode>();
-            var tc = new TabController();
             var flattenedNodes = new MenuNode();
 
             foreach (var nodeText in nodeTextStrings)
@@ -254,10 +264,10 @@ namespace DotNetNuke.Web.DDRMenu
                                 }
 
                                 var tab = TabController.Instance.GetTab(n.TabId, Null.NullInteger, false);
-                                foreach (TabPermissionInfo perm in tab.TabPermissions)
+                                foreach (IPermissionInfo perm in tab.TabPermissions)
                                 {
                                     if (perm.AllowAccess && (perm.PermissionKey == "VIEW") &&
-                                        ((perm.RoleID == -1) || (perm.RoleName.ToLowerInvariant() == roleName)))
+                                        ((perm.RoleId == -1) || (perm.RoleName.ToLowerInvariant() == roleName)))
                                     {
                                         return true;
                                     }
@@ -281,7 +291,7 @@ namespace DotNetNuke.Web.DDRMenu
                             flattenedNodes.Children.FindAll(
                                 n =>
                                 {
-                                    var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
+                                    var tab = this.tabController.GetTab(n.TabId, Null.NullInteger, false);
                                     return tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName);
                                 }));
                     }

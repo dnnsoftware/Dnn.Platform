@@ -15,10 +15,22 @@ namespace DotNetNuke.Modules.Groups
     /// <summary>Display the group list.</summary>
     public partial class List : GroupsModuleBase
     {
+        private readonly IServicesFramework servicesFramework;
+
         /// <summary>Initializes a new instance of the <see cref="List"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IServicesFramework. Scheduled removal in v12.0.0.")]
         public List()
+            : this(null, null)
         {
-            this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="List"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="servicesFramework">The web API service framework.</param>
+        public List(INavigationManager navigationManager, IServicesFramework servicesFramework)
+        {
+            this._navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
+            this.servicesFramework = servicesFramework ?? this.DependencyProvider.GetRequiredService<IServicesFramework>();
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
@@ -28,7 +40,7 @@ namespace DotNetNuke.Modules.Groups
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            this.servicesFramework.RequestAjaxAntiForgerySupport();
 
             this.panelSearch.Visible = this.GroupListSearchEnabled;
 

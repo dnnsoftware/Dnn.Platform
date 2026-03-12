@@ -35,13 +35,13 @@ namespace DotNetNuke.Services.UserRequest
             this.hostSettingsService = hostSettingsService;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetUserRequestIPAddress(HttpRequestBase request)
         {
             return this.GetUserRequestIPAddress(request, IPAddressFamily.IPv4);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public string GetUserRequestIPAddress(HttpRequestBase request, IPAddressFamily ipFamily)
         {
             var userRequestIpHeader = this.hostSettingsService.GetString("UserRequestIPHeader");
@@ -89,7 +89,7 @@ namespace DotNetNuke.Services.UserRequest
             return userIpAddress;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IUserRequestIPAddressController> GetFactory()
         {
             return () => new UserRequestIPAddressController();

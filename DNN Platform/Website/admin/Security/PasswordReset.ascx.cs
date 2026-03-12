@@ -11,7 +11,9 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -32,10 +34,10 @@ namespace DotNetNuke.Modules.Admin.Security
         private const int RedirectTimeout = 3000;
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
-        private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
         private readonly IClientResourceController clientResourceController;
+        private readonly DataProvider dataProvider;
 
         private string ipAddress;
 
@@ -53,14 +55,30 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="portalController">The portal controller.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController)
+            : this(navigationManager, eventLogger, hostSettings, javaScript, portalController, clientResourceController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PasswordReset"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public PasswordReset(INavigationManager navigationManager, IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IPortalController portalController, IClientResourceController clientResourceController, ListController listController, DataProvider dataProvider)
+            : base(listController, hostSettings)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.DependencyProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
             this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
+            this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
         }
 
         private string ResetToken
@@ -69,7 +87,7 @@ namespace DotNetNuke.Modules.Admin.Security
             set => this.ViewState.Add("ResetToken", value);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -124,7 +142,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -133,7 +151,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.resetMessages.Visible = true;
             }
 
-            if (this.hostSettings.EnableStrengthMeter)
+            if (this.HostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtPassword.CssClass = "password-strength";
@@ -277,7 +295,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (settings.EnableBannedList)
             {
-                var m = new MembershipPasswordController();
+                var m = new MembershipPasswordController(this.ListController, this.dataProvider);
                 if (m.FoundBannedPassword(newPassword) || this.txtUsername.Text == newPassword)
                 {
                     this.resetMessages.Visible = true;

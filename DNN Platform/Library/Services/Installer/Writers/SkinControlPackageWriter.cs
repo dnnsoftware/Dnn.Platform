@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <value>A SkinControlInfo object.</value>
         public SkinControlInfo SkinControl { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void WriteManifestComponent(XmlWriter writer)
         {
             // Start component Element

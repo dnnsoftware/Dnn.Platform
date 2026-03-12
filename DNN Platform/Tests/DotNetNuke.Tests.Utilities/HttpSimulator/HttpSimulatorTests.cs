@@ -81,12 +81,12 @@ namespace UnitTests.Subtext
             var simulator = new HttpSimulator(appPath, @"c:\inetpub\wwwroot\site1\test");
             Assert.That(simulator.ApplicationPath, Is.EqualTo(expectedAppPath));
             simulator.SimulateRequest(new Uri(url));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HttpContext.Current.Request.ApplicationPath, Is.EqualTo(expectedAppPath));
                 Assert.That(HttpRuntime.AppDomainAppVirtualPath, Is.EqualTo(expectedAppPath));
                 Assert.That(HostingEnvironment.ApplicationVirtualPath, Is.EqualTo(expectedAppPath));
-            });
+            }
         }
 
         /*//[RowTest]
@@ -100,13 +100,13 @@ namespace UnitTests.Subtext
             Assert.That(simulator.PhysicalApplicationPath, Is.EqualTo(expectedPhysicalAppPath));
             simulator.SimulateRequest(new Uri(url), HttpVerb.GET);
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(simulator.PhysicalPath, Is.EqualTo(expectedPhysicalPath));
                 Assert.That(HttpRuntime.AppDomainAppPath, Is.EqualTo(expectedPhysicalAppPath));
                 Assert.That(HostingEnvironment.ApplicationPhysicalPath, Is.EqualTo(expectedPhysicalAppPath));
                 Assert.That(HttpContext.Current.Request.PhysicalPath, Is.EqualTo(expectedPhysicalPath));
-            });
+            }
         }
 
         ////[Test]
@@ -126,25 +126,25 @@ namespace UnitTests.Subtext
             }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?"));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HttpContext.Current.Request.QueryString.ToString(), Is.EqualTo(string.Empty));
                 Assert.That(HttpContext.Current.Request.QueryString, Is.Empty);
-            });
+            }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HttpContext.Current.Request.QueryString.ToString(), Is.EqualTo(string.Empty));
                 Assert.That(HttpContext.Current.Request.QueryString, Is.Empty);
-            });
+            }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param-name"));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HttpContext.Current.Request.QueryString.ToString(), Is.EqualTo("param-name"));
                 Assert.That(HttpContext.Current.Request.QueryString, Has.Count.EqualTo(1));
-            });
+            }
             Assert.That(HttpContext.Current.Request.QueryString["param-name"], Is.Null);
         }
 
@@ -156,11 +156,11 @@ namespace UnitTests.Subtext
                 var form = new NameValueCollection { { "Test1", "Value1" }, { "Test2", "Value2" } };
                 simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"), form);
 
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(HttpContext.Current.Request.Form["Test1"], Is.EqualTo("Value1"));
                     Assert.That(HttpContext.Current.Request.Form["Test2"], Is.EqualTo("Value2"));
-                });
+                }
             }
 
             using (var simulator = new HttpSimulator())
@@ -169,11 +169,11 @@ namespace UnitTests.Subtext
                     .SetFormVariable("Test2", "Value2")
                     .SimulateRequest(new Uri("http://localhost/Test.aspx"));
 
-                Assert.Multiple(() =>
+                using (Assert.EnterMultipleScope())
                 {
                     Assert.That(HttpContext.Current.Request.Form["Test1"], Is.EqualTo("Value1"));
                     Assert.That(HttpContext.Current.Request.Form["Test2"], Is.EqualTo("Value2"));
-                });
+                }
             }
         }
 
@@ -209,11 +209,11 @@ namespace UnitTests.Subtext
         public void CanParseRequestUrl(string url, string appPath, string physicalPath, string expectedHost, int expectedPort, string expectedAppPath, string expectedPage, string expectedAppDomainAppPath)
         {
             var simulator = new HttpSimulator(appPath, physicalPath);
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(simulator.ApplicationPath, Is.EqualTo(expectedAppPath));
                 Assert.That(simulator.PhysicalApplicationPath, Is.EqualTo(expectedAppDomainAppPath));
-            });
+            }
         }
 
         // [RowTest]
@@ -223,11 +223,11 @@ namespace UnitTests.Subtext
         {
             var simulator = new HttpSimulator(appPath, @"c:\inetpub\wwwroot\AppPath\");
             simulator.SimulateRequest(new Uri(url));
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HttpContext.Current.Request.Path, Is.EqualTo(expectedLocalPath));
                 Assert.That(HttpContext.Current.Request.Url.LocalPath, Is.EqualTo(expectedLocalPath));
-            });
+            }
         }
 
         // [RowTest]
@@ -241,14 +241,14 @@ namespace UnitTests.Subtext
             var simulator = new HttpSimulator(appPath, physicalPath);
             simulator.SimulateRequest(new Uri(url));
 
-            Assert.Multiple(() =>
+            using (Assert.EnterMultipleScope())
             {
                 Assert.That(HttpContext.Current.Request.Url.Host, Is.EqualTo(expectedHost));
                 Assert.That(HttpContext.Current.Request.Url.Port, Is.EqualTo(expectedPort));
                 Assert.That(HttpContext.Current.Request.ApplicationPath, Is.EqualTo(expectedAppPath));
                 Assert.That(HttpContext.Current.Request.PhysicalApplicationPath, Is.EqualTo(expectedPhysicalPath));
                 Assert.That(HttpContext.Current.Request.Url.LocalPath, Is.EqualTo(expectedLocalPath));
-            });
+            }
         }
 
         // [RowTest]

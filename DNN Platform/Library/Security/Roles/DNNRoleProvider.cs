@@ -12,6 +12,7 @@ namespace DotNetNuke.Security.Roles
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
@@ -19,14 +20,25 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>
     /// The DNNRoleProvider overrides the default MembershipProvider to provide
     /// a purely DNN Membership Component implementation.
     /// </summary>
-    public class DNNRoleProvider : RoleProvider
+    public class DNNRoleProvider(IHostSettings hostSettings, DataProvider dataProvider, IUserController userController) : RoleProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
-        private readonly DataProvider dataProvider = DataProvider.Instance();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
+        private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();
+
+        /// <summary>Initializes a new instance of the <see cref="DNNRoleProvider"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public DNNRoleProvider()
+            : this(null, null, null)
+        {
+        }
 
         /// <summary>CreateRole persists a Role to the Data Store.</summary>
         /// <param name="role">The role to persist to the Data Store.</param>
@@ -53,7 +65,7 @@ namespace DotNetNuke.Security.Roles
                         role.AutoAssignment,
                         role.RSVPCode,
                         role.IconFile,
-                        UserController.Instance.GetCurrentUserInfo().UserID,
+                        this.userController.GetCurrentUserInfo().UserID,
                         (int)role.Status,
                         (int)role.SecurityMode,
                         role.IsSystemRole));
@@ -74,8 +86,8 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>Get the roles for a portal.</summary>
-        /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
-        /// retrieved.</param>
+        /// <param name="portalId">ID of the portal (If -1 all roles for all portals are
+        /// retrieved).</param>
         /// <returns>An ArrayList of RoleInfo objects.</returns>
         public override ArrayList GetRoles(int portalId)
         {
@@ -86,25 +98,23 @@ namespace DotNetNuke.Security.Roles
                 typeof(RoleInfo));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IList<RoleInfo> GetRolesBasicSearch(int portalID, int pageSize, string filterBy)
         {
             return CBO.FillCollection<RoleInfo>(this.dataProvider.GetRolesBasicSearch(portalID, -1, pageSize, filterBy));
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override IDictionary<string, string> GetRoleSettings(int roleId)
         {
-            var settings = new Dictionary<string, string> { };
-            using (IDataReader dr = this.dataProvider.GetRoleSettings(roleId))
+            var settings = new Dictionary<string, string>();
+            using var dr = this.dataProvider.GetRoleSettings(roleId);
+            while (dr.Read())
             {
-                while (dr.Read())
-                {
-                    settings.Add(dr["SettingName"].ToString(), dr["SettingValue"].ToString());
-                }
-
-                dr.Close();
+                settings.Add(dr["SettingName"].ToString(), dr["SettingValue"].ToString());
             }
+
+            dr.Close();
 
             return settings;
         }
@@ -128,7 +138,7 @@ namespace DotNetNuke.Security.Roles
                 role.AutoAssignment,
                 role.RSVPCode,
                 role.IconFile,
-                UserController.Instance.GetCurrentUserInfo().UserID,
+                this.userController.GetCurrentUserInfo().UserID,
                 (int)role.Status,
                 (int)role.SecurityMode,
                 role.IsSystemRole);
@@ -144,7 +154,7 @@ namespace DotNetNuke.Security.Roles
             {
                 if (!currentSettings.TryGetValue(setting.Key, out var settingValue) || settingValue != setting.Value)
                 {
-                    this.dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, UserController.Instance.GetCurrentUserInfo().UserID);
+                    this.dataProvider.UpdateRoleSetting(role.RoleID, setting.Key, setting.Value, this.userController.GetCurrentUserInfo().UserID);
                 }
             }
         }
@@ -174,9 +184,9 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>GetUserRole gets a User/Role object from the Data Store.</summary>
-        /// <param name="portalId">Id of the portal.</param>
-        /// <param name="userId">The Id of the User.</param>
-        /// <param name="roleId">The Id of the Role.</param>
+        /// <param name="portalId">ID of the portal.</param>
+        /// <param name="userId">The ID of the User.</param>
+        /// <param name="roleId">The ID of the Role.</param>
         /// <returns>The UserRoleInfo object.</returns>
         public override UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {
@@ -184,7 +194,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>Gets a list of UserRoles for the user.</summary>
-        /// <param name="user">A UserInfo object representaing the user.</param>
+        /// <param name="user">A UserInfo object representing the user.</param>
         /// <param name="includePrivate">Include private roles.</param>
         /// <returns>A list of UserRoleInfo objects.</returns>
         public override IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
@@ -235,19 +245,19 @@ namespace DotNetNuke.Security.Roles
                 userRole.IsOwner,
                 userRole.EffectiveDate,
                 userRole.ExpiryDate,
-                UserController.Instance.GetCurrentUserInfo().UserID);
+                this.userController.GetCurrentUserInfo().UserID);
         }
 
         /// <summary>CreateRoleGroup persists a RoleGroup to the Data Store.</summary>
         /// <param name="roleGroup">The RoleGroup to persist to the Data Store.</param>
-        /// <returns>The Id of the new role.</returns>
+        /// <returns>The ID of the new role.</returns>
         public override int CreateRoleGroup(RoleGroupInfo roleGroup)
         {
             var roleGroupId = this.dataProvider.AddRoleGroup(
                 roleGroup.PortalID,
                 roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(),
-                UserController.Instance.GetCurrentUserInfo().UserID);
+                this.userController.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
             return roleGroupId;
         }
@@ -261,15 +271,15 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>GetRoleGroup gets a RoleGroup from the Data Store.</summary>
-        /// <param name="portalId">Id of the portal.</param>
-        /// <param name="roleGroupId">The Id of the RoleGroup to retrieve.</param>
+        /// <param name="portalId">ID of the portal.</param>
+        /// <param name="roleGroupId">The ID of the RoleGroup to retrieve.</param>
         /// <returns>A RoleGroupInfo object.</returns>
         public override RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
             return this.GetRoleGroupsInternal(portalId).SingleOrDefault(r => r.RoleGroupID == roleGroupId);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public override RoleGroupInfo GetRoleGroupByName(int portalId, string roleGroupName)
         {
@@ -279,7 +289,7 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>Get the RoleGroups for a portal.</summary>
-        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalId">ID of the portal.</param>
         /// <returns>An ArrayList of RoleGroupInfo objects.</returns>
         public override ArrayList GetRoleGroups(int portalId)
         {
@@ -294,7 +304,7 @@ namespace DotNetNuke.Security.Roles
                 roleGroup.RoleGroupID,
                 roleGroup.RoleGroupName.Trim(),
                 (roleGroup.Description ?? string.Empty).Trim(),
-                UserController.Instance.GetCurrentUserInfo().UserID);
+                this.userController.GetCurrentUserInfo().UserID);
             ClearRoleGroupCache(roleGroup.PortalID);
         }
 
@@ -320,7 +330,7 @@ namespace DotNetNuke.Security.Roles
                     userRole.IsOwner,
                     userRole.EffectiveDate,
                     userRole.ExpiryDate,
-                    UserController.Instance.GetCurrentUserInfo().UserID));
+                    this.userController.GetCurrentUserInfo().UserID));
         }
 
         private IEnumerable<RoleGroupInfo> GetRoleGroupsInternal(int portalId)
@@ -330,8 +340,10 @@ namespace DotNetNuke.Security.Roles
                 DataCache.RoleGroupsCacheTimeOut,
                 DataCache.RoleGroupsCachePriority);
 
-            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(cacheArgs, c =>
-                                            CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));
+            return CBO.GetCachedObject<IEnumerable<RoleGroupInfo>>(
+                this.hostSettings,
+                cacheArgs,
+                _ => CBO.FillCollection<RoleGroupInfo>(this.dataProvider.GetRoleGroups(portalId)));
         }
     }
 }

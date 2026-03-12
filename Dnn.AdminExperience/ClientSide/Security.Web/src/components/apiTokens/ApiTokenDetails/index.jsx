@@ -24,7 +24,7 @@ class ApiTokenDetails extends Component {
                 scope = resx.get("Host");
                 break;
         }
-        let status = "";
+        let status;
         let statusClass = "inactive";
         if (utils.dateInPast(new Date(this.props.apiToken.ExpiresOn), new Date())) {
             status = resx.get("Expired");

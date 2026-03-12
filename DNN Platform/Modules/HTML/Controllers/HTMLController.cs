@@ -11,7 +11,9 @@ namespace DotNetNuke.Modules.Html.Controllers
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
@@ -30,13 +32,23 @@ namespace DotNetNuke.Modules.Html.Controllers
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly HtmlModuleSettingsRepository settingsRepository;
         private readonly IClientResourceController clientResourceController;
+        private readonly IPortalAliasService portalAliasService;
 
-        public HTMLController(IServiceProvider dependencyProvider, INavigationManager navigationManager, IClientResourceController clientResourceController)
+        public HTMLController(
+                                IServiceProvider dependencyProvider,
+                                INavigationManager navigationManager,
+                                IPortalAliasService portalAliasService,
+                                IPortalController portalController,
+                                IApplicationStatusInfo appStatus,
+                                IHostSettings hostSettings,
+                                HtmlModuleSettingsRepository settingsRepository,
+                                IClientResourceController clientResourceController)
             : base(dependencyProvider)
         {
             this.navigationManager = navigationManager;
-            this.htmlTextController = new HtmlTextController(this.navigationManager);
-            this.settingsRepository = new HtmlModuleSettingsRepository();
+            this.portalAliasService = portalAliasService;
+            this.htmlTextController = new HtmlTextController(this.navigationManager, portalAliasService, portalController, appStatus, hostSettings, settingsRepository);
+            this.settingsRepository = settingsRepository;
             this.clientResourceController = clientResourceController;
         }
 
@@ -50,8 +62,8 @@ namespace DotNetNuke.Modules.Html.Controllers
                 int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
                 var htmlContent = this.GetLatestHTMLContent(workflowID, model.ModuleId);
 
-                var aliases = from PortalAliasInfo pa in PortalAliasController.Instance.GetPortalAliasesByPortalId(this.PortalSettings.PortalId)
-                              select pa.HTTPAlias;
+                var aliases = from IPortalAliasInfo pa in this.portalAliasService.GetPortalAliasesByPortalId(this.PortalSettings.PortalId)
+                              select pa.HttpAlias;
 
                 var content = model.EditorContent;
 

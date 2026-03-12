@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 
 namespace DotNetNuke.UI.WebControls
-
-// ReSharper restore CheckNamespace
 {
     using System;
     using System.Collections.Specialized;
@@ -14,19 +12,41 @@ namespace DotNetNuke.UI.WebControls
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
 
-    /// <summary>
-    /// The VisibilityControl control provides a base control for defining visibility
-    /// options.
-    /// </summary>
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>The VisibilityControl control provides a base control for defining visibility options.</summary>
     [ToolboxData("<{0}:VisibilityControl runat=server></{0}:VisibilityControl>")]
     public class VisibilityControl : WebControl, IPostBackDataHandler, INamingContainer
     {
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IEventLogger eventLogger;
+
+        /// <summary>Initializes a new instance of the <see cref="VisibilityControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public VisibilityControl()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="VisibilityControl"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        public VisibilityControl(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+        {
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+        }
+
         public event PropertyChangedEventHandler VisibilityChanged;
 
         /// <summary>Gets or sets caption.</summary>
@@ -46,8 +66,8 @@ namespace DotNetNuke.UI.WebControls
 
         protected ProfileVisibility Visibility
         {
-            get { return this.Value as ProfileVisibility; }
-            set { this.Value = value; }
+            get => this.Value as ProfileVisibility;
+            set => this.Value = value;
         }
 
         /// <summary>LoadPostData loads the Post Back Data and determines whether the value has changed.</summary>
@@ -113,15 +133,15 @@ namespace DotNetNuke.UI.WebControls
             this.OnVisibilityChanged(args);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
-            JavaScript.RequestRegistration(CommonJs.jQuery);
+            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQuery);
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
@@ -157,11 +177,11 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonIcon");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            // writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
-            // writer.RenderBeginTag(HtmlTextWriterTag.Img);
+            ////writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
+            ////writer.RenderBeginTag(HtmlTextWriterTag.Img);
 
             // Close Image Tag
-            // writer.RenderEndTag();
+            ////writer.RenderEndTag();
 
             // Close dnnButtonIcon
             writer.RenderEndTag();
@@ -175,7 +195,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
 
             // Render UL for radio Button List
-            // writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
+            ////writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonDropdown-ul");
 
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);

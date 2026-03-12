@@ -9,53 +9,51 @@ namespace Dnn.EditBar.UI.Controllers
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Text;
-    using System.Threading;
-    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Hosting;
 
-    using Dnn.EditBar.Library;
     using Dnn.EditBar.Library.Items;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
-    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.FileSystem;
-    using DotNetNuke.Web.UI;
+    using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using Newtonsoft.Json.Linq;
-
-    public class EditBarController : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
+    /// <summary>An <see cref="IEditBarController"/> implementation.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="menuItems">The menu items.</param>
+    public class EditBarController(IHostSettings hostSettings, IEnumerable<BaseMenuItem> menuItems)
+        : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));
-        private static object threadLocker = new object();
-        private readonly IHostSettings hostSettings;
+
+        private readonly IHostSettings hostSettings = hostSettings ??
+                                                      HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ??
+                                                      new HostSettings(
+                                                          new HostController(
+#pragma warning disable CS0618 // Type or member is obsolete
+                                                              new EventLogController(),
+#pragma warning restore CS0618 // Type or member is obsolete
+                                                              new Lazy<IPortalController>(() => PortalController.Instance)));
+
+        private readonly IEnumerable<BaseMenuItem> menuItems = menuItems ?? GetMenuItemInstances();
 
         /// <summary>Initializes a new instance of the <see cref="EditBarController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IEnumerable<BaseMenuItem>. Scheduled removal in v12.0.0.")]
         public EditBarController()
-            : this(null)
+            : this(null, null)
         {
         }
 
-        /// <summary>Initializes a new instance of the <see cref="EditBarController"/> class.</summary>
-        /// <param name="hostSettings">The host settings.</param>
-        public EditBarController(IHostSettings hostSettings)
-        {
-            this.hostSettings = hostSettings ?? HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ?? new HostSettings(new HostController());
-        }
-
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IDictionary<string, object> GetConfigurations(int portalId)
         {
             var settings = new Dictionary<string, object>();
@@ -65,7 +63,7 @@ namespace Dnn.EditBar.UI.Controllers
             settings.Add("applicationPath", Globals.ApplicationPath);
             settings.Add("buildNumber", this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture));
             settings.Add("userId", user.UserID);
-            settings.Add("debugMode", HttpContextSource.Current != null && HttpContextSource.Current.IsDebuggingEnabled);
+            settings.Add("debugMode", HttpContextSource.Current is { IsDebuggingEnabled: true, });
             settings.Add("portalId", portalSettings.PortalId);
             settings.Add("culture", portalSettings.CultureCode);
             settings.Add("loginUrl", Globals.LoginURL(HttpContext.Current?.Request.RawUrl, false));
@@ -78,35 +76,22 @@ namespace Dnn.EditBar.UI.Controllers
             return settings;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public IList<BaseMenuItem> GetMenuItems()
         {
-            var menuItems = DataCache.GetCache<IList<BaseMenuItem>>(Constants.MenuItemsCacheKey);
-            if (menuItems == null)
-            {
-                lock (threadLocker)
-                {
-                    menuItems = DataCache.GetCache<IList<BaseMenuItem>>(Constants.MenuItemsCacheKey);
-                    if (menuItems == null)
-                    {
-                        menuItems = GetMenuItemInstances().ToList();
-
-                        DataCache.SetCache(Constants.MenuItemsCacheKey, menuItems);
-                    }
-                }
-            }
-
-            return menuItems
+            return this.menuItems
                     .Where(m => m.Visible())
                     .OrderBy(m => m.Parent)
                     .ThenBy(m => m.Order)
                     .ToList();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IEditBarController> GetFactory()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             return () => new EditBarController();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
 
         private static IEnumerable<BaseMenuItem> GetMenuItemInstances()
@@ -141,8 +126,7 @@ namespace Dnn.EditBar.UI.Controllers
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(
-                t => t is { IsClass: true, IsAbstract: false, } &&
-                     typeof(BaseMenuItem).IsAssignableFrom(t));
+                t => t is { IsClass: true, IsAbstract: false, } && typeof(BaseMenuItem).IsAssignableFrom(t));
         }
     }
 }

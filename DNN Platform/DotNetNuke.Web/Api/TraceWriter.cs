@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Api
             this.enabled = isTracingEnabled;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
             if (!this.enabled || level == TraceLevel.Off)

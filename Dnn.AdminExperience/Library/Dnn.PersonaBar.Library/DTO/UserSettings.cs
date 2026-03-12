@@ -33,13 +33,13 @@ namespace Dnn.PersonaBar.Library.Dto
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public XmlSchema GetSchema()
         {
             return null;
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ReadXml(XmlReader reader)
         {
             bool wasEmpty = reader.IsEmptyElement;
@@ -56,12 +56,14 @@ namespace Dnn.PersonaBar.Library.Dto
                     this.ReadSettings(reader);
                     break;
                 default:
+#pragma warning disable CS0618 // Type or member is obsolete
                     this.ReadLegacySettings(reader);
+#pragma warning restore CS0618 // Type or member is obsolete
                     break;
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteStartElement("data");

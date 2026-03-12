@@ -9,25 +9,47 @@ namespace DNNConnect.CKEditorProvider
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.JScript;
 
     using Globals = DotNetNuke.Common.Globals;
 
-    /// <summary>Renders the Tab Java Script.</summary>
-    public class Tabs : PortalModuleBase, IHttpHandler
+    /// <summary>Renders the Tab JavaScript.</summary>
+    /// <param name="portalController">The portal controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="appStatus">The application status.</param>
+    public class Tabs(IPortalController portalController, IHostSettings hostSettings, IApplicationStatusInfo appStatus)
+        : PortalModuleBase, IHttpHandler
     {
+        private readonly IPortalController portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
+
+        /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IPortalController. Scheduled removal in v12.0.0.")]
+        public Tabs()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Tabs"/> class.</summary>
+        /// <param name="portalController">The portal controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public Tabs(IPortalController portalController)
+            : this(portalController, null, null)
+        {
+        }
+
         /// <summary>Gets a value indicating whether another request can use the <see cref="T:System.Web.IHttpHandler"/> instance.</summary>
         /// <returns>true if the <see cref="T:System.Web.IHttpHandler"/> instance is reusable; otherwise, false.</returns>
-        public bool IsReusable
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public bool IsReusable => false;
 
         /// <summary>Enables processing of HTTP Web requests by a custom HttpHandler that implements the <see cref="T:System.Web.IHttpHandler"/> interface.</summary>
         /// <param name="context">An <see cref="T:System.Web.HttpContext"/> object that provides references to the intrinsic server objects (for example, Request, Response, Session, and Server) used to service HTTP requests.</param>
@@ -42,14 +64,11 @@ namespace DNNConnect.CKEditorProvider
 
             var domainName = $"http://{Globals.GetDomainName(context.Request, true)}";
 
-            foreach (TabInfo tab in TabController.GetPortalTabs(
-                    portalId, -1, false, null, true, false, true, true, true))
+            foreach (TabInfo tab in TabController.GetPortalTabs(this.hostSettings, this.appStatus, portalId, -1, false, null, true, false, true, true, true))
             {
-                var tabUrl = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalId, false)
+                var tabUrl = PortalController.GetPortalSettingAsBoolean(this.portalController, "ContentLocalizationEnabled", portalId, false)
                                 && !string.IsNullOrEmpty(tab.CultureCode)
-                                    ? Globals.FriendlyUrl(
-                                        tab,
-                                        $"{Globals.ApplicationURL(tab.TabID)}&language={tab.CultureCode}")
+                                    ? Globals.FriendlyUrl(tab, $"{Globals.ApplicationURL(tab.TabID)}&language={tab.CultureCode}")
                                     : Globals.FriendlyUrl(tab, Globals.ApplicationURL(tab.TabID));
 
                 tabUrl = Globals.ResolveUrl(Regex.Replace(tabUrl, domainName, "~", RegexOptions.IgnoreCase));

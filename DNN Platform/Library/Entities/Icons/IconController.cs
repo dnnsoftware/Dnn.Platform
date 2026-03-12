@@ -119,6 +119,9 @@ namespace DotNetNuke.Entities.Icons
         }
 
         private static void CheckIconOnDisk(string path)
+            => CheckIconOnDisk(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), path);
+
+        private static void CheckIconOnDisk(IApplicationStatusInfo appStatus, string path)
         {
             using (IconsStatusOnDisk.GetReadLock())
             {
@@ -133,7 +136,7 @@ namespace DotNetNuke.Entities.Icons
                 if (!IconsStatusOnDisk.ContainsKey(path))
                 {
                     IconsStatusOnDisk.Add(path, true);
-                    var iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
+                    var iconPhysicalPath = Path.Combine(appStatus.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
                         Logger.Warn($"Icon Not Present on Disk {iconPhysicalPath}");

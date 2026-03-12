@@ -6,13 +6,29 @@ namespace DotNetNuke.Data
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data.PetaPoco;
+    using DotNetNuke.Internal.SourceGenerators;
+
     using global::PetaPoco;
 
-    public class DataContext
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A class for creating <see cref="IDataContext"/> instances.</summary>
+    public partial class DataContext
     {
-        public static IDataContext Instance()
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <returns>The data context.</returns>
+        [DnnDeprecated(10, 2, 2, "Use the overload taking IHostSettings")]
+        public static partial IDataContext Instance()
+            => Instance(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>The data context.</returns>
+        public static IDataContext Instance(IHostSettings hostSettings)
         {
             IDataContext instance = ComponentFactory.GetComponent<IDataContext>();
 
@@ -20,26 +36,48 @@ namespace DotNetNuke.Data
             {
                 var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
 
-                instance = new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
+                instance = new PetaPocoDataContext(hostSettings, defaultConnectionStringName, DataProvider.Instance().ObjectQualifier);
             }
 
             return instance;
         }
 
-        public static IDataContext Instance(string connectionStringName)
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="connectionStringName">The connection string name.</param>
+        /// <returns>The data context.</returns>
+        [DnnDeprecated(10, 2, 2, "Use the overload taking IHostSettings")]
+        public static partial IDataContext Instance(string connectionStringName)
+            => Instance(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), connectionStringName);
+
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="connectionStringName">The connection string name.</param>
+        /// <returns>The data context.</returns>
+        public static IDataContext Instance(IHostSettings hostSettings, string connectionStringName)
         {
             IDataContext instance = ComponentFactory.GetComponent<IDataContext>(connectionStringName);
 
             if (instance == null)
             {
-                instance = new PetaPocoDataContext(connectionStringName, DataProvider.Instance().ObjectQualifier);
+                instance = new PetaPocoDataContext(hostSettings, connectionStringName, DataProvider.Instance().ObjectQualifier);
             }
 
             return instance;
         }
 
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="mappers">The mappers.</param>
+        /// <returns>The data context.</returns>
+        [DnnDeprecated(10, 2, 2, "Use the overload taking IHostSettings")]
 #pragma warning disable CS3001 // Argument type is not CLS-compliant
-        public static IDataContext Instance(Dictionary<Type, IMapper> mappers)
+        public static partial IDataContext Instance(Dictionary<Type, IMapper> mappers)
+            => Instance(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), mappers);
+
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="mappers">The mappers.</param>
+        /// <returns>The data context.</returns>
+        public static IDataContext Instance(IHostSettings hostSettings, Dictionary<Type, IMapper> mappers)
 #pragma warning restore CS3001
         {
             IDataContext instance = ComponentFactory.GetComponent<IDataContext>();
@@ -48,21 +86,34 @@ namespace DotNetNuke.Data
             {
                 var defaultConnectionStringName = DataProvider.Instance().Settings["connectionStringName"];
 
-                instance = new PetaPocoDataContext(defaultConnectionStringName, DataProvider.Instance().ObjectQualifier, mappers);
+                instance = new PetaPocoDataContext(hostSettings, defaultConnectionStringName, DataProvider.Instance().ObjectQualifier, mappers);
             }
 
             return instance;
         }
 
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="connectionStringName">The connection string name.</param>
+        /// <param name="mappers">The mappers.</param>
+        /// <returns>The data context.</returns>
+        [DnnDeprecated(10, 2, 2, "Use the overload taking IHostSettings")]
 #pragma warning disable CS3001 // Argument type is not CLS-compliant
-        public static IDataContext Instance(string connectionStringName, Dictionary<Type, IMapper> mappers)
+        public static partial IDataContext Instance(string connectionStringName, Dictionary<Type, IMapper> mappers)
+            => Instance(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), connectionStringName, mappers);
+
+        /// <summary>Get an <see cref="IDataContext"/> instance.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="connectionStringName">The connection string name.</param>
+        /// <param name="mappers">The mappers.</param>
+        /// <returns>The data context.</returns>
+        public static IDataContext Instance(IHostSettings hostSettings, string connectionStringName, Dictionary<Type, IMapper> mappers)
 #pragma warning restore CS3001
         {
             IDataContext instance = ComponentFactory.GetComponent<IDataContext>(connectionStringName);
 
             if (instance == null)
             {
-                instance = new PetaPocoDataContext(connectionStringName, DataProvider.Instance().ObjectQualifier, mappers);
+                instance = new PetaPocoDataContext(hostSettings, connectionStringName, DataProvider.Instance().ObjectQualifier, mappers);
             }
 
             return instance;

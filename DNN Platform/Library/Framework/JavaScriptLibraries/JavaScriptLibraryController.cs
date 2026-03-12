@@ -14,10 +14,17 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class JavaScriptLibraryController
-                        : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>,
-                        IJavaScriptLibraryController
+    public class JavaScriptLibraryController(IHostSettings hostSettings) : ServiceLocator<IJavaScriptLibraryController, JavaScriptLibraryController>, IJavaScriptLibraryController
     {
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="JavaScriptLibraryController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public JavaScriptLibraryController()
+            : this(null)
+        {
+        }
+
         /// <summary>Delete the library reference from the database.</summary>
         /// <param name="library">Library to be deleted.</param>
         public void DeleteLibrary(JavaScriptLibrary library)
@@ -53,11 +60,12 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         public IEnumerable<JavaScriptLibrary> GetLibraries()
         {
             return CBO.GetCachedObject<IEnumerable<JavaScriptLibrary>>(
+                this.hostSettings,
                 new CacheItemArgs(
-                DataCache.JavaScriptLibrariesCacheKey,
-                DataCache.JavaScriptLibrariesCacheTimeout,
-                DataCache.JavaScriptLibrariesCachePriority),
-                c => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
+                    DataCache.JavaScriptLibrariesCacheKey,
+                    DataCache.JavaScriptLibrariesCacheTimeout,
+                    DataCache.JavaScriptLibrariesCachePriority),
+                static _ => CBO.FillCollection<JavaScriptLibrary>(DataProvider.Instance().ExecuteReader("GetJavaScriptLibraries")));
         }
 
         /// <summary>Save a library to the database.</summary>
@@ -77,10 +85,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             ClearCache();
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override Func<IJavaScriptLibraryController> GetFactory()
         {
-            return () => Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryController>();
+            return () => Globals.DependencyProvider.GetRequiredService<IJavaScriptLibraryController>();
         }
 
         private static void ClearCache()

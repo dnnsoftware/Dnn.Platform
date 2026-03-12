@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             get { return string.Empty; }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override void UpdateSettings()
         {
             if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

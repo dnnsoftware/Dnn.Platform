@@ -8,20 +8,47 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.Common;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>DDR Menu WebControl.</summary>
     internal class DDRMenuControl : WebControl, IPostBackEventHandler
     {
         private readonly ILocaliser localiser;
+        private readonly IHostSettings hostSettings;
+        private readonly ITabController tabController;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private MenuBase menu;
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuControl"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DDRMenuControl(ILocaliser localiser)
+            : this(localiser, null, null, null, null)
         {
             this.localiser = localiser;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DDRMenuControl"/> class.</summary>
+        /// <param name="localiser">The tab localizer.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        public DDRMenuControl(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService)
+        {
+            this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
+            this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+            this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         /// <summary>Handles a click on the menu.</summary>
@@ -31,7 +58,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Handles a click on a node of the menu.</summary>
         public event MenuClickEventHandler NodeClick;
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public override bool EnableViewState
         {
             get { return false; }
@@ -47,7 +74,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Gets or sets the menu settings.</summary>
         internal Settings MenuSettings { get; set; }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void RaisePostBackEvent(string eventArgument)
         {
             using (new DNNContext(this))
@@ -59,15 +86,15 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void OnPreRender(EventArgs e)
         {
             using (new DNNContext(this))
             {
                 base.OnPreRender(e);
 
-                this.MenuSettings.MenuStyle = this.MenuSettings.MenuStyle ?? "DNNMenu";
-                this.menu = MenuBase.Instantiate(this.localiser, this.MenuSettings.MenuStyle);
+                this.MenuSettings.MenuStyle ??= "DNNMenu";
+                this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.tabController, this.clientResourceController, this.pageService, this.MenuSettings.MenuStyle);
                 this.menu.RootNode = this.RootNode ?? new MenuNode();
                 this.menu.SkipLocalisation = this.SkipLocalisation;
                 this.menu.ApplySettings(this.MenuSettings);
@@ -76,7 +103,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         protected override void Render(HtmlTextWriter htmlWriter)
         {
             using (new DNNContext(this))

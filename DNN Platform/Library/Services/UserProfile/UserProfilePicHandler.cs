@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.UserProfile
             ".ICO",
         };
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public bool IsReusable
         {
             get
@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.UserProfile
             }
         }
 
-        /// <inheritdoc/>
+        /// <inheritdoc />
         public void ProcessRequest(HttpContext context)
         {
             SetupCulture();
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.UserProfile
 
         private static void SetupCulture()
         {
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            PortalSettings settings = PortalSettings.Current;
             if (settings is null)
             {
                 return;
