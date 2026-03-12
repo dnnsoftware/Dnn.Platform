@@ -25,11 +25,12 @@
         from component in package.Element("components").Descendants("component")
         let componentType = component.Attribute("type").Value
         from file in component.Descendants().Descendants<XElement>(componentType.ToLowerInvariant())
+        where file.Attribute("action")?.Value != "UnRegister"
         let path = file.Element("path")
         let name = file.Element("name")
         let sourceFileName = file.Element("sourceFileName")
         let fullFilePath = sourceFileName?.Value ?? Path.Combine(path?.Value ?? string.Empty, name.Value)
-        select new TaskItem(fullFilePath)
+        select new TaskItem(fullFilePath, new Dictionary<string, object> { { "RecursiveDir", Path.GetDirectoryName(fullFilePath) }, })
     ).ToArray();
 ]]>
       </Code>
@@ -46,7 +47,7 @@
       <Output TaskParameter="Value" PropertyName="Version" />
     </XmlRead>
     <ExtensionPackager Manifest="$(DNNFileName).dnn" WorkingFolder="$(MSBuildProjectDirectory)\">
-      <Output TaskParameter="PackageFiles" PropertyName="PackageFiles">
+      <Output TaskParameter="PackageFiles" ItemName="PackageFiles">
       </Output>
     </ExtensionPackager>
 
@@ -58,19 +59,20 @@
       <LicenseFiles Include="license.txt"/>
     </ItemGroup>
     <Copy SourceFiles="@(LicenseFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
+    
     <ItemGroup>
       <ReleaseNotesFiles Include="releaseNotes.txt"/>
     </ItemGroup>
     <Copy SourceFiles="@(ReleaseNotesFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
-    <CreateItem Include="$(PackageFiles)">
-      <Output TaskParameter="Include" ItemName="OutputContent" />
-    </CreateItem>
-    <Copy SourceFiles="$(OutputContent)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(OutputContent.RecursiveDir)" />
+    
+    <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(PackageFiles.RecursiveDir)" />
+
     <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
       <Output TaskParameter="Include" ItemName="ZipOutputContent" />
     </CreateItem>
     <Zip Files="@(ZipOutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
+
     <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
     <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
   </Target>

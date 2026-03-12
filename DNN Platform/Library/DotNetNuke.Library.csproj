@@ -71,6 +71,7 @@
     <ProjectReference Include="..\Controls\CountryListBox\CountryListBox.csproj" />
     <ProjectReference Include="..\Controls\DotNetNuke.WebControls\DotNetNuke.WebControls.vbproj" />
     <ProjectReference Include="..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
+    <ProjectReference Include="..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj" />
     <ProjectReference Include="..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />
     <ProjectReference Include="..\DotNetNuke.Instrumentation\DotNetNuke.Instrumentation.csproj" />
     <ProjectReference Include="..\DotNetNuke.Log4net\DotNetNuke.Log4Net.csproj" />
@@ -79,7 +80,7 @@
     <ProjectReference Include="..\DotNetNuke.WebUtility\DotNetNuke.WebUtility.vbproj" />
     <ProjectReference Include="..\Syndication\DotNetNuke.Syndication.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
     <Compile Include="..\..\SolutionInfo.cs" Link="Properties\SolutionInfo.cs" />
