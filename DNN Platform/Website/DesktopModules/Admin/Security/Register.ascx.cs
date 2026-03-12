@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Entities.Users;
@@ -53,11 +54,13 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly IClientResourceController clientResourceController;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IEventLogger eventLogger;
+        private readonly ListController listController;
+        private readonly DataProvider dataProvider;
 
         /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public Register()
-            : this(null, null, null, null, null, null, null)
+            : this(null, null, null, null, null, null, null, null, null)
         {
         }
 
@@ -66,7 +69,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="serviceProvider">The service provider.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider)
-            : this(navigationManager, serviceProvider, null, null, null, null, null)
+            : this(navigationManager, serviceProvider, null, null, null, null, null, null, null)
         {
         }
 
@@ -78,7 +81,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="clientResourceController">The client resources controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IApplicationStatusInfo. Scheduled removal in v12.0.0.")]
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
-            : this(navigationManager, serviceProvider, hostSettings, javaScript, clientResourceController, null, null)
+            : this(navigationManager, serviceProvider, hostSettings, javaScript, clientResourceController, null, null, null, null)
         {
         }
 
@@ -90,15 +93,33 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="clientResourceController">The client resources controller.</param>
         /// <param name="appStatus">The application status.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
+            : this(navigationManager, serviceProvider, hostSettings, javaScript, clientResourceController, appStatus, eventLogger, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Register"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="serviceProvider">The service provider.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public Register(INavigationManager navigationManager, IServiceProvider serviceProvider, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, ListController listController, DataProvider dataProvider)
         {
             this.serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
             this.navigationManager = navigationManager ?? this.serviceProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.serviceProvider.GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? this.serviceProvider.GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? this.serviceProvider.GetRequiredService<IClientResourceController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
+            this.appStatus = appStatus ?? this.serviceProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.eventLogger = eventLogger ?? this.serviceProvider.GetRequiredService<IEventLogger>();
+            this.listController = listController ?? this.serviceProvider.GetRequiredService<ListController>();
+            this.dataProvider = dataProvider ?? this.serviceProvider.GetRequiredService<DataProvider>();
         }
 
         protected string ExcludeTerms
@@ -286,7 +307,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.PortalSettings.Registration.UseAuthProviders)
             {
-                List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices();
+                List<AuthenticationInfo> authSystems = AuthenticationController.GetEnabledAuthenticationServices(this.hostSettings);
                 foreach (AuthenticationInfo authSystem in authSystems)
                 {
                     try
@@ -483,8 +504,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return;
             }
 
-            var controller = new ListController();
-            ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
+            ListEntryInfo imageType = this.listController.GetListEntryInfo("DataType", "Image");
             if (property.DataType != imageType.EntryID)
             {
                 var formItem = new DnnFormEditControlItem(this.appStatus, this.eventLogger, this.serviceProvider)
@@ -493,7 +513,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     ResourceKey = $"ProfileProperties_{property.PropertyName}",
                     LocalResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx.resx",
                     ValidationMessageSuffix = ".Validation",
-                    ControlType = EditorInfo.GetEditor(property.DataType),
+                    ControlType = EditorInfo.GetEditor(this.listController, property.DataType),
                     DataMember = "Profile",
                     DataField = property.PropertyName,
                     Visible = property.Visible,
@@ -720,7 +740,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (settings.EnableBannedList)
             {
-                var m = new MembershipPasswordController();
+                var m = new MembershipPasswordController(this.listController, this.dataProvider);
                 if (m.FoundBannedPassword(this.User.Membership.Password) || this.User.Username == this.User.Membership.Password)
                 {
                     this.CreateStatus = UserCreateStatus.BannedPasswordUsed;

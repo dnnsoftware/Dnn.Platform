@@ -1187,7 +1187,6 @@ namespace DNNConnect.CKEditorProvider.Web
         {
             this.clientResourceController.RegisterStylesheet(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorToolBars.css"));
             this.clientResourceController.RegisterStylesheet(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/css/CKEditorOverride.css"));
-            this.clientResourceController.RegisterStylesheet(Globals.ResolveUrl("~/Providers/HtmlEditorProviders/DNNConnect.CKE/js/ckeditor/4.18.0/editor.css"));
 
             ClientScriptManager cs = this.Page.ClientScript;
 

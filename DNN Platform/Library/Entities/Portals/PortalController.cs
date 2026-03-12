@@ -42,6 +42,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Membership;
+    using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
@@ -727,7 +728,7 @@ namespace DotNetNuke.Entities.Portals
             var retValue = Null.NullBoolean;
             try
             {
-                Instance.GetPortalSettings(portalId).TryGetValue(key, out var setting);
+                portalController.GetPortalSettings(portalId).TryGetValue(key, out var setting);
                 if (string.IsNullOrEmpty(setting))
                 {
                     retValue = defaultValue;
@@ -953,7 +954,19 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">host settings key.</param>
         /// <param name="settingValue">host settings value.</param>
         /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
-        public static void UpdateEncryptedString(IHostSettings hostSettings, HashAlgorithmName hashAlgorithm, int portalId, string settingName, string settingValue, string passPhrase)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void UpdateEncryptedString(IHostSettings hostSettings, HashAlgorithmName hashAlgorithm, int portalId, string settingName, string settingValue, string passPhrase)
+            => UpdateEncryptedString(hostSettings, Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), hashAlgorithm, portalId, settingName, settingValue, passPhrase);
+
+        /// <summary>takes in a text value, encrypts it with a FIPS compliant algorithm and stores.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="hashAlgorithm">the hash algorithm to use to derive the encryption key.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settingName">host settings key.</param>
+        /// <param name="settingValue">host settings value.</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
+        public static void UpdateEncryptedString(IHostSettings hostSettings, IPortalController portalController, HashAlgorithmName hashAlgorithm, int portalId, string settingName, string settingValue, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
             Requires.PropertyNotNull("value", settingValue);
@@ -961,14 +974,15 @@ namespace DotNetNuke.Entities.Portals
 
             var cipherText = Security.FIPSCompliant.EncryptAES(hashAlgorithm, settingValue, passPhrase, hostSettings.Guid);
 
-            UpdatePortalSetting(portalId, settingName, cipherText);
+            UpdatePortalSetting(portalController, portalId, settingName, cipherText);
         }
 
         /// <summary>Updates a single neutral (not language specific) portal setting and clears it from the cache.</summary>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="settingValue">The setting value.</param>
-        public static void UpdatePortalSetting(int portalID, string settingName, string settingValue)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void UpdatePortalSetting(int portalID, string settingName, string settingValue)
             => UpdatePortalSetting(Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalID, settingName, settingValue);
 
         /// <summary>Updates a single neutral (not language specific) portal setting and clears it from the cache.</summary>
@@ -1835,9 +1849,21 @@ namespace DotNetNuke.Entities.Portals
         [DnnDeprecated(9, 11, 1, "Use DotNetNuke.Entities.Portals.Templates.PortalTemplateController.Instance.ApplyPortalTemplate instead")]
         public partial void ParseTemplate(int portalId, PortalTemplateInfo template, int administratorId, PortalTemplateModuleAction mergeTabs, bool isNewPortal)
         {
-            var t = new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode);
-            var portalTemplateImporter = new PortalTemplateImporter(this.permissionDefinitionService, t);
-            portalTemplateImporter.ParseTemplate(this.businessControllerProvider, this.eventLogger, portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
+            var portalTemplateImporter = new PortalTemplateImporter(
+                this.permissionDefinitionService,
+                this.businessControllerProvider,
+                new ListController(this.eventLogger, this.hostSettings),
+                this.eventLogger,
+                this.hostSettings,
+                this,
+                this.appStatus,
+                PortalGroupController.Instance,
+                UserController.Instance,
+                FileContentTypeManager.Instance,
+                RoleProvider.Instance(),
+                RoleController.Instance,
+                new Templates.PortalTemplateInfo(template.TemplateFilePath, template.CultureCode));
+            portalTemplateImporter.ParseTemplate(portalId, administratorId, mergeTabs.ToNewEnum(), isNewPortal);
         }
 
         /// <summary>Processes the resource file for the template file selected.</summary>
@@ -1883,17 +1909,18 @@ namespace DotNetNuke.Entities.Portals
             this.UpdatePortalInternal(portal, true);
         }
 
-        /// <summary>Gets the current portal settings.</summary>
-        /// <returns>portal settings.</returns>
-        PortalSettings IPortalController.GetCurrentPortalSettings()
+        /// <inheritdoc cref="DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo" />
+        [DnnDeprecated(9, 11, 1, "Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead")]
+        public partial int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
-            return GetCurrentPortalSettingsInternal();
+            return this.CreatePortal(portalName, adminUser, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
         }
 
-        /// <inheritdoc />
-        IAbPortalSettings IPortalController.GetCurrentSettings()
+        /// <inheritdoc cref="DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo" />
+        [DnnDeprecated(9, 11, 1, "Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead")]
+        public partial int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
         {
-            return GetCurrentPortalSettingsInternal();
+            return this.CreatePortal(portalName, adminUserId, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
         }
 
         /// <inheritdoc />
@@ -1929,18 +1956,17 @@ namespace DotNetNuke.Entities.Portals
                 isSecure);
         }
 
-        /// <inheritdoc cref="DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo" />
-        [DnnDeprecated(9, 11, 1, "Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead")]
-        public partial int CreatePortal(string portalName, UserInfo adminUser, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        /// <summary>Gets the current portal settings.</summary>
+        /// <returns>portal settings.</returns>
+        PortalSettings IPortalController.GetCurrentPortalSettings()
         {
-            return this.CreatePortal(portalName, adminUser, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+            return GetCurrentPortalSettingsInternal();
         }
 
-        /// <inheritdoc cref="DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo" />
-        [DnnDeprecated(9, 11, 1, "Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead")]
-        public partial int CreatePortal(string portalName, int adminUserId, string description, string keyWords, PortalTemplateInfo template, string homeDirectory, string portalAlias, string serverPath, string childPath, bool isChildPortal)
+        /// <inheritdoc />
+        IAbPortalSettings IPortalController.GetCurrentSettings()
         {
-            return this.CreatePortal(portalName, adminUserId, description, keyWords, template.ToNewPortalTemplateInfo(), homeDirectory, portalAlias, serverPath, childPath, isChildPortal);
+            return GetCurrentPortalSettingsInternal();
         }
 
         internal static void EnsureRequiredEventLogTypesExist()
@@ -2459,7 +2485,20 @@ namespace DotNetNuke.Entities.Portals
                 Exceptions.LogException(ex);
             }
 
-            var portalTemplateImporter = new PortalTemplateImporter(this.permissionDefinitionService, template);
+            var portalTemplateImporter = new PortalTemplateImporter(
+                this.permissionDefinitionService,
+                this.businessControllerProvider,
+                new ListController(this.eventLogger, this.hostSettings),
+                this.eventLogger,
+                this.hostSettings,
+                this,
+                this.appStatus,
+                PortalGroupController.Instance,
+                UserController.Instance,
+                FileContentTypeManager.Instance,
+                RoleProvider.Instance(),
+                RoleController.Instance,
+                template);
 
             if (string.IsNullOrEmpty(homeDirectory))
             {
@@ -2569,7 +2608,7 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         this.CreatePredefinedFolderTypes(portalId);
-                        portalTemplateImporter.ParseTemplateInternal(this.businessControllerProvider, this.eventLogger, portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
+                        portalTemplateImporter.ParseTemplateInternal(portalId, adminUser.UserID, PortalTemplateModuleAction.Replace.ToNewEnum(), true, out newPortalLocales);
                     }
                     catch (Exception exc1)
                     {
@@ -2635,12 +2674,12 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         const string listName = "ProfanityFilter";
-                        var listController = new ListController();
+                        var listController = new ListController(this.eventLogger, this.hostSettings);
                         var entry = new ListEntryInfo
                         {
                             PortalID = portalId,
                             SystemList = false,
-                            ListName = listName + "-" + portalId,
+                            ListName = $"{listName}-{portalId}",
                         };
                         listController.AddListEntry(entry);
                     }
@@ -2653,12 +2692,12 @@ namespace DotNetNuke.Entities.Portals
                     try
                     {
                         const string listName = "BannedPasswords";
-                        var listController = new ListController();
+                        var listController = new ListController(this.eventLogger, this.hostSettings);
                         var entry = new ListEntryInfo
                         {
                             PortalID = portalId,
                             SystemList = false,
-                            ListName = listName + "-" + portalId,
+                            ListName = $"{listName}-{portalId}",
                         };
                         listController.AddListEntry(entry);
                     }

@@ -111,7 +111,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var portalId = PortalSettings.Current.PortalId;
                 PortalController.IncrementCrmVersion(this.portalController, portalId);
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, NewValue = this.GetPortalVersion(portalId) });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, NewValue = this.GetPortalVersion(portalId), });
             }
             catch (Exception exc)
             {
@@ -132,7 +132,7 @@ namespace Dnn.PersonaBar.Servers.Services
                 var portalId = PortalSettings.Current.PortalId;
                 this.hostSettingsService.IncrementCrmVersion(false);
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, NewValue = this.hostSettings.CrmVersion });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, NewValue = this.hostSettings.CrmVersion, });
             }
             catch (Exception exc)
             {
@@ -177,7 +177,7 @@ namespace Dnn.PersonaBar.Servers.Services
 
                 DataCache.ClearCache();
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

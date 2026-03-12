@@ -9,24 +9,40 @@ namespace DotNetNuke.Services.Registration
     using System.Diagnostics.CodeAnalysis;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Framework;
 
-    public class RegistrationProfileController : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
+    using Microsoft.Extensions.DependencyInjection;
+
+    public class RegistrationProfileController(ListController listController, IHostSettings hostSettings, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        : ServiceLocator<IRegistrationProfileController, RegistrationProfileController>, IRegistrationProfileController
     {
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+        private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+        private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+        private readonly IPortalGroupController portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+
+        /// <summary>Initializes a new instance of the <see cref="RegistrationProfileController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public RegistrationProfileController()
+            : this(null, null, null, null, null)
+        {
+        }
+
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public IEnumerable<string> Search(int portalId, string searchTerm)
         {
-            var controller = new ListController();
+            ListEntryInfo imageType = this.listController.GetListEntryInfo("DataType", "Image");
 
-            ListEntryInfo imageType = controller.GetListEntryInfo("DataType", "Image");
-
-            List<string> results = new List<string>();
-            foreach (var definition in ProfileController.GetPropertyDefinitionsByPortal(portalId)
-                                        .Cast<ProfilePropertyDefinition>()
-                                        .Where(definition => definition.DataType != imageType.EntryID))
+            List<string> results = [];
+            var properties = ProfileController.GetPropertyDefinitionsByPortal(this.hostSettings, this.portalController, this.appStatus, this.portalGroupController, portalId);
+            foreach (var definition in properties.Where(definition => definition.DataType != imageType.EntryID))
             {
                 AddProperty(results, definition.PropertyName, searchTerm);
             }
@@ -45,7 +61,7 @@ namespace DotNetNuke.Services.Registration
         /// <inheritdoc />
         protected override Func<IRegistrationProfileController> GetFactory()
         {
-            return () => new RegistrationProfileController();
+            return () => Globals.DependencyProvider.GetRequiredService<IRegistrationProfileController>();
         }
 
         private static void AddProperty(List<string> results, string field, string searchTerm)

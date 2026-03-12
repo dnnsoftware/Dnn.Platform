@@ -14,6 +14,7 @@ namespace DotNetNuke.Entities.Users
     using System.Threading;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
@@ -158,7 +159,17 @@ namespace DotNetNuke.Entities.Users
         /// <param name="oldPassword">The old password.</param>
         /// <param name="newPassword">The new password.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
-        public static bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IEventLogger")]
+        public static partial bool ChangePassword(UserInfo user, string oldPassword, string newPassword)
+            => ChangePassword(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), user, oldPassword, newPassword);
+
+        /// <summary>Attempts to change the users password.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="user">The user to update.</param>
+        /// <param name="oldPassword">The old password.</param>
+        /// <param name="newPassword">The new password.</param>
+        /// <returns>A Boolean indicating success or failure.</returns>
+        public static bool ChangePassword(IEventLogger eventLogger, UserInfo user, string oldPassword, string newPassword)
         {
             bool passwordChanged;
 
@@ -172,7 +183,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     // Update User
                     user.Membership.UpdatePassword = false;
-                    UpdateUser(user.PortalID, user);
+                    UpdateUser(eventLogger, user.PortalID, user);
                 }
             }
             else
@@ -189,13 +200,24 @@ namespace DotNetNuke.Entities.Users
         /// <param name="newPassword">The new password.</param>
         /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
         /// <returns>A Boolean indicating whether the password change succeeded.</returns>
-        public static bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IEventLogger")]
+        public static partial bool ChangePasswordByToken(int portalid, string username, string newPassword, string resetToken)
+            => ChangePasswordByToken(Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(), portalid, username, newPassword, resetToken);
+
+        /// <summary>Validates the password reset token and if valid changes the password.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="portalId">The site (portal) id on which the user exists.</param>
+        /// <param name="username">The username of the user to change the password for.</param>
+        /// <param name="newPassword">The new password.</param>
+        /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>
+        /// <returns>A Boolean indicating whether the password change succeeded.</returns>
+        public static bool ChangePasswordByToken(IEventLogger eventLogger, int portalId, string username, string newPassword, string resetToken)
         {
             bool passwordChanged;
 
             Guid resetTokenGuid = new Guid(resetToken);
 
-            var user = GetUserByName(portalid, username);
+            var user = GetUserByName(portalId, username);
 
             // if user does not exist return false
             if (user == null)
@@ -229,7 +251,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     // Update User
                     user.Membership.UpdatePassword = false;
-                    UpdateUser(user.PortalID, user);
+                    UpdateUser(eventLogger, user.PortalID, user);
                 }
             }
             else
@@ -347,7 +369,7 @@ namespace DotNetNuke.Entities.Users
 
         /// <summary>
         /// update username in the system
-        /// works around membershipprovider limitation.
+        /// works around membership provider limitation.
         /// </summary>
         /// <param name="userId">user id.</param>
         /// <param name="newUsername">new one.</param>
@@ -367,18 +389,18 @@ namespace DotNetNuke.Entities.Users
         [DnnDeprecated(9, 8, 1, "No alternative method implemented")]
         public static partial void CheckInsecurePassword(string username, string password, ref UserLoginStatus loginStatus)
         {
-            if (username == "admin" && (password == "admin" || password == "dnnadmin"))
+            if (username == "admin" && password is "admin" or "dnnadmin")
             {
                 loginStatus = UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
             }
 
-            if (username == "host" && (password == "host" || password == "dnnhost"))
+            if (username == "host" && password is "host" or "dnnhost")
             {
                 loginStatus = UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
             }
         }
 
-        /// <summary>Copys a user to a different portal.</summary>
+        /// <summary>Copies a user to a different portal.</summary>
         /// <param name="user">The user to copy.</param>
         /// <param name="destinationPortal">The destination portal.</param>
         /// <param name="mergeUser">A flag that indicates whether to merge the original user.</param>
@@ -591,10 +613,22 @@ namespace DotNetNuke.Entities.Users
         /// Retrieves the User from the Cache, or fetches a fresh copy if
         /// not in cache or if Cache settings are not set to HeavyCaching.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="username">The username of the user being retrieved.</param>
         /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
-        public static UserInfo GetCachedUser(int portalId, string username)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial UserInfo GetCachedUser(int portalId, string username)
+            => GetCachedUser(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, username);
+
+        /// <summary>
+        /// Retrieves the User from the Cache, or fetches a fresh copy if
+        /// not in cache or if Cache settings are not set to HeavyCaching.
+        /// </summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="username">The username of the user being retrieved.</param>
+        /// <returns>The user as a <see cref="UserInfo"/> object.</returns>
+        public static UserInfo GetCachedUser(IHostSettings hostSettings, int portalId, string username)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
 
@@ -603,7 +637,7 @@ namespace DotNetNuke.Entities.Users
 
             if (user != null)
             {
-                var lookUp = GetUserLookupDictionary(portalId);
+                var lookUp = GetUserLookupDictionary(hostSettings, portalId);
                 using (lookUp.GetWriteLock())
                 {
                     lookUp[user.UserID] = user.Username;
@@ -673,15 +707,23 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <inheritdoc cref="IUserController.GetUserById"/>
-        public static UserInfo GetUserById(int portalId, int userId)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial UserInfo GetUserById(int portalId, int userId)
+            => GetUserById(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId, userId);
+
+        /// <inheritdoc cref="IUserController.GetUserById"/>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="userId">The user ID.</param>
+        public static UserInfo GetUserById(IHostSettings hostSettings, int portalId, int userId)
         {
-            // stop any sql calls for guest users
+            // stop any SQL calls for guest users
             if (userId == Null.NullInteger)
             {
                 return null;
             }
 
-            var lookUp = GetUserLookupDictionary(portalId);
+            var lookUp = GetUserLookupDictionary(hostSettings, portalId);
 
             UserInfo user;
             string userName;
@@ -693,7 +735,7 @@ namespace DotNetNuke.Entities.Users
 
             if (userFound)
             {
-                user = GetCachedUser(portalId, userName);
+                user = GetCachedUser(hostSettings, portalId, userName);
             }
             else
             {
@@ -751,11 +793,26 @@ namespace DotNetNuke.Entities.Users
         /// <summary>Gets the number of users in a site (portal).</summary>
         /// <param name="portalId">The id of the portal to search.</param>
         /// <returns>The no of users the portal contains.</returns>
-        public static int GetUserCountByPortal(int portalId)
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial int GetUserCountByPortal(int portalId)
+            => GetUserCountByPortal(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), portalId);
+
+        /// <summary>Gets the number of users in a site (portal).</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="portalId">The id of the portal to search.</param>
+        /// <returns>The no of users the portal contains.</returns>
+        public static int GetUserCountByPortal(IHostSettings hostSettings, int portalId)
         {
             portalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.PortalUserCountCacheKey, portalId);
-            return CBO.GetCachedObject<int>(new CacheItemArgs(cacheKey, DataCache.PortalUserCountCacheTimeOut, DataCache.PortalUserCountCachePriority, portalId), GetUserCountByPortalCallBack);
+            return CBO.GetCachedObject<int>(
+                hostSettings,
+                new CacheItemArgs(
+                    cacheKey,
+                    DataCache.PortalUserCountCacheTimeOut,
+                    DataCache.PortalUserCountCachePriority,
+                    portalId),
+                GetUserCountByPortalCallBack);
         }
 
         /// <summary>Gets a localized string representing the user creation status.</summary>
@@ -2088,7 +2145,9 @@ namespace DotNetNuke.Entities.Users
                 LogTypeKey = loginStatus.ToString(),
                 LogPortalID = portalId,
                 LogPortalName = portalName,
+    #pragma warning disable CS0618 // Type or member is obsolete
                 LogUserName = objSecurity.InputFilter(username, PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup),
+    #pragma warning restore CS0618 // Type or member is obsolete
                 LogUserID = userId,
             };
             log.AddProperty("IP", ip);
@@ -2226,16 +2285,14 @@ namespace DotNetNuke.Entities.Users
             return portalUserCount;
         }
 
-        private static SharedDictionary<int, string> GetUserLookupDictionary(int portalId)
+        private static SharedDictionary<int, string> GetUserLookupDictionary(IHostSettings hostSettings, int portalId)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
             var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.UserLookupCacheKey, masterPortalId);
             return CBO.GetCachedObject<SharedDictionary<int, string>>(
-                new CacheItemArgs(
-                    cacheKey,
-                    DataCache.UserLookupCacheTimeOut,
-                    DataCache.UserLookupCachePriority),
-                (c) => new SharedDictionary<int, string>(),
+                hostSettings,
+                new CacheItemArgs(cacheKey, DataCache.UserLookupCacheTimeOut, DataCache.UserLookupCachePriority),
+                static _ => new SharedDictionary<int, string>(),
                 true);
         }
 

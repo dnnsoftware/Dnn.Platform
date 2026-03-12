@@ -7,13 +7,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
     using System.Data;
     using System.Linq;
 
-    using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Data;
-    using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Search.Internals;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -51,7 +49,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.cachingProvider = MockComponentProvider.CreateDataCacheProvider();
             this.dataProvider = MockComponentProvider.CreateDataProvider();
             this.SetupDataProvider();
-            this.searchHelper = new SearchHelperImpl();
+            this.searchHelper = new SearchHelperImpl(Mock.Of<IHostSettings>(), Mock.Of<IHostSettingsService>(), Mock.Of<IPortalController>(), Mock.Of<IApplicationStatusInfo>());
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>

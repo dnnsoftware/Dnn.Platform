@@ -6,6 +6,7 @@ import { pagination as PaginationActions } from "../../actions";
 import BasicSettings from "../basicSettings";
 import SslSettings from "../sslSettings";
 import ApiTokenSettings from "../apiTokenSettings";
+import CspSettings from "../cspSettings";
 import OtherSettings from "../otherSettings";
 import IpFilters from "../ipFilters";
 import MemberManagement from "../memberManagement";
@@ -108,6 +109,8 @@ export class Body extends Component {
             moreTabs.push(<SslSettings key="sslSettings" />);
             moreTabHeaders.push(resx.get("TabApiTokenSettings"));
             moreTabs.push(<ApiTokenSettings key="apiTokenSettings" />);
+            moreTabHeaders.push(resx.get("TabCspSettings"));
+            moreTabs.push(<CspSettings key="cspSettings" />);
         }
         if (isHost) {
             tabHeaders.push(resx.get("TabSecurityAnalyzer"));

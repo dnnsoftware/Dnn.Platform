@@ -84,7 +84,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private static string GetCleanUrl(string url)
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             var cleanUrl = PortalSecurity.Instance.InputFilter(url, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
             if (url != cleanUrl)
             {
                 return string.Empty;
@@ -110,7 +112,7 @@ namespace DotNetNuke.UI.Skins.Controls
             var rawQueryStringCollection =
                 HttpUtility.ParseQueryString(new Uri(HttpContext.Current.Request.Url.Scheme + "://" + HttpContext.Current.Request.Url.Authority + HttpContext.Current.Request.RawUrl).Query);
 
-            PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
+            var settings = PortalController.Instance.GetCurrentSettings();
             string[] arrKeys = queryStringCollection.AllKeys;
 
             for (int i = 0; i <= arrKeys.GetUpperBound(0); i++)

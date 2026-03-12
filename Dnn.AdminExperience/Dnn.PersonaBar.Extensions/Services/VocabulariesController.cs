@@ -124,7 +124,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 vocabulary.VocabularyId = vocabularyDto.VocabularyId;
 
                 this.controller.UpdateVocabulary(vocabulary);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (VocabularyValidationException exc)
             {
@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 }
 
                 this.controller.DeleteVocabulary(new Vocabulary() { VocabularyId = vocabularyId });
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -284,7 +284,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 }
 
                 this.controller.UpdateTerm(term);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (TermValidationException)
             {
@@ -315,7 +315,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
                 }
 
                 this.controller.DeleteTerm(term);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

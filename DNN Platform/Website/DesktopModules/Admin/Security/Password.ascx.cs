@@ -11,7 +11,9 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Data;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Membership;
@@ -32,13 +34,14 @@ namespace DotNetNuke.Modules.Admin.Users
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
         private readonly IEventLogger eventLogger;
-        private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
+        private readonly DataProvider dataProvider;
 
         /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Password()
-            : this(null, null, null, null)
+            : this(null, null, null, null, null, null)
         {
         }
 
@@ -47,12 +50,26 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="javaScript">The JavaScript library helper.</param>
         /// <param name="clientResourceController">The client resources controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController)
+            : this(eventLogger, hostSettings, javaScript, clientResourceController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Password"/> class.</summary>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="dataProvider">The data provider.</param>
+        public Password(IEventLogger eventLogger, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, ListController listController, DataProvider dataProvider)
+            : base(listController, hostSettings)
         {
             this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
-            this.hostSettings = hostSettings ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.javaScript = javaScript ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IJavaScriptLibraryHelper>();
             this.clientResourceController = clientResourceController ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.dataProvider = dataProvider ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
         }
 
         /// <summary>A function which handles an event with <see cref="PasswordUpdatedEventArgs"/>.</summary>
@@ -250,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             base.OnPreRender(e);
 
-            if (this.hostSettings.EnableStrengthMeter)
+            if (this.HostSettings.EnableStrengthMeter)
             {
                 this.passwordContainer.CssClass = "password-strength-container";
                 this.txtNewPassword.CssClass = "password-strength";
@@ -312,7 +329,7 @@ namespace DotNetNuke.Modules.Admin.Users
             try
             {
                 // create reset token
-                UserController.ResetPasswordToken(this.User, (int)this.hostSettings.AdminMembershipResetLinkValidity.TotalMinutes);
+                UserController.ResetPasswordToken(this.User, (int)this.HostSettings.AdminMembershipResetLinkValidity.TotalMinutes);
 
                 bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
                 string message;
@@ -449,7 +466,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
 
                 // 5. Check New Password is not same as username or banned
-                var membershipPasswordController = new MembershipPasswordController();
+                var membershipPasswordController = new MembershipPasswordController(this.ListController, this.dataProvider);
                 var settings = new MembershipPasswordSettings(this.User.PortalID);
 
                 if (settings.EnableBannedList)
@@ -478,7 +495,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     try
                     {
-                        this.OnPasswordUpdated(UserController.ChangePassword(this.User, this.txtOldPassword.Text, this.txtNewPassword.Text)
+                        this.OnPasswordUpdated(UserController.ChangePassword(this.eventLogger, this.User, this.txtOldPassword.Text, this.txtNewPassword.Text)
                                               ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                               : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
                     }
@@ -558,7 +575,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             // Try and set password Q and A
-            UserInfo objUser = UserController.GetUserById(this.PortalId, this.UserId);
+            UserInfo objUser = UserController.GetUserById(this.HostSettings, this.PortalId, this.UserId);
             this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(this.eventLogger, objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)
                                                 : new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));

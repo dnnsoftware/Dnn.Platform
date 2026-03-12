@@ -9,12 +9,29 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Modules.Html.Components;
     using DotNetNuke.Services.Exceptions;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The Settings ModuleSettingsBase is used to manage the settings for the HTML Module.</summary>
     public partial class Settings : ModuleSettingsBase
     {
+        private readonly HtmlModuleSettingsRepository settingsRepository;
         private HtmlModuleSettings moduleSettings;
 
-        private new HtmlModuleSettings ModuleSettings => this.moduleSettings ?? (this.moduleSettings = new HtmlModuleSettingsRepository().GetSettings(this.ModuleConfiguration));
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
+        public Settings()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Settings"/> class.</summary>
+        /// <param name="settingsRepository">The settings repository.</param>
+        public Settings(HtmlModuleSettingsRepository settingsRepository)
+        {
+            this.settingsRepository = settingsRepository ?? this.DependencyProvider.GetRequiredService<HtmlModuleSettingsRepository>();
+        }
+
+        private new HtmlModuleSettings ModuleSettings => this.moduleSettings ??= this.settingsRepository.GetSettings(this.ModuleConfiguration);
 
         /// <summary>LoadSettings loads the settings from the Database and displays them.</summary>
         public override void LoadSettings()
@@ -36,7 +53,7 @@ namespace DotNetNuke.Modules.Html
             }
         }
 
-        /// <summary>  UpdateSettings saves the modified settings to the Database.</summary>
+        /// <summary>UpdateSettings saves the modified settings to the Database.</summary>
         public override void UpdateSettings()
         {
             try
@@ -45,8 +62,7 @@ namespace DotNetNuke.Modules.Html
                 this.ModuleSettings.ReplaceTokens = this.chkReplaceTokens.Checked;
                 this.ModuleSettings.UseDecorate = this.cbDecorate.Checked;
                 this.ModuleSettings.SearchDescLength = int.Parse(this.txtSearchDescLength.Text);
-                var repo = new HtmlModuleSettingsRepository();
-                repo.SaveSettings(this.ModuleConfiguration, this.ModuleSettings);
+                this.settingsRepository.SaveSettings(this.ModuleConfiguration, this.ModuleSettings);
 
                 // disable module caching if token replace is enabled
                 if (this.chkReplaceTokens.Checked)

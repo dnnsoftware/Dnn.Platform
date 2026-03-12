@@ -8,10 +8,12 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.UI;
     using DotNetNuke.UI.WebControls;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
@@ -19,7 +21,7 @@ namespace DotNetNuke.Web.DDRMenu
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Dnn abstractions.</summary>
-    internal static class DNNAbstract
+    internal static partial class DNNAbstract
     {
         /// <summary>Gets the Dnn login url.</summary>
         /// <returns>The url to login.</returns>
@@ -78,14 +80,21 @@ namespace DotNetNuke.Web.DDRMenu
 
         /// <summary>Gets all the supported templating engines processors.</summary>
         /// <returns>An enumeration of all the available processors.</returns>
-        public static IEnumerable<ITemplateProcessor> SupportedTemplateProcessors()
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial IEnumerable<ITemplateProcessor> SupportedTemplateProcessors()
+            => SupportedTemplateProcessors(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>());
+
+        /// <summary>Gets all the supported templating engines processors.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <returns>An enumeration of all the available processors.</returns>
+        public static IEnumerable<ITemplateProcessor> SupportedTemplateProcessors(IHostSettings hostSettings)
         {
-            return new ITemplateProcessor[] { new TokenTemplateProcessor(), new RazorTemplateProcessor(), new XsltTemplateProcessor() };
+            return [new TokenTemplateProcessor(hostSettings), new RazorTemplateProcessor(hostSettings), new XsltTemplateProcessor(hostSettings),];
         }
 
         /// <summary>Gets the navigation nodes options.</summary>
         /// <param name="includeHidden">A value indicating whether to include the hidden nodes.</param>
-        /// <returns>An integer totalling the options values, <see cref="Navigation.NavNodeOptions"/> for the values.</returns>
+        /// <returns>An integer totaling the options values, <see cref="Navigation.NavNodeOptions"/> for the values.</returns>
         public static int GetNavNodeOptions(bool includeHidden)
         {
             return (int)Navigation.NavNodeOptions.IncludeSiblings + (int)Navigation.NavNodeOptions.IncludeSelf +

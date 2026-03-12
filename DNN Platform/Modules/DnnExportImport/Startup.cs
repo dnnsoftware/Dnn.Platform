@@ -30,7 +30,7 @@ namespace Dnn.ExportImport
             services.AddTransient<BaseController>();
 
             var portableServiceTypes = new TypeLocator().GetAllMatchingTypes(
-                t => t is { IsClass: true, IsAbstract: false, IsVisible: true } && typeof(BasePortableService).IsAssignableFrom(t));
+                t => t is { IsClass: true, IsAbstract: false, IsVisible: true, } && typeof(BasePortableService).IsAssignableFrom(t));
             services.TryAddEnumerable(portableServiceTypes.Select(type => ServiceDescriptor.Transient(typeof(BasePortableService), type)));
         }
     }

@@ -5,30 +5,53 @@ namespace DotNetNuke.UI.WebControls
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
     using System.Linq;
     using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     /// <summary>The DNNListEditControl control provides a standard UI component for selecting from Lists.</summary>
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
     public class DNNListEditControl : EditControl, IPostBackEventHandler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNListEditControl));
+        private readonly ListController listController;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
         private List<ListEntryInfo> listEntries;
         private string listName = string.Empty;
 
         /// <summary>Initializes a new instance of the <see cref="DNNListEditControl"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DNNListEditControl()
+            : this(null, null, null, null)
         {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DNNListEditControl"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public DNNListEditControl(ListController listController, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
+        {
+            this.listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+            this.portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalGroupController>();
+
             this.ValueField = ListBoundField.Value;
             this.TextField = ListBoundField.Text;
             this.ParentKey = string.Empty;
@@ -69,14 +92,13 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (this.listEntries == null)
                 {
-                    var listController = new ListController();
                     if (this.SortAlphabetically)
                     {
-                        this.listEntries = listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
+                        this.listEntries = this.listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).OrderBy(s => s.SortOrder).ThenBy(s => s.Text).ToList();
                     }
                     else
                     {
-                        this.listEntries = listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).ToList();
+                        this.listEntries = this.listController.GetListEntryInfoItems(this.ListName, this.ParentKey, this.PortalId).ToList();
                     }
                 }
 
@@ -111,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
-        protected int PortalId => PortalController.GetEffectivePortalId(PortalSettings.Current.PortalId);
+        protected int PortalId => PortalController.GetEffectivePortalId(this.portalController, this.appStatus, this.portalGroupController, PortalSettings.Current.PortalId);
 
         /// <summary>Gets oldStringValue returns the Boolean representation of the OldValue.</summary>
         /// <value>A String representing the OldValue.</value>
@@ -226,19 +248,18 @@ namespace DotNetNuke.UI.WebControls
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            var objListController = new ListController();
             ListEntryInfo entry = null;
             string entryText = Null.NullString;
             switch (this.ValueField)
             {
                 case ListBoundField.Id:
-                    entry = objListController.GetListEntryInfo(this.ListName, Convert.ToInt32(this.Value, CultureInfo.InvariantCulture));
+                    entry = this.listController.GetListEntryInfo(this.ListName, Convert.ToInt32(this.Value, CultureInfo.InvariantCulture));
                     break;
                 case ListBoundField.Text:
                     entryText = this.StringValue;
                     break;
                 case ListBoundField.Value:
-                    entry = objListController.GetListEntryInfo(this.ListName, this.StringValue);
+                    entry = this.listController.GetListEntryInfo(this.ListName, this.StringValue);
                     break;
             }
 

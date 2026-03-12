@@ -28,14 +28,14 @@
 
 ### Depends on
 
-- dnn-collapsible
+- dnn-context-menu
 - [dnn-rm-folder-context-menu](../context-menus/dnn-rm-folder-context-menu)
 - [dnn-rm-file-context-menu](../context-menus/dnn-rm-file-context-menu)
 
 ### Graph
 ```mermaid
 graph TD;
-  dnn-rm-items-cardview --> dnn-collapsible
+  dnn-rm-items-cardview --> dnn-context-menu
   dnn-rm-items-cardview --> dnn-rm-folder-context-menu
   dnn-rm-items-cardview --> dnn-rm-file-context-menu
   dnn-rm-folder-context-menu --> dnn-action-create-folder
@@ -76,10 +76,11 @@ graph TD;
   dnn-rm-move-items --> dnn-rm-progress-bar
   dnn-rm-move-items --> dnn-button
   dnn-rm-folder-list --> dnn-context-menu
+  dnn-rm-folder-list --> dnn-rm-folder-context-menu
   dnn-rm-folder-list --> dnn-rm-folder-list-item
-  dnn-rm-folder-list-item --> dnn-collapsible
-  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-rm-folder-list-item --> dnn-treeview-item
+  dnn-rm-folder-list-item --> dnn-context-menu
+  dnn-rm-folder-list-item --> dnn-rm-folder-context-menu
   dnn-rm-folder-list-item --> dnn-rm-folder-list-item
   dnn-treeview-item --> dnn-collapsible
   dnn-action-delete-items --> dnn-modal

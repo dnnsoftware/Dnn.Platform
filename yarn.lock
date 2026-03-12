@@ -1594,7 +1594,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@npm:10.2.3, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@npm:10.2.4, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -4949,13 +4949,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@trysound/sax@npm:0.2.0":
-  version: 0.2.0
-  resolution: "@trysound/sax@npm:0.2.0"
-  checksum: 10/7379713eca480ac0d9b6c7b063e06b00a7eac57092354556c81027066eb65b61ea141a69d0cc2e15d32e05b2834d4c9c2184793a5e36bbf5daf05ee5676af18c
-  languageName: node
-  linkType: hard
-
 "@tufjs/canonical-json@npm:2.0.0":
   version: 2.0.0
   resolution: "@tufjs/canonical-json@npm:2.0.0"
@@ -6410,7 +6403,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     babel-loader: "npm:10.0.0"
@@ -9774,7 +9767,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": "npm:7.27.1"
     "@babel/preset-env": "npm:7.29.0"
     "@babel/preset-react": "npm:7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     babel-loader: "npm:10.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
@@ -9810,7 +9803,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": "npm:7.27.1"
     "@babel/preset-env": "npm:7.29.0"
     "@babel/preset-react": "npm:7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     babel-loader: "npm:10.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
@@ -9847,7 +9840,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     babel-loader: "npm:10.0.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
@@ -10035,14 +10028,14 @@ __metadata:
   linkType: hard
 
 "dompurify@npm:^3.3.0":
-  version: 3.3.0
-  resolution: "dompurify@npm:3.3.0"
+  version: 3.3.2
+  resolution: "dompurify@npm:3.3.2"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10/d8782b10a0454344476936c91038d06c9450b3e3ada2ceb8f722525e6b54e64d847939b9f35bf385facd4139f0a2eaf7f5553efce351f8e9295620570875f002
+  checksum: 10/3ca02559677ce6d9583a500f21ffbb6b9e88f1af99f69fa0d0d9442cddbac98810588c869f8b435addb5115492d6e49870024bca322169b941bafedb99c7f281
   languageName: node
   linkType: hard
 
@@ -11353,7 +11346,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     babel-loader: "npm:^10.0.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
     babel-plugin-transform-object-rest-spread: "npm:6.26.0"
@@ -11465,7 +11458,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     babel-loader: "npm:10.0.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
@@ -12918,9 +12911,9 @@ __metadata:
   linkType: hard
 
 "immutable@npm:^3":
-  version: 3.8.2
-  resolution: "immutable@npm:3.8.2"
-  checksum: 10/8a94647c769e97c9685be1b89d5e1b3171e8c1361fb9061fbcf78f630f70bf60e4de0bfca8bdd24a54b1fb814a945a76a30b11b7ee08967f9802a138a54498a2
+  version: 3.8.3
+  resolution: "immutable@npm:3.8.3"
+  checksum: 10/29db366d4dff83b0b296150c351b08db24837005909a71c123d860c1d2a40605f19a3ecd56d1e96be9799e947ddf7906897a28fa2e81f0b8c63c652b6bfe5550
   languageName: node
   linkType: hard
 
@@ -14752,7 +14745,7 @@ __metadata:
     "@babel/core": "npm:^7.28.4"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -16800,7 +16793,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     "@types/knockout": "npm:^3.4.77"
     "@types/redux": "npm:3.6.31"
@@ -17787,7 +17780,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "prompt@workspace:Dnn.AdminExperience/ClientSide/Prompt.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -19294,7 +19287,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "roles@workspace:Dnn.AdminExperience/ClientSide/Roles.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -19754,6 +19747,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"sax@npm:^1.5.0":
+  version: 1.5.0
+  resolution: "sax@npm:1.5.0"
+  checksum: 10/9012ff37dda7a7ac5da45db2143b04036103e8bef8d586c3023afd5df6caf0ebd7f38017eee344ad2e2247eded7d38e9c42cf291d8dd91781352900ac0fd2d9f
+  languageName: node
+  linkType: hard
+
 "saxes@npm:^6.0.0":
   version: 6.0.0
   resolution: "saxes@npm:6.0.0"
@@ -19844,7 +19844,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -19977,7 +19977,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seo@workspace:Dnn.AdminExperience/ClientSide/Seo.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -20052,7 +20052,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "servers@workspace:Dnn.AdminExperience/ClientSide/Servers.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -20289,7 +20289,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     babel-eslint: "npm:^10.1.0"
     babel-loader: "npm:10.0.0"
@@ -20347,7 +20347,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -20397,7 +20397,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": "npm:7.27.1"
     "@babel/preset-env": "npm:7.29.0"
     "@babel/preset-react": "npm:7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     babel-loader: "npm:10.0.0"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
@@ -21152,19 +21152,19 @@ __metadata:
   linkType: hard
 
 "svgo@npm:^3.0.2":
-  version: 3.3.2
-  resolution: "svgo@npm:3.3.2"
+  version: 3.3.3
+  resolution: "svgo@npm:3.3.3"
   dependencies:
-    "@trysound/sax": "npm:0.2.0"
     commander: "npm:^7.2.0"
     css-select: "npm:^5.1.0"
     css-tree: "npm:^2.3.1"
     css-what: "npm:^6.1.0"
     csso: "npm:^5.0.5"
     picocolors: "npm:^1.0.0"
+    sax: "npm:^1.5.0"
   bin:
     svgo: ./bin/svgo
-  checksum: 10/82fdea9b938884d808506104228e4d3af0050d643d5b46ff7abc903ff47a91bbf6561373394868aaf07a28f006c4057b8fbf14bbd666298abdd7cc590d4f7700
+  checksum: 10/f3c1b4d05d1704483e53515d5995af5f06a2718df85e3a8320f57bb256b8dc926b84c87a1a9b98e9d3ca1224314cc0676a803bdd03163508292f2d45c7077096
   languageName: node
   linkType: hard
 
@@ -21298,7 +21298,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -21344,7 +21344,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -21450,7 +21450,7 @@ __metadata:
     "@babel/plugin-proposal-object-rest-spread": "npm:^7.20.7"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     "@svgr/webpack": "npm:^8.1.0"
     babel-loader: "npm:10.0.0"
     babel-plugin-transform-object-assign: "npm:6.22.0"
@@ -22334,7 +22334,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@dnnsoftware/dnn-react-common": "npm:10.2.3"
+    "@dnnsoftware/dnn-react-common": "npm:10.2.4"
     babel-loader: "npm:^10.0.0"
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"

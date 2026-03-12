@@ -13,21 +13,21 @@ namespace DotNetNuke.Entities.Content.Workflow
     public interface ISystemWorkflowManager
     {
         /// <summary>Creates predefined system workflows.</summary>
-        /// <param name="portalId">Portal Id where system workflows will be created.</param>
+        /// <param name="portalId">Portal ID where system workflows will be created.</param>
         void CreateSystemWorkflows(int portalId);
 
         /// <summary>Get the 'Direct Publish' system workflow of a specific portal.</summary>
-        /// <param name="portalId">Portal Id.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The 'Direct Publish' workflow.</returns>
         Entities.Workflow GetDirectPublishWorkflow(int portalId);
 
         /// <summary>Get the 'Save Draft' system workflow of a specific portal.</summary>
-        /// <param name="portalId">Portal Id.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The 'Save Draft' workflow.</returns>
         Entities.Workflow GetSaveDraftWorkflow(int portalId);
 
         /// <summary>Get the 'Content Approval' system workflow of a specific portal.</summary>
-        /// <param name="portalId">Portal Id.</param>
+        /// <param name="portalId">Portal ID.</param>
         /// <returns>The 'Content Approval' workflow.</returns>
         Entities.Workflow GetContentApprovalWorkflow(int portalId);
 

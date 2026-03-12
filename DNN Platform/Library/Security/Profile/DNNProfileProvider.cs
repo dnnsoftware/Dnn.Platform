@@ -160,7 +160,9 @@ namespace DotNetNuke.Security.Profile
                 if (profProperty.PropertyValue != null && profProperty.IsDirty)
                 {
                     var objSecurity = PortalSecurity.Instance;
+#pragma warning disable CS0618 // Type or member is obsolete
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
+#pragma warning restore CS0618 // Type or member is obsolete
                     this.dataProvider.UpdateProfileProperty(
                         Null.NullInteger,
                         user.UserID,

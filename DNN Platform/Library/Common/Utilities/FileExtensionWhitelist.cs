@@ -16,7 +16,7 @@ namespace DotNetNuke.Common.Utilities
         private readonly List<string> extensions;
 
         /// <summary>Initializes a new instance of the <see cref="FileExtensionWhitelist"/> class.</summary>
-        /// <param name="extensionList">a comma seperated list of file extensions with no '.'.</param>
+        /// <param name="extensionList">a comma separated list of file extensions with no '.'.</param>
         /// <remarks><paramref name="extensionList"/>should match the format used in the FileExtensions Host setting specifically it
         /// should not have an '.' in the extensions (e.g. txt,jpg,png,doc).</remarks>
         public FileExtensionWhitelist(string extensionList)

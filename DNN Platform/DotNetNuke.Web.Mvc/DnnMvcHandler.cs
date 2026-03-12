@@ -62,6 +62,7 @@ namespace DotNetNuke.Web.Mvc
                 UserRequestIPAddressController.Instance,
                 RoleController.Instance,
                 Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
                 this.RequestContext.HttpContext,
                 allowUnknownExtensions: true);
             this.ProcessRequest(httpContext);

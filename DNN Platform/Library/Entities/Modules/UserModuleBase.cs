@@ -8,15 +8,17 @@ namespace DotNetNuke.Entities.Modules
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Runtime.CompilerServices;
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security;
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Security.Roles;
@@ -27,6 +29,8 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.WebControls;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public enum DisplayMode
     {
@@ -49,20 +53,33 @@ namespace DotNetNuke.Entities.Modules
         TextBox = 1,
     }
 
-    /// <summary>
-    /// The UserModuleBase class defines a custom base class inherited by all
-    /// desktop portal modules within the Portal that manage Users.
-    /// </summary>
-    public class UserModuleBase : PortalModuleBase
+    /// <summary>The UserModuleBase class defines a custom base class inherited by all desktop portal modules within the Portal that manage Users.</summary>
+    public partial class UserModuleBase : PortalModuleBase
     {
         private UserInfo user;
+
+        /// <summary>Initializes a new instance of the <see cref="UserModuleBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public UserModuleBase()
+            : this(null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="UserModuleBase"/> class.</summary>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public UserModuleBase(ListController listController, IHostSettings hostSettings)
+        {
+            this.ListController = listController ?? this.DependencyProvider.GetRequiredService<ListController>();
+            this.HostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+        }
 
         /// <summary>Gets or sets the User associated with this control.</summary>
         public UserInfo User
         {
             get
             {
-                return this.user ?? (this.user = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
+                return this.user ??= this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.HostSettings, this.UserPortalID, this.UserId);
             }
 
             set
@@ -104,42 +121,24 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
+        /// <summary>Gets the list controller.</summary>
+        protected ListController ListController { get; }
+
+        /// <summary>Gets the host settings.</summary>
+        protected IHostSettings HostSettings { get; }
+
         /// <summary>Gets a value indicating whether we are in Add User mode.</summary>
-        protected virtual bool AddUser
-        {
-            get
-            {
-                return this.UserId == Null.NullInteger;
-            }
-        }
+        protected virtual bool AddUser => this.UserId == Null.NullInteger;
 
         /// <summary>Gets a value indicating whether the current user is an Administrator (or SuperUser).</summary>
-        protected bool IsAdmin
-        {
-            get
-            {
-                return this.Request.IsAuthenticated && PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-            }
-        }
+        protected bool IsAdmin => this.Request.IsAuthenticated && PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
         /// <summary>Gets a value indicating whether this is the current user or admin.</summary>
         /// <value>gets whether this is the current user or admin.</value>
-        protected bool IsUserOrAdmin
-        {
-            get
-            {
-                return this.IsUser || this.IsAdmin;
-            }
-        }
+        protected bool IsUserOrAdmin => this.IsUser || this.IsAdmin;
 
         /// <summary>Gets a value indicating whether this control is in the Host menu.</summary>
-        protected bool IsHostTab
-        {
-            get
-            {
-                return this.IsHostMenu;
-            }
-        }
+        protected bool IsHostTab => this.IsHostMenu;
 
         /// <summary>Gets a value indicating whether the control is being called form the User Accounts module.</summary>
         protected bool IsEdit
@@ -195,31 +194,13 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>Gets a value indicating whether an anonymous user is trying to register.</summary>
-        protected bool IsRegister
-        {
-            get
-            {
-                return !this.IsAdmin && !this.IsUser;
-            }
-        }
+        protected bool IsRegister => !this.IsAdmin && !this.IsUser;
 
         /// <summary>Gets a value indicating whether the User is editing their own information.</summary>
-        protected bool IsUser
-        {
-            get
-            {
-                return this.Request.IsAuthenticated && (this.UserId == this.UserInfo.UserID);
-            }
-        }
+        protected bool IsUser => this.Request.IsAuthenticated && (this.UserId == this.UserInfo.UserID);
 
         /// <summary>Gets the PortalId to use for this control.</summary>
-        protected int UserPortalID
-        {
-            get
-            {
-                return this.IsHostTab ? Null.NullInteger : this.PortalId;
-            }
-        }
+        protected int UserPortalID => this.IsHostTab ? Null.NullInteger : this.PortalId;
 
         /// <summary>Gets a Setting for the Module.</summary>
         /// <param name="portalId">The portal ID.</param>
@@ -236,29 +217,53 @@ namespace DotNetNuke.Entities.Modules
             return settings[settingKey];
         }
 
-        public static void UpdateSetting(int portalId, string key, string setting)
+        /// <summary>Updates the portal or host setting.</summary>
+        /// <param name="portalId">The portal ID, or <see cref="Null.NullInteger"/> to save as a host setting.</param>
+        /// <param name="key">The setting key.</param>
+        /// <param name="setting">The setting value.</param>
+        [DnnDeprecated(10, 2, 4, "Please use overload with IHostSettingsService")]
+        public static partial void UpdateSetting(int portalId, string key, string setting)
+            => UpdateSetting(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, key, setting);
+
+        /// <summary>Updates the portal or host setting.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID, or <see cref="Null.NullInteger"/> to save as a host setting.</param>
+        /// <param name="key">The setting key.</param>
+        /// <param name="setting">The setting value.</param>
+        public static void UpdateSetting(IHostSettingsService hostSettingsService, IPortalController portalController, int portalId, string key, string setting)
         {
             if (portalId == Null.NullInteger)
             {
-                HostController.Instance.Update(new ConfigurationSetting { Value = setting, Key = key });
+                hostSettingsService.Update(new ConfigurationSetting { Value = setting, Key = key, });
             }
             else
             {
-                PortalController.UpdatePortalSetting(portalId, key, setting);
+                PortalController.UpdatePortalSetting(portalController, portalId, key, setting);
             }
         }
 
         /// <summary>Updates the Settings for the Module.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="settings">The settings to update.</param>
-        public static void UpdateSettings(int portalId, Hashtable settings)
+        [DnnDeprecated(10, 2, 4, "Please use overload with IPortalController")]
+        public static partial void UpdateSettings(int portalId, Hashtable settings)
+            => UpdateSettings(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>(), Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>(), portalId, settings);
+
+        /// <summary>Updates the Settings for the Module.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="settings">The settings to update.</param>
+        public static void UpdateSettings(IHostSettingsService hostSettingsService, IPortalController portalController, int portalId, Hashtable settings)
         {
             var settingsEnumerator = settings.GetEnumerator();
+            using var disposable = settingsEnumerator as IDisposable;
             while (settingsEnumerator.MoveNext())
             {
                 var key = Convert.ToString(settingsEnumerator.Key, CultureInfo.InvariantCulture);
                 var setting = Convert.ToString(settingsEnumerator.Value, CultureInfo.InvariantCulture);
-                UpdateSetting(portalId, key, setting);
+                UpdateSetting(hostSettingsService, portalController, portalId, key, setting);
             }
         }
 
@@ -403,7 +408,7 @@ namespace DotNetNuke.Entities.Modules
                 newUser.PortalID = this.PortalId;
             }
 
-            // Initialise the ProfileProperties Collection
+            // Initialize the ProfileProperties Collection
             string lc = new Localization().CurrentUICulture;
 
             newUser.Profile.InitialiseProfile(this.PortalId);
@@ -412,12 +417,10 @@ namespace DotNetNuke.Entities.Modules
             newUser.Profile.PreferredLocale = lc;
 
             // Set default country
-            string country = Null.NullString;
-            country = this.LookupCountry();
+            var country = this.LookupCountry();
             if (!string.IsNullOrEmpty(country))
             {
-                ListController listController = new ListController();
-                var listItem = listController.GetListEntryInfo("Country", country);
+                var listItem = this.ListController.GetListEntryInfo("Country", country);
                 if (listItem != null)
                 {
                     country = listItem.EntryID.ToString(CultureInfo.InvariantCulture);
