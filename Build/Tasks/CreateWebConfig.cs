@@ -7,6 +7,8 @@ namespace DotNetNuke.Build.Tasks
     using System.Linq;
     using System.Xml.Linq;
 
+    using Cake.Common.Diagnostics;
+    using Cake.Common.IO;
     using Cake.Frosting;
     using Cake.Json;
     using Dnn.CakeUtils;
@@ -19,56 +21,25 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc />
         public override void Run(Context context)
         {
-            var configFile = context.WebsiteFolder + "release.config";
-            var doc = System.Xml.Linq.XDocument.Load(configFile);
-
-            context.PackagingPatterns = context.DeserializeJsonFromFile<PackagingPatterns>("./Build/Tasks/packaging.json");
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, BinFolderInclude, context.PackagingPatterns.InstallExclude);
-            var redirects = files.ParseAssemblies()
-                .Where(x => x.PublicKeyToken != "null" && !string.IsNullOrEmpty(x.PublicKeyToken))
-                .Where(x => !x.Name.StartsWith("DotNetNuke.", StringComparison.OrdinalIgnoreCase))
-                .Where(x => !x.Name.StartsWith("Dnn.", StringComparison.OrdinalIgnoreCase))
-                .Select(assembly => ToElement(assembly.AssemblyBindingRedirect()))
-                .ToList();
-
-            // add assembly binding redirects to configuration/runtime/assemblyBinding
-            var assemblyBinding = doc.Descendants().FirstOrDefault(element => element.Name.LocalName == "assemblyBinding");
+            var configFile = context.WebsiteDir + context.File("release.config");
+            var doc = XDocument.Load(configFile);
+            XNamespace asm = "urn:schemas-microsoft-com:asm.v1";
+            var assemblyBinding = doc.Element("configuration")?.Element("runtime")?.Element(asm + "assemblyBinding");
             if (assemblyBinding == null)
             {
                 throw new InvalidOperationException("Could not find configuration/runtime/assemblyBinding in release.config.");
             }
 
-            var assemblyBindingNamespace = assemblyBinding.Name.Namespace;
-            foreach (var redirect in redirects)
-            {
-                assemblyBinding.Add(WithNamespace(redirect, assemblyBindingNamespace));
-            }
+            context.PackagingPatterns = context.DeserializeJsonFromFile<PackagingPatterns>("./Build/Tasks/packaging.json");
+            var files = context.GetFilesByPatterns(context.WebsiteFolder, BinFolderInclude, context.PackagingPatterns.InstallExclude);
+            var parsedAssemblies = files.ParseAssemblies();
+            parsedAssemblies.RemoveAll(a => a.PublicKeyToken is null);
+            var redirects = parsedAssemblies.ConvertAll(a => a.AssemblyBindingRedirect());
+            assemblyBinding.Add(redirects.ToArray<object>());
 
-            var targetFile = context.WebsiteFolder + "web.config";
-
-            // save xml document to target file
+            // save XML document to target file
+            var targetFile = context.WebsiteDir + context.File("web.config");
             doc.Save(targetFile);
-        }
-
-        private static XElement ToElement(string xml)
-        {
-            return XElement.Parse(xml);
-        }
-
-        private static XElement WithNamespace(XElement element, XNamespace targetNamespace)
-        {
-            if (targetNamespace == XNamespace.None)
-            {
-                return new XElement(element);
-            }
-
-            return new XElement(
-                targetNamespace + element.Name.LocalName,
-                element.Attributes(),
-                element.Nodes().Select(node =>
-                    node is XElement childElement
-                        ? WithNamespace(childElement, targetNamespace)
-                        : node));
         }
     }
 }
