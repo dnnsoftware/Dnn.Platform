@@ -1,0 +1,135 @@
+﻿name: "Build and Validate"
+
+env:
+  CAKE_TARGET: "BuildAll"
+  CAKE_VERBOSITY: "Normal"
+  RELEASE_MODE: "Beta"
+  RUN_TESTS: "true"
+
+permissions:
+  checks: write
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+on:
+  push:
+    branches:
+      - "develop"
+      - "release/*"
+  pull_request:
+    branches:
+      - "develop"
+      - "release/*"
+  workflow_dispatch:
+    inputs:
+      CAKE_TARGET:
+        description: "Cake Target"
+        type: "string"
+        default: "BuildAll"
+      CAKE_VERBOSITY:
+        description: "Cake Verbosity"
+        type: "choice"
+        default: "Normal"
+        options:
+          - "Quiet"
+          - "Minimal"
+          - "Normal"
+          - "Verbose"
+          - "Diagnostic"
+      RELEASE_MODE:
+        description: "Release Mode"
+        type: "choice"
+        default: "Beta"
+        options:
+          - "Alpha"
+          - "Beta"
+          - "RC"
+          - "Stable"
+      RUN_TESTS:
+        description: "Run Tests?"
+        type: boolean
+        default: true
+
+jobs:
+  build-and-validate:
+    name: "Build and Validate"
+    runs-on: "windows-2025-vs2026"
+    defaults:
+      run:
+        shell: "pwsh"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v6.0.2"
+
+      # Built-in caching is broken for Yarn, using setup-node twice
+      # See https://github.com/actions/setup-node/issues/531#issuecomment-3335630863
+      - name: "Setup Node.js"
+        uses: "actions/setup-node@v6.3.0"
+        with:
+          node-version-file: ".node-version"
+          package-manager-cache: false
+
+      - name: "Enable Corepack"
+        run: "corepack enable"
+
+      - name: "Setup Yarn cache"
+        uses: "actions/setup-node@v6.3.0"
+        with:
+          cache: "yarn"
+
+      - name: "Setup .NET SDK"
+        uses: "actions/setup-dotnet@v5.2.0"
+        with:
+          global-json-file: "global.json"
+
+      - name: "Initialize Git User"
+        run: |
+          git config --global user.email 'noreply@dnncommunity.org';
+          git config --global user.name 'DNN Platform CI Bot';
+
+      - name: "Update Alpha/Beta/Stable flag"
+        run: |
+          $path = '.\DNN Platform\Library\Properties\AssemblyInfo.cs'
+          $pattern3 = '\[assembly: AssemblyStatus'
+          (Get-Content $path) | ForEach-Object {
+            if ($_ -match $pattern3) {
+            # We have found the matching line
+            '[assembly: AssemblyStatus(ReleaseMode.{0})]' -f '${{ env.RELEASE_MODE }}'
+          } else {
+            $_
+          }
+          } | Set-Content $path
+
+      - name: "Run DNN Build via Cake"
+        run: "./build.ps1 --target=${{ env.CAKE_TARGET }} --verbosity=${{ env.CAKE_VERBOSITY }}"
+
+      - name: "Run Unit Tests via Cake"
+        if: ${{ env.RUN_TESTS == 'true' }}
+        run: "./build.ps1 --target=UnitTests --verbosity=${{ env.CAKE_VERBOSITY }}"
+        continue-on-error: true
+
+      - name: "Publish Test Results"
+        uses: "EnricoMi/publish-unit-test-result-action/windows@v2.23.0"
+        if: ${{ !cancelled() && env.RUN_TESTS == 'true' }}
+        with:
+          files: "**/TestResults/*.trx"
+          action_fail: true
+
+      - name: "Publish Artifacts"
+        uses: "actions/upload-artifact@v7.0.0"
+        if: ${{ !cancelled() }}
+        with:
+          path: "Artifacts"
+          if-no-files-found: "error"
+          compression-level: "0"
+          overwrite: true
+
+      - name: "Create GitHub Pull Request"
+        if: ${{ success() && !contains('pull_request', github.event_name) && (contains(fromJSON('["develop", "main"]'), github.ref_name) || startsWith('release/', github.ref_name)) }}
+        run: "./build.ps1 --target=CreateGitHubPullRequest --verbosity=${{ env.CAKE_VERBOSITY }}"
+        env:
+          GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
+          GITHUB_APP_PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
