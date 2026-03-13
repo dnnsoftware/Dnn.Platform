@@ -16,17 +16,46 @@ namespace DotNetNuke.ContentSecurityPolicy
         /// <param name="csp">The content security policy to modify.</param>
         public static void AddWebformsSupport(this IContentSecurityPolicy csp)
         {
-            csp.DefaultSource.AddSelf();
-            csp.ScriptSource.AddSelf();
+            csp.AddBaseSupport(false);
             csp.ScriptSource.AddInline();
             csp.ScriptSource.AddEval();
+        }
+
+        /// <summary>
+        /// Adds script source directives to the specified <see cref="IContentSecurityPolicy"/> instance
+        /// to enable support for MVC pipeline.
+        /// </summary>
+        /// <param name="csp">The content security policy to modify.</param>
+        /// /// <param name="isAuthenticated">The isAuthenticated.</param>
+        public static void AddMVCSupport(this IContentSecurityPolicy csp, bool isAuthenticated)
+        {
+            csp.AddBaseSupport(isAuthenticated);
+            csp.ScriptSource.AddNonce(csp.Nonce);
+
+            if (isAuthenticated)
+            {
+                csp.FrameSource.AddHost("https://dnndocs.com").AddHost("https://docs.dnncommunity.org");
+            }
+        }
+
+        private static void AddBaseSupport(this IContentSecurityPolicy csp, bool isAuthenticated)
+        {
+            csp.DefaultSource.AddSelf();
+            csp.ScriptSource.AddSelf();
             csp.StyleSource.AddSelf();
             csp.ImgSource.AddSelf();
             csp.FontSource.AddSelf();
             csp.FrameSource.AddSelf();
             csp.FormAction.AddSelf();
             csp.ConnectSource.AddSelf();
+            csp.FrameAncestors.AddSelf();
+            csp.ObjectSource.AddNone();
             csp.BaseUriSource.AddSelf();
+
+            if (isAuthenticated)
+            {
+                csp.FrameSource.AddHost("https://dnndocs.com").AddHost("https://docs.dnncommunity.org");
+            }
         }
     }
 }
