@@ -157,10 +157,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Knockout", "Knockout", "{63
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build Scripts", "Build Scripts", "{D8E1B782-01BB-4FEC-8E8D-E5729CBB3C5E}"
 	ProjectSection(SolutionItems) = preProject
-		Build\BuildScripts\AEModule.build = Build\BuildScripts\AEModule.build
 		DNN_Platform.build = DNN_Platform.build
-		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
-		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Authentication", "DNN Platform\Tests\DotNetNuke.Tests.Authentication\DotNetNuke.Tests.Authentication.csproj", "{0E8502FD-DE8B-46A5-AB96-B1BE39777917}"
@@ -361,6 +358,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScript
 		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 		Build\BuildScripts\ProviderPackage.targets = Build\BuildScripts\ProviderPackage.targets
+		Build\BuildScripts\PublishArtifacts.ps1 = Build\BuildScripts\PublishArtifacts.ps1
+		Build\BuildScripts\Yahoo.Yui.Compressor.dll = Build\BuildScripts\Yahoo.Yui.Compressor.dll
+		Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll = Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{4F538A14-38F5-473F-8386-60D81F3F530A}"
@@ -386,6 +386,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NuGet", "NuGet", "{F4AAB2C9
 		Build\Tools\NuGet\DotNetNuke.Web.Mvc.nuspec = Build\Tools\NuGet\DotNetNuke.Web.Mvc.nuspec
 		Build\Tools\NuGet\DotNetNuke.Web.nuspec = Build\Tools\NuGet\DotNetNuke.Web.nuspec
 		Build\Tools\NuGet\DotNetNuke.WebApi.nuspec = Build\Tools\NuGet\DotNetNuke.WebApi.nuspec
+		Build\Tools\NuGet\logo-for-nuget.png = Build\Tools\NuGet\logo-for-nuget.png
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Providers.AspNetCCP", "DNN Platform\Providers\ClientCapabilityProviders\Provider.AspNetCCP\DotNetNuke.Providers.AspNetCCP.csproj", "{A3B3F1E8-6C1A-4E35-A5B4-51ECC5A43AF7}"
