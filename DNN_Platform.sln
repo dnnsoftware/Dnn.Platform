@@ -139,6 +139,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		settings.local.json = settings.local.json
 		SolutionInfo.cs = SolutionInfo.cs
 		stylecop.json = stylecop.json
+		.node-version = .node-version
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.Integration", "DNN Platform\Tests\DotNetNuke.Tests.Integration\DotNetNuke.Tests.Integration.csproj", "{6629A64D-58B9-48B9-B932-15AF193C2212}"
@@ -633,6 +634,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy", "DNN Platform\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj", "{33C9571D-E3AF-46FC-DC75-9CA082BBDC3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy.Tests", "DNN Platform\Tests\DotNetNuke.Tests.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.Tests.csproj", "{66524EA5-0C3A-5159-DA42-2063DD4EB949}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client.ResourceManager", "DNN Platform\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj", "{039BAFBD-E2DB-40C4-B565-C27467D9B5E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Modules", "Sample Modules", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
