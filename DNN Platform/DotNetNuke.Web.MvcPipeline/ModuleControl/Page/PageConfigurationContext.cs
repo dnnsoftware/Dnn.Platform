@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Page
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Page
             this.PageService = serviceProvider.GetService<IPageService>();
             this.ServicesFramework = DotNetNuke.Framework.ServicesFramework.Instance;
             this.JavaScriptLibraryHelper = serviceProvider.GetService<IJavaScriptLibraryHelper>();
+            this.ContentSecurityPolicy = serviceProvider.GetService<IContentSecurityPolicy>();
         }
 
         /// <summary>
@@ -48,5 +50,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl.Page
         /// Gets the JavaScript library helper used to request JavaScript libraries.
         /// </summary>
         public IJavaScriptLibraryHelper JavaScriptLibraryHelper { get; private set; }
+
+        /// <summary>
+        /// Gets the content security policy service.
+        /// </summary>
+        public IContentSecurityPolicy ContentSecurityPolicy { get; private set; }
     }
 }

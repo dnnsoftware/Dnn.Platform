@@ -16,6 +16,7 @@ namespace DotNetNuke.Website.Controllers
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Entities.Users;
@@ -23,6 +24,7 @@ namespace DotNetNuke.Website.Controllers
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Blocker;
+    using DotNetNuke.Services.Installer.Log;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Controllers;
@@ -48,6 +50,7 @@ namespace DotNetNuke.Website.Controllers
         private readonly IUserController userController;
         private readonly IHostSettingsService hostSettingsService;
         private readonly IServicesFramework servicesFramework;
+        private readonly IContentSecurityPolicy contentSecurityPolicy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DefaultController"/> class.
@@ -64,6 +67,7 @@ namespace DotNetNuke.Website.Controllers
         /// <param name="userController">The user controller.</param>
         /// <param name="hostSettingsService">The host settings service.</param>
         /// <param name="servicesFramework">The web API service framework.</param>
+        /// <param name="contentSecurityPolicy">The ContentSecurityPolicy.</param>
         public DefaultController(
                                 INavigationManager navigationManager,
                                 IPageModelFactory pageModelFactory,
@@ -76,7 +80,8 @@ namespace DotNetNuke.Website.Controllers
                                 IPortalController portalController,
                                 IUserController userController,
                                 IHostSettingsService hostSettingsService,
-                                IServicesFramework servicesFramework)
+                                IServicesFramework servicesFramework,
+                                IContentSecurityPolicy contentSecurityPolicy)
             : base(serviceProvider)
         {
             this.navigationManager = navigationManager;
@@ -90,6 +95,7 @@ namespace DotNetNuke.Website.Controllers
             this.userController = userController;
             this.hostSettingsService = hostSettingsService;
             this.servicesFramework = servicesFramework;
+            this.contentSecurityPolicy = contentSecurityPolicy;
         }
 
         /// <summary>
@@ -103,28 +109,18 @@ namespace DotNetNuke.Website.Controllers
         /// </returns>
         public ActionResult Page(int tabid, string language)
         {
-            // TODO: CSP - enable when CSP implementation is ready
-            /*
-            this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
-
-            this.contentSecurityPolicy.DefaultSource.AddSelf();
-            this.contentSecurityPolicy.ImgSource.AddSelf();
-            this.contentSecurityPolicy.FontSource.AddSelf();
-            this.contentSecurityPolicy.StyleSource.AddSelf();
-            this.contentSecurityPolicy.FrameSource.AddSelf();
-            this.contentSecurityPolicy.FormAction.AddSelf();
-            this.contentSecurityPolicy.FrameAncestors.AddSelf();
-            this.contentSecurityPolicy.ObjectSource.AddNone();
-            this.contentSecurityPolicy.BaseUriSource.AddNone();
-            this.contentSecurityPolicy.ScriptSource.AddNonce(this.contentSecurityPolicy.Nonce);
-            this.contentSecurityPolicy.AddReportTo("csp-endpoint");
-            this.contentSecurityPolicy.AddReportEndpoint("csp-endpoint", this.Request.Url.Scheme + "://" + this.Request.Url.Host + "/DesktopModules/Csp/Report");
-
-            if (this.Request.IsAuthenticated)
+            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly ||
+                    this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On)
             {
-                this.contentSecurityPolicy.FrameSource.AddHost("https://dnndocs.com").AddHost("https://docs.dnncommunity.org");
+                bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
+
+                if (!disableCsp)
+                {
+                    this.AddCspHeaders();
+                }
             }
-            */
+
+            // this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
 
             // There could be a pending installation/upgrade process
             if (InstallBlocker.Instance.IsInstallInProgress())
@@ -175,6 +171,21 @@ namespace DotNetNuke.Website.Controllers
                     return this.Redirect(ex.RedirectUrl);
                 }
             }
+        }
+
+        private void AddCspHeaders()
+        {
+            if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+            {
+                this.contentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+            }
+
+            if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+            {
+                this.contentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+            }
+
+            this.contentSecurityPolicy.AddWebformsSupport();
         }
 
         /// <summary>
@@ -279,6 +290,44 @@ namespace DotNetNuke.Website.Controllers
                 this.clientResourceController.RegisterScript("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.js", FileOrder.Js.DnnControls);
                 this.clientResourceController.RegisterStylesheet("~/Resources/Shared/Components/CookieConsent/cookieconsent.min.cssdisa", FileOrder.Css.ResourceCss);
                 this.clientResourceController.RegisterScript("~/js/dnn.cookieconsent.js");
+            }
+
+            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly ||
+                    this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On)
+            {
+                bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
+
+                if (!disableCsp)
+                {
+                    var header = "Content-Security-Policy";
+                    if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+                    {
+                        header = "Content-Security-Policy-Report-Only";
+                    }
+
+                    page.CspHeader = header;
+                    page.CspHeaderFixed = this.PortalSettings.CspHeaderFixed;
+
+                    // If fixed, we need to clear any existing contributors and just use the fixed headers
+                    if (this.PortalSettings.CspHeaderFixed)
+                    {
+                        this.contentSecurityPolicy.ClearContentSecurityPolicyContributors();
+                        this.contentSecurityPolicy.ClearReportingEndpointsContributors();
+                        this.AddCspHeaders();
+                        var policy = this.contentSecurityPolicy.GeneratePolicy();
+                        if (!string.IsNullOrEmpty(policy))
+                        {
+                            page.CspHeaderValue = policy;
+                        }
+
+                        policy = this.contentSecurityPolicy.GenerateReportingEndpoints();
+                        if (!string.IsNullOrEmpty(policy))
+                        {
+                            page.CspReportingHeader = "Reporting-Endpoints";
+                            page.CspReportingHeaderValue = policy;
+                        }
+                    }
+                }
             }
         }
     }

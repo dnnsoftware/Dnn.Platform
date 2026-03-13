@@ -27,5 +27,10 @@ namespace Dnn.PersonaBar.UI.Controllers
         /// Gets a value indicating whether the Persona Bar is visible.
         /// </summary>
         public bool Visible { get; internal set; }
+
+        /// <summary>
+        /// Gets the nonce for the Persona Bar.
+        /// </summary>
+        public string Nonce { get; internal set; }
     }
 }

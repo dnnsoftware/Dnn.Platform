@@ -235,6 +235,10 @@
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj">
+      <Project>{33c9571d-e3af-46fc-dc75-9ca082bbdc3d}</Project>
+      <Name>DotNetNuke.ContentSecurityPolicy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
       <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
       <Name>DotNetNuke.DependencyInjection</Name>

@@ -12,6 +12,7 @@ namespace DotNetNuke.Framework.Controllers
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.UI.Controllers;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -33,16 +34,19 @@ namespace DotNetNuke.Framework.Controllers
 #pragma warning restore CS0618 // Type or member is obsolete
         private readonly IClientResourceController clientResourceController;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IContentSecurityPolicy contentSecurityPolicy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PersonaBarContainerController"/> class.
         /// </summary>
         /// <param name="clientResourceController">The client resource controller used to manage client-side resources.</param>
         /// <param name="javaScript">JavaScript Library Helper.</param>
-        public PersonaBarContainerController(IClientResourceController clientResourceController, IJavaScriptLibraryHelper javaScript)
+        /// <param name="contentSecurityPolicy">The content security policy service.</param>
+        public PersonaBarContainerController(IClientResourceController clientResourceController, IJavaScriptLibraryHelper javaScript, IContentSecurityPolicy contentSecurityPolicy)
         {
             this.clientResourceController = clientResourceController;
             this.javaScript = javaScript;
+            this.contentSecurityPolicy = contentSecurityPolicy;
         }
 
         /// <summary>
@@ -89,6 +93,7 @@ namespace DotNetNuke.Framework.Controllers
                 AppPath = AppPath,
                 BuildNumber = BuildNumber,
                 Visible = this.InjectPersonaBar(),
+                Nonce = this.contentSecurityPolicy.Nonce,
             });
         }
 

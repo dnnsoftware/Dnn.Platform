@@ -46,8 +46,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         /// <returns>An HTML string representing the user UI or an empty string when not visible.</returns>
         public static IHtmlString User(this HtmlHelper<PageModel> helper, string cssClass = "SkinObject", string text = "", string url = "", bool showUnreadMessages = true, bool showAvatar = true, bool legacyMode = true, bool showInErrorPage = false)
         {
-            // TODO: CSP - enable when CSP implementation is ready
-            var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
+            var nonce = helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             var portalSettings = PortalSettings.Current;
             var navigationManager = helper.ViewData.Model.NavigationManager;
             var portalController = GetDependencyProvider(helper).GetRequiredService<IPortalController>();

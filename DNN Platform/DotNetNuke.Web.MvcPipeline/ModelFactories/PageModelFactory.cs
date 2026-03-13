@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.FileSystem;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         private readonly ISkinModelFactory skinModelFactory;
         private readonly IHostSettings hostSettings;
         private readonly IPageService pageService;
+        private readonly IContentSecurityPolicy contentSecurityPolicy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PageModelFactory"/> class.
@@ -56,6 +58,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <param name="skinModelFactory">The skin model factory.</param>
         /// <param name="hostSettings">The host settings service.</param>
         /// <param name="pageService">The page service used for meta data.</param>
+        /// <param name="contentSecurityPolicy">The content security policy service.</param>
         public PageModelFactory(
             INavigationManager navigationManager,
             IPortalController portalController,
@@ -64,7 +67,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             IApplicationInfo applicationInfo,
             ISkinModelFactory skinModelFactory,
             IHostSettings hostSettings,
-            IPageService pageService)
+            IPageService pageService,
+            IContentSecurityPolicy contentSecurityPolicy)
         {
             this.navigationManager = navigationManager;
             this.portalController = portalController;
@@ -74,6 +78,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             this.skinModelFactory = skinModelFactory;
             this.hostSettings = hostSettings;
             this.pageService = pageService;
+            this.contentSecurityPolicy = contentSecurityPolicy;
         }
 
         /// <inheritdoc/>
@@ -90,8 +95,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 TabId = activeTab.TabID,
                 Language = Thread.CurrentThread.CurrentCulture.Name,
 
-                // TODO: CSP - enable when CSP implementation is ready
-                // ContentSecurityPolicy = this.contentSecurityPolicy,
+                ContentSecurityPolicy = this.contentSecurityPolicy,
                 NavigationManager = this.navigationManager,
                 PageService = this.pageService,
                 FavIconLink = FavIcon.GetHeaderLink(this.hostSettings, portalSettings.PortalId),

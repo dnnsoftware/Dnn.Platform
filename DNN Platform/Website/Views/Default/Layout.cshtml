@@ -14,7 +14,6 @@
     {
         controlPanel = Html.Action("Index", Model.Skin.ControlPanelRazor, Model);
     }
-
     //DotNetNuke.Framework.Controllers.DefaultController.RegisterAjaxScript(this.ViewContext.Controller.ControllerContext);
 }
 <!DOCTYPE html>
@@ -94,7 +93,7 @@
     @RenderBody()
     @if (Model.IsEditMode)
     {
-        <script @*nonce="@Model.ContentSecurityPolicy.Nonce"*@>
+        <script nonce="@Model.ContentSecurityPolicy.Nonce">
             var dnn = dnn || {};
             dnn.panes = [];
             dnn.panesClientIds = [];
@@ -119,3 +118,27 @@
     @Html.Raw(Model.ClientResourceController.RenderDependencies(ResourceType.All, "DnnFormBottomProvider", Globals.ApplicationPath))
 </body>
 </html>
+@{
+    if (!string.IsNullOrEmpty(Model.CspHeader))
+    {
+        if (Model.CspHeaderFixed)
+        {
+            Response.Headers.Add(Model.CspHeader, Model.CspHeaderValue);
+        }
+        else
+        {
+            Response.Headers.Add(Model.CspHeader, Model.ContentSecurityPolicy.GeneratePolicy());
+        }        
+    }
+    if (!string.IsNullOrEmpty(Model.CspReportingHeader))
+    {
+        if (Model.CspHeaderFixed)
+        {
+            Response.Headers.Add(Model.CspReportingHeader, Model.CspReportingHeaderValue);
+        }
+        else
+        {
+            Response.Headers.Add(Model.CspReportingHeader, Model.ContentSecurityPolicy.GenerateReportingEndpoints());
+        }        
+    }
+}

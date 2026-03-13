@@ -37,8 +37,7 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         {
             var navigationManager = helper.ViewData.Model.NavigationManager;
 
-            // TODO: CSP - enable when CSP implementation is ready
-            var nonce = string.Empty; // helper.ViewData.Model.ContentSecurityPolicy.Nonce;
+            var nonce = helper.ViewData.Model.ContentSecurityPolicy.Nonce;
             var portalSettings = PortalSettings.Current;
             var request = HttpContext.Current.Request;
 

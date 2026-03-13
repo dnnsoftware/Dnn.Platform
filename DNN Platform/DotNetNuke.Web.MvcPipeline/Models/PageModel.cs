@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.ContentSecurityPolicy;
 
     /// <summary>
     /// Represents the data required to render a DNN page through the MVC pipeline.
@@ -114,8 +115,10 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// </summary>
         public string CanonicalLinkUrl { get; set; }
 
-        // TODO: CSP - enable when CSP implementation is ready
-        // public IContentSecurityPolicy ContentSecurityPolicy { get; set; }
+        /// <summary>
+        /// Gets or sets the ContentSecurityPolicy.
+        /// </summary>
+        public IContentSecurityPolicy ContentSecurityPolicy { get; set; }
 
         /// <summary>
         /// Gets or sets the navigation manager for generating navigation URLs.
@@ -131,5 +134,30 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// Gets or sets the page service used to interact with page metadata.
         /// </summary>
         public IPageService PageService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ContentSecurityPolicy header.
+        /// </summary>
+        public string CspHeader { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ContentSecurityPolicy header value.
+        /// </summary>
+        public string CspHeaderValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ContentSecurityPolicy reporting header.
+        /// </summary>
+        public string CspReportingHeader { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ContentSecurityPolicy reporting header value.
+        /// </summary>
+        public string CspReportingHeaderValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the ContentSecurityPolicy header is fixed.
+        /// </summary>
+        public bool CspHeaderFixed { get; set; }
     }
 }

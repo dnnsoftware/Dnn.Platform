@@ -65,6 +65,10 @@ namespace DotNetNuke.Modules.Html.Controls
             context.ClientResourceController.CreateStylesheet("~/Portals/_default/Skins/_default/WebControlSkin/Default/GridView.default.css").Register();
             context.ClientResourceController.CreateScript("~/Resources/Shared/scripts/jquery/jquery.form.min.js").Register();
             context.ClientResourceController.CreateScript("~/DesktopModules/HTML/js/edit.js").Register();
+
+            context.ContentSecurityPolicy.StyleSource.AddInline();
+            context.ContentSecurityPolicy.ScriptSource.AddSelf().AddInline();
+            context.ContentSecurityPolicy.ImgSource.AddScheme("data:");
         }
 
         public override IRazorModuleResult Invoke()
@@ -150,11 +154,6 @@ namespace DotNetNuke.Modules.Html.Controls
             }
 
             return this.View(model);
-
-            // TODO: CSP - enable when CSP implementation is ready
-            // this.contentSecurityPolicy.StyleSource.AddInline();
-            // this.contentSecurityPolicy.ScriptSource.AddSelf().AddInline();
-            // this.contentSecurityPolicy.ImgSource.AddScheme("data:");
         }
 
         private void PopulateModelWithContent(EditHtmlViewModel model, HtmlTextInfo htmlContent)

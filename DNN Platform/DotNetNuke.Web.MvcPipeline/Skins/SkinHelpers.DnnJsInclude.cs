@@ -8,8 +8,10 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
     using System.Web.Mvc;
 
     using ClientDependency.Core;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Web.Client.ResourceManager;
     using DotNetNuke.Web.MvcPipeline.Models;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Skin helper methods for including JavaScript files via the DNN Client Dependency Framework.
@@ -34,11 +36,10 @@ namespace DotNetNuke.Web.MvcPipeline.Skins
         /// <returns>An empty HTML string or a CDF debug comment when requested.</returns>
         public static IHtmlString DnnJsInclude(this HtmlHelper<PageModel> helper, string filePath, string pathNameAlias = "", int priority = 100, bool addTag = false, string name = "", string version = "", bool forceVersion = false, string forceProvider = "", bool forceBundle = false, bool defer = false)
         {
-            // var htmlAttibs = new { nonce = helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString(), defer = defer ? "defer" : string.Empty };
-            // todo CSP - implement nonce support
-            // htmlAttibs.Add("nonce", helper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
+            var csp = HtmlHelpers.GetDependencyProvider(helper).GetRequiredService<IContentSecurityPolicy>();
             var script = HtmlHelpers.GetClientResourcesController(helper)
                 .CreateScript(filePath, pathNameAlias)
+                .AddAttribute("nonce", csp.Nonce)
                 .SetPriority(priority);
             if (!string.IsNullOrEmpty(forceProvider))
             {

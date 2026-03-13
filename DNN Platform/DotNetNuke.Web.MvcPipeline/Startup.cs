@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.DependencyInjection;
     using DotNetNuke.Web.MvcPipeline.Extensions;
     using DotNetNuke.Web.MvcPipeline.ModelFactories;
@@ -33,8 +34,7 @@ namespace DotNetNuke.Web.MvcPipeline
 
             DependencyResolver.SetResolver(new DnnMvcPipelineDependencyResolver(Globals.DependencyProvider));
 
-            // TODO: CSP - enable when CSP implementation is ready
-            // services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
+            services.AddScoped<IContentSecurityPolicy, ContentSecurityPolicy>();
         }
     }
 }

@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.MvcPipeline
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Pages;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Framework;
@@ -121,9 +122,8 @@ namespace DotNetNuke.Web.MvcPipeline
         /// <returns>The CSP nonce wrapped as an HTML string, or an empty string when CSP is not configured.</returns>
         public static IHtmlString CspNonce(this HtmlHelper htmlHelper)
         {
-            // TODO: CSP - implement nonce support
-            // return new MvcHtmlString(htmlHelper.ViewContext.HttpContext.Items["CSP-NONCE"].ToString());
-            return new MvcHtmlString(string.Empty);
+            var csp = HtmlHelpers.GetDependencyProvider(htmlHelper).GetRequiredService<IContentSecurityPolicy>();
+            return new MvcHtmlString(csp.Nonce);
         }
 
         /// <summary>
