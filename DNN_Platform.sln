@@ -353,8 +353,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScript
 		Build\BuildScripts\CombineSymbols.ps1 = Build\BuildScripts\CombineSymbols.ps1
 		Build\BuildScripts\Module.build = Build\BuildScripts\Module.build
 		Build\BuildScripts\ModulePackage.targets = Build\BuildScripts\ModulePackage.targets
-		Build\BuildScripts\MSBuild.Community.Tasks.dll = Build\BuildScripts\MSBuild.Community.Tasks.dll
-		Build\BuildScripts\MSBuild.Community.Tasks.Targets = Build\BuildScripts\MSBuild.Community.Tasks.Targets
 		Build\BuildScripts\Package.targets = Build\BuildScripts\Package.targets
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 		Build\BuildScripts\ProviderPackage.targets = Build\BuildScripts\ProviderPackage.targets
@@ -633,6 +631,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy", "DNN Platform\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj", "{33C9571D-E3AF-46FC-DC75-9CA082BBDC3D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy.Tests", "DNN Platform\Tests\DotNetNuke.Tests.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.Tests.csproj", "{66524EA5-0C3A-5159-DA42-2063DD4EB949}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client.ResourceManager", "DNN Platform\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj", "{039BAFBD-E2DB-40C4-B565-C27467D9B5E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample Modules", "Sample Modules", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
