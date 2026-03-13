@@ -83,7 +83,7 @@
                         var token = '@Html.AntiForgeryToken()';
                         token = $(token).val();
 
-                        $.post('@(DotNetNuke.Common.Globals.ApplicationPath)/DesktopModules/ModuleActions/Delete', {
+                        $.post('@(DotNetNuke.Common.Globals.ApplicationPath)/DesktopModules/MvcPipeline/ModuleActions/Delete', {
                             moduleId: moduleId,
                             tabId: @Model.ModuleContext.TabID,
                             __RequestVerificationToken: token,
@@ -96,7 +96,7 @@
                 menu.find('a').each(function () {
                     var $this = $(this);
                     var href = $this.attr('href');
-                    if (href.indexOf('javascript:') == 0) {
+                    if (href && href.indexOf('javascript:') == 0) {
                         $this.click(function () {
                             actionScripts[href]();
                         });

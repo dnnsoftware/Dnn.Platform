@@ -2527,7 +2527,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (IsMvc(result, queryStringCol, context, result.TabId, result.PortalId))
                         {
-                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath.Replace(Globals.glbDefaultPage, "DesktopModules/Default/Page/" + result.TabId + "/" + result.CultureCode));
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath.Replace(Globals.glbDefaultPage, "DesktopModules/MvcPipeline/Default/Page/" + result.TabId + "/" + result.CultureCode));
                         }
                         else
                         {

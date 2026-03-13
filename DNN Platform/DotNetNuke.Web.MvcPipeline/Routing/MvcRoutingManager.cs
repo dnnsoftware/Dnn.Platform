@@ -178,21 +178,9 @@ namespace DotNetNuke.Web.MvcPipeline.Routing
             route.SetNameSpaces(ns);
             route.SetName("mvc-pipeline-default");
 
-            Logger.Trace("Mapping route: " + "mvc-pipeline-default" + " @ " + "DesktopModules/Default/Page/{tabid}/{language}");
+            Logger.Trace("Mapping route: " + "mvc-pipeline-default" + " @ " + "DesktopModules/{controller}/{action}/{tabid}/{language}");
 
-            var routeModuleActions = new Route(
-                "DesktopModules/ModuleActions/{action}",
-                new RouteValueDictionary(new { controller = "ModuleActions" }),
-                null, // No constraints
-                dataTokens,
-                new DnnMvcPageRouteHandler());
-
-            routeModuleActions.SetNameSpaces(ns);
-            routeModuleActions.SetName("mvc-pipeline-moduleActions");
-
-            Logger.Trace("Mapping route: " + "mvc-pipeline-moduleActions" + " @ " + "DesktopModules/ModuleActions/{action}");
-
-            // this.routes.Add(routeModuleActions);
+            this.routes.Add(route);
         }
 
         private void LocateServicesAndMapRoutes()
