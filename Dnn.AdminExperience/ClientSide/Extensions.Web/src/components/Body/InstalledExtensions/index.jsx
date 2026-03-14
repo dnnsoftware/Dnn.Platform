@@ -70,12 +70,16 @@ class InstalledExtensions extends Component {
     }
 
     renderLoading() {
+        const fetchingIcon =
+            typeof FetchingIcon === "function"
+                ? <FetchingIcon />
+                : null;
 
          
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
-            <div><FetchingIcon /></div>
+            <div>{fetchingIcon}</div>
         </div>;
          
     }

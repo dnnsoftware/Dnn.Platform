@@ -1,7 +1,6 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginLess } from "@rsbuild/plugin-less";
-import { pluginSvgr } from "@rsbuild/plugin-svgr";
 import path from "path";
 import { createRequire } from "module";
 
@@ -87,6 +86,15 @@ export default defineConfig({
           path.resolve(__dirname, "../../../node_modules"),
         ],
       },
+      module: {
+        rules: [
+          {
+            test: /\.svg$/i,
+            issuer: /\.[jt]sx?$/,
+            use: ["@svgr/webpack"],
+          },
+        ],
+      },
     },
     htmlPlugin: false,
   },
@@ -108,6 +116,5 @@ export default defineConfig({
         },
       },
     }),
-    pluginSvgr(),
   ],
 });

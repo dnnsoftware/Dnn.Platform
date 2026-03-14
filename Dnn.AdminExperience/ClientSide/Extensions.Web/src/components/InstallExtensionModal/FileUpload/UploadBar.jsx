@@ -61,12 +61,16 @@ export default class UploadBar extends Component {
                 : props.uploadComplete
                     ? Checkmark
                     : Upload;
+        const uploadIcon =
+            typeof UploadIcon === "function"
+                ? <UploadIcon />
+                : null;
         const className = "file-upload-container dnn-upload-bar" + (props.uploadComplete ? " complete" : "") + (props.errorText ? " upload-error" : "");
 
         return <div className={className}>
             <div className="upload-bar-container">
                 <div className="upload-file-name">{this.props.fileName || "myImage.jpg"}</div>
-                <div className="upload-icon"><UploadIcon /></div>
+                <div className="upload-icon">{uploadIcon}</div>
                 <h4>{text}</h4>
                 {props.errorInPackage &&
                     <p className="view-log-or-try-again">
