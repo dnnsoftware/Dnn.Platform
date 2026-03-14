@@ -146,6 +146,10 @@ class TopPane extends Component {
      
     render() {
         const {props, state} = this;
+        const editIcon =
+            typeof EditIcon === "function"
+                ? <EditIcon />
+                : null;
         return (
             <div className={styles.topPaneWrapper}>
                 <div className="topPane-time">
@@ -159,7 +163,7 @@ class TopPane extends Component {
                         <div className="topPane-middle-common">
                             <div className="topPane-middle-common-title" style={{maxWidth: "60%"}}>{resx.get("plSchedulerMode")}</div>
                             <div>
-                                <div className={props.status === "SHUTTING_DOWN" ? "editIconDisabled" : "editIcon"} onClick={this.toggleModePanel.bind(this)}><EditIcon /></div>
+                                <div className={props.status === "SHUTTING_DOWN" ? "editIconDisabled" : "editIcon"} onClick={this.toggleModePanel.bind(this)}>{editIcon}</div>
                                 <div className="collapsible-content">
                                     {props.schedulerDelay &&
                                         <ModePanel
