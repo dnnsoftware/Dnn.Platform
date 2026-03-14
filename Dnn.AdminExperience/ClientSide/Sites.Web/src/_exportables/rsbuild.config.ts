@@ -11,7 +11,7 @@ const webpackExternals = requireModule(
 
 const resolveWebsitePath = () => {
   try {
-    const settings = requireModule("../../../settings.local.json");
+    const settings = requireModule("../../../../../settings.local.json");
     if (settings?.WebsitePath) {
       return settings.WebsitePath;
     }
@@ -24,17 +24,11 @@ const resolveWebsitePath = () => {
 const websitePath = resolveWebsitePath();
 const isProduction = process.env.NODE_ENV === "production";
 const useWebsitePath = !isProduction && websitePath;
-const externalOverrides = {
-  "dnn-sites-common-action-types": "window.dnn.Sites.CommonActionTypes",
-  "dnn-sites-common-components": "window.dnn.Sites.CommonComponents",
-  "dnn-sites-common-reducers": "window.dnn.Sites.CommonReducers",
-  "dnn-sites-common-actions": "window.dnn.Sites.CommonActions",
-};
 
 export default defineConfig({
   source: {
     entry: {
-      main: path.resolve(__dirname, "src/main.jsx"),
+      main: path.resolve(__dirname, "index.jsx"),
     },
   },
   output: {
@@ -51,16 +45,15 @@ export default defineConfig({
       root: useWebsitePath
         ? path.join(
             websitePath,
-            "DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Sites/"
+            "DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Sites/scripts/exportables/Sites/"
           )
-        : "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/",
-      js: "scripts/bundles/",
-      css: "css/",
+        : "../../../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/scripts/exportables/Sites/",
+      js: "",
+      css: "",
       html: "",
     },
     filename: {
-      js: "sites-bundle.js",
-      css: "Sites.css",
+      js: "SitesListView.js",
     },
     legalComments: "none",
   },
@@ -73,18 +66,12 @@ export default defineConfig({
     rspack: {
       externals: (data) => {
         const { request } = data;
-        if (externalOverrides[request]) {
-          return externalOverrides[request];
-        }
-        // Handle exact matches
         if (webpackExternals[request]) {
           return webpackExternals[request];
         }
-        // Handle React submodules (e.g., react/jsx-runtime, react-dom/client)
         if (request?.startsWith("react/") || request?.startsWith("react-dom/")) {
           const baseModule = request.split("/")[0];
           if (webpackExternals[baseModule]) {
-            // For submodules, return the base module
             return webpackExternals[baseModule];
           }
         }
@@ -93,10 +80,14 @@ export default defineConfig({
       resolve: {
         modules: [
           path.resolve(__dirname, "./src"),
-          path.resolve(__dirname, "./exportables"),
+          path.resolve(__dirname, "../"),
           path.resolve(__dirname, "./node_modules"),
-          path.resolve(__dirname, "../../../node_modules"),
+          path.resolve(__dirname, "../../node_modules"),
+          path.resolve(__dirname, "../../../../../node_modules"),
         ],
+        fallback: {
+          fs: false,
+        },
       },
     },
     htmlPlugin: false,
@@ -112,6 +103,12 @@ export default defineConfig({
         runtime: "classic",
       },
     }),
-    pluginLess(),
+    pluginLess({
+      lessLoaderOptions: {
+        lessOptions: {
+          javascriptEnabled: true,
+        },
+      },
+    }),
   ],
 });
