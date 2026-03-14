@@ -17,6 +17,10 @@ class ThemeList extends Component {
      
     render() {
         const { props } = this;
+        const noDataIcon =
+            typeof NoDataIcon === "function"
+                ? <NoDataIcon />
+                : null;
         let globalThemes = props.dataSource.filter(t => t.level === 4);
         let siteThemes = props.dataSource.filter(t => t.level === 1 || t.level === 2);
         return (
@@ -25,7 +29,7 @@ class ThemeList extends Component {
                     <div className="empty-state">
                         <div className="noThemes">{Localization.get("NoThemes")}</div>
                         <div className="noThemesMessage">{Localization.get("NoThemesMessage")}</div>
-                        <div className="noThemesIcon"><NoDataIcon /></div>
+                        <div className="noThemesIcon">{noDataIcon}</div>
                     </div>
                 }
                 {globalThemes.length > 0 &&
