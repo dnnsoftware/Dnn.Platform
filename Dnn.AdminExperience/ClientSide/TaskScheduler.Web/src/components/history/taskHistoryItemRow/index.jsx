@@ -50,7 +50,11 @@ class TaskHistoryItemRow extends Component {
      
     getSucceededDisplay() {
         if (this.props.succeeded) {
-            return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
+            const checkmarkIcon =
+                typeof CheckmarkIcon === "function"
+                    ? <CheckmarkIcon />
+                    : null;
+            return <div className="checkMarkIcon">{checkmarkIcon}</div>;
         }
         else return <span>&nbsp; </span>;
     }

@@ -16,10 +16,18 @@ class LeftPane extends Component {
      
     render() {
         const {props} = this;
+        const clockStopIcon =
+            typeof ClockStopIcon === "function"
+                ? <ClockStopIcon />
+                : null;
+        const cycleIcon =
+            typeof CycleIcon === "function"
+                ? <CycleIcon />
+                : null;
         return (
             <div className={styles.taskStatusItemLeftPane}>
-                <div hidden={!this.props.nextStart} className="taskIcon"><ClockStopIcon /></div>
-                <div hidden={!this.props.startDate} className="taskIconProcessing"><CycleIcon /></div>
+                <div hidden={!this.props.nextStart} className="taskIcon">{clockStopIcon}</div>
+                <div hidden={!this.props.startDate} className="taskIconProcessing">{cycleIcon}</div>
                 <div className="taskDetail">
                     <div className="taskDetail-name">{props.friendlyName}</div>
                     <div hidden={!this.props.startDate} className="taskDetail-common">

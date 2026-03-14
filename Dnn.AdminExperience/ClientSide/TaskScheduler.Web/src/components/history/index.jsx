@@ -119,9 +119,13 @@ class HistoryPanelBody extends Component {
      
     render() {
         const {props} = this;
+        const historyIcon =
+            typeof HistoryIcon === "function"
+                ? <HistoryIcon />
+                : null;
         return (
             <div>
-                <div className="historyIcon"><HistoryIcon /></div>
+                <div className="historyIcon">{historyIcon}</div>
                 <div className="taskHistoryList-title">{props.title}</div>
                 <div className="taskHistoryList-grid">
                     {this.renderedHistoryListHeader()}
