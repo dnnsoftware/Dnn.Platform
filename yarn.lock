@@ -20864,6 +20864,7 @@ __metadata:
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
     "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
