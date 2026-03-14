@@ -13,7 +13,7 @@
     "@rsbuild/core": "^1.6.3",
     "@rsbuild/plugin-less": "^1.5.0",
     "@rsbuild/plugin-react": "^1.4.2",
-    "@rsbuild/plugin-svgr": "^1.2.2",
+    "@svgr/webpack": "^8.1.0",
     "create-react-class": "^15.7.0",
     "eslint": "9.38.0",
     "eslint-plugin-react": "7.37.5",
