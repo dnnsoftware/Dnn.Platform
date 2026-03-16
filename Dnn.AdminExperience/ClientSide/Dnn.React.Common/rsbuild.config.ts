@@ -22,6 +22,11 @@ const externalizeNodeModules = ({ request }: { request?: string }) => {
     return undefined;
   }
 
+  // Keep loader/runtime virtual requests bundled.
+  if (request.includes("!") || request.includes("?")) {
+    return undefined;
+  }
+
   return request;
 };
 
@@ -38,6 +43,7 @@ export default defineConfig({
     injectStyles: true,
     cssModules: {
       auto: true,
+      mode: "global",
       localIdentName: "[name]__[local]___[hash:base64:5]",
     },
     distPath: {
@@ -86,6 +92,7 @@ export default defineConfig({
           {
             test: /\.svg$/i,
             issuer: /\.[jt]sx?$/,
+            type: "javascript/auto",
             use: ["@svgr/webpack"],
           },
         ],
