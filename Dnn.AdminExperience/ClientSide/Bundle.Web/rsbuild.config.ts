@@ -5,9 +5,8 @@ import path from "path";
 import { createRequire } from "module";
 
 const requireModule = createRequire(__filename);
-const webpackExternals = requireModule(
-  "@dnnsoftware/dnn-react-common/WebpackExternals"
-);
+const packageJson = requireModule("./package.json");
+const { DefinePlugin } = requireModule("@rspack/core");
 
 const resolveWebsitePath = () => {
   try {
@@ -23,7 +22,7 @@ const resolveWebsitePath = () => {
 
 const websitePath = resolveWebsitePath();
 const isProduction = process.env.NODE_ENV === "production";
-const useWebsitePath = !isProduction && websitePath;
+const useWebsitePath = websitePath;
 
 export default defineConfig({
   source: {
@@ -38,7 +37,8 @@ export default defineConfig({
     injectStyles: true,
     cssModules: {
       auto: true,
-      localIdentName: "[local]",
+      mode: "global",
+      localIdentName: "[name]__[local]___[hash:base64:5]",
     },
     distPath: {
       root: useWebsitePath
@@ -63,19 +63,6 @@ export default defineConfig({
   },
   tools: {
     rspack: {
-      externals: (data) => {
-        const { request } = data;
-        if (webpackExternals[request]) {
-          return webpackExternals[request];
-        }
-        if (request?.startsWith("react/") || request?.startsWith("react-dom/")) {
-          const baseModule = request.split("/")[0];
-          if (webpackExternals[baseModule]) {
-            return webpackExternals[baseModule];
-          }
-        }
-        return undefined;
-      },
       resolve: {
         modules: [
           path.resolve(__dirname, "./src"),
@@ -83,6 +70,14 @@ export default defineConfig({
           path.resolve(__dirname, "../../../node_modules"),
         ],
       },
+      plugins: [
+        new DefinePlugin({
+          VERSION: JSON.stringify(packageJson.version),
+          "process.env.NODE_ENV": JSON.stringify(
+            isProduction ? "production" : "development"
+          ),
+        }),
+      ],
     },
     htmlPlugin: false,
   },
