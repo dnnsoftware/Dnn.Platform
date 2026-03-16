@@ -30,6 +30,7 @@ const distPath = useWebsitePath
     )
   : "../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/";
 console.log("distPath", distPath);
+console.log("NODE_ENV", process.env.NODE_ENV);
 
 export default defineConfig({
   source: {
