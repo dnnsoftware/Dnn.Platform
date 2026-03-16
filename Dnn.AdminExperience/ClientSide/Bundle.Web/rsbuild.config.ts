@@ -21,8 +21,15 @@ const resolveWebsitePath = () => {
 };
 
 const websitePath = resolveWebsitePath();
-const isProduction = process.env.NODE_ENV === "production";
-const useWebsitePath = websitePath;
+const isProduction = process.env.npm_lifecycle_event === "build";
+const useWebsitePath = !isProduction && websitePath !== "";
+const distPath = useWebsitePath
+  ? path.join(
+      websitePath,
+      "DesktopModules/Admin/Dnn.PersonaBar/scripts/exports/"
+    )
+  : "../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/";
+console.log("distPath", distPath);
 
 export default defineConfig({
   source: {

@@ -22,8 +22,15 @@ const resolveWebsitePath = () => {
 };
 
 const websitePath = resolveWebsitePath();
-const isProduction = process.env.NODE_ENV === "production";
-const useWebsitePath = !isProduction && websitePath;
+const isProduction = process.env.npm_lifecycle_event === "build";
+const useWebsitePath = !isProduction && websitePath !== "";
+const distPath = useWebsitePath
+  ? path.join(
+      websitePath,
+      "DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Sites/"
+    )
+  : "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/";
+console.log("distPath", distPath);
 const externalOverrides = {
   "dnn-sites-common-action-types": "window.dnn.Sites.CommonActionTypes",
   "dnn-sites-common-components": "window.dnn.Sites.CommonComponents",
@@ -48,12 +55,7 @@ export default defineConfig({
       localIdentName: "[name]__[local]___[hash:base64:5]",
     },
     distPath: {
-      root: useWebsitePath
-        ? path.join(
-            websitePath,
-            "DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Sites/"
-          )
-        : "../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Sites/",
+      root: distPath,
       js: "scripts/bundles/",
       css: "css/",
       html: "",

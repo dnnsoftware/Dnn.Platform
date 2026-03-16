@@ -7,7 +7,7 @@ import { createRequire } from "module";
 const requireModule = createRequire(__filename);
 const packageJson = requireModule("./package.json");
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.npm_lifecycle_event === "build";
 
 const externalizeNodeModules = ({ request }: { request?: string }) => {
   if (!request) {
