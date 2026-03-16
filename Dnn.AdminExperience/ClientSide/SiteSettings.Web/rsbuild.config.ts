@@ -83,6 +83,11 @@ export default defineConfig({
         return undefined;
       },
       resolve: {
+        alias: {
+          // Avoid loading exenv's UMD build, which defines an anonymous AMD module
+          // and conflicts with PersonaBar's RequireJS loader while switching panels.
+          exenv: path.resolve(__dirname, "./src/shims/exenv.js"),
+        },
         modules: [
           path.resolve(__dirname, "./src"),
           path.resolve(__dirname, "./node_modules"),

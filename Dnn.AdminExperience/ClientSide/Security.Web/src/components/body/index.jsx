@@ -51,11 +51,11 @@ export class Body extends Component {
         let moreTabs = [];
         let memberAccountsTabs = [];
         if (canManageApiTokens || canViewBasicLoginSettings || isHost) {
-            tabHeaders.push([resx.get("TabAuthenticationSettings")]);
+            tabHeaders.push(resx.get("TabAuthenticationSettings"));
             if (canViewBasicLoginSettings)
                 loginSettingTabHeaders.push(resx.get("TabBasicLoginSettings"));
             if (isHost) {
-                loginSettingTabHeaders.push(<div style={{ fontSize: "9pt" }}>
+                loginSettingTabHeaders.push(<div key="login-settings-ipfilters-header" style={{ fontSize: "9pt" }}>
                     {resx.get("TabIpFilters")}
                     <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
@@ -73,9 +73,9 @@ export class Body extends Component {
             }
         }
         if (isHost || canViewRegistrationSettings) {
-            tabHeaders.push([resx.get("TabMemberAccounts")]);
+            tabHeaders.push(resx.get("TabMemberAccounts"));
             if (isHost) {
-                memberAccountsTabHeaders.push(<div style={{ fontSize: "9pt" }}>
+                memberAccountsTabHeaders.push(<div key="member-management-header" style={{ fontSize: "9pt" }}>
                     {resx.get("TabMemberSettings")}
                     <Tooltip
                         messages={[resx.get("GlobalSettingsTab")]}
@@ -90,7 +90,7 @@ export class Body extends Component {
                 memberAccountsTabs.push(<MemberManagement key="memberManagement" />);
             }
             if (canViewRegistrationSettings) {
-                memberAccountsTabHeaders.push(<div style={{ marginLeft: (isHost ? 35 : 0) }}>
+                memberAccountsTabHeaders.push(<div key="registration-settings-header" style={{ marginLeft: (isHost ? 35 : 0) }}>
                     <div style={{
                         width: isHost ? 35 : "auto",
                         height: 3,
@@ -115,7 +115,7 @@ export class Body extends Component {
         if (isHost) {
             tabHeaders.push(resx.get("TabSecurityAnalyzer"));
             tabHeaders.push(resx.get("TabSecurityBulletins"));
-            moreTabHeaders.push(<div style={{ fontSize: "9pt" }}>
+            moreTabHeaders.push(<div key="more-security-settings-header" style={{ fontSize: "9pt" }}>
                 {resx.get("TabMoreSecuritySettings")}
                 <Tooltip
                     messages={[resx.get("GlobalSettingsTab")]}
@@ -133,13 +133,13 @@ export class Body extends Component {
         }
         let loginSettingsTabs = [];
         if (canViewBasicLoginSettings) {
-            loginSettingsTabs.push(<BasicSettings cultureCode={this.props.cultureCode} />);
+            loginSettingsTabs.push(<BasicSettings key="basic-settings-tab" cultureCode={this.props.cultureCode} />);
         }
         if (isHost) {
-            loginSettingsTabs.push(<IpFilters />);
+            loginSettingsTabs.push(<IpFilters key="ip-filters-tab" />);
         }
         if (canManageApiTokens) {
-            loginSettingsTabs.push(<ApiTokens />);
+            loginSettingsTabs.push(<ApiTokens key="api-tokens-tab" />);
         }
         if (canManageApiTokens || canViewBasicLoginSettings || isHost) {
             securityTabs.push(<Tabs key="loginSettingsTab" onSelect={this.handleSelect.bind(this)}
@@ -159,9 +159,9 @@ export class Body extends Component {
             securityTabs.push(<Tabs key="auditChecksTab" onSelect={this.handleSelect.bind(this)}
                 tabHeaders={[resx.get("TabAuditChecks"), resx.get("TabScannerCheck"), resx.get("TabSuperuserActivity")]}
                 type="secondary">
-                <AuditCheck />
-                <ScannerCheck />
-                <SuperuserActivity />
+                <AuditCheck key="audit-check-tab" />
+                <ScannerCheck key="scanner-check-tab" />
+                <SuperuserActivity key="superuser-activity-tab" />
             </Tabs>);
             securityTabs.push(<SecurityBulletins key="securityBulletinsTab" />);
         }
