@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.103" />
+    <GlobalPackageReference Include="MSBuildTasks" Version="1.5.0.235" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
   </ItemGroup>
 </Project>

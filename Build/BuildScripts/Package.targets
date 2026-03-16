@@ -5,7 +5,6 @@
     <YuiLib>$(BuildScriptsPath)\Yahoo.Yui.Compressor.MsBuild.dll</YuiLib>
   </PropertyGroup>
 
-  <Import Project="MSBuild.Community.Tasks.Targets" />
   <UsingTask TaskName="ExtensionPackager" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <WorkingFolder ParameterType="System.String" />
