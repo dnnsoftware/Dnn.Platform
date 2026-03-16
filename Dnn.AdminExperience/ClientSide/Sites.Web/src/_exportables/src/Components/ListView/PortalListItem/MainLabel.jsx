@@ -8,8 +8,9 @@ const MainLabel = ({label, portalAliases}) => (
         <TextOverflowWrapper text={label} maxWidth={220}/>
         <GridCell>
             {
-                portalAliases.map((alias)=>{
-                    return <TextOverflowWrapper key={"alias-" + label} href={alias.link} target="_blank" text={alias.url} isAnchor={true} maxWidth={220}/>;
+                portalAliases.map((alias, index)=>{
+                    const aliasKey = alias.url || alias.link || index;
+                    return <TextOverflowWrapper key={"alias-" + aliasKey} href={alias.link} target="_blank" text={alias.url} isAnchor={true} maxWidth={220}/>;
                 })
             }
         </GridCell>

@@ -181,14 +181,13 @@ class IpFilterEditor extends Component {
             </InputGroup>
         </div>;
 
-        let children = [];
-        children.push(columnOne);
-         
         return (
             <div className="ip-filter-setting-editor">
                 <GridSystem
                     numberOfColumns={1}>
-                    {children}
+                    <React.Fragment key="ip-filter-editor-column">
+                        {columnOne}
+                    </React.Fragment>
                 </GridSystem>
                 <div className="buttons-box">
                     <Button                        
