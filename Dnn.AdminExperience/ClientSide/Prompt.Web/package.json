@@ -4,9 +4,9 @@
   "description": "DNN Prompt",
   "private": true,
   "scripts": {
-    "build": "set NODE_ENV=production&&rsbuild build",
-    "debug": "set NODE_ENV=debug&&rsbuild build",
-    "watch": "set NODE_ENV=debug & rsbuild dev",
+    "build": "rsbuild build",
+    "debug": "rsbuild build",
+    "watch": "rsbuild dev",
     "lint": "eslint --fix"
   },
   "devDependencies": {

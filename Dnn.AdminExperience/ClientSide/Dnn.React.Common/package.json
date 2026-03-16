@@ -18,9 +18,9 @@
   "scripts": {
     "lint": "eslint --fix",
     "test": "echo \"No tests script specified to run.\"",
-    "build": "set NODE_ENV=production&&rsbuild build",
-    "watch": "set NODE_ENV=debug & rsbuild dev",
-    "debug": "set NODE_ENV=debug&&rsbuild build",
+    "build": "rsbuild build",
+    "debug": "rsbuild build",
+    "watch": "rsbuild dev",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
