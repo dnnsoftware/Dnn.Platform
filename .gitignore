@@ -85,6 +85,9 @@ UpgradeLog*.XML
 # Node
 node_modules/
 
+# AI Assistants
+.cursor/
+
 ############
 ## DNN
 ############
