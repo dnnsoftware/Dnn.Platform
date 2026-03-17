@@ -1,4 +1,4 @@
-[![Build status](https://dotnet.visualstudio.com/DNN/_apis/build/status/dnnsoftware.Dnn.Platform?branchName=develop)](https://dotnet.visualstudio.com/DNN/_build/latest?definitionId=145&branchName=develop)
+[![Build and Validate](https://github.com/dnnsoftware/Dnn.Platform/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/dnnsoftware/Dnn.Platform/actions/workflows/ci.yml)
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
