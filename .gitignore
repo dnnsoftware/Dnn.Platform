@@ -151,10 +151,3 @@ yarn-error.log
 
 /DotNetNuke.Internal.SourceGenerators/bin/
 /DNN Platform/Tests/DotNetNuke.Tests.SourceGenerators/Snapshots/*.received.*
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Pages/scripts/bundles/
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/scripts/bundles/
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Prompt/css/Prompt.css
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Roles/css/Roles.css
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Security/css/Security.css
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Seo/css/Seo.css
-/Dnn.AdminExperience/Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Servers/css/Servers.css
