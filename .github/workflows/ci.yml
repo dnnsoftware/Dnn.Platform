@@ -6,10 +6,6 @@ env:
   RELEASE_MODE: "Beta"
   RUN_TESTS: "true"
 
-permissions:
-  checks: write
-  pull-requests: write
-
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
@@ -57,17 +53,29 @@ jobs:
   build-and-validate:
     name: "Build and Validate"
     runs-on: "windows-2025-vs2026"
+    permissions:
+      checks: write
+      pull-requests: write
     defaults:
       run:
         shell: "pwsh"
     steps:
+      - name: "Setup Environment Variables"
+        run: |
+          "CAKE_TARGET=${{ inputs.CAKE_TARGET || env.CAKE_TARGET }}" >> $env:GITHUB_ENV;
+          "CAKE_VERBOSITY=${{ inputs.CAKE_VERBOSITY || env.CAKE_VERBOSITY }}" >> $env:GITHUB_ENV;
+          "RELEASE_MODE=${{ inputs.RELEASE_MODE || env.RELEASE_MODE }}" >> $env:GITHUB_ENV;
+          "RUN_TESTS=${{ inputs.RUN_TESTS || env.RUN_TESTS }}" >> $env:GITHUB_ENV;
+
       - name: "Checkout"
-        uses: "actions/checkout@v6.0.2"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
+        with:
+          fetch-depth: 0 # include all history for GitVersion
 
       # Built-in caching is broken for Yarn, using setup-node twice
       # See https://github.com/actions/setup-node/issues/531#issuecomment-3335630863
       - name: "Setup Node.js"
-        uses: "actions/setup-node@v6.3.0"
+        uses: "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f" # v6.3.0
         with:
           node-version-file: ".node-version"
           package-manager-cache: false
@@ -76,12 +84,12 @@ jobs:
         run: "corepack enable"
 
       - name: "Setup Yarn cache"
-        uses: "actions/setup-node@v6.3.0"
+        uses: "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f" # v6.3.0
         with:
           cache: "yarn"
 
       - name: "Setup .NET SDK"
-        uses: "actions/setup-dotnet@v5.2.0"
+        uses: "actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7" # v5.2.0
         with:
           global-json-file: "global.json"
 
@@ -112,14 +120,15 @@ jobs:
         continue-on-error: true
 
       - name: "Publish Test Results"
-        uses: "EnricoMi/publish-unit-test-result-action/windows@v2.23.0"
+        uses: "EnricoMi/publish-unit-test-result-action/windows@c950f6fb443cb5af20a377fd0dfaa78838901040" # v2.23.0
         if: ${{ !cancelled() && env.RUN_TESTS == 'true' }}
         with:
           files: "**/TestResults/*.trx"
           action_fail: true
 
       - name: "Publish Artifacts"
-        uses: "actions/upload-artifact@v7.0.0"
+        id: "publish-artifacts-step"
+        uses: "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f" # v7.0.0
         if: ${{ !cancelled() }}
         with:
           path: "Artifacts"
@@ -133,3 +142,32 @@ jobs:
         env:
           GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
           GITHUB_APP_PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
+
+    outputs:
+      artifact-id: ${{ steps.publish-artifacts-step.outputs.artifact-id }}
+
+  deploy-to-nuget:
+    name: "Deploy to NuGet"
+    needs: ["build-and-validate"]
+    environment: "nuget.org"
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: "ubuntu-latest"
+    permissions:
+      id-token: "write"
+    defaults:
+      run:
+        shell: "pwsh"
+    steps:
+      - name: "Download Artifacts"
+        uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c" # v8.0.1
+        with:
+          artifact-ids: ${{ needs.build-and-validate.outputs.artifact-id }}
+
+      - name: "NuGet login (OIDC → temp API key)"
+        uses: "NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544" # v1
+        id: "nuget-login"
+        with:
+          user: ${{ secrets.NUGET_USER }}
+
+      - name: "NuGet Push"
+        run: "dotnet nuget push *.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json"
