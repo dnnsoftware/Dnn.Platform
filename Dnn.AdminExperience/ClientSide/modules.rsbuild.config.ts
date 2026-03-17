@@ -76,6 +76,10 @@ export const defaultConfig: (
           return undefined;
         },
         resolve: {
+          mainFields: ["module", "main", "browser"],
+          alias: {
+            exenv: path.resolve(moduleDir, "./src/shims/exenv.js"),
+          },
           modules: [
             path.resolve(moduleDir, "./src"),
             path.resolve(moduleDir, "./node_modules"),
