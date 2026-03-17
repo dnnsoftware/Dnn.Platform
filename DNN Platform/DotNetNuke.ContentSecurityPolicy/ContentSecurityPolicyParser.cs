@@ -15,6 +15,7 @@ namespace DotNetNuke.ContentSecurityPolicy
     public class ContentSecurityPolicyParser
     {
         private static readonly char[] CommaSeparator = new[] { ',' };
+        private static readonly char[] SemicolonsSeparator = new[] { ';' };
         private static readonly char[] SpaceSeparator = new[] { ' ' };
         private static readonly char[] EqualSeparator = new[] { '=' };
         private readonly IContentSecurityPolicy policy;
@@ -95,7 +96,7 @@ namespace DotNetNuke.ContentSecurityPolicy
         private static IEnumerable<string> SplitDirectives(string cspHeader)
         {
             // CSP directives are separated by semicolons
-            return cspHeader.Split(CommaSeparator, StringSplitOptions.RemoveEmptyEntries)
+            return cspHeader.Split(SemicolonsSeparator, StringSplitOptions.RemoveEmptyEntries)
                            .Select(d => d.Trim())
                            .Where(d => !string.IsNullOrEmpty(d));
         }
