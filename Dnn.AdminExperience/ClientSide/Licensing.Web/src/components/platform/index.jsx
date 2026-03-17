@@ -31,39 +31,27 @@ class Platform extends Component {
         window.open("https://docs.dnncommunity.org", "_blank");
     }
 
-     
+
     renderLinks() {
-        const docsIcon =
-            typeof DocsIcon === "function"
-                ? <DocsIcon />
-                : null;
-        const dnnIcon =
-            typeof DnnIcon === "function"
-                ? <DnnIcon />
-                : null;
-        const githubIcon =
-            typeof GithubIcon === "function"
-                ? <GithubIcon />
-                : null;
         return (
             <div className="links-wrapper">
                 <div className="link-docs-wrapper" title={resx.get("Docs.Header")} onClick={this.onDocsClick.bind(this) }>
                     <div className="link-docs">
-                        <div className="docs-icon">{docsIcon}</div>
+                        <div className="docs-icon"><DocsIcon /></div>
                         <div className="link-docs-header">{resx.get("Docs.Header") }</div>
                         <div className="link-docs-desc">{resx.get("Docs") }</div>
                     </div>
                 </div>
                 <div className="link-community-wrapper">
                     <div className="link-community" title={resx.get("Community.Header")} onClick={this.onCommunityClick.bind(this) }>
-                        <div className="dnn-icon">{dnnIcon}</div>
+                        <div className="dnn-icon"><DnnIcon /></div>
                         <div className="link-community-header">{resx.get("Community.Header") }</div>
                         <div className="link-community-desc">{resx.get("Community") }</div>
                     </div>
                 </div>
                 <div className="link-github-wrapper">
                     <div className="link-github" title={resx.get("GitHub.Header")} onClick={this.onGitHubClick.bind(this)}>
-                        <div className="github-icon">{githubIcon}</div>
+                        <div className="github-icon"><GithubIcon /></div>
                         <div className="link-github-header">{resx.get("GitHub.Header")}</div>
                         <div className="link-github-desc">{resx.get("GitHub")}</div>
                     </div>
@@ -79,16 +67,12 @@ class Platform extends Component {
 
     /*eslint no-mixed-spaces-and-tabs: "error"*/
     render() {
-        const dnnTechnologyEditorialIcon =
-            typeof DnnTechnologyEditorialIcon === "function"
-                ? <DnnTechnologyEditorialIcon />
-                : null;
         return (
             <div className={styles.licensingPlatform}>
                 <div>
                     {this.renderVersion()}
                     <div className="intro">
-                        <div className="dnn-technology-editorial-icon">{dnnTechnologyEditorialIcon}</div>
+                        <div className="dnn-technology-editorial-icon"><DnnTechnologyEditorialIcon /></div>
                         <div className="intro-header">{resx.get("Intro.Header") }</div>
                         <div className="intro-body">{resx.get("Intro") }</div>
                     </div>

@@ -153,12 +153,8 @@ export default class FileUpload extends Component {
     render() {
         const buttonsStyle = { width: 67 };
         let className = "overlay" + (this.state.draggedOver ? " hover" : "");
-        const uploadIcon =
-            typeof UploadIcon === "function"
-                ? <UploadIcon />
-                : null;
 
-         
+
         return <div className={"dnn-package-upload" + (this.state.uploading ? " uploading" : "") + (this.props.alreadyInstalled ? " already-installed" : "") + (this.props.viewingLog ? " viewing-log" : "")}>
 
             {((!this.state.uploading || this.state.uploadComplete) && !this.props.viewingLog) && <div className="dropzone-container">
@@ -173,7 +169,7 @@ export default class FileUpload extends Component {
                             className="button upload"
                             onMouseEnter={this.onMouseEnter.bind(this, Localization.get("InstallExtension_UploadAFile"))}
                             onMouseLeave={this.onMouseLeave.bind(this)}>
-                            <div>{uploadIcon}</div>
+                            <div><UploadIcon /></div>
                             <input type="file" onChange={this.onFileUpload.bind(this)} aria-label="File" />
                         </div>
                     </div>

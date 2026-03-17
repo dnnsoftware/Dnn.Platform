@@ -59,28 +59,20 @@ class SchedulerRow extends Component {
         }
     }
 
-     
+
     getEnabledDisplay() {
         if (this.props.id !== "add") {
             if (this.props.enabled) {
-                const checkmarkIcon =
-                    typeof CheckmarkIcon === "function"
-                        ? <CheckmarkIcon />
-                        : null;
-                return <div className="checkMarkIcon">{checkmarkIcon}</div>;
+                return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
             }
             else return <span>&nbsp; </span>;
         }
         else return <span>-</span>;
     }
 
-     
+
     render() {
         const { props } = this;
-        const historyIcon =
-            typeof HistoryIcon === "function"
-                ? <HistoryIcon />
-                : null;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);
 
         return (
@@ -100,7 +92,7 @@ class SchedulerRow extends Component {
                         {props.id !== "add" &&
                             <div className="schedule-item item-row-historyButton">
                                 <div className={opened && props.panelIndex === 1 ? "history-icon-active" : "history-icon"} title={resx.get("ControlTitle_history")} onClick={this.toggle.bind(this, 1)}>
-                                    {historyIcon}
+                                    <HistoryIcon />
                                 </div>
                             </div>
                         }

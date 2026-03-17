@@ -25,7 +25,7 @@ class IpFilterEditor extends Component {
             formModified: false,
             ruleSpecificity: SINGLE_IP
         };
-        
+
         specificityOptions = [];
         specificityOptions.push({ label: resx.get(SINGLE_IP), value: SINGLE_IP });
         specificityOptions.push({ label: resx.get(IP_RANGE), value: IP_RANGE });
@@ -71,7 +71,7 @@ class IpFilterEditor extends Component {
         else {
             ipFilter[key] = typeof (event) === "object" ? event.target.value : event;
         }
-        
+
         this.setState({
             ipFilter: ipFilter,
             triedToSubmit: false,
@@ -82,47 +82,47 @@ class IpFilterEditor extends Component {
     onUpdateItem(event) {
         event.preventDefault();
         const {state} = this;
-        
+
         this.setState({
             triedToSubmit: true
         });
-        
+
         if (this.validateIPAddressContainsError()) {
             return;
         }
-        
+
         if (state.ruleSpecificity === SINGLE_IP) {
             state.ipFilter["SubnetMask"] = "";
         }
 
         this.props.onUpdate(this.state.ipFilter);
     }
-    
+
     validateIPAddressContainsError() {
         const {state} = this;
-        
+
         state.error["ip"] = !this.isValidIpAddress(state.ipFilter["IPAddress"]);
-        
+
         if (state.ruleSpecificity === IP_RANGE) {
             state.error["mask"] = !this.isValidIpAddress(state.ipFilter["SubnetMask"]);
         } else {
             state.error["mask"] = false;
         }
-        
+
         this.setState({
             error: state.error
         });
-        
+
         return (state.error.ip || state.error.mask);
     }
-     
+
     isValidIpAddress(ipAddress) {
         return re.test(ipAddress);
     }
 
-     
+
     render() {
-        const columnOne = <div className="container">
+        const columnOne = <div className="container" key="ip-filter-editor-column">
             <InputGroup>
                 <Label
                     labelType="inline"
@@ -185,12 +185,10 @@ class IpFilterEditor extends Component {
             <div className="ip-filter-setting-editor">
                 <GridSystem
                     numberOfColumns={1}>
-                    <React.Fragment key="ip-filter-editor-column">
-                        {columnOne}
-                    </React.Fragment>
+                        {[columnOne]}
                 </GridSystem>
                 <div className="buttons-box">
-                    <Button                        
+                    <Button
                         type="neutral"
                         onClick={this.props.Collapse.bind(this) }>
                         {resx.get("Cancel") }
