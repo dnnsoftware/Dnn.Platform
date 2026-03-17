@@ -63,6 +63,8 @@ jobs:
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v6.0.2"
+        with:
+          fetch-depth: 0 # include all history for GitVersion
 
       # Built-in caching is broken for Yarn, using setup-node twice
       # See https://github.com/actions/setup-node/issues/531#issuecomment-3335630863
