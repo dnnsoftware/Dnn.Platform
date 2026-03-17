@@ -6,7 +6,13 @@ const boilerPlate = {
         let options = window.dnn.initSecurity();
         utilities.init(options.utility);
         utilities.moduleName = options.moduleName;
-        utilities.settings = options.settings;
+        const rawSettings = options && options.settings ? options.settings : {};
+        utilities.settings = {
+            ...rawSettings,
+            isHost: !!rawSettings.isHost,
+            isAdmin: !!rawSettings.isAdmin,
+            permissions: rawSettings.permissions || {}
+        };
     },
     dispatch() {
         throw new Error("dispatch method needs to be overwritten from the Redux store");
