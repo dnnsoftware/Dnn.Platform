@@ -10,7 +10,7 @@ class TaskQueuePanelBody extends Component {
     constructor() {
         super();
     }
-     
+
     renderedTaskStatusList() {
         const { props } = this;
         return props.taskStatusList.map((term, index) => {
@@ -57,17 +57,13 @@ class TaskQueuePanelBody extends Component {
     /*eslint-disable eqeqeq*/
     render() {
         const { props } = this;
-        const noDataIcon =
-            typeof NoDataIcon === "function"
-                ? <NoDataIcon />
-                : null;
         return (
             <div>
                 {props.taskStatusList && props.taskStatusList.length == 0 && props.taskProcessingList && props.taskProcessingList.length == 0 &&
                     <div className="noData">
                         <div className="noTasks">{props.schedulingEnabled === "True" ? resx.get("NoTasks") : resx.get("DisabledMessage")}</div>
                         <div className="noTasksMessage">{resx.get("NoTasksMessage")}</div>
-                        <div>{noDataIcon}</div>
+                        <div><NoDataIcon /></div>
                     </div>
                 }
                 {this.renderedTaskProcessingList()}

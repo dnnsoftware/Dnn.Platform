@@ -73,19 +73,15 @@ class TermHeader extends Component {
         const {props} = this;
         props.onDelete(props.term, props.index, () => { this.collapse(); });
     }
-     
+
     render() {
         const {props, state} = this;
         const TypeIcon = props.type === 1 ? SimpleTypeIcon : HierarchyTypeIcon;
-        const icon =
-            typeof TypeIcon === "function"
-                ? <TypeIcon />
-                : null;
         return (
             <div ref={node => this.node = node} className={"" + styles.collapsibleComponent + " " + state.collapsed + (props.className ? (" " + props.className) : "")}>
                 <div className={"collapsible-header " + state.collapsed} onClick={this.toggle.bind(this)}>
                     <div className="term-header">
-                        <div className="term-icon">{icon}</div>
+                        <div className="term-icon"><TypeIcon /></div>
                         <div className="term-label">
 
                             <TextOverflowWrapper text={props.header} maxWidth={200} />

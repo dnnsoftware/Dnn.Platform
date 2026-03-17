@@ -1,132 +1,136 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { ExtensionActions, PaginationActions, VisiblePanelActions } from "actions";
+import { DnnTabs as Tabs, PersonaBarPageBody, TextOverflowWrapper, PersonaBarPageHeader, GridCell, Button } from "@dnnsoftware/dnn-react-common";
+import { PaginationActions, VisiblePanelActions, ExtensionActions, InstallationActions } from "actions";
 import Localization from "localization";
-import ExtensionList from "./ExtensionList";
-import { GridCell, DropdownWithError } from "@dnnsoftware/dnn-react-common";
-import FetchingIcon from "../../../img/fetching.svg";
+import InstalledExtensions from "./InstalledExtensions";
+import AvailableExtensions from "./AvailableExtensions";
+import utilities from "utils";
+import { validationMapExtensionBeingEdited } from "utils/helperFunctions";
+import { ModuleCustomSettings, CoreLanguagePack, ExtensionLanguagePack } from "./packageCustomSettings";
 import "./style.less";
 
-class InstalledExtensions extends Component {
+const newExtension = {
+    packageType: "",
+    name: "",
+    friendlyName: "",
+    description: "",
+    inUse: "",
+    upgradeUrl: "",
+    packageIcon: "",
+    license: "",
+    owner: "",
+    organization: "",
+    url: "",
+    email: "",
+    version: "0.0.0"
+};
+
+class Body extends Component {
     constructor() {
         super();
         this.handleSelect = this.handleSelect.bind(this);
-        this.state = {
-            loading: false
-        };
+        this.state = {};
     }
 
-    checkIfPackageTypesEmpty(props) {
-        return !props.installedPackageTypes || props.installedPackageTypes.length === 0;
-    }
-
-    checkIfInstalledPackagesEmpty(props) {
-        return !props.installedPackages || props.installedPackages.length === 0;
-    }
-
-    UNSAFE_componentWillMount() {        
-        const {props} = this;
-        if (this.checkIfPackageTypesEmpty(props)) {
-            props.dispatch(ExtensionActions.getPackageTypes());
+    UNSAFE_componentWillMount() {
+        const { props } = this;
+        this.isHost = utilities.settings.isHost;
+        if ((!props.locales || props.locales.length === 0)) {
+            props.dispatch(ExtensionActions.getLocaleList());
         }
-    }
-
-    UNSAFE_componentWillReceiveProps(props) {
-        if (!this.checkIfPackageTypesEmpty(props) && this.checkIfInstalledPackagesEmpty(props) && props.selectedInstalledPackageType === "") {
-            this.setState({loading: true}, () => {
-                props.dispatch(ExtensionActions.getInstalledPackages(props.installedPackageTypes[0].Type, ()=> {
-                    this.setState({loading: false});
-                }));
-            });
+        if ((!props.localePackages || props.localePackages.length === 0)) {
+            props.dispatch(ExtensionActions.getLocalePackageList());
         }
     }
 
     handleSelect(index/*, last*/) {
-        const {props} = this;
-        props.dispatch(PaginationActions.loadTab(index));   //index acts as scopeTypeId
+        const { props } = this;
+        props.dispatch(PaginationActions.loadTab(index)); //index acts as scopeTypeId
+        this.setState({});
     }
 
-    onChange(key, event) {
-        this.setState({
-            [key]: event.target.value
-        });
-    }
-
-    onFilterSelect(option) {
-        const {props} = this;
-        this.setState({loading: true}, () => {
-            props.dispatch(ExtensionActions.getInstalledPackages(option.value, () => {
-                this.setState({loading: false});
-            }));
-        });
-    }
-
-    onDelete(_package, index) {
-        const {props} = this;
-        props.dispatch(ExtensionActions.setPackageBeingDeleted(Object.assign({ packageType: props.selectedInstalledPackageType }, _package), index, () => {
-            props.dispatch(VisiblePanelActions.selectPanel(6));
+    selectPanel(panel, event) {
+        if (event) {
+            event.preventDefault();
+        }
+        const { props } = this;
+        props.dispatch(InstallationActions.setIsPortalPackage(false, () => {
+            props.dispatch(VisiblePanelActions.selectPanel(panel));
         }));
     }
 
-    renderLoading() {
-        const fetchingIcon =
-            typeof FetchingIcon === "function"
-                ? <FetchingIcon />
-                : null;
+    onEditExtension(extensionBeingEditedIndex, packageId) {
+        const { props } = this;
+        props.dispatch(ExtensionActions.editExtension(packageId, extensionBeingEditedIndex, () => {
+            this.selectPanel(4);
+        }));
+    }
 
-         
-        return <div className="loading-extensions">
-            <h2>{Localization.get("Loading")}</h2>
-            <p>{Localization.get("Loading.Tooltip")}</p>
-            <div>{fetchingIcon}</div>
-        </div>;
-         
+    createExtension() {
+        const { props } = this;
+        let _newExtension = Object.assign(newExtension, ModuleCustomSettings);
+        _newExtension = Object.assign(_newExtension, CoreLanguagePack);
+        _newExtension = Object.assign(_newExtension, ExtensionLanguagePack);
+        _newExtension = Object.assign(_newExtension, { locales: props.locales });
+        _newExtension = Object.assign(_newExtension, { packages: props.localePackages });
+        props.dispatch(ExtensionActions.addExtension(validationMapExtensionBeingEdited(_newExtension), () => {
+            this.selectPanel(2);
+        }));
     }
 
     render() {
-        const {props, state} = this;
+        const { props } = this;
         return (
-            <GridCell className="extension-list">
-                <GridCell className="collapse-section filter-section">
-                    <DropdownWithError className="filter-dropdown" onSelect={this.onFilterSelect.bind(this)} options={props.installedPackageTypes && props.installedPackageTypes.map((_package) => {
-                        return {
-                            label: _package.DisplayName,
-                            value: _package.Type
-                        };
-                    })}
-                    label={Localization.get("Showing.Label")}
-                    value={props.selectedInstalledPackageType}
-                    labelType="inline" />
-                </GridCell>
-                {state.loading && this.renderLoading()}
-                {(props.installedPackages && props.installedPackages.length > 0 && !state.loading) &&
-                    <ExtensionList
-                        packages={props.installedPackages}
-                        isHost={props.isHost}
-                        onEdit={props.onEdit.bind(this)}
-                        onDelete={this.onDelete.bind(this)} />
-                }
+            <GridCell className="extension-body">
+                <PersonaBarPageHeader title={Localization.get("ExtensionsLabel")}>
+                    {this.isHost &&
+                        <Button type="primary" size="large" onClick={this.selectPanel.bind(this, 3)}>
+                            <TextOverflowWrapper text={Localization.get("ExtensionInstall.Action") } maxWidth={120}/>
+                        </Button>
+                    }
+                    {this.isHost &&
+                        <Button type="secondary" size="large" onClick={this.createExtension.bind(this)}>
+                            <TextOverflowWrapper text={Localization.get("CreateExtension.Action") } maxWidth={120}/>
+                        </Button>
+                    }
+                    {this.isHost &&
+                        <Button type="secondary" size="large" onClick={this.selectPanel.bind(this, 1)}>
+                            <TextOverflowWrapper text={Localization.get("CreateModule.Action") } maxWidth={120}/>
+                        </Button>
+                    }
+                </PersonaBarPageHeader>
+                <PersonaBarPageBody>
+                    {this.isHost && <Tabs
+                        onSelect={this.handleSelect}
+                        selectedIndex={props.tabIndex}
+                        tabHeaders={[Localization.get("InstalledExtensions"), Localization.get("AvailableExtensions")]}>
+                        <InstalledExtensions
+                            isHost={this.isHost}
+                            onEdit={this.onEditExtension.bind(this)}
+                            onCancel={this.selectPanel.bind(this, 0)} />
+                        <AvailableExtensions />
+                    </Tabs>}
+                    {!this.isHost && <InstalledExtensions
+                        isHost={this.isHost}
+                        onEdit={this.onEditExtension.bind(this)}
+                        onCancel={this.selectPanel.bind(this, 0)} />}
+                </PersonaBarPageBody>
+
             </GridCell>
         );
     }
 }
 
-InstalledExtensions.propTypes = {
+Body.propTypes = {
     dispatch: PropTypes.func.isRequired,
     installedPackages: PropTypes.array,
-    installedPackageTypes: PropTypes.array,
-    isHost: PropTypes.bool,
     tabIndex: PropTypes.number
 };
 
 function mapStateToProps(state) {
-    return {
-        installedPackageTypes: state.extension.installedPackageTypes,
-        installedPackages: state.extension.installedPackages,
-        selectedInstalledPackageType: state.extension.selectedInstalledPackageType,
-        tabIndex: state.pagination.tabIndex
-    };
+    return { installedPackages: state.extension.installedPackages, selectedInstalledPackageType: state.extension.selectedInstalledPackageType, tabIndex: state.pagination.tabIndex, locales: state.extension.locales, localePackages: state.extension.localePackages };
 }
 
-export default connect(mapStateToProps)(InstalledExtensions);
+export default connect(mapStateToProps)(Body);

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import Html from "../../Html";
 import styles from "./style.module.less";
 import CheckmarkIcon from "./svg/checkmark.svg";
- 
+
 
 class TaskHistoryItemRow extends Component {
     constructor() {
@@ -47,19 +47,15 @@ class TaskHistoryItemRow extends Component {
         }
     }
 
-     
+
     getSucceededDisplay() {
         if (this.props.succeeded) {
-            const checkmarkIcon =
-                typeof CheckmarkIcon === "function"
-                    ? <CheckmarkIcon />
-                    : null;
-            return <div className="checkMarkIcon">{checkmarkIcon}</div>;
+            return <div className="checkMarkIcon"><CheckmarkIcon /></div>;
         }
         else return <span>&nbsp; </span>;
     }
 
-     
+
     getLogNotesDisplay() {
         if (this.props.friendlyName.length > 0 || this.props.logNotes.length > 0) {
             return (
