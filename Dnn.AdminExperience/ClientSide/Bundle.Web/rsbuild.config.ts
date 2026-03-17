@@ -3,22 +3,11 @@ import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginLess } from "@rsbuild/plugin-less";
 import path from "path";
 import { createRequire } from "module";
+import { resolveWebsitePath } from "../modules.rsbuild.config";
 
 const requireModule = createRequire(__filename);
 const packageJson = requireModule("./package.json");
 const { DefinePlugin } = requireModule("@rspack/core");
-
-const resolveWebsitePath = () => {
-  try {
-    const settings = requireModule("../../../settings.local.json");
-    if (settings?.WebsitePath) {
-      return settings.WebsitePath;
-    }
-  } catch {
-    // ignore missing local settings
-  }
-  return "";
-};
 
 const websitePath = resolveWebsitePath();
 const isProduction = process.env.npm_lifecycle_event === "build";
@@ -29,8 +18,6 @@ const distPath = useWebsitePath
       "DesktopModules/Admin/Dnn.PersonaBar/scripts/exports/"
     )
   : "../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/";
-console.log("distPath", distPath);
-console.log("NODE_ENV", process.env.NODE_ENV);
 
 export default defineConfig({
   source: {
@@ -40,6 +27,7 @@ export default defineConfig({
   },
   output: {
     target: "web",
+    minify: isProduction,
     filenameHash: false,
     cleanDistPath: false,
     injectStyles: true,
@@ -49,12 +37,7 @@ export default defineConfig({
       localIdentName: "[name]__[local]___[hash:base64:5]",
     },
     distPath: {
-      root: useWebsitePath
-        ? path.join(
-            websitePath,
-            "DesktopModules/Admin/Dnn.PersonaBar/scripts/exports/"
-          )
-        : "../../Library/Dnn.PersonaBar.UI/admin/personaBar/scripts/exports/",
+      root: distPath,
       js: "",
       css: "",
       html: "",

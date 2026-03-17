@@ -3,6 +3,9 @@
   "version": "10.3.0",
   "private": true,
   "scripts": {
+    "build": "rsbuild build",
+    "debug": "rsbuild build",
+    "watch": "rsbuild dev",
     "lint": "eslint --fix"
   },
   "devDependencies": {
