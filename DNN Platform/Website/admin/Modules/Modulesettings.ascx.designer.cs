@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker startDatePicker;
+        protected global::System.Web.UI.WebControls.TextBox startDatePicker;
         /// <summary>plEndDate control.</summary>
         /// <remarks>
         /// Auto-generated field.
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Modules {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDateTimePicker endDatePicker;
+        protected global::System.Web.UI.WebControls.TextBox endDatePicker;
         /// <summary>plMoniker control.</summary>
         /// <remarks>
         /// Auto-generated field.
