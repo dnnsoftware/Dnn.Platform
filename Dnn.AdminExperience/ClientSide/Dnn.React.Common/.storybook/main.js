@@ -72,6 +72,21 @@ const config = {
                 require.resolve("less-loader"),
             ],
         });
+
+        // Ensure Storybook handles image imports the same way the runtime build does.
+        config.module.rules.push({
+            test: /\.(png|jpe?g|gif|webp|ico)$/i,
+            type: 'javascript/auto',
+            use: [
+                {
+                    loader: require.resolve('file-loader'),
+                    options: {
+                        esModule: true,
+                        name: 'static/media/[name].[hash].[ext]'
+                    }
+                }
+            ]
+        });
         return config;
     },
 };

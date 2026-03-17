@@ -1,4 +1,4 @@
-name: Compress images
+name: "Compress images"
 on:
   pull_request: # PRs with image (but we can't push changes back to other forks)
     paths:
@@ -19,25 +19,25 @@ jobs:
       github.repository == 'dnnsoftware/Dnn.Platform' &&
       (github.event_name != 'pull_request' ||
        github.event.pull_request.head.repo.full_name == github.repository)
-    name: calibreapp/image-actions
-    runs-on: ubuntu-latest
+    name: "calibreapp/image-actions"
+    runs-on: "ubuntu-latest"
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v6
+      - name: "Checkout Repo"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
 
-      - name: Compress Images
-        id: compress_images
-        uses: calibreapp/image-actions@1.4.1
+      - name: "Compress Images"
+        id: "compress_images"
+        uses: "calibreapp/image-actions@f32575787d333b0579f0b7d506ff03be63a669d1" # 1.4.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           compressOnly: ${{ github.event_name != 'pull_request' }} # For non-Pull Requests, run in compressOnly mode and we'll PR after.
 
-      - name: Create Pull Request
+      - name: "Create Pull Request"
         if: | # If it's not a Pull Request then commit any changes as a new PR.
           github.event_name != 'pull_request' && steps.compress_images.outputs.markdown != ''
-        uses: peter-evans/create-pull-request@v8
+        uses: "peter-evans/create-pull-request@c0f553fe549906ede9cf27b5156039d195d2ece0" # v8.1.0
         with:
-          title: Auto Compress Images
-          branch-suffix: timestamp
-          commit-message: Compress Images
+          title: "Auto Compress Images"
+          branch-suffix: "timestamp"
+          commit-message: "Compress Images"
           body: ${{ steps.compress_images.outputs.markdown }}

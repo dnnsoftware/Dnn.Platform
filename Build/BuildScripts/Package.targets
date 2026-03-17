@@ -5,7 +5,6 @@
     <YuiLib>$(BuildScriptsPath)\Yahoo.Yui.Compressor.MsBuild.dll</YuiLib>
   </PropertyGroup>
 
-  <Import Project="MSBuild.Community.Tasks.Targets" />
   <UsingTask TaskName="ExtensionPackager" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <WorkingFolder ParameterType="System.String" />
@@ -40,12 +39,11 @@
   <!--<UsingTask AssemblyFile="$(YuiLib)" TaskName="JavaScriptCompressorTask" />-->
 
   <Target Name="Package" Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
-    <XmlRead Prefix="n"
-             Namespace="http://schemas.microsoft.com/developer/msbuild/2003"
-             XPath="dotnetnuke/packages/package/@version"
-             XmlFileName="$(DNNFileName).dnn">
-      <Output TaskParameter="Value" PropertyName="Version" />
-    </XmlRead>
+    <XmlPeek Namespaces="&lt;Namespace Prefix='n' Uri='http://schemas.microsoft.com/developer/msbuild/2003' /&gt;"
+             Query="dotnetnuke/packages/package/@version"
+             XmlInputPath="$(DNNFileName).dnn">
+      <Output TaskParameter="Result" PropertyName="Version" />
+    </XmlPeek>
     <ExtensionPackager Manifest="$(DNNFileName).dnn" WorkingFolder="$(MSBuildProjectDirectory)\">
       <Output TaskParameter="PackageFiles" ItemName="PackageFiles">
       </Output>
@@ -66,15 +64,14 @@
     <Copy SourceFiles="@(ReleaseNotesFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package" />
     
     <Copy SourceFiles="@(PackageFiles)" DestinationFolder="$(MSBuildProjectDirectory)\Package\%(PackageFiles.RecursiveDir)" />
-
-    <CreateItem Include="$(MSBuildProjectDirectory)\Package\**\*.*">
-      <Output TaskParameter="Include" ItemName="ZipOutputContent" />
-    </CreateItem>
+    
+    <ItemGroup>
+      <ZipOutputContent Include="$(MSBuildProjectDirectory)\Package\**\*.*" />
+    </ItemGroup>
     <Zip Files="@(ZipOutputContent)" WorkingDirectory="$(MSBuildProjectDirectory)\Package" ZipFileName="$(PackageName)_$(Version)_Install.$(Extension)" />
-    <Copy SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
+    <Move SourceFiles="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" DestinationFolder="$(InstallPath)" />
 
-    <Delete Files="$(MSBuildProjectDirectory)\$(PackageName)_$(Version)_Install.$(Extension)" />
-    <RemoveDir Directories ="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)\Package" ContinueOnError="WarnAndContinue" />
   </Target>
 
   <Target Name="Minification">
