@@ -61,6 +61,13 @@ jobs:
       run:
         shell: "pwsh"
     steps:
+      - name: "Setup Environment Variables"
+        run: |
+          "CAKE_TARGET=${{ inputs.CAKE_TARGET || env.CAKE_TARGET }}" >> $env:GITHUB_ENV;
+          "CAKE_VERBOSITY=${{ inputs.CAKE_VERBOSITY || env.CAKE_VERBOSITY }}" >> $env:GITHUB_ENV;
+          "RELEASE_MODE=${{ inputs.RELEASE_MODE || env.RELEASE_MODE }}" >> $env:GITHUB_ENV;
+          "RUN_TESTS=${{ inputs.RUN_TESTS || env.RUN_TESTS }}" >> $env:GITHUB_ENV;
+
       - name: "Checkout"
         uses: "actions/checkout@v6.0.2"
         with:
