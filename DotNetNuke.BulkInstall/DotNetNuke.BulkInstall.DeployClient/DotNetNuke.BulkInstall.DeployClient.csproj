@@ -11,6 +11,8 @@
 		<ToolCommandName>dnn-bulkinstall</ToolCommandName>
 		<PackageId>DotNetNuke.BulkInstall</PackageId>
 		<PackageDescription>A tool for deploying extensions to a DNN Platform website.</PackageDescription>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackAsTool>true</PackAsTool>
 		<DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
 		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
@@ -45,6 +47,7 @@
   <ItemGroup>
     <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
     <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
 	<ItemGroup>
