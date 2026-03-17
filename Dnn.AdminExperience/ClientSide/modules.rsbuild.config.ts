@@ -122,7 +122,8 @@ export const resolveWebsitePath: () => string = () => {
     if (settings?.WebsitePath) {
       return settings.WebsitePath;
     }
-  } catch {
+  } catch (error) {
+    console.error("Error resolving website path", error);
     // ignore missing local settings
   }
   return "";

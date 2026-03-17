@@ -14,6 +14,7 @@
 /Dnn.Prompt/css/Prompt.css
 /Dnn.Prompt/static/
 /Dnn.Roles/scripts/bundles/*.js
+/Dnn.Roles/scripts/bundles/rw-widgets.svg
 /Dnn.Roles/css/Roles.css
 /Dnn.Roles/static/
 /Dnn.Security/scripts/bundles/*.js
@@ -44,6 +45,8 @@
 /Dnn.Themes/css/Themes.css
 /Dnn.Themes/static/
 /Dnn.Users/scripts/bundles/*.js
+/Dnn.Users/scripts/exportables/Users/*.js
+/Dnn.Sites/scripts/exportables/Sites/*.js
 /Dnn.Users/css/Users.css
 /Dnn.Users/static/
 /Dnn.Vocabularies/scripts/bundles/*.js

@@ -3,27 +3,22 @@ import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginLess } from "@rsbuild/plugin-less";
 import path from "path";
 import { createRequire } from "module";
+import { resolveWebsitePath } from "../../../modules.rsbuild.config";
 
 const requireModule = createRequire(__filename);
 const webpackExternals = requireModule(
   "@dnnsoftware/dnn-react-common/WebpackExternals"
 );
 
-const resolveWebsitePath = () => {
-  try {
-    const settings = requireModule("../../../../../settings.local.json");
-    if (settings?.WebsitePath) {
-      return settings.WebsitePath;
-    }
-  } catch {
-    // ignore missing local settings
-  }
-  return "";
-};
-
 const websitePath = resolveWebsitePath();
-const isProduction = process.env.NODE_ENV === "production";
-const useWebsitePath = !isProduction && websitePath;
+const isProduction = process.env.npm_lifecycle_event === "build";
+const useWebsitePath = !isProduction && websitePath !== "";
+const distPath = useWebsitePath
+  ? path.join(
+      websitePath,
+      "DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Users/scripts/exportables/Users/"
+    )
+  : "../../../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users/";
 
 export default defineConfig({
   source: {
@@ -33,6 +28,7 @@ export default defineConfig({
   },
   output: {
     target: "web",
+    minify: isProduction,
     filenameHash: false,
     cleanDistPath: false,
     injectStyles: true,
@@ -41,12 +37,7 @@ export default defineConfig({
       localIdentName: "[local]",
     },
     distPath: {
-      root: useWebsitePath
-        ? path.join(
-            websitePath,
-            "DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Users/scripts/exportables/Users/"
-          )
-        : "../../../../Dnn.PersonaBar.Extensions/admin/personaBar/Dnn.Users/scripts/exportables/Users/",
+      root: distPath,
       js: "",
       css: "",
       html: "",
