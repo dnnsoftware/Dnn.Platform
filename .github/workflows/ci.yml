@@ -69,14 +69,14 @@ jobs:
           "RUN_TESTS=${{ inputs.RUN_TESTS || env.RUN_TESTS }}" >> $env:GITHUB_ENV;
 
       - name: "Checkout"
-        uses: "actions/checkout@v6.0.2"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
         with:
           fetch-depth: 0 # include all history for GitVersion
 
       # Built-in caching is broken for Yarn, using setup-node twice
       # See https://github.com/actions/setup-node/issues/531#issuecomment-3335630863
       - name: "Setup Node.js"
-        uses: "actions/setup-node@v6.3.0"
+        uses: "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f" # v6.3.0
         with:
           node-version-file: ".node-version"
           package-manager-cache: false
@@ -85,12 +85,12 @@ jobs:
         run: "corepack enable"
 
       - name: "Setup Yarn cache"
-        uses: "actions/setup-node@v6.3.0"
+        uses: "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f" # v6.3.0
         with:
           cache: "yarn"
 
       - name: "Setup .NET SDK"
-        uses: "actions/setup-dotnet@v5.2.0"
+        uses: "actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7" # v5.2.0
         with:
           global-json-file: "global.json"
 
@@ -121,14 +121,14 @@ jobs:
         continue-on-error: true
 
       - name: "Publish Test Results"
-        uses: "EnricoMi/publish-unit-test-result-action/windows@v2.23.0"
+        uses: "EnricoMi/publish-unit-test-result-action/windows@c950f6fb443cb5af20a377fd0dfaa78838901040" # v2.23.0
         if: ${{ !cancelled() && env.RUN_TESTS == 'true' }}
         with:
           files: "**/TestResults/*.trx"
           action_fail: true
 
       - name: "Publish Artifacts"
-        uses: "actions/upload-artifact@v7.0.0"
+        uses: "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f" # v7.0.0
         if: ${{ !cancelled() }}
         with:
           path: "Artifacts"
