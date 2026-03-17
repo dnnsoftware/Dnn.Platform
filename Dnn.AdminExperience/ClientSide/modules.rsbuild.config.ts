@@ -115,7 +115,11 @@ export const defaultConfig: (
           },
         },
       }),
-      pluginSvgr(),
+      pluginSvgr({
+          svgrOptions: {
+              exportType: "default"
+          }
+      }),
     ],
   };
 };
