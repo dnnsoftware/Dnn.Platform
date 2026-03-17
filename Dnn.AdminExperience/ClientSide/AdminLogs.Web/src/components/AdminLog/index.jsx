@@ -200,20 +200,18 @@ class AdminLogPanelBody extends Component {
             </div>;
         });
 
-        const isDeselectState = (props.excludedRowIds.length === 0 && props.excludedRowIds.length > 0)
-            || (props.excludedRowIds.length !== 0 && props.selectedRowIds.length > 0);
-        const isHeaderSelected = (props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0) || isDeselectState;
+        const isDeselectState = props.excludedRowIds.length == 0 && props.excludedRowIds.length || !props.excludedRowIds.length == 0 && props.selectedRowIds.length;
         const checkboxClassName = "checkbox" + (isDeselectState ? " deselect-state" : "");
         tableHeaders.unshift(<div key={"selector" + "999999"} className="logHeader logHeader-Checkbox" data-index="0">
             <div className={checkboxClassName}>
-                <Checkbox value={isHeaderSelected} onChange={this.onSelectAll.bind(this) } />
+                <Checkbox value={props.excludedRowIds.length === 0 && props.selectedRowIds.length > 0 || isDeselectState} onChange={this.onSelectAll.bind(this) } />
             </div>
         </div>);
 
         return <div className="logHeader-wrapper">{tableHeaders}</div>;
     }
 
-     
+
     renderedLogList() {
         const {props} = this;
         return props.logList.map((term, index) => {
