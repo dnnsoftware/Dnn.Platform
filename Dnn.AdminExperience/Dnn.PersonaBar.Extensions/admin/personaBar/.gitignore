@@ -3,21 +3,4 @@
 /*/scripts/exportables/*/*.js
 /*/css/*.css
 /*/static/
-/Dnn.SiteSettings/scripts/bundles/*.js
-/Dnn.SiteSettings/css/SiteSettings.css
-/Dnn.SiteSettings/static/
-/Dnn.TaskScheduler/scripts/bundles/*.js
-/Dnn.TaskScheduler/css/TaskScheduler.css
-/Dnn.TaskScheduler/static/
-/Dnn.Themes/scripts/bundles/*.js
-/Dnn.Themes/css/Themes.css
-/Dnn.Themes/static/
-/Dnn.Users/scripts/bundles/*.js
-/Dnn.Users/scripts/exportables/Users/*.js
-/Dnn.Sites/scripts/exportables/Sites/*.js
-/Dnn.Users/css/Users.css
-/Dnn.Users/static/
-/Dnn.Vocabularies/scripts/bundles/*.js
-/Dnn.Vocabularies/css/vocabularies.css
-/Dnn.Vocabularies/static/
 
