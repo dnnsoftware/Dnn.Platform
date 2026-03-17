@@ -51,7 +51,7 @@ export default class UploadBar extends Component {
 
     render() {
         const { props } = this;
-         
+
         let percent = props.errorText ? 0 : this.state.percent;
         let text = props.uploadComplete ? props.uploadCompleteText : props.uploadingText;
         text = props.errorText ? props.errorText : text;
@@ -61,16 +61,12 @@ export default class UploadBar extends Component {
                 : props.uploadComplete
                     ? Checkmark
                     : Upload;
-        const uploadIcon =
-            typeof UploadIcon === "function"
-                ? <UploadIcon />
-                : null;
         const className = "file-upload-container dnn-upload-bar" + (props.uploadComplete ? " complete" : "") + (props.errorText ? " upload-error" : "");
 
         return <div className={className}>
             <div className="upload-bar-container">
                 <div className="upload-file-name">{this.props.fileName || "myImage.jpg"}</div>
-                <div className="upload-icon">{uploadIcon}</div>
+                <div className="upload-icon"><UploadIcon /></div>
                 <h4>{text}</h4>
                 {props.errorInPackage &&
                     <p className="view-log-or-try-again">
