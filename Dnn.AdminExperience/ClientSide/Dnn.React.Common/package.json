@@ -80,7 +80,7 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-storybook": "10.2.19",
     "less": "4.6.4",
-    "nanoid": "^5.1.6",
+    "nanoid": "^5.1.7",
     "prop-types": "^15.8.1",
     "raw-loader": "4.0.2",
     "react": "^16.14.0",
