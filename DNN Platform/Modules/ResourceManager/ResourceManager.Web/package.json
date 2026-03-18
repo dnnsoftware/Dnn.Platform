@@ -28,7 +28,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.29.0",
+    "@dnncommunity/dnn-elements": "^0.29.2",
     "@eslint/js": "^9.39.4",
     "@stencil/core": "^4.43.2",
     "@stencil/eslint-plugin": "^1.1.0",
