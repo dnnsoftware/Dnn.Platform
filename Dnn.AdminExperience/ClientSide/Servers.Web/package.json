@@ -19,7 +19,7 @@
     "@types/redux": "^3.6.31",
     "create-react-class": "^15.7.0",
     "dayjs": "^1.11.18",
-    "eslint": "9.38.0",
+    "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
     "globals": "^16.4.0",
     "less": "4.4.2",

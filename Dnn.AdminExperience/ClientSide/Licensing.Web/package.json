@@ -21,7 +21,7 @@
     "babel-plugin-transform-react-remove-prop-types": "0.4.24",
     "babel-polyfill": "6.26.0",
     "es6-object-assign": "1.1.0",
-    "eslint": "9.38.0",
+    "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
     "globals": "^16.4.0",
     "less": "4.4.2",
