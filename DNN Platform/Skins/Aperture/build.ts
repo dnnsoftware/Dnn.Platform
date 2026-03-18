@@ -2,7 +2,7 @@ import esbuild from "esbuild";
 import path from "path";
 import settings from "../../../settings.local.json";
 import fs from "fs";
-import sass from "sass";
+import * as sass from "sass-embedded";
 import postcss from "postcss";
 import postcssImport from "postcss-import";
 import autoprefixer from "autoprefixer";
@@ -97,7 +97,7 @@ function ensureDirectoryExists(filePath: string): void {
 /** Compile SCSS to CSS with sourcemaps */
 async function buildScss(input: string, output: string): Promise<void> {
   try {
-    const result = sass.compile(
+    const result = await sass.compileAsync(
         input,
         {
           sourceMap: true,
