@@ -32,8 +32,7 @@
     "redux-immutable-state-invariant": "^2.1.0",
     "redux-thunk": "^2.4.2",
     "services": "^0.0.3",
-    "throttle-debounce": "^5.0.2",
-    "utils": "^0.3.1"
+    "throttle-debounce": "^5.0.2"
   },
   "dependencies": {
     "@dnnsoftware/dnn-react-common": "10.3.0",
