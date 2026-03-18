@@ -58,7 +58,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "dayjs": "^1.11.18",
+    "dayjs": "^1.11.20",
     "dompurify": "^3.3.0",
     "html-react-parser": "^5.2.10",
     "promise": "^8.3.0",
