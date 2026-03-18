@@ -29,7 +29,7 @@
     "postcss-banner": "^4.0.1",
     "postcss-cli": "^11.0.1",
     "postcss-import": "^16.1.1",
-    "sass": "^1.93.2",
+    "sass-embedded": "^1.98.0",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3"
   }
