@@ -6232,7 +6232,7 @@ __metadata:
     browser-sync: "npm:^3.0.4"
     chokidar: "npm:^4.0.3"
     cssnano: "npm:^7.1.3"
-    glob: "npm:^13.0.0"
+    glob: "npm:^13.0.6"
     normalize.css: "npm:^8.0.1"
     postcss: "npm:^8.5.8"
     postcss-banner: "npm:^4.0.1"
@@ -11259,7 +11259,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"glob@npm:^13.0.3":
+"glob@npm:^13.0.3, glob@npm:^13.0.6":
   version: 13.0.6
   resolution: "glob@npm:13.0.6"
   dependencies:
