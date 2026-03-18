@@ -27,12 +27,12 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
-    "@stencil/core": "^4.38.2"
+    "@stencil/core": "^4.43.2"
   },
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.29.0",
     "@stencil/eslint-plugin": "^1.1.0",
-    "@stencil/sass": "^3.2.2",
+    "@stencil/sass": "^3.2.3",
     "@types/node": "^24.9.0",
     "@typescript-eslint/eslint-plugin": "^8.57.1",
     "@typescript-eslint/parser": "^8.57.1",
