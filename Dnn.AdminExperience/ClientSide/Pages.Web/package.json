@@ -60,7 +60,7 @@
   "dependencies": {
     "dayjs": "^1.11.20",
     "dompurify": "^3.3.3",
-    "html-react-parser": "^5.2.10",
+    "html-react-parser": "^5.2.17",
     "promise": "^8.3.0",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
