@@ -3717,58 +3717,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-arm64@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-darwin-arm64@npm:4.34.9"
+"@rollup/rollup-darwin-arm64@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.44.0"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-x64@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-darwin-x64@npm:4.34.9"
+"@rollup/rollup-darwin-x64@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-darwin-x64@npm:4.44.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-gnu@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.34.9"
+"@rollup/rollup-linux-arm64-gnu@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.44.0"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-musl@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.34.9"
+"@rollup/rollup-linux-arm64-musl@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.44.0"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.34.9"
+"@rollup/rollup-linux-x64-gnu@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.44.0"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-musl@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-linux-x64-musl@npm:4.34.9"
+"@rollup/rollup-linux-x64-musl@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.44.0"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-arm64-msvc@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.34.9"
+"@rollup/rollup-win32-arm64-msvc@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.44.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-msvc@npm:4.34.9":
-  version: 4.34.9
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.34.9"
+"@rollup/rollup-win32-x64-msvc@npm:4.44.0":
+  version: 4.44.0
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.44.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4139,18 +4139,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^4.38.2":
-  version: 4.38.2
-  resolution: "@stencil/core@npm:4.38.2"
+"@stencil/core@npm:^4.43.2":
+  version: 4.43.2
+  resolution: "@stencil/core@npm:4.43.2"
   dependencies:
-    "@rollup/rollup-darwin-arm64": "npm:4.34.9"
-    "@rollup/rollup-darwin-x64": "npm:4.34.9"
-    "@rollup/rollup-linux-arm64-gnu": "npm:4.34.9"
-    "@rollup/rollup-linux-arm64-musl": "npm:4.34.9"
-    "@rollup/rollup-linux-x64-gnu": "npm:4.34.9"
-    "@rollup/rollup-linux-x64-musl": "npm:4.34.9"
-    "@rollup/rollup-win32-arm64-msvc": "npm:4.34.9"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.34.9"
+    "@rollup/rollup-darwin-arm64": "npm:4.44.0"
+    "@rollup/rollup-darwin-x64": "npm:4.44.0"
+    "@rollup/rollup-linux-arm64-gnu": "npm:4.44.0"
+    "@rollup/rollup-linux-arm64-musl": "npm:4.44.0"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.44.0"
+    "@rollup/rollup-linux-x64-musl": "npm:4.44.0"
+    "@rollup/rollup-win32-arm64-msvc": "npm:4.44.0"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.44.0"
   dependenciesMeta:
     "@rollup/rollup-darwin-arm64":
       optional: true
@@ -4170,7 +4170,7 @@ __metadata:
       optional: true
   bin:
     stencil: bin/stencil
-  checksum: 10/b8067febdc3e4d21de4ffa2d5330e52aae50d2ea7b48ead20444581c982ff6877e781c4d3c9723f9a5e6702528b72ff55668b1c65ffac436ea69d24dccaf3a58
+  checksum: 10/af236436784b68c77b363140d0f99352282424887b54ea66dd755146b8dbc81f0621430af35ea0e3e338400101cb81d90513ca0aca59b5c43e8263dccae444c7
   languageName: node
   linkType: hard
 
@@ -4191,23 +4191,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/sass@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "@stencil/sass@npm:3.2.2"
+"@stencil/sass@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "@stencil/sass@npm:3.2.3"
   dependencies:
     sass-embedded: "npm:^1.89.2"
   peerDependencies:
     "@stencil/core": ">=2.0.0 || >=3.0.0-beta.0 || >= 4.0.0-beta.0 || >= 4.0.0"
-  checksum: 10/5ecb92a98388a118f20f5cc5196a19f45fa4f5087d0009a21faaf687dc6224f686acdd37e36a829cb85b76c9854f645b7339a3a624f0cac1696b5007a96532f5
+  checksum: 10/8656c532c056a043e3ef033ef1e8439675c95544634e0057b44c0e204685197edfb822289cc589ba37bf165bd370c11d996c482b32039b6add27152eb3090009
   languageName: node
   linkType: hard
 
-"@stencil/store@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@stencil/store@npm:2.2.0"
+"@stencil/store@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "@stencil/store@npm:2.2.2"
   peerDependencies:
     "@stencil/core": ">=2.0.0 || >=3.0.0 || >= 4.0.0-beta.0 || >= 4.0.0"
-  checksum: 10/dbd7d9ee489e0732987da841e414a2f8d3b69928d3e2548a32426513ac213f8adb9970aced538e4c7eef6d2620133d51b531ed448d69494c5d46249e1a289794
+  checksum: 10/baedd81a8dda4477fb27320390af3859a8fef1016e342a27a0ce6b17628c0a9c2946400e93f984891f5313afab3cb6a10bfc12cc44415021dc6d724d76b21edd
   languageName: node
   linkType: hard
 
@@ -9087,10 +9087,10 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.0"
     "@eslint/js": "npm:^9.39.4"
-    "@stencil/core": "npm:^4.38.2"
+    "@stencil/core": "npm:^4.43.2"
     "@stencil/eslint-plugin": "npm:^1.1.0"
-    "@stencil/sass": "npm:^3.2.2"
-    "@stencil/store": "npm:^2.2.0"
+    "@stencil/sass": "npm:^3.2.3"
+    "@stencil/store": "npm:^2.2.2"
     "@types/node": "npm:^24.9.0"
     "@typescript-eslint/utils": "npm:^8.57.1"
     eslint: "npm:^9.39.4"
@@ -19354,9 +19354,9 @@ __metadata:
   resolution: "styles@workspace:Dnn.AdminExperience/ClientSide/Styles.Web"
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.0"
-    "@stencil/core": "npm:^4.38.2"
+    "@stencil/core": "npm:^4.43.2"
     "@stencil/eslint-plugin": "npm:^1.1.0"
-    "@stencil/sass": "npm:^3.2.2"
+    "@stencil/sass": "npm:^3.2.3"
     "@types/node": "npm:^24.9.0"
     "@typescript-eslint/eslint-plugin": "npm:^8.57.1"
     "@typescript-eslint/parser": "npm:^8.57.1"
