@@ -614,8 +614,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AC5B9AB0-6049-43F3-B0C6-3E3090CBA5C2}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\image-actions.yml = .github\workflows\image-actions.yml
-		.github\workflows\open-merged-pr-to-future.yml = .github\workflows\open-merged-pr-to-future.yml
-		.github\workflows\updateVersions.yml = .github\workflows\updateVersions.yml
+		.github\workflows\browserslist-update-db.yml = .github\workflows\browserslist-update-db.yml
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\dependency-review.yml = .github\workflows\dependency-review.yml
+		.github\workflows\ossf-scorecard.yml = .github\workflows\ossf-scorecard.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{4FBA4C58-559B-4CD2-9926-CDA3498FE20E}"
