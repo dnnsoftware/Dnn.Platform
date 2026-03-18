@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Contact } from '../types/Contact';
 import { SecurityContext } from '../types/Security';
 import { ModuleContext } from '../types/Module';
