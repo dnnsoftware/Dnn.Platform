@@ -10,6 +10,9 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
 
+permissions:
+  contents: "read"
+
 on:
   push:
     branches:
@@ -54,8 +57,8 @@ jobs:
     name: "Build and Validate"
     runs-on: "windows-2025-vs2026"
     permissions:
-      checks: write
-      pull-requests: write
+      checks: "write"
+      pull-requests: "write"
     defaults:
       run:
         shell: "pwsh"

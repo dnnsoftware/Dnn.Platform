@@ -13,6 +13,8 @@ on:
   workflow_dispatch: # on demand
   schedule:
     - cron: "0 0 * * 0" # every Sunday at midnight
+permissions:
+  contents: "read"
 jobs:
   build:
     if: | # Only run on main repo on and PRs that match the main repo.
