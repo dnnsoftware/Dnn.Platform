@@ -1,5 +1,6 @@
 [![Build and Validate](https://github.com/dnnsoftware/Dnn.Platform/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/dnnsoftware/Dnn.Platform/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dnnsoftware/Dnn.Platform/badge)](https://scorecard.dev/viewer/?uri=github.com/dnnsoftware/Dnn.Platform)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/12209/badge)](https://www.bestpractices.dev/projects/12209)
 
 ![DNN Platform At A Glance](dnnplatform.png)
 
