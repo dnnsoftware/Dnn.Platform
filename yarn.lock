@@ -1603,7 +1603,7 @@ __metadata:
     eslint-plugin-jest: "npm:^29.15.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-plugin-storybook: "npm:10.2.19"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     interact.js: "npm:^1.2.8"
     less: "npm:4.6.4"
     nanoid: "npm:^5.1.6"
@@ -6023,7 +6023,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     less: "npm:4.6.4"
     prop-types: "npm:15.8.1"
     react: "npm:^16.14.0"
@@ -9622,6 +9622,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"entities@npm:^7.0.1":
+  version: 7.0.1
+  resolution: "entities@npm:7.0.1"
+  checksum: 10/3c0c58d869c45148463e96d21dee2d1b801bd3fe4cf47aa470cd26dfe81d59e9e0a9be92ae083fa02fa441283c883a471486e94538dcfb8544428aa80a55271b
+  languageName: node
+  linkType: hard
+
 "env-paths@npm:^2.2.0, env-paths@npm:^2.2.1":
   version: 2.2.1
   resolution: "env-paths@npm:2.2.1"
@@ -10577,7 +10584,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     less: "npm:4.6.4"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
@@ -11512,13 +11519,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-dom-parser@npm:5.1.2":
-  version: 5.1.2
-  resolution: "html-dom-parser@npm:5.1.2"
+"html-dom-parser@npm:5.1.8":
+  version: 5.1.8
+  resolution: "html-dom-parser@npm:5.1.8"
   dependencies:
     domhandler: "npm:5.0.3"
-    htmlparser2: "npm:10.0.0"
-  checksum: 10/d54fcdafbc0b2881c441a396965ad285072d2e4df62bebe7074d7aaa2a1fffc95e9286bcb81d6f241c4cdb10a84435fa623738985b635574acb3c84e994e8bb6
+    htmlparser2: "npm:10.1.0"
+  checksum: 10/579deb63bd0981912983121971f687c952d7b2bf5c43dada2fe8eeb85f51f388ed084ffb6452afd136cd9db3ccbd1c9a6b3200d39c522acfecd50ee7f0c8ad25
   languageName: node
   linkType: hard
 
@@ -11572,12 +11579,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-react-parser@npm:^5.2.10, html-react-parser@npm:^5.2.7":
-  version: 5.2.10
-  resolution: "html-react-parser@npm:5.2.10"
+"html-react-parser@npm:^5.2.17":
+  version: 5.2.17
+  resolution: "html-react-parser@npm:5.2.17"
   dependencies:
     domhandler: "npm:5.0.3"
-    html-dom-parser: "npm:5.1.2"
+    html-dom-parser: "npm:5.1.8"
     react-property: "npm:2.0.2"
     style-to-js: "npm:1.1.21"
   peerDependencies:
@@ -11586,7 +11593,7 @@ __metadata:
   peerDependenciesMeta:
     "@types/react":
       optional: true
-  checksum: 10/3b0debac58e4b39d853731fd117b323a5d9582482cdc0b6dc5179d0c469acf63e64b8fdb3b678e758673633c579b09fd21d75d256c32104c65355f4434ba7f59
+  checksum: 10/74ec0bc5945a90fd154c84830ff1caaa6c686c1c0c82330a1e3cda18b15c8f9b177d2c564d1d3cf566b586c34ce78e2006692aeda3300b0ba30c5234cb7b07c8
   languageName: node
   linkType: hard
 
@@ -11611,7 +11618,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"htmlparser2@npm:10.0.0, htmlparser2@npm:^10.0.0":
+"htmlparser2@npm:10.1.0":
+  version: 10.1.0
+  resolution: "htmlparser2@npm:10.1.0"
+  dependencies:
+    domelementtype: "npm:^2.3.0"
+    domhandler: "npm:^5.0.3"
+    domutils: "npm:^3.2.2"
+    entities: "npm:^7.0.1"
+  checksum: 10/660fb094a53fb77a3c771db969778b58af0e8a572a1bdc8e5952a4241e4b04e0a6063b16f6422e22c821441081c8de339e3f06ddda362ac2a42c8767d5e5ad53
+  languageName: node
+  linkType: hard
+
+"htmlparser2@npm:^10.0.0":
   version: 10.0.0
   resolution: "htmlparser2@npm:10.0.0"
   dependencies:
@@ -15433,7 +15452,7 @@ __metadata:
     eslint: "npm:^9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     jest: "npm:^30.3.0"
     less: "npm:4.6.4"
     lodash: "npm:4.17.23"
@@ -16400,7 +16419,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.7"
+    html-react-parser: "npm:^5.2.17"
     jest: "npm:^30.3.0"
     less: "npm:4.6.4"
     localization: "npm:^1.0.2"
@@ -18253,7 +18272,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     less: "npm:4.6.4"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
@@ -18431,7 +18450,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     less: "npm:4.6.4"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
@@ -18654,7 +18673,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     i18n-webpack-plugin: "npm:1.0.0"
     less: "npm:4.6.4"
     localization: "npm:^1.0.2"
@@ -18701,7 +18720,7 @@ __metadata:
     eslint-plugin-jest: "npm:^29.15.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     jest: "npm:^30.3.0"
     less: "npm:4.6.4"
     prop-types: "npm:^15.8.1"
@@ -19530,7 +19549,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     less: "npm:4.6.4"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
@@ -19559,7 +19578,7 @@ __metadata:
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.5.0"
-    html-react-parser: "npm:^5.2.10"
+    html-react-parser: "npm:^5.2.17"
     less: "npm:4.6.4"
     object-path: "npm:0.11.8"
     prop-types: "npm:^15.8.1"
