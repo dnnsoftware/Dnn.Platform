@@ -1,4 +1,4 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
+import { HashRouter as Router, Routes, Route } from 'react-router';
 import { SecurityContext } from './types/Security';
 import { ModuleContext } from './types/Module';
 import ContactList from './pages/ContactList';
