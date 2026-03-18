@@ -16280,7 +16280,7 @@ __metadata:
     redux-devtools-dock-monitor: "npm:1.2.0"
     redux-devtools-log-monitor: "npm:2.1.0"
     redux-immutable-state-invariant: "npm:2.1.0"
-    redux-mock-store: "npm:^1.5.4"
+    redux-mock-store: "npm:^1.5.5"
     redux-thunk: "npm:2.4.2"
     throttle-debounce: "npm:^5.0.2"
     typescript: "npm:^5.9.3"
@@ -17214,7 +17214,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"redux-mock-store@npm:^1.5.4":
+"redux-mock-store@npm:^1.5.5":
   version: 1.5.5
   resolution: "redux-mock-store@npm:1.5.5"
   dependencies:
