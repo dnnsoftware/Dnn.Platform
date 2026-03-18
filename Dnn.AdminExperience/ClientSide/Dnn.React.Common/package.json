@@ -79,7 +79,7 @@
     "eslint-plugin-jest": "^29.15.0",
     "eslint-plugin-react": "7.37.5",
     "eslint-plugin-storybook": "10.2.19",
-    "less": "4.4.2",
+    "less": "4.6.4",
     "nanoid": "^5.1.6",
     "prop-types": "^15.8.1",
     "raw-loader": "4.0.2",

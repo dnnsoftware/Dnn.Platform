@@ -21,7 +21,7 @@
     "eslint-plugin-react": "7.37.5",
     "eslint-webpack-plugin": "^5.0.2",
     "globals": "^16.4.0",
-    "less": "4.4.2",
+    "less": "4.6.4",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
