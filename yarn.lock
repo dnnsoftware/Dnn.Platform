@@ -1591,7 +1591,7 @@ __metadata:
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.20"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     enzyme-to-json: "npm:^3.6.2"
@@ -6018,7 +6018,7 @@ __metadata:
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
@@ -9309,15 +9309,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dompurify@npm:^3.3.0":
-  version: 3.3.2
-  resolution: "dompurify@npm:3.3.2"
+"dompurify@npm:^3.3.3":
+  version: 3.3.3
+  resolution: "dompurify@npm:3.3.3"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10/3ca02559677ce6d9583a500f21ffbb6b9e88f1af99f69fa0d0d9442cddbac98810588c869f8b435addb5115492d6e49870024bca322169b941bafedb99c7f281
+  checksum: 10/4cc9c539ed7136d46c6577613b8e20871c2b6165db01dfbd2a3c11c75f9e339c496ac6519a1c3190115def8cadae3720bef0417fc43fa28802c7407bab174da9
   languageName: node
   linkType: hard
 
@@ -10573,7 +10573,7 @@ __metadata:
     "@rsbuild/plugin-react": "npm:^1.4.6"
     "@svgr/webpack": "npm:^8.1.0"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.4.0"
@@ -15427,7 +15427,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     css-loader: "npm:^7.1.2"
     dayjs: "npm:^1.11.20"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     eslint: "npm:^9.39.4"
@@ -16393,7 +16393,7 @@ __metadata:
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     es6-object-assign: "npm:1.1.0"
@@ -18248,7 +18248,7 @@ __metadata:
     "@rsbuild/plugin-react": "npm:^1.4.6"
     "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     eslint-webpack-plugin: "npm:^5.0.2"
@@ -18427,7 +18427,7 @@ __metadata:
     "@types/redux": "npm:^3.6.31"
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.20"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.4.0"
@@ -18650,7 +18650,7 @@ __metadata:
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^16.4.0"
@@ -18696,7 +18696,7 @@ __metadata:
     array.prototype.findindex: "npm:2.2.4"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     eslint: "npm:9.39.4"
     eslint-plugin-jest: "npm:^29.15.0"
     eslint-plugin-react: "npm:7.37.5"
@@ -19525,7 +19525,7 @@ __metadata:
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
@@ -19554,7 +19554,7 @@ __metadata:
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
-    dompurify: "npm:^3.3.0"
+    dompurify: "npm:^3.3.3"
     es6-object-assign: "npm:1.1.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"

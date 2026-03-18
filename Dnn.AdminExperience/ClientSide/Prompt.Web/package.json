@@ -45,7 +45,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "dompurify": "^3.3.0",
+    "dompurify": "^3.3.3",
     "html-react-parser": "^5.2.7"
   }
 }
