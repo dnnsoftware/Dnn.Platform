@@ -31,7 +31,7 @@
     "DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact"
   ],
   "devDependencies": {
-    "lerna": "^9.0.0"
+    "lerna": "^9.0.7"
   },
   "scripts": {
     "build": "lerna run build --stream",
