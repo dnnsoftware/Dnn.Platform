@@ -30,6 +30,6 @@
     "throttle-debounce": "5.0.2"
   },
   "dependencies": {
-    "react-widgets": "^5.8.4"
+    "react-widgets": "^5.8.6"
   }
 }
