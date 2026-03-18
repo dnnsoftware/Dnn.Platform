@@ -5,11 +5,13 @@ namespace DotNetNuke.Build.Tasks
 {
     using Cake.Common.IO;
     using Cake.Common.Tools.DotNet;
+    using Cake.Common.Tools.DotNet.MSBuild;
     using Cake.Common.Tools.DotNet.Pack;
     using Cake.Common.Tools.DotNet.Publish;
     using Cake.Frosting;
 
     /// <summary>A cake task to generate the BulkInstall package.</summary>
+    [IsDependentOn(typeof(SetVersion))]
     [IsDependentOn(typeof(Build))]
     public sealed class PackageBulkInstall : FrostingTask<Context>
     {
@@ -37,6 +39,7 @@ namespace DotNetNuke.Build.Tasks
                     Configuration = context.BuildConfiguration,
                     NoBuild = true,
                     OutputDirectory = context.ArtifactsDir,
+                    MSBuildSettings = new DotNetMSBuildSettings().SetPackageVersion(context.GetBuildNumber()),
                 });
         }
     }
