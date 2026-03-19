@@ -786,5 +786,94 @@ namespace DotNetNuke.Common.Utilities
             functionReturnValue.Load(objXmlReader);
             return functionReturnValue;
         }
+
+        /// <summary>Creates an <see cref="XPathExpression"/> with variable arguments.</summary>
+        /// <param name="xpath">The XPath expression that includes variables, e.g. <c>//root/data[@name=$resourceKeyName]/value</c>.</param>
+        /// <param name="arguments">A collection of variable names and values.</param>
+        /// <returns>A new <see cref="XPathExpression"/> instance.</returns>
+        public static XPathExpression CreateXPathExpression(string xpath, params KeyValuePair<string, object>[] arguments)
+            => CreateXPathExpression(xpath, (IEnumerable<KeyValuePair<string, object>>)arguments);
+
+        /// <summary>Creates an <see cref="XPathExpression"/> with variable arguments.</summary>
+        /// <param name="xpath">The XPath expression that includes variables, e.g. <c>//root/data[@name=$resourceKeyName]/value</c>.</param>
+        /// <param name="arguments">A collection of variable names and values.</param>
+        /// <returns>A new <see cref="XPathExpression"/> instance.</returns>
+        public static XPathExpression CreateXPathExpression(string xpath, IEnumerable<KeyValuePair<string, object>> arguments)
+        {
+            var expression = XPathExpression.Compile(xpath);
+            var xsltArgumentList = new XsltArgumentList();
+            foreach (var argument in arguments)
+            {
+                xsltArgumentList.AddParam(argument.Key, string.Empty, argument.Value);
+            }
+
+            expression.SetContext(new XsltContextWithVariables(xsltArgumentList));
+            return expression;
+        }
+
+        private class XsltContextWithVariables(NameTable table, XsltArgumentList argumentList)
+            : XsltContext(table)
+        {
+            private readonly XsltArgumentList argumentList = argumentList;
+
+            public XsltContextWithVariables(XsltArgumentList argumentList)
+                : this(new NameTable(), argumentList)
+            {
+            }
+
+            /// <inheritdoc />
+            public override bool Whitespace => true;
+
+            /// <inheritdoc />
+            public override IXsltContextVariable ResolveVariable(string prefix, string name)
+            {
+                return new XPathExtensionVariable(prefix, name);
+            }
+
+            /// <inheritdoc />
+            public override IXsltContextFunction ResolveFunction(string prefix, string name, XPathResultType[] ArgTypes)
+            {
+                return null;
+            }
+
+            /// <inheritdoc />
+            public override bool PreserveWhitespace(XPathNavigator node)
+            {
+                return false;
+            }
+
+            /// <inheritdoc />
+            public override int CompareDocument(string baseUri, string nextbaseUri)
+            {
+                return 0;
+            }
+
+            private class XPathExtensionVariable(string prefix, string varName) : IXsltContextVariable
+            {
+                private readonly string prefix = prefix;
+                private readonly string varName = varName;
+
+                /// <inheritdoc />
+                public bool IsLocal => false;
+
+                /// <inheritdoc />
+                public bool IsParam => false;
+
+                /// <inheritdoc />
+                public XPathResultType VariableType => XPathResultType.Any;
+
+                /// <inheritdoc />
+                public object Evaluate(XsltContext xsltContext)
+                {
+                    if (xsltContext is XsltContextWithVariables context)
+                    {
+                        var argumentList = context.argumentList;
+                        return argumentList.GetParam(this.varName, this.prefix);
+                    }
+
+                    return null;
+                }
+            }
+        }
     }
 }

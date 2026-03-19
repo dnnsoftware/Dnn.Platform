@@ -586,8 +586,19 @@ namespace DotNetNuke.Services.Installer
                     {
                         if (child.Attributes[keyAttribute] != null)
                         {
-                            string path = $"{child.LocalName}[@{keyAttribute}='{child.Attributes[keyAttribute].Value}']";
-                            targetNode = rootNode.SelectSingleNode(path);
+                            var matchingChildren = rootNode.SelectNodes(child.LocalName);
+                            if (matchingChildren is not null)
+                            {
+                                var keyValue = child.Attributes[keyAttribute].Value;
+                                foreach (XmlNode node in matchingChildren)
+                                {
+                                    if (node.Attributes?[keyAttribute]?.Value == keyValue)
+                                    {
+                                        targetNode = node;
+                                        break;
+                                    }
+                                }
+                            }
                         }
                     }
                     else
