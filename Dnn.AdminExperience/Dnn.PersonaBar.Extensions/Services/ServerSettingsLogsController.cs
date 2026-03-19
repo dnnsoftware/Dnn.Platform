@@ -107,11 +107,9 @@ namespace Dnn.PersonaBar.Servers.Services
                 return this.Request.CreateResponse(HttpStatusCode.NotFound);
             }
 
-            using (var reader = File.OpenText(logFilePath))
-            {
-                var logText = reader.ReadToEnd();
-                return this.Request.CreateResponse(HttpStatusCode.OK, logText);
-            }
+            using var reader = File.OpenText(logFilePath);
+            var logText = reader.ReadToEnd();
+            return this.Request.CreateResponse(HttpStatusCode.OK, logText);
         }
     }
 }
