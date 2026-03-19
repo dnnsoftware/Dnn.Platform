@@ -373,16 +373,9 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Tabs.ashx" />
-    <Content Include="web.config" />
     <Content Include="Provider.build">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">

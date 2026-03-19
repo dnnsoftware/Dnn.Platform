@@ -192,7 +192,6 @@
     <None Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\10.00.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">

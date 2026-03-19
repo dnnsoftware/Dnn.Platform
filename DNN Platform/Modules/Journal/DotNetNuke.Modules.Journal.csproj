@@ -177,7 +177,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\07.03.00.SqlDataProvider" />
     <None Include="ReleaseNotes.txt" />
     <None Include="License.txt" />
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Edit.ascx" />
@@ -190,9 +189,6 @@
     <Content Include="Scripts\mentionsInput.js" />
     <Content Include="Settings.ascx" />
     <Content Include="View.ascx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">

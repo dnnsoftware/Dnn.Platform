@@ -1191,7 +1191,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.27.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.26.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.28.SqlDataProvider" />
-    <Content Include="web.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.12.01.SqlDataProvider" />
@@ -1213,12 +1212,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.01.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.01.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.03.SqlDataProvider" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="403-3.gif" />
