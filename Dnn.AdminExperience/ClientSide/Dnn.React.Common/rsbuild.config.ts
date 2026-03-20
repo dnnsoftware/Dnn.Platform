@@ -19,10 +19,6 @@ const externalizeNodeModules = ({ request }: { request?: string }) => {
     return undefined;
   }
 
-  if (request.startsWith("@babel/runtime")) {
-    return undefined;
-  }
-
   // Keep loader/runtime virtual requests bundled.
   if (request.includes("!") || request.includes("?")) {
     return undefined;

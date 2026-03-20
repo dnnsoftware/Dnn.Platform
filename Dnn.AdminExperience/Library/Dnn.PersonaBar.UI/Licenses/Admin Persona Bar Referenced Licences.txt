@@ -131,21 +131,6 @@ MIT License
 License File: Admin Persona Bar Referenced Licences.zip\lodash\LICENSE
 --------------------------------------------------------------------------------------
 
-babel-plugin-transform-object-assign (Replace Object.assign with an inline helper)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-object-assign\LICENSE
---------------------------------------------------------------------------------------
-
-babel-plugin-transform-react-remove-prop-types (Remove unnecessary React propTypes from the production build)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-react-remove-prop-types\LICENSE
---------------------------------------------------------------------------------------
-
-babel-regenerator-runtime ()
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\babel-regenerator-runtime\LICENSE
---------------------------------------------------------------------------------------
-
 json5 (JSON for the ES5 era.)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\json5\LICENSE.md
@@ -2189,11 +2174,6 @@ License File: Admin Persona Bar Referenced Licences.zip\redux-devtools-instrumen
 array-find (ES6 Array.find ponyfill. Return the first array element which satisfies a testing function.)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\array-find\LICENSE
---------------------------------------------------------------------------------------
-
-babel-plugin-transform-regenerator (Explode async and generator functions into a state machine.)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-regenerator\LICENSE
 --------------------------------------------------------------------------------------
 
 browserify-aes (aes, for browserify)

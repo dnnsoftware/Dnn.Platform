@@ -11,11 +11,6 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
-    "@babel/core": "^7.28.4",
-    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",
-    "@babel/plugin-transform-react-jsx": "^7.27.1",
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-react": "^7.27.1",
     "@dnnsoftware/dnn-react-common": "10.3.0",
     "@rsbuild/core": "^1.7.3",
     "@rsbuild/plugin-less": "^1.6.2",
