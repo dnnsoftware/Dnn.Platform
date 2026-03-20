@@ -41,45 +41,45 @@
                     if (preview.length)
                         preview.remove();
 
-                    var markup = '<ul class="searchSkinObjectPreview">';
+                    var $markup = $('<ul></ul>', { class: "searchSkinObjectPreview" });
                     if (data && data.length) {
                         for (var i = 0; i < data.length; i++) {
                             var group = data[i];
                             if (group.Results && group.Results.length) {
                                 var groupTitle = group.DocumentTypeName;
-                                markup += '<li class="searchSkinObjectPreview_group">' + groupTitle + '</li>';
+                                $markup.append($('<li></li>', { class: "searchSkinObjectPreview_group", text: groupTitle }));
                                 for (var j = 0; j < group.Results.length; j++) {
                                     var item = group.Results[j];
                                     var itemTitle = item.Title;
                                     var itemUrl = item.DocumentUrl;
                                     var itemDescription = item.Description;
                                     var itemSnippet = item.Snippet;
-                                    markup += '<li data-url="' + itemUrl + '">';
+                                    var $resultItem = $('<li></li>', { "data-url": itemUrl });
                                     if (item.Attributes.Avatar) {
-                                        markup += '<span><img src="' + item.Attributes.Avatar + '" class="userpic" /></span>';
+                                        $resultItem.append($('<span></span>').append($('<img />', { src: item.Attributes.Avatar, class: "userpic", })));
                                     }
-                                    markup += '<span>' + itemTitle + '</span>';
+                                    $resultItem.append($('<span></span>', { text: itemTitle }));
                                     if (itemDescription) {
-                                        markup += '<p>' + itemDescription + '</p>';
+                                        $resultItem.append($('<p></p>', { text: itemDescription }));
                                     }
                                     if (itemSnippet) {
-                                        markup += '<p>' + itemSnippet + '</p>';
+                                        $resultItem.append($('<p></p>', { text: itemSnippet }));
                                     }
-                                    markup += '</li>';
+                                    $markup.append($resultItem);
                                 } // end for group items
                             }
                         } // end for group
 
                         var moreResults = $wrap.attr('data-moreresults');
-                        markup += '<li><a href="javascript:void(0)" class="searchSkinObjectPreview_more">' + moreResults + '</a></li>';
-                        markup += '</ul>';
+                        var $moreResultsItem = $('<li></li>').append($('<a></a>', { href: "javascript:void(0)", class: "searchSkinObjectPreview_more", text: moreResults })); 
+                        $markup.append($moreResultsItem);
                     }
                     else {
                         var noResult = $wrap.attr('data-noresult');
-                        markup += '<li>' + noResult + '</li></ul>';
+                        $markup.append($('<li></li>', { text: noResult }));
                     }
 
-                    $wrap.append(markup);
+                    $wrap.append($markup);
                     preview = $('.searchSkinObjectPreview', $wrap);
 
                     //attach click event

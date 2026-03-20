@@ -825,7 +825,7 @@
                         $(this).remove();
                         selectedValue = parseInt(newVal);
                         inputControl.val(newVal);
-                        displayCtrl.html(newVal);
+                        displayCtrl.text(newVal);
                     }).keypress(function (e) {
                         var regex = new RegExp("^[0-9]+$");
                         var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
@@ -4203,44 +4203,48 @@
 })(jQuery);
 
 (function ($) {
-	$.fn.dnnSliderInput = function (options) {
-		var sliderOptions = $.extend({}, $.fn.dnnSliderInput.defaults, options);
-    	return $(this).each(function () {
-    		var $this = $(this);
-		    var value = $this.val();
-		    var $slider = $('<div class="dnnSliderInput"></div>');
-		    $this.hide().after($slider);
+    $.fn.dnnSliderInput = function (options) {
+        var sliderOptions = $.extend({}, $.fn.dnnSliderInput.defaults, options);
+        return $(this).each(function () {
+            var $this = $(this);
+            var value = $this.val();
+            var $slider = $('<div></div>', { class: "dnnSliderInput" });
+            $this.hide().after($slider);
 
-		    $slider.slider(sliderOptions);
-		    $slider.slider('value', value);
+            $slider.slider(sliderOptions);
+            $slider.slider('value', value);
 
-		    var $tooltip = $('<span class="dnnTooltip"><span class="dnnFormHelpContent dnnClear"><span class="dnnHelpText bottomArrow"></span></span></span>');
+            var $tooltip = $('<span></span>', { class: "dnnTooltip" });
+            var $tooltipContent = $('<span></span>', { class: "dnnFormHelpContent dnnClear" });
+            var $tooltipText = $('<span></span>', { class: "dnnHelpText bottomArrow" });
+            $tooltipContent.add($tooltipText);
+            $tooltip.add($tooltipContent);
 
-		    var calcTooltipPosition = function () {
-			    setTimeout(function() {
-				    var left = $slider.find('.ui-slider-handle')[0].style.left;
-				    $tooltip.css('left', left);
-			    }, 0);
-		    };
+            var calcTooltipPosition = function () {
+                setTimeout(function() {
+                    var left = $slider.find('.ui-slider-handle')[0].style.left;
+                    $tooltip.css('left', left);
+                }, 0);
+            };
 
-		    $tooltip.find('.dnnHelpText').html(value);
-		    $tooltip.data('initialized', true);
-			$slider.append($tooltip);
+            $tooltipText.text(value);
+            $tooltip.data('initialized', true);
+            $slider.append($tooltip);
 
-		    calcTooltipPosition();
-		    $slider.on('slide', function(event, ui) {
-		    	$tooltip.find('.dnnHelpText').html(ui.value);
-		    	$this.val(ui.value);
-			    calcTooltipPosition();
-		    });
-	    });
+            calcTooltipPosition();
+            $slider.on('slide', function(event, ui) {
+                $tooltipText.text(ui.value);
+                $this.val(ui.value);
+                calcTooltipPosition();
+            });
+        });
     };
 
-	$.fn.dnnSliderInput.defaults = {
-		min: 0,
-		max: 100,
-		step: 1
-	}
+    $.fn.dnnSliderInput.defaults = {
+        min: 0,
+        max: 100,
+        step: 1
+    }
 })(jQuery);
 
 // please keep this func at last of this file, thanks

@@ -813,7 +813,7 @@
         var objContainerDiv = $(strContainerDiv).insertAfter(inputControl);
         inputControl.insertAfter($("div.dnnSpinnerDisplay", objContainerDiv));
         $("div.dnnSpinnerDisplay", objContainerDiv).click(function () {
-            if (opt.type == 'range') {
+            if (opt.type === 'range') {
                 var displayCtrl = $(this);
                 var innerInput = $('input[type="text"]', displayCtrl);
                 if (innerInput.length < 1) {
@@ -831,7 +831,7 @@
                         $(this).remove();
                         selectedValue = parseInt(newVal);
                         inputControl.val(newVal);
-                        displayCtrl.html(newVal);
+                        displayCtrl.text(newVal);
                     }).keypress(function (e) {
                         var regex = new RegExp("^[0-9]+$");
                         var key = String.fromCharCode(!e.charCode ? e.which : e.charCode);
@@ -4214,13 +4214,17 @@
     	return $(this).each(function () {
     		var $this = $(this);
 		    var value = $this.val();
-		    var $slider = $('<div class="dnnSliderInput"></div>');
+		    var $slider = $('<div></div>', { class: "dnnSliderInput" });
 		    $this.hide().after($slider);
 
 		    $slider.slider(sliderOptions);
 		    $slider.slider('value', value);
 
-		    var $tooltip = $('<span class="dnnTooltip"><span class="dnnFormHelpContent dnnClear"><span class="dnnHelpText bottomArrow"></span></span></span>');
+		    var $tooltip = $('<span></span>', { class: "dnnTooltip" });
+            var $tooltipContent = $('<span></span>', { class: "dnnFormHelpContent dnnClear" });
+            var $tooltipText = $('<span></span>', { class: "dnnHelpText bottomArrow" });
+            $tooltipContent.add($tooltipText);
+            $tooltip.add($tooltipContent);
 
 		    var calcTooltipPosition = function () {
 			    setTimeout(function() {
@@ -4229,13 +4233,13 @@
 			    }, 0);
 		    };
 
-		    $tooltip.find('.dnnHelpText').html(value);
+            $tooltipText.text(value);
 		    $tooltip.data('initialized', true);
 			$slider.append($tooltip);
 
 		    calcTooltipPosition();
 		    $slider.on('slide', function(event, ui) {
-		    	$tooltip.find('.dnnHelpText').html(ui.value);
+                $tooltipText.text(ui.value);
 		    	$this.val(ui.value);
 			    calcTooltipPosition();
 		    });
