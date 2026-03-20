@@ -1578,9 +1578,9 @@ __metadata:
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
     "@eslint/compat": "npm:^1.4.1"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     "@storybook/addon-docs": "npm:10.2.19"
     "@storybook/addon-onboarding": "npm:10.2.19"
     "@storybook/addon-webpack5-compiler-swc": "npm:4.0.2"
@@ -2780,58 +2780,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@module-federation/error-codes@npm:0.21.6":
-  version: 0.21.6
-  resolution: "@module-federation/error-codes@npm:0.21.6"
-  checksum: 10/6ded1ecab780f1f9ec46a59adb200e75cdf11580d70aa79dd75d71fbbf276615690da277ea67aa1ceb5bc88386f5708cc1d2ba5526be5c9ff02397a6123e36bf
+"@module-federation/error-codes@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@module-federation/error-codes@npm:0.22.0"
+  checksum: 10/4edb269e9f3039899f879788c84d2bfecff94ca8e87ffcd80dbf8589d8543ec32558b3fa05c8549a8abd3ac33e856ff2aacf458dea5c0d7bea608bf12bb13359
   languageName: node
   linkType: hard
 
-"@module-federation/runtime-core@npm:0.21.6":
-  version: 0.21.6
-  resolution: "@module-federation/runtime-core@npm:0.21.6"
+"@module-federation/runtime-core@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@module-federation/runtime-core@npm:0.22.0"
   dependencies:
-    "@module-federation/error-codes": "npm:0.21.6"
-    "@module-federation/sdk": "npm:0.21.6"
-  checksum: 10/85efa2042d6f3a7cf0e4971b991472d4339d88f6f15684afb6d451f19ed934e225b2510c86b7bb4d2c5f64253ed7b0175f08c17f95bfc2b9929930a8a03fff1e
+    "@module-federation/error-codes": "npm:0.22.0"
+    "@module-federation/sdk": "npm:0.22.0"
+  checksum: 10/d21969198322b6f79e0513b702d0af5097613d47819724c849b6c677c163cd10fb8c89e3ff62b798bec498ee4d8e95dec71861071bc4ed74bd86a7e43193bc05
   languageName: node
   linkType: hard
 
-"@module-federation/runtime-tools@npm:0.21.6":
-  version: 0.21.6
-  resolution: "@module-federation/runtime-tools@npm:0.21.6"
+"@module-federation/runtime-tools@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@module-federation/runtime-tools@npm:0.22.0"
   dependencies:
-    "@module-federation/runtime": "npm:0.21.6"
-    "@module-federation/webpack-bundler-runtime": "npm:0.21.6"
-  checksum: 10/36e7ccab948e11f310e87397a1a2185b56064e5691e553b34173686e2bc7372ec710e5ad48c026eb28c85b168765788b743aa2111513f3b57118b47636312dd1
+    "@module-federation/runtime": "npm:0.22.0"
+    "@module-federation/webpack-bundler-runtime": "npm:0.22.0"
+  checksum: 10/0e7693c1ec02fc5bef770b478c8757cad9cfefb2310d1943151d0ad079b72472d9b2c8a087299e9124dfcd6b649c83290c7fdfa333865baab4ba193f39e7b6bd
   languageName: node
   linkType: hard
 
-"@module-federation/runtime@npm:0.21.6":
-  version: 0.21.6
-  resolution: "@module-federation/runtime@npm:0.21.6"
+"@module-federation/runtime@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@module-federation/runtime@npm:0.22.0"
   dependencies:
-    "@module-federation/error-codes": "npm:0.21.6"
-    "@module-federation/runtime-core": "npm:0.21.6"
-    "@module-federation/sdk": "npm:0.21.6"
-  checksum: 10/93fd9bb284630933cab7e4bc070d648b56272f3636038c05eec7d1e3eeb189be3ccebe5f8ecc450197ee992d2616ed282d54e673ec0acd63adee4faddf80b144
+    "@module-federation/error-codes": "npm:0.22.0"
+    "@module-federation/runtime-core": "npm:0.22.0"
+    "@module-federation/sdk": "npm:0.22.0"
+  checksum: 10/eca608be999d7d2e83abc1169643c2f795a5ed950f9e2bdf7000400a30b3e1e0ca4bdaa5daa09f55e44868383d444707e40236cec1aaa7b40432b0cce800b7f3
   languageName: node
   linkType: hard
 
-"@module-federation/sdk@npm:0.21.6":
-  version: 0.21.6
-  resolution: "@module-federation/sdk@npm:0.21.6"
-  checksum: 10/effc4aa932e2f06742bda8f02aaec84e138f5512b50f18c38b051490020b20d3d8edf7ece853fccffc1f78a0b43dec78e69bf02150e7e2801d5ce03c3ee367b9
+"@module-federation/sdk@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@module-federation/sdk@npm:0.22.0"
+  checksum: 10/d7085d883730a33145052520787a7e59cf9c54b51b2946bebc7c63a6bb668bcc6cbdc27fa0b7354a62f5a7ee4e8829a66b84e644607498f2e37cfd5eb4ded0da
   languageName: node
   linkType: hard
 
-"@module-federation/webpack-bundler-runtime@npm:0.21.6":
-  version: 0.21.6
-  resolution: "@module-federation/webpack-bundler-runtime@npm:0.21.6"
+"@module-federation/webpack-bundler-runtime@npm:0.22.0":
+  version: 0.22.0
+  resolution: "@module-federation/webpack-bundler-runtime@npm:0.22.0"
   dependencies:
-    "@module-federation/runtime": "npm:0.21.6"
-    "@module-federation/sdk": "npm:0.21.6"
-  checksum: 10/a5ceb72ee3867acad5d7d3c654eb568068b1d5288f60ce9301bdc9f56effa5a4c26a732a2cec7176a81b87139566cd51dd8dfbc6112da05d47b870fa3ad3ba1f
+    "@module-federation/runtime": "npm:0.22.0"
+    "@module-federation/sdk": "npm:0.22.0"
+  checksum: 10/afd24406817dfc6474ebcf5be714ccf26690eb3f6f5172bda711c8f23dba149fe47293f7aa2d0733dfed0334c98d4d3d9e7c2da2be78750cae5a72d72f32ce93
   languageName: node
   linkType: hard
 
@@ -3773,42 +3773,35 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsbuild/core@npm:^1.6.3":
-  version: 1.6.13
-  resolution: "@rsbuild/core@npm:1.6.13"
+"@rsbuild/core@npm:^1.7.3":
+  version: 1.7.3
+  resolution: "@rsbuild/core@npm:1.7.3"
   dependencies:
-    "@rspack/core": "npm:1.6.6"
+    "@rspack/core": "npm:~1.7.5"
     "@rspack/lite-tapable": "npm:~1.1.0"
-    "@swc/helpers": "npm:^0.5.17"
+    "@swc/helpers": "npm:^0.5.18"
     core-js: "npm:~3.47.0"
     jiti: "npm:^2.6.1"
   bin:
     rsbuild: bin/rsbuild.js
-  checksum: 10/e85aaf8b87d6e84bcf2e9c75e4253924bd837410be813a8cda7c48d52f607b8bf3c6d4834e98a3a94bb7e0c79c5af104129d31631c23d627ca53c5e1d3fe6e4c
+  checksum: 10/f28946b9a1c9b49ce2094c3d7356799af49accaf2238abe74aef20217a387406d51719e5e3a2e6323fbb9d49c5df42306bdb76cbe7fd05ec135dfaaa98148c77
   languageName: node
   linkType: hard
 
-"@rsbuild/plugin-less@npm:^1.5.0":
-  version: 1.5.0
-  resolution: "@rsbuild/plugin-less@npm:1.5.0"
+"@rsbuild/plugin-less@npm:^1.6.2":
+  version: 1.6.2
+  resolution: "@rsbuild/plugin-less@npm:1.6.2"
   dependencies:
     deepmerge: "npm:^4.3.1"
+    less: "npm:^4.6.3"
+    less-loader: "npm:^12.3.2"
     reduce-configs: "npm:^1.1.1"
   peerDependencies:
-    "@rsbuild/core": 1.x
-  checksum: 10/2d5d28b9f38a7e5e3dc38441840b4de3a1c0e7ca18b435336f44150a317259b6d86837bcea4c3172758e602b42458870c5f366a357af214563e568e2685a1c93
-  languageName: node
-  linkType: hard
-
-"@rsbuild/plugin-react@npm:^1.1.0, @rsbuild/plugin-react@npm:^1.4.2":
-  version: 1.4.2
-  resolution: "@rsbuild/plugin-react@npm:1.4.2"
-  dependencies:
-    "@rspack/plugin-react-refresh": "npm:^1.5.2"
-    react-refresh: "npm:^0.18.0"
-  peerDependencies:
-    "@rsbuild/core": 1.x
-  checksum: 10/5726a9fba7ddf358ab12764c042273ad400715d853d18dd4fe83b29254504d12db9c39da5a51054f7efc5a3947a8622fc5de7d186e231d6d53a0ec68ca19f6a8
+    "@rsbuild/core": ^1.3.0 || ^2.0.0-0
+  peerDependenciesMeta:
+    "@rsbuild/core":
+      optional: true
+  checksum: 10/fa1c1cdb60b920504b9353a7c30a5f0a72ee0a196cf6892995f419cf8824cc2d21dfefb5588e9cfe8cd205a8295c1a136b8bd39395627e174a0e1dac92f12b03
   languageName: node
   linkType: hard
 
@@ -3827,7 +3820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsbuild/plugin-svgr@npm:^1.2.0":
+"@rsbuild/plugin-svgr@npm:^1.2.0, @rsbuild/plugin-svgr@npm:^1.3.1":
   version: 1.3.1
   resolution: "@rsbuild/plugin-svgr@npm:1.3.1"
   dependencies:
@@ -3846,108 +3839,92 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rsbuild/plugin-svgr@npm:^1.2.2":
-  version: 1.2.2
-  resolution: "@rsbuild/plugin-svgr@npm:1.2.2"
-  dependencies:
-    "@rsbuild/plugin-react": "npm:^1.1.0"
-    "@svgr/core": "npm:8.1.0"
-    "@svgr/plugin-jsx": "npm:8.1.0"
-    "@svgr/plugin-svgo": "npm:8.1.0"
-    deepmerge: "npm:^4.3.1"
-    loader-utils: "npm:^3.3.1"
-  peerDependencies:
-    "@rsbuild/core": 1.x
-  checksum: 10/130cc98176dbb9048428f86f1122693be1973e4dc41648eed931f7a420ea80201c6c0bfcafdd98a176d010743def3de85d91699e18a5b6c28718dc1d1bae75eb
-  languageName: node
-  linkType: hard
-
-"@rspack/binding-darwin-arm64@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-darwin-arm64@npm:1.6.6"
+"@rspack/binding-darwin-arm64@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-darwin-arm64@npm:1.7.9"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rspack/binding-darwin-x64@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-darwin-x64@npm:1.6.6"
+"@rspack/binding-darwin-x64@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-darwin-x64@npm:1.7.9"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-arm64-gnu@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-linux-arm64-gnu@npm:1.6.6"
+"@rspack/binding-linux-arm64-gnu@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-linux-arm64-gnu@npm:1.7.9"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-arm64-musl@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-linux-arm64-musl@npm:1.6.6"
+"@rspack/binding-linux-arm64-musl@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-linux-arm64-musl@npm:1.7.9"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-x64-gnu@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-linux-x64-gnu@npm:1.6.6"
+"@rspack/binding-linux-x64-gnu@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-linux-x64-gnu@npm:1.7.9"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rspack/binding-linux-x64-musl@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-linux-x64-musl@npm:1.6.6"
+"@rspack/binding-linux-x64-musl@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-linux-x64-musl@npm:1.7.9"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rspack/binding-wasm32-wasi@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-wasm32-wasi@npm:1.6.6"
+"@rspack/binding-wasm32-wasi@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-wasm32-wasi@npm:1.7.9"
   dependencies:
     "@napi-rs/wasm-runtime": "npm:1.0.7"
   conditions: cpu=wasm32
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-arm64-msvc@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-win32-arm64-msvc@npm:1.6.6"
+"@rspack/binding-win32-arm64-msvc@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-win32-arm64-msvc@npm:1.7.9"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-ia32-msvc@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-win32-ia32-msvc@npm:1.6.6"
+"@rspack/binding-win32-ia32-msvc@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-win32-ia32-msvc@npm:1.7.9"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@rspack/binding-win32-x64-msvc@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding-win32-x64-msvc@npm:1.6.6"
+"@rspack/binding-win32-x64-msvc@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding-win32-x64-msvc@npm:1.7.9"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@rspack/binding@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/binding@npm:1.6.6"
+"@rspack/binding@npm:1.7.9":
+  version: 1.7.9
+  resolution: "@rspack/binding@npm:1.7.9"
   dependencies:
-    "@rspack/binding-darwin-arm64": "npm:1.6.6"
-    "@rspack/binding-darwin-x64": "npm:1.6.6"
-    "@rspack/binding-linux-arm64-gnu": "npm:1.6.6"
-    "@rspack/binding-linux-arm64-musl": "npm:1.6.6"
-    "@rspack/binding-linux-x64-gnu": "npm:1.6.6"
-    "@rspack/binding-linux-x64-musl": "npm:1.6.6"
-    "@rspack/binding-wasm32-wasi": "npm:1.6.6"
-    "@rspack/binding-win32-arm64-msvc": "npm:1.6.6"
-    "@rspack/binding-win32-ia32-msvc": "npm:1.6.6"
-    "@rspack/binding-win32-x64-msvc": "npm:1.6.6"
+    "@rspack/binding-darwin-arm64": "npm:1.7.9"
+    "@rspack/binding-darwin-x64": "npm:1.7.9"
+    "@rspack/binding-linux-arm64-gnu": "npm:1.7.9"
+    "@rspack/binding-linux-arm64-musl": "npm:1.7.9"
+    "@rspack/binding-linux-x64-gnu": "npm:1.7.9"
+    "@rspack/binding-linux-x64-musl": "npm:1.7.9"
+    "@rspack/binding-wasm32-wasi": "npm:1.7.9"
+    "@rspack/binding-win32-arm64-msvc": "npm:1.7.9"
+    "@rspack/binding-win32-ia32-msvc": "npm:1.7.9"
+    "@rspack/binding-win32-x64-msvc": "npm:1.7.9"
   dependenciesMeta:
     "@rspack/binding-darwin-arm64":
       optional: true
@@ -3969,23 +3946,23 @@ __metadata:
       optional: true
     "@rspack/binding-win32-x64-msvc":
       optional: true
-  checksum: 10/37b69398a0679c25e0479b6eb11ea2c110a8b57367af2c808a473d19d58c9dd09e7763b3dfbec06284d6863e7a301d71509128fe22da2b0c57c06b718f67e66a
+  checksum: 10/2a723c2fdcd322b3d2229825640d4174fc82e009c87c5b5ca1d4b400477731f57b799dde74a1bc81a7207d0dce75f9c956443684986b0d673d8e44e8a5470398
   languageName: node
   linkType: hard
 
-"@rspack/core@npm:1.6.6":
-  version: 1.6.6
-  resolution: "@rspack/core@npm:1.6.6"
+"@rspack/core@npm:~1.7.5":
+  version: 1.7.9
+  resolution: "@rspack/core@npm:1.7.9"
   dependencies:
-    "@module-federation/runtime-tools": "npm:0.21.6"
-    "@rspack/binding": "npm:1.6.6"
+    "@module-federation/runtime-tools": "npm:0.22.0"
+    "@rspack/binding": "npm:1.7.9"
     "@rspack/lite-tapable": "npm:1.1.0"
   peerDependencies:
     "@swc/helpers": ">=0.5.1"
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: 10/e706c19085729f52f3e80c6945edc32def2091270fc9a15d6aea336754719d0bdce93e62dae3a675c412b5e433cc2fc093591d74e731722196d0de2ff269b198
+  checksum: 10/f75ddd35d1ba8daae5c41b9a839a81999bc09043bff4741750f1fca03ea60862d19d57019758a94dbf0b9a0a2b97c18f6e1e06962b279f93a815fbe5ca9fae57
   languageName: node
   linkType: hard
 
@@ -3993,22 +3970,6 @@ __metadata:
   version: 1.1.0
   resolution: "@rspack/lite-tapable@npm:1.1.0"
   checksum: 10/41ff73fe5e1b8dccaad746c9c1bd36dd67649e1ad35776f311b5ba94333a397704e11158579e25a6a7e677c51abe35e66987b1b000faef48d4e4ad2470fea150
-  languageName: node
-  linkType: hard
-
-"@rspack/plugin-react-refresh@npm:^1.5.2":
-  version: 1.5.3
-  resolution: "@rspack/plugin-react-refresh@npm:1.5.3"
-  dependencies:
-    error-stack-parser: "npm:^2.1.4"
-    html-entities: "npm:^2.6.0"
-  peerDependencies:
-    react-refresh: ">=0.10.0 <1.0.0"
-    webpack-hot-middleware: 2.x
-  peerDependenciesMeta:
-    webpack-hot-middleware:
-      optional: true
-  checksum: 10/3886a13dca3d42e9245480283ab839c16015a48eceda0d7352114de26968e319e8f110c5ec4dbe4c20d4a8457b368401840c736ce49f774edd450cf3ba193f62
   languageName: node
   linkType: hard
 
@@ -4699,12 +4660,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/helpers@npm:^0.5.17":
-  version: 0.5.17
-  resolution: "@swc/helpers@npm:0.5.17"
+"@swc/helpers@npm:^0.5.18":
+  version: 0.5.19
+  resolution: "@swc/helpers@npm:0.5.19"
   dependencies:
     tslib: "npm:^2.8.0"
-  checksum: 10/1fc8312a78f1f99c8ec838585445e99763eeebff2356100738cdfdb8ad47d2d38df678ee6edd93a90fe319ac52da67adc14ac00eb82b606c5fb8ebc5d06ec2a2
+  checksum: 10/3fd365fb3265f97e1241bcbcea9bfa5e15e03c630424e1b54597e00d30be2c271cb0c74f45e1739c6bc5ae892647302fab412de5138941aa96e66aebf4586700
   languageName: node
   linkType: hard
 
@@ -6046,9 +6007,9 @@ __metadata:
   resolution: "admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
@@ -9111,9 +9072,9 @@ __metadata:
   resolution: "dnn-sitegroups@workspace:Dnn.AdminExperience/ClientSide/SiteGroups.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
@@ -9136,9 +9097,9 @@ __metadata:
     "@babel/preset-env": "npm:7.29.0"
     "@babel/preset-react": "npm:7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     babel-plugin-transform-react-remove-prop-types: "npm:0.4.24"
     babel-polyfill: "npm:6.26.0"
     create-react-class: "npm:^15.7.0"
@@ -9170,9 +9131,9 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.18"
     eslint: "npm:9.39.4"
@@ -10563,9 +10524,9 @@ __metadata:
   resolution: "export-bundle@workspace:Dnn.AdminExperience/ClientSide/Bundle.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.18"
     es6-promise: "npm:4.2.8"
@@ -10602,9 +10563,9 @@ __metadata:
   resolution: "extensions@workspace:Dnn.AdminExperience/ClientSide/Extensions.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     "@svgr/webpack": "npm:^8.1.0"
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.3.0"
@@ -13455,7 +13416,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"less@npm:4.6.4":
+"less-loader@npm:^12.3.2":
+  version: 12.3.2
+  resolution: "less-loader@npm:12.3.2"
+  peerDependencies:
+    "@rspack/core": 0.x || ^1.0.0 || ^2.0.0-0
+    less: ^3.5.0 || ^4.0.0
+    webpack: ^5.0.0
+  peerDependenciesMeta:
+    "@rspack/core":
+      optional: true
+    webpack:
+      optional: true
+  checksum: 10/9018d0dae852d99370b7202b548b34334b1a069123bae3717b20143290f17fb639da4f6fd9894b659e100af603f03d1eb74922d6b761e8ba91d1f758d692459a
+  languageName: node
+  linkType: hard
+
+"less@npm:4.6.4, less@npm:^4.6.3":
   version: 4.6.4
   resolution: "less@npm:4.6.4"
   dependencies:
@@ -13537,9 +13514,9 @@ __metadata:
   resolution: "licensing@workspace:Dnn.AdminExperience/ClientSide/Licensing.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -15417,10 +15394,10 @@ __metadata:
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     "@types/knockout": "npm:^3.4.77"
     "@types/redux": "npm:3.6.31"
     babel-eslint: "npm:^10.1.0"
@@ -16382,10 +16359,10 @@ __metadata:
   resolution: "prompt@workspace:Dnn.AdminExperience/ClientSide/Prompt.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
@@ -17788,10 +17765,10 @@ __metadata:
   resolution: "roles@workspace:Dnn.AdminExperience/ClientSide/Roles.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     array.prototype.find: "npm:^2.2.3"
     array.prototype.findindex: "npm:^2.2.4"
     create-react-class: "npm:^15.7.0"
@@ -18292,10 +18269,10 @@ __metadata:
   resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.3.0"
     eslint: "npm:9.39.4"
@@ -18408,9 +18385,9 @@ __metadata:
   resolution: "seo@workspace:Dnn.AdminExperience/ClientSide/Seo.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
@@ -18467,9 +18444,9 @@ __metadata:
   resolution: "servers@workspace:Dnn.AdminExperience/ClientSide/Servers.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     "@rsbuild/plugin-svgr": "npm:^1.2.0"
     "@types/react": "npm:^19.2.2"
     "@types/react-dom": "npm:^19.2.2"
@@ -18688,10 +18665,10 @@ __metadata:
   resolution: "site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     babel-eslint: "npm:^10.1.0"
     babel-plugin-transform-class-properties: "npm:^6.24.1"
     babel-plugin-transform-object-assign: "npm:6.22.0"
@@ -18737,10 +18714,10 @@ __metadata:
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     babel-plugin-transform-react-remove-prop-types: "npm:^0.4.24"
@@ -18772,9 +18749,9 @@ __metadata:
   resolution: "sites@workspace:Dnn.AdminExperience/ClientSide/Sites.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
@@ -19567,10 +19544,10 @@ __metadata:
   resolution: "task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
@@ -19595,10 +19572,10 @@ __metadata:
   resolution: "taxonomy@workspace:Dnn.AdminExperience/ClientSide/Vocabularies.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     "@svgr/webpack": "npm:^8.1.0"
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
@@ -19684,10 +19661,10 @@ __metadata:
   resolution: "themes@workspace:Dnn.AdminExperience/ClientSide/Themes.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
-    "@rsbuild/plugin-svgr": "npm:^1.2.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
@@ -20454,9 +20431,9 @@ __metadata:
   resolution: "users@workspace:Dnn.AdminExperience/ClientSide/Users.Web"
   dependencies:
     "@dnnsoftware/dnn-react-common": "npm:10.3.0"
-    "@rsbuild/core": "npm:^1.6.3"
-    "@rsbuild/plugin-less": "npm:^1.5.0"
-    "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/core": "npm:^1.7.3"
+    "@rsbuild/plugin-less": "npm:^1.6.2"
+    "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     eslint: "npm:9.39.4"
     eslint-plugin-react: "npm:7.37.5"
