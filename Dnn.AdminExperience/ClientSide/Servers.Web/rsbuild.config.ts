@@ -1,6 +1,7 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginLess } from "@rsbuild/plugin-less";
+import { pluginSvgr } from "@rsbuild/plugin-svgr";
 import path from "path";
 import { createRequire } from "module";
 
@@ -97,5 +98,10 @@ export default defineConfig({
       },
     }),
     pluginLess(),
+    pluginSvgr({
+      svgrOptions: {
+        exportType: "default",
+      },
+    }),
   ],
 });
