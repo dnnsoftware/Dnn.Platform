@@ -438,27 +438,28 @@ namespace Dnn.PersonaBar.Pages.Components
                     var bIsMatch = true;
                     if (!string.IsNullOrEmpty(tabTitle))
                     {
-                        bIsMatch = bIsMatch &
-                                   Regex.IsMatch(tab.Title, tabTitle.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        var tabTitleRegex = RegexUtils.GetCachedRegex(tabTitle.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        bIsMatch &= tabTitleRegex.IsMatch(tab.Title);
                     }
 
                     if (!string.IsNullOrEmpty(tabName))
                     {
-                        bIsMatch = bIsMatch &
-                                   Regex.IsMatch(tab.TabName, tabName.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        var tabNameRegex = RegexUtils.GetCachedRegex(tabName.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        bIsMatch &= tabNameRegex.IsMatch(tab.TabName);
                     }
 
                     if (!string.IsNullOrEmpty(tabPath))
                     {
-                        bIsMatch = bIsMatch &
-                                   Regex.IsMatch(tab.TabPath, tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        var tabPathRegex = RegexUtils.GetCachedRegex(tabPath.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        bIsMatch &= tabPathRegex.IsMatch(tab.TabPath);
                     }
 
                     if (!string.IsNullOrEmpty(tabSkin))
                     {
-                        var escapedString = Regex.Replace(tabSkin, "([^\\w^\\*\\s]+)+", @"\$1", RegexOptions.Compiled | RegexOptions.ECMAScript | RegexOptions.IgnoreCase | RegexOptions.Multiline);
-                        bIsMatch = bIsMatch &
-                                   Regex.IsMatch(tab.SkinSrc, escapedString.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        var escapeRegex = RegexUtils.GetCachedRegex("([^\\w^\\*\\s]+)+", RegexOptions.Compiled | RegexOptions.ECMAScript | RegexOptions.IgnoreCase | RegexOptions.Multiline);
+                        var escapedString = escapeRegex.Replace(tabSkin, @"\$1");
+                        var skinSrcRegex = RegexUtils.GetCachedRegex(escapedString.Replace("*", ".*"), RegexOptions.IgnoreCase);
+                        bIsMatch &= skinSrcRegex.IsMatch(tab.SkinSrc);
                     }
 
                     if (bIsMatch)

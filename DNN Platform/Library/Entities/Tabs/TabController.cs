@@ -1084,14 +1084,17 @@ namespace DotNetNuke.Entities.Tabs
 
             if (Config.GetFriendlyUrlProvider() == "advanced" && PortalSettings.Current != null)
             {
-                var doNotRewriteRegex = new FriendlyUrlSettings(PortalSettings.Current.PortalId).DoNotRewriteRegex;
-                if (!string.IsNullOrEmpty(doNotRewriteRegex) &&
-                        (Regex.IsMatch(cleanTabName, doNotRewriteRegex, RegexOptions.IgnoreCase)
-                            || Regex.IsMatch("/" + cleanTabName, doNotRewriteRegex, RegexOptions.IgnoreCase)
-                            || Regex.IsMatch("/" + cleanTabName + "/", doNotRewriteRegex, RegexOptions.IgnoreCase)))
+                var urlSettings = new FriendlyUrlSettings(PortalSettings.Current.PortalId);
+                if (!string.IsNullOrEmpty(urlSettings.DoNotRewriteRegex))
                 {
-                    invalidType = "InvalidTabName";
-                    return false;
+                    var doNotRewriteRegex = RegexUtils.GetCachedRegex(urlSettings.DoNotRewriteRegex, RegexOptions.IgnoreCase);
+                    if (doNotRewriteRegex.IsMatch(cleanTabName)
+                        || doNotRewriteRegex.IsMatch("/" + cleanTabName)
+                        || doNotRewriteRegex.IsMatch("/" + cleanTabName + "/"))
+                    {
+                        invalidType = "InvalidTabName";
+                        return false;
+                    }
                 }
             }
 
