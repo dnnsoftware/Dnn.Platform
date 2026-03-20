@@ -3,7 +3,7 @@
   "version": "10.3.0",
   "private": true,
   "scripts": {
-    "start": "npm run webpack",
+    "start": "rsbuild dev",
     "test": "jest",
     "build": "rsbuild build",
     "debug": "rsbuild build",

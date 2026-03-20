@@ -131,11 +131,6 @@ MIT License
 License File: Admin Persona Bar Referenced Licences.zip\lodash\LICENSE
 --------------------------------------------------------------------------------------
 
-babel-loader (babel module loader for webpack)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\babel-loader\LICENSE
---------------------------------------------------------------------------------------
-
 babel-plugin-transform-object-assign (Replace Object.assign with an inline helper)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\babel-plugin-transform-object-assign\LICENSE
@@ -564,11 +559,6 @@ License File: Admin Persona Bar Referenced Licences.zip\escope\LICENSE.BSD
 eslint (An AST-based pattern checker for JavaScript.)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\eslint\LICENSE
---------------------------------------------------------------------------------------
-
-eslint-loader (eslint loader (for webpack))
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\eslint-loader\LICENSE
 --------------------------------------------------------------------------------------
 
 eslint-plugin-react (React specific linting rules for ESLint)
@@ -1051,19 +1041,9 @@ Apache License
 License File: Admin Persona Bar Referenced Licences.zip\less\LICENSE
 --------------------------------------------------------------------------------------
 
-less-loader (less loader module for webpack)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\less-loader\LICENSE
---------------------------------------------------------------------------------------
-
 levn (Light ECMAScript (JavaScript) Value Notation - human written, concise, typed, flexible)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\levn\LICENSE
---------------------------------------------------------------------------------------
-
-loader-utils (utils for webpack loaders)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\loader-utils\LICENSE
 --------------------------------------------------------------------------------------
 
 lodash-es (Lodash exported as ES modules.)
@@ -2131,16 +2111,6 @@ MIT License
 License File: Admin Persona Bar Referenced Licences.zip\warning\LICENSE.md
 --------------------------------------------------------------------------------------
 
-webpack (Packs CommonJs/AMD modules for the browser. Allows to split your codebase into multiple bundles, which can be loaded on demand. Support loaders to preprocess files, i.e. json, jade, coffee, css, less, ... and your custom stuff.)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\webpack\LICENSE
---------------------------------------------------------------------------------------
-
-webpack-dev-middleware (Offers a dev middleware for webpack, which arguments a live bundle to a directory)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\webpack-dev-middleware\LICENSE
---------------------------------------------------------------------------------------
-
 whatwg-fetch (A window.fetch polyfill.)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\whatwg-fetch\LICENSE
@@ -2479,11 +2449,6 @@ License File: Admin Persona Bar Referenced Licences.zip\react-addons-transition-
 sniffr (Browser, os and device detection)
 MIT License
 License File: Admin Persona Bar Referenced Licences.zip\sniffr\LICENSE
---------------------------------------------------------------------------------------
-
-svg-sprite-loader (SVG sprite webpack loader)
-MIT License
-License File: Admin Persona Bar Referenced Licences.zip\svg-sprite-loader\LICENSE
 --------------------------------------------------------------------------------------
 
 EASYDROPDOWN - A Drop-down Builder for Styleable Inputs and Menus

@@ -24,7 +24,6 @@
     "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
     "globals": "^16.5.0",
-    "i18n-webpack-plugin": "1.0.0",
     "less": "4.6.4",
     "localization": "^1.0.2",
     "prop-types": "^15.8.1",
@@ -40,7 +39,6 @@
     "redux-devtools-log-monitor": "2.1.0",
     "redux-immutable-state-invariant": "2.1.0",
     "redux-thunk": "2.4.2",
-    "svg-url-loader": "^8.0.0",
     "throttle-debounce": "^5.0.2",
     "typescript": "^5.9.3"
   },
