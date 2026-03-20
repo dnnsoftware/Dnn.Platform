@@ -6,17 +6,11 @@
     "configurations": [
         {
             "type": "chrome",
-        "request": "launch",
-        "name": "Storybook Debug",
-        "url": "http://localhost:9001",
-        "sourceMaps": true,
-        "webRoot": "${workspaceFolder}",
-        "sourceMapPathOverrides": {
-            "webpack:///*": "${webRoot}/*",
-            "webpack:///./*": "${webRoot}/*",
-            "webpack:///src/*": "${webRoot}/*",
-            "webpack:///./~/*": "${webRoot}/node_modules/*"
-            }
+            "request": "launch",
+            "name": "Storybook Debug",
+            "url": "http://localhost:9001",
+            "sourceMaps": true,
+            "webRoot": "${workspaceFolder}"
         }
     ]
 }

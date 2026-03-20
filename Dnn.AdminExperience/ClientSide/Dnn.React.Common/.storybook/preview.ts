@@ -1,4 +1,3 @@
-/** @type { import('@storybook/react-webpack5').Preview } */
 const preview = {
     parameters: {
         controls: {

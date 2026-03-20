@@ -1,6 +1,7 @@
 import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginLess } from "@rsbuild/plugin-less";
+import { pluginSvgr } from "@rsbuild/plugin-svgr";
 import path from "path";
 import { createRequire } from "module";
 
@@ -87,16 +88,6 @@ export default defineConfig({
           path.resolve(__dirname, "../../../node_modules"),
         ],
       },
-      module: {
-        rules: [
-          {
-            test: /\.svg$/i,
-            issuer: /\.[jt]sx?$/,
-            type: "javascript/auto",
-            use: ["@svgr/webpack"],
-          },
-        ],
-      },
       plugins: [
         // Keep VERSION and NODE_ENV globals consumed by existing code.
         new (requireModule("@rspack/core").DefinePlugin)({
@@ -126,6 +117,11 @@ export default defineConfig({
           javascriptEnabled: true,
         },
       },
+    }),
+    pluginSvgr({
+        svgrOptions: {
+            exportType: "default"
+        }
     }),
   ],
 });
