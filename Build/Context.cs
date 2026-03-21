@@ -4,9 +4,11 @@
 namespace DotNetNuke.Build
 {
     using System;
+    using System.Globalization;
     using System.IO;
 
     using Cake.Common;
+    using Cake.Common.Build;
     using Cake.Common.Diagnostics;
     using Cake.Common.IO;
     using Cake.Common.IO.Paths;
@@ -63,7 +65,11 @@ namespace DotNetNuke.Build
                 this.Settings = LoadSettings(context, settingsFile);
                 this.WriteSettings(context, settingsFile);
 
-                this.BuildId = context.EnvironmentVariable("BUILD_BUILDID") ?? "0";
+                this.BuildId = context.AzurePipelines().IsRunningOnAzurePipelines
+                    ? context.AzurePipelines().Environment.Build.Id.ToString(CultureInfo.InvariantCulture)
+                    : context.GitHubActions().IsRunningOnGitHubActions
+                        ? context.GitHubActions().Environment.Workflow.RunId
+                        : "0";
                 context.Information($"BuildId: {this.BuildId}");
                 this.BuildNumber = string.Empty;
                 this.ProductVersion = string.Empty;
