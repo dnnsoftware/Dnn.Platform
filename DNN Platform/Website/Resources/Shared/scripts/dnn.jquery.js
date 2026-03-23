@@ -12,11 +12,6 @@
         var opts = $.extend({}, $.fn.dnnTabs.defaultOptions, options),
         $wrap = this;
 
-        // patch for period in selector - http://jsfiddle.net/9Mst9/2/
-        $.ui.tabs.prototype._sanitizeSelector = function (hash) {
-            return hash.replace(/:/g, "\\:").replace(/\./g, "\\\.");
-        };
-
         $wrap.each(function () {
             var showEvent, cookieId;
             if (this.id) {
