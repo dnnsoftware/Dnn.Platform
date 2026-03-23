@@ -2677,7 +2677,7 @@
                         var profileImagePath = dnn.getVar("sf_siteRoot", "/") + 'DnnImageHandler.ashx?mode=securefile&fileId=' + data.result.FileId + '&MaxWidth=180&MaxHeight=150';
                         img.src = profileImagePath;
                         
-                        var fileName = data.result.FilePath.replace('\\', '/');
+                        var fileName = data.result.FilePath.replace(/\\/g, '/');
                         if (fileName.indexOf('/') > -1) {
                             fileName = fileName.split('/')[fileName.split('/').length - 1];
                         }

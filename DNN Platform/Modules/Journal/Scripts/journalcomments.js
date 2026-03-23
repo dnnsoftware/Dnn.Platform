@@ -65,11 +65,19 @@
             data.Comment = encodeURIComponent($textarea.val());
             data.mentions = $textarea.data("mentions");
             var tmpValue = $textarea.val();
-            tmpValue = tmpValue.replace(/<(?:.|\n)*?>/gm, '').replace(/\s+/g, '').replace(/&nbsp;/g, '');
-            if (tmpValue == '') {
+            while (/<(?:.|\n)*?>/gm.test(tmpValue)) {
+                tmpValue = tmpValue.replace(/<(?:.|\n)*?>/gm, '');
+            }
+            while (/\s+/g.test(tmpValue)) {
+                tmpValue = tmpValue.replace(/\s+/g, '');
+            }
+            while (/&nbsp;/g.test(tmpValue)) {
+                tmpValue = tmpValue.replace(/&nbsp;/g, '');
+            }
+            if (tmpValue === '') {
                 return false;
             }
-            if (data.Comment == '' || data.Comment == '%3Cbr%3E') {
+            if (!data.Comment || data.Comment === '%3Cbr%3E') {
                 return false;
             }
             Post('CommentSave', data, commentComplete, jid);
