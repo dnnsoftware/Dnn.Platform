@@ -24,14 +24,22 @@ namespace DotNetNuke.DependencyInjection.Extensions
         [DnnDeprecated(9, 9, 0, "Please use the SafeGetTypes overload with the ILog parameter")]
         public static partial Type[] SafeGetTypes(this Assembly assembly)
         {
-            return assembly.SafeGetTypes(null);
+            return assembly.SafeGetTypes((ILogger)null);
         }
 
         /// <summary>Safely Get all Types from the assembly. If there is an error while retrieving the types it will return an empty array of <see cref="Type"/>.</summary>
         /// <param name="assembly">The assembly to retrieve all types from.</param>
-        /// <param name="logger">A optional <see cref="ILog"/> object. This will log issues loading the types.</param>
+        /// <param name="logger">An optional <see cref="ILog"/> object. This will log issues loading the types.</param>
         /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
-        public static Type[] SafeGetTypes(this Assembly assembly, ILog logger)
+        [DnnDeprecated(10, 4, 0, "Use overload taking ILogger")]
+        public static partial Type[] SafeGetTypes(this Assembly assembly, ILog logger)
+            => assembly.SafeGetTypes(logger is null ? null : new LogWrapper(logger));
+
+        /// <summary>Safely Get all Types from the assembly. If there is an error while retrieving the types it will return an empty array of <see cref="Type"/>.</summary>
+        /// <param name="assembly">The assembly to retrieve all types from.</param>
+        /// <param name="logger">An optional <see cref="ILogger"/> object. This will log issues loading the types.</param>
+        /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
+        public static Type[] SafeGetTypes(this Assembly assembly, ILogger logger)
         {
             var (types, exception) = assembly.GetTypesAndException();
             if (logger is null || exception is null)
