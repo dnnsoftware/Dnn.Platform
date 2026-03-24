@@ -7,9 +7,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System;
     using System.Data;
 
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IExecuteSqlStep" />
     internal sealed class ExecuteSqlStep : StepBase, IExecuteSqlStep
@@ -17,14 +18,13 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IDataProvider dataProvider;
 
         /// <summary>Initializes a new instance of the <see cref="ExecuteSqlStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="dataProvider">An instance of <see cref="IDataProvider"/>.</param>
-        public ExecuteSqlStep(ILoggerSource loggerSource, ILocalizer localizer, IDataProvider dataProvider)
-            : base(loggerSource, localizer)
+        public ExecuteSqlStep(ILogger<ExecuteSqlStep> logger, ILocalizer localizer, IDataProvider dataProvider)
+            : base(logger, localizer)
         {
-            this.dataProvider = dataProvider ??
-                throw new ArgumentNullException(nameof(dataProvider));
+            this.dataProvider = dataProvider ?? throw new ArgumentNullException(nameof(dataProvider));
         }
 
         /// <inheritdoc />

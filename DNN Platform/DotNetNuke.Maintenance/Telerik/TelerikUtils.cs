@@ -12,6 +12,8 @@ namespace DotNetNuke.Maintenance.Telerik
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <inheritdoc />
     public class TelerikUtils : ITelerikUtils
     {
@@ -33,18 +35,15 @@ namespace DotNetNuke.Maintenance.Telerik
         };
 
         private readonly IApplicationStatusInfo applicationStatusInfo;
-        private readonly ILog log;
+        private readonly ILogger log;
 
         /// <summary>Initializes a new instance of the <see cref="TelerikUtils"/> class.</summary>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
-        public TelerikUtils(
-            IApplicationStatusInfo applicationStatusInfo,
-            ILoggerSource loggerSource)
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
+        public TelerikUtils(IApplicationStatusInfo applicationStatusInfo, ILogger<TelerikUtils> logger)
         {
-            this.applicationStatusInfo = applicationStatusInfo
-                ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
-            this.log = loggerSource.GetLogger(nameof(TelerikUtils));
+            this.applicationStatusInfo = applicationStatusInfo ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
+            this.log = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         /// <inheritdoc />

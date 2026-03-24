@@ -9,21 +9,22 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System.Xml;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IRemoveItemFromCollectionStep" />
     internal sealed class RemoveItemFromCollectionStep : XmlStepBase, IRemoveItemFromCollectionStep
     {
         /// <summary>Initializes a new instance of the <see cref="RemoveItemFromCollectionStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         public RemoveItemFromCollectionStep(
-            ILoggerSource loggerSource,
+            ILogger<RemoveItemFromCollectionStep> logger,
             ILocalizer localizer,
             IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, localizer, applicationStatusInfo)
+            : base(logger, localizer, applicationStatusInfo)
         {
         }
 
