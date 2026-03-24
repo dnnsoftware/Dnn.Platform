@@ -14,10 +14,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using Dnn.PersonaBar.Servers.Components.WebServer;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SystemInfoWebController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoWebController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SystemInfoWebController>();
 
         [HttpGet]
         public HttpResponseMessage GetWebServerInfo()

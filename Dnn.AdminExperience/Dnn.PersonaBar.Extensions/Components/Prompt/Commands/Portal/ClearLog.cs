@@ -16,11 +16,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     [ConsoleCommand("clear-log", Constants.PortalCategory, "Prompt_ClearLog_Description")]
     public class ClearLog : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearLog));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ClearLog>();
         private readonly IEventLogService eventLogService;
 
         /// <summary>Initializes a new instance of the <see cref="ClearLog"/> class.</summary>

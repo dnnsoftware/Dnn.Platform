@@ -27,6 +27,7 @@ namespace DotNetNuke.Services.Search.Controllers
     using DotNetNuke.Services.Search.Entities;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -38,7 +39,7 @@ namespace DotNetNuke.Services.Search.Controllers
         private const CacheItemPriority ModuleByIdCachePriority = CacheItemPriority.Normal;
         private const int ModuleByIdCacheTimeOut = 20;
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleResultController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleResultController>();
 
         private readonly ConcurrentDictionary<string, IModuleSearchResultController> moduleSearchControllers = new ConcurrentDictionary<string, IModuleSearchResultController>();
         private readonly IBusinessControllerProvider businessControllerProvider;

@@ -15,6 +15,8 @@ namespace DotNetNuke.Web.Mvc
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public sealed class StandardTabAndModuleInfoProvider : ITabAndModuleInfoProvider
     {
         private const string ModuleIdKey = "ModuleId";
@@ -22,7 +24,7 @@ namespace DotNetNuke.Web.Mvc
         private const string MonikerQueryKey = "Moniker";
         private const string MonikerHeaderKey = "X-DNN-MONIKER";
         private const string MonikerSettingsKey = "Moniker";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<StandardTabAndModuleInfoProvider>();
 
         /// <inheritdoc />
         public bool TryFindTabId(HttpRequestBase request, out int tabId)

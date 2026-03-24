@@ -13,10 +13,12 @@ namespace DotNetNuke.Web.Client.ResourceManager
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <inheritdoc />
     public class ClientResourceController : IClientResourceController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ClientResourceController>();
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;
         private readonly IClientResourceSettings clientResourceSettings;

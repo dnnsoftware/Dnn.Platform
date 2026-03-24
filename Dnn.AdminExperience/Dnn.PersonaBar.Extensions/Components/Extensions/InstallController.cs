@@ -22,9 +22,11 @@ namespace Dnn.PersonaBar.Extensions.Components
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
 
+    using Microsoft.Extensions.Logging;
+
     public class InstallController : ServiceLocator<IInstallController, InstallController>, IInstallController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InstallController>();
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]

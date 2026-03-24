@@ -24,12 +24,13 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Web.Client;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {
         private const string UseSSLKey = "UseSSLForCacheSync";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServerSettingsPerformanceController>();
         private readonly PerformanceController performanceController = new PerformanceController();
         private readonly IHostSettings hostSettings;
         private readonly IHostSettingsService hostSettingsService;

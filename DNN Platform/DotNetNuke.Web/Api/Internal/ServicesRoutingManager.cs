@@ -26,11 +26,12 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Web.ConfigSection;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Allows registering web API routes.</summary>
     public sealed class ServicesRoutingManager : IMapRoute, IRoutingManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServicesRoutingManager>();
         private readonly IServiceProvider serviceProvider;
         private readonly RouteCollection routes;
         private readonly PortalAliasRouteManager portalAliasRouteManager;

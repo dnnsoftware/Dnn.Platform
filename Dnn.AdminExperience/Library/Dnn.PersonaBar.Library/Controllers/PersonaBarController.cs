@@ -20,6 +20,8 @@ namespace Dnn.PersonaBar.Library.Controllers
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     using MenuItem = Dnn.PersonaBar.Library.Model.MenuItem;
@@ -28,7 +30,7 @@ namespace Dnn.PersonaBar.Library.Controllers
     public class PersonaBarController(IServiceScopeFactory serviceScopeFactory, IPersonaBarRepository personaBarRepository, IHostSettings hostSettings, IPortalController portalController)
         : ServiceLocator<IPersonaBarController, PersonaBarController>, IPersonaBarController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PersonaBarController>();
 
         private readonly IServiceScopeFactory serviceScopeFactory = serviceScopeFactory ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServiceScopeFactory>();
         private readonly IPersonaBarRepository personaBarRepository = personaBarRepository ?? PersonaBarRepository.Instance;

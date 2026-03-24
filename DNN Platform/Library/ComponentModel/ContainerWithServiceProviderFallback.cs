@@ -9,11 +9,12 @@ using System.Collections;
 using DotNetNuke.Instrumentation;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>A container which gets components from an <see cref="IServiceProvider"/> for components not registered.</summary>
 public class ContainerWithServiceProviderFallback : IContainer
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContainerWithServiceProviderFallback));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<ContainerWithServiceProviderFallback>();
     private readonly IContainer container;
     private readonly IServiceProvider serviceProvider;
 

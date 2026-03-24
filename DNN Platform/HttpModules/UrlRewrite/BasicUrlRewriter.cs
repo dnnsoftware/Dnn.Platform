@@ -22,6 +22,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The basic URL rewriter.</summary>
     internal class BasicUrlRewriter : UrlRewriterBase
     {
@@ -31,7 +33,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
         /// <summary>A regular expression matching a portal ID query string parameter.</summary>
         public static readonly Regex PortalIdRegex = new Regex("&?portalid=\\d+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasicUrlRewriter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<BasicUrlRewriter>();
 
         private readonly IServiceProvider serviceProvider;
 

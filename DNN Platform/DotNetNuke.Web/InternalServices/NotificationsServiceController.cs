@@ -17,11 +17,13 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
+using Microsoft.Extensions.Logging;
+
 /// <summary>A web API controller for notifications.</summary>
 [DnnAuthorize]
 public partial class NotificationsServiceController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationsServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<NotificationsServiceController>();
 
     /// <summary>Dismisses a notification.</summary>
     /// <param name="postData">Information about the notification.</param>

@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.UI
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An error code for a <see cref="DotNetNukeException"/>.</summary>
     public enum DotNetNukeErrorCode
@@ -83,7 +84,7 @@ namespace DotNetNuke.Web.UI
     /// <summary>Manages the old ribbon bar.</summary>
     public partial class RibbonBarManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RibbonBarManager>();
 
         /// <summary>Initializes tab info user to add a new tab/page.</summary>
         /// <returns>The new <see cref="TabInfo"/> instance.</returns>

@@ -26,6 +26,7 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Handles the Business Control Layer for Skins.</summary>
     public partial class SkinController
@@ -33,7 +34,7 @@ namespace DotNetNuke.UI.Skins
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
         private const string PortalSkinPrefix = "[L]";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SkinController>();
         private static readonly Regex GdirRegex = new Regex("\\[g]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex SdirRegex = new Regex("\\[s]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private static readonly Regex LdirRegex = new Regex("\\[l]", RegexOptions.IgnoreCase | RegexOptions.Compiled);

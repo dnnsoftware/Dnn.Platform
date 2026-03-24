@@ -14,10 +14,12 @@ namespace Dnn.PersonaBar.Licensing.Services
     using DotNetNuke.Application;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class LicensingController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LicensingController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LicensingController>();
 
         /// GET: api/Licensing/GetProduct
         /// <summary>Gets product info.</summary>

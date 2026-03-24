@@ -11,10 +11,12 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A <see cref="ITraceWriter"/> implementation.</summary>
     internal sealed class TraceWriter : ITraceWriter
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TraceWriter>();
         private readonly bool enabled;
 
         /// <summary>Initializes a new instance of the <see cref="TraceWriter"/> class.</summary>

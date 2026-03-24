@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Host
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Controller for web servers.</summary>
     public partial class ServerController
@@ -31,7 +32,7 @@ namespace DotNetNuke.Entities.Host
         private const int CacheTimeout = 20;
         private const CacheItemPriority CachePriority = CacheItemPriority.High;
         private static readonly DataProvider DataProvider = DataProvider.Instance();
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServerController>();
 
         public static bool UseAppName
         {

@@ -20,13 +20,14 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The Login AuthenticationLoginBase is used to provide a login for a registered user portal.</summary>
     public partial class Login : AuthenticationLoginBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Login>();
         private readonly INavigationManager navigationManager;
         private readonly IPortalController portalController;
         private readonly IHostSettings hostSettings;

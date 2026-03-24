@@ -21,13 +21,15 @@ namespace Dnn.PersonaBar.Vocabularies.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
 
     [MenuPermission(MenuName = Constants.MenuIdentifier)]
     public class VocabulariesController : PersonaBarApiController
     {
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<VocabulariesController>();
         private Components.VocabulariesController controller = new Components.VocabulariesController();
 
         private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Vocabularies/App_LocalResources/Vocabularies.resx");

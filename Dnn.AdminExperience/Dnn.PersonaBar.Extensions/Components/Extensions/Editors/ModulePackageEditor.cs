@@ -26,6 +26,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     using DotNetNuke.Services.Installer.Packages;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
@@ -34,7 +35,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     /// <param name="eventLogger">The event logger.</param>
     public class ModulePackageEditor(IPermissionDefinitionService permissionDefinitionService, IEventLogger eventLogger) : IPackageEditor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageEditor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModulePackageEditor>();
         private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
         private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 

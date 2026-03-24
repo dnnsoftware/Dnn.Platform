@@ -12,11 +12,12 @@ namespace DotNetNuke.Web
     using DotNetNuke.Services.DependencyInjection;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Initializes the Dependency Injection container.</summary>
     public static class DependencyInjectionInitialize
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DependencyInjectionInitialize));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(DependencyInjectionInitialize));
 
         /// <summary>Gets the service collection (for logging/diagnostics).</summary>
         internal static IServiceCollection ServiceCollection { get; private set; }

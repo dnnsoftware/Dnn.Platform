@@ -23,13 +23,15 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     using HttpWebRequest = System.Net.HttpWebRequest;
     using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
     /// <inheritdoc />
     public class SimpleWebFarmCachingProvider : CachingProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SimpleWebFarmCachingProvider>();
         private readonly IHostSettingsService hostSettingsService;
         private readonly ICryptographyProvider cryptographyProvider;
         private readonly IApplicationStatusInfo appStatus;

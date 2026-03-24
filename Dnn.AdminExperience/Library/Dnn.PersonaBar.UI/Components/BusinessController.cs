@@ -28,11 +28,12 @@ namespace Dnn.PersonaBar.UI.Components
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Provides upgrade logic for the Persona Bar.</summary>
     public class BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController) : IUpgradeable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<BusinessController>();
         private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();

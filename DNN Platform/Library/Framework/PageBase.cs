@@ -27,15 +27,16 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>PageBase provides a custom DotNetNuke base class for pages.</summary>
     public abstract class PageBase : Page
     {
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PageBase>();
         private static readonly Regex LinkItemMatchRegex = new Regex(LinkItemPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private readonly ILog traceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly ILogger traceLogger = DnnLoggingController.GetLogger("DNN.Trace");
         private readonly ArrayList localizedControls = [];
 
         private PageStatePersister persister;

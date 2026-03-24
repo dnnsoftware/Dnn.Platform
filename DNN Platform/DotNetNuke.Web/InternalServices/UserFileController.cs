@@ -17,10 +17,12 @@ using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Web.Api;
 
+using Microsoft.Extensions.Logging;
+
 /// <summary>A web API controller for user files.</summary>
 public class UserFileController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserFileController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<UserFileController>();
     private static readonly char[] FileExtensionSeparator = [',',];
     private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "jpg", "png", "gif", "jpe", "jpeg", "tiff", };
     private readonly IFolderManager folderManager = FolderManager.Instance;
@@ -82,10 +84,10 @@ public class UserFileController : DnnApiController
     private static string GetTypeName(IFileInfo file)
     {
         return file.ContentType == null
-            ? string.Empty
-            : (file.ContentType.StartsWith("image/", StringComparison.Ordinal)
-                ? file.ContentType.Replace("image/", string.Empty)
-                : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
+                   ? string.Empty
+                   : (file.ContentType.StartsWith("image/", StringComparison.Ordinal)
+                        ? file.ContentType.Replace("image/", string.Empty)
+                        : (file.Extension != null ? file.Extension.ToLowerInvariant() : string.Empty));
     }
 
     private static bool IsImageFile(string relativePath)

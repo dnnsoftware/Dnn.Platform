@@ -9,10 +9,12 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Class for managing an OPML feed.</summary>
     public class Opml
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Opml>();
         private XmlDocument opmlDoc;
 
         /// <summary>Initializes a new instance of the <see cref="Opml"/> class.</summary>

@@ -10,10 +10,12 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [Serializable]
     public class ScheduleHistoryItem : ScheduleItem
     {
-        private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger(typeof(ScheduleHistoryItem));
+        private static readonly ILogger TracelLogger = DnnLoggingController.GetLogger<ScheduleHistoryItem>();
 
         private StringBuilder logNotes;
         private int scheduleHistoryID;

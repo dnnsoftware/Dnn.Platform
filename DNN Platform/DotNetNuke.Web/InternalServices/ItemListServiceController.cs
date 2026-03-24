@@ -32,6 +32,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Common;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Globals = DotNetNuke.Common.Globals;
 
@@ -49,7 +50,7 @@ public class ItemListServiceController(IHostSettings hostSettings, DataProvider 
 {
     private const string PortalPrefix = "P-";
     private const string RootKey = "Root";
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ItemListServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<ItemListServiceController>();
     private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
     private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
     private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
@@ -140,7 +141,7 @@ public class ItemListServiceController(IHostSettings hostSettings, DataProvider 
         {
             Success = true,
             Tree = string.IsNullOrEmpty(searchText) ? this.SortPagesInternal(portalId, treeAsJson, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages)
-                : this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
+                        : this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles),
             IgnoreRoot = true,
         };
         return this.Request.CreateResponse(HttpStatusCode.OK, response);
@@ -501,11 +502,11 @@ public class ItemListServiceController(IHostSettings hostSettings, DataProvider 
 
         var terms = new ArrayList();
         var vocabularies = from v in this.vocabularyController.GetVocabularies()
-            where (v.ScopeType.ScopeType == "Application"
-                   || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
-                  && (!v.IsSystem || includeSystem)
-                  && (v.Name != "Tags" || includeTags)
-            select v;
+                           where (v.ScopeType.ScopeType == "Application"
+                                  || (v.ScopeType.ScopeType == "Portal" && v.ScopeId == portalId))
+                                 && (!v.IsSystem || includeSystem)
+                                 && (v.Name != "Tags" || includeTags)
+                           select v;
 
         foreach (var v in vocabularies)
         {
@@ -642,10 +643,10 @@ public class ItemListServiceController(IHostSettings hostSettings, DataProvider 
         if (groups.Length != 0)
         {
             return (
-                    from @group in groups
-                    select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
-                    where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                    select portals.ToArray())
+                from @group in groups
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+                select portals.ToArray())
                 .FirstOrDefault();
         }
 

@@ -23,11 +23,13 @@ namespace Dnn.PersonaBar.Extensions.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api.Internal;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class UpgradesController : PersonaBarApiController
     {
         private const string ResourceFile = "~/DesktopModules/Admin/Dnn.PersonaBar/Modules/Dnn.Servers/App_LocalResources/Servers.resx";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UpgradesController>();
         private readonly IApplicationStatusInfo applicationStatusInfo;
         private readonly ILocalUpgradeService localUpgradeService;
 

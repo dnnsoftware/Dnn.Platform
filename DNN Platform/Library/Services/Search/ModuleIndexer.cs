@@ -24,13 +24,14 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Internals;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>The ModuleIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
     public class ModuleIndexer : IndexingProviderBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleIndexer>();
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         private readonly IBusinessControllerProvider businessControllerProvider;

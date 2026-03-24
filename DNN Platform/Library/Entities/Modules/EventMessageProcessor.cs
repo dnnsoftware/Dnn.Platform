@@ -20,11 +20,12 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The primary event message processor.</summary>
     public class EventMessageProcessor : EventMessageProcessorBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventMessageProcessor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<EventMessageProcessor>();
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly IEventLogger eventLogger;
 

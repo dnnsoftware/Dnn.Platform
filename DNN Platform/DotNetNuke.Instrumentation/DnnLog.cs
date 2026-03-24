@@ -13,8 +13,10 @@ namespace DotNetNuke.Instrumentation
     using DotNetNuke.Internal.SourceGenerators;
     using log4net.Config;
 
-    /// <summary>Provides access to logging methods.  Obsolete, use <see cref="LoggerSource"/> instead.</summary>
-    [DnnDeprecated(7, 0, 1, "Use LoggerSource.Instance", RemovalVersion = 11)]
+    using Microsoft.Extensions.Logging;
+
+    /// <summary>Provides access to logging methods.  Obsolete, use <see cref="ILogger{TCategoryName}"/> instead.</summary>
+    [DnnDeprecated(7, 0, 1, "Use Microsoft.Extensions.Logging.ILogger<T>", RemovalVersion = 11)]
     public static partial class DnnLog
     {
         private const string ConfigFile = "DotNetNuke.log4net.config";

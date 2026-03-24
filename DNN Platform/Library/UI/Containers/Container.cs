@@ -29,11 +29,12 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Container is the base for the Containers.</summary>
     public class Container : UserControl
     {
-        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly ILogger tracelLogger = DnnLoggingController.GetLogger("DNN.Trace");
         private readonly IClientResourceController clientResourceController;
         private HtmlContainerControl contentPane;
         private ModuleInfo moduleConfiguration;

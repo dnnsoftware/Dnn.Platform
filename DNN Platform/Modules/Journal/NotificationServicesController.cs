@@ -18,11 +18,13 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [ValidateAntiForgeryToken]
     public class NotificationServicesController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationServicesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<NotificationServicesController>();
 
         [HttpPost]
         [ValidateAntiForgeryToken]

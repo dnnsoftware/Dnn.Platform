@@ -44,6 +44,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.Search.Entities;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>TabController provides all operation to <see cref="TabInfo"/>.</summary>
     /// <remarks>
@@ -54,7 +55,7 @@ namespace DotNetNuke.Entities.Tabs
     public partial class TabController(IEventLogger eventLogger, DataProvider dataProvider, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         : ServiceLocator<ITabController, TabController>, ITabController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabController>();
         private static readonly Regex TabNameCheck1 = new Regex("^LPT[1-9]$|^COM[1-9]$", RegexOptions.IgnoreCase);
         private static readonly Regex TabNameCheck2 = new Regex("^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$|^LOGIN$|^REGISTER$", RegexOptions.IgnoreCase);
 

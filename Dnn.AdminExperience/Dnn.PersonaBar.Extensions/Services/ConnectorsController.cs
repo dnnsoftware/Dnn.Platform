@@ -21,10 +21,12 @@ namespace Dnn.PersonaBar.Connectors.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(MenuName = "Dnn.Connectors")]
     public class ConnectorsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConnectorsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ConnectorsController>();
         private readonly IServiceProvider serviceProvider;
         private readonly IConnectionsManager connectionsManager;
 

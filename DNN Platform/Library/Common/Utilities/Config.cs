@@ -22,11 +22,12 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The Config class provides access to the web.config file.</summary>
     public partial class Config
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Config));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Config>();
 
         /// <summary>Represents each configuration file.</summary>
         public enum ConfigFileType

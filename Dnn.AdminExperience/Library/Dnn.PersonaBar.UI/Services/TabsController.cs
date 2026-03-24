@@ -19,11 +19,13 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A Persona Bar API controller for pages.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class TabsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabsController>();
         private readonly Library.Controllers.TabsController controller = new Library.Controllers.TabsController();
 
         /// <summary>Gets the local resource file path.</summary>

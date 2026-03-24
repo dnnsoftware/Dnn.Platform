@@ -15,10 +15,12 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Watches <c>bin</c> folder and root files and unloads the app domain proactively when they change.</summary>
     internal static class DotNetNukeShutdownOverload
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeShutdownOverload));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(DotNetNukeShutdownOverload));
 
         private static Timer shutDownDelayTimer;
         private static bool handleShutdowns;

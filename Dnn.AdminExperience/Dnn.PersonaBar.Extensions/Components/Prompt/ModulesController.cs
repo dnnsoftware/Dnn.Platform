@@ -22,11 +22,13 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <inheritdoc cref="Dnn.PersonaBar.Library.Controllers.ModulesController"/>
     [DnnDeprecated(9, 2, 1, "Moved to Dnn.PersonaBar.Library.Controllers because of multiple dependency.")]
     public partial class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModulesController>();
 
         /// <inheritdoc />
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)

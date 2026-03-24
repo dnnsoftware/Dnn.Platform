@@ -10,10 +10,12 @@ namespace DotNetNuke.Services.Installer.Log
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The Logger class provides an Installer Log.</summary>
     public class Logger
     {
-        private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof(Logger));
+        private static readonly ILogger DnnLogger = DnnLoggingController.GetLogger<Logger>();
         private readonly List<LogEntry> logs;
         private string errorClass;
         private bool hasWarnings;

@@ -21,9 +21,11 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem.Internal;
 
+    using Microsoft.Extensions.Logging;
+
     public class StandardFolderProvider : FolderProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<StandardFolderProvider>();
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 

@@ -41,6 +41,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Web.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
     using Localization = DotNetNuke.Services.Localization.Localization;
@@ -60,7 +61,7 @@ namespace DotNetNuke.Services.Install
         private static readonly IInstallationStep InstallSiteStep = new InstallSiteStep();
         private static readonly IInstallationStep InstallSuperUserStep = new InstallSuperUserStep();
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallWizard));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InstallWizard>();
 
         // Ordered List of Steps (and weight in percentage) to be executed
         private static readonly IDictionary<IInstallationStep, int> Steps = new Dictionary<IInstallationStep, int>

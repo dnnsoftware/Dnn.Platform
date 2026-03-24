@@ -15,12 +15,15 @@ namespace DotNetNuke.Services.Exceptions
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     /// <summary>Base Portal Exception.</summary>
     public class BasePortalException : Exception
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<BasePortalException>();
         private string innerExceptionString;
         private string message;
         private string source;

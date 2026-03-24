@@ -22,10 +22,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServerController>();
 
         public ServerController(INavigationManager navigationManager)
         {

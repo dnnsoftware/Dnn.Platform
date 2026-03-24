@@ -26,6 +26,8 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     using Image = System.Web.UI.WebControls.Image;
 
     /// <summary>The CaptchaControl control provides a Captcha Challenge control.</summary>
@@ -37,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
         private const int LENGTHDEFAULT = 6;
         private const string RENDERURLDEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARSDEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CaptchaControl>();
         private static readonly string[] FontFamilies =
         {
             "Comic Sans MS",

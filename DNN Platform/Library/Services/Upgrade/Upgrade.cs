@@ -48,6 +48,7 @@ namespace DotNetNuke.Services.Upgrade
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Assembly = System.Reflection.Assembly;
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
@@ -59,7 +60,7 @@ namespace DotNetNuke.Services.Upgrade
     {
         private const string FipsCompilanceAssembliesCheckedKey = "FipsCompilanceAssembliesChecked";
         private const string FipsCompilanceAssembliesFolder = "App_Data\\FipsCompilanceAssemblies";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Upgrade));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Upgrade>();
         private static readonly object ThreadLocker = new object();
         private static DateTime startTime;
 

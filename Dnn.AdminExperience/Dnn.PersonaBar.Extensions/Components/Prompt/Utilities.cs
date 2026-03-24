@@ -13,9 +13,11 @@ namespace Dnn.PersonaBar.Prompt.Components
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class Utilities
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Utilities));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Utilities>();
 
         public static RoleInfo CreateRole(string roleName, int portalId, RoleStatus status, string description = "", bool isPublic = false, bool autoAssign = false, int roleGroupId = -1)
         {

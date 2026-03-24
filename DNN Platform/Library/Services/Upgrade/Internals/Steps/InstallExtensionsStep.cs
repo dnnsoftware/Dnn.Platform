@@ -9,12 +9,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>InstallExtensionsStep - Step that installs all the Extensions.</summary>
     public class InstallExtensionsStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InstallExtensionsStep>();
 
         /// <summary>Main method to execute the step.</summary>
         public override void Execute()

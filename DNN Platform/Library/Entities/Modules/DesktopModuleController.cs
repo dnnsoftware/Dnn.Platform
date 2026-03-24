@@ -33,12 +33,13 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Upgrade;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>DesktopModuleController provides the Business Layer for Desktop Modules.</summary>
         /// <param name="eventLogger">The event logger.</param>
     public partial class DesktopModuleController(IEventLogger eventLogger)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DesktopModuleController>();
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 

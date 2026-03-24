@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -43,7 +44,7 @@ namespace DotNetNuke.Services.FileSystem
     {
         private const string DefaultUsersFoldersPath = "Users";
         private const string DefaultMappedPathSetting = "DefaultMappedPath";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FolderManager>();
         private static readonly ConcurrentDictionary<int, SyncFolderData> SyncFoldersData = new ConcurrentDictionary<int, SyncFolderData>();
         private static readonly object ThreadLocker = new object();
         private readonly IEventLogger eventLogger;

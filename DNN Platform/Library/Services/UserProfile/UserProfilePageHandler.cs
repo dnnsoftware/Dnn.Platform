@@ -13,9 +13,11 @@ namespace DotNetNuke.Services.UserProfile
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public class UserProfilePageHandler : IHttpHandler
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserProfilePageHandler));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UserProfilePageHandler>();
 
         /// <inheritdoc />
         public bool IsReusable

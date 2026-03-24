@@ -13,9 +13,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer.Packages;
 
+    using Microsoft.Extensions.Logging;
+
     public class SkinObjectPackageEditor : IPackageEditor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinObjectPackageEditor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SkinObjectPackageEditor>();
 
         /// <inheritdoc />
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)

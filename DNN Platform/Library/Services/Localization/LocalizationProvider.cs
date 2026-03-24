@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Services.Cache;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An <see cref="ILocalizationProvider"/> implementation.</summary>
     /// <param name="hostSettings">The host settings.</param>
@@ -33,7 +34,7 @@ namespace DotNetNuke.Services.Localization
     public class LocalizationProvider(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LocalizationProvider>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
 

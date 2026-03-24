@@ -14,10 +14,12 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>An implementation of <see cref="IndexingProviderBase"/> for pages.</summary>
     public class TabIndexer : IndexingProviderBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabIndexer));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabIndexer>();
         private static readonly int TabSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId;
 
         /// <summary>Converts applicable pages into <see cref="SearchDocument"/> instances before passing them to the <paramref name="indexer"/>.</summary>

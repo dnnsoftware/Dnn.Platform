@@ -43,6 +43,8 @@ namespace Dnn.PersonaBar.Extensions.Services
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
 
+    using Microsoft.Extensions.Logging;
+
     using Constants = Dnn.PersonaBar.Extensions.Components.Constants;
     using Util = DotNetNuke.Entities.Content.Common.Util;
 
@@ -50,7 +52,7 @@ namespace Dnn.PersonaBar.Extensions.Services
     public class ExtensionsController : PersonaBarApiController
     {
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExtensionsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ExtensionsController>();
         private static readonly Regex ManifestExensionsRegex = new Regex(@"dnn\d*$");
         private static readonly string[] SpecialModuleFolders = new[] { "mvc" };
         private readonly Components.ExtensionsController controller = new Components.ExtensionsController();

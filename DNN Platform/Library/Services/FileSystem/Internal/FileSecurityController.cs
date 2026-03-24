@@ -13,12 +13,13 @@ namespace DotNetNuke.Services.FileSystem.Internal
     using DotNetNuke.Instrumentation;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Internal class to check file security.</summary>
     public class FileSecurityController(IServiceProvider serviceProvider) : ServiceLocator<IFileSecurityController, FileSecurityController>, IFileSecurityController
     {
         private const int BufferSize = 4096;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSecurityController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileSecurityController>();
         private readonly IServiceProvider serviceProvider = serviceProvider ?? Globals.GetCurrentServiceProvider();
 
         /// <summary>Initializes a new instance of the <see cref="FileSecurityController"/> class.</summary>

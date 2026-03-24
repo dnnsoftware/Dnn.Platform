@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
     using DotNetNuke.Services.Installer;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Contains business logic for the Config Console component in the Persona Bar.</summary>
     public partial class ConfigConsoleController
@@ -33,7 +34,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
 
         private const string CONFIGEXT = ".config";
         private const string ROBOTSEXT = "robots.txt";  // in multi-portal instances, there may be multiple robots.txt files (e.g., site1.com.robots.txt, site2.com.robots.txt, etc.)
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ConfigConsoleController>();
 
         private readonly IApplicationStatusInfo appStatus;
         private readonly IApplicationInfo appInfo;

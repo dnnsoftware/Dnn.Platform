@@ -41,10 +41,12 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.</summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DotNetNukeHttpApplication>();
 
         private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",];
 

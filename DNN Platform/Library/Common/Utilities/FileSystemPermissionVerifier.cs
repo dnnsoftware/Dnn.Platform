@@ -9,11 +9,13 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Common.Utilities.Internal;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Verifies the ability to create and delete files and folders.</summary>
     /// <remarks>This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.</remarks>
     public class FileSystemPermissionVerifier
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileSystemPermissionVerifier>();
         private readonly string basePath;
 
         private int retryTimes = 30;

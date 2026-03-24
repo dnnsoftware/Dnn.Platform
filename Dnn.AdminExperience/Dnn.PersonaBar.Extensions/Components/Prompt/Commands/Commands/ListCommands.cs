@@ -18,10 +18,12 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
     using Dnn.PersonaBar.Prompt.Components.Repositories;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("list-commands", Constants.GeneralCategory, "Prompt_ListCommands_Description")]
     public class ListCommands : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListCommands));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ListCommands>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;

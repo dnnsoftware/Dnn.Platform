@@ -28,11 +28,12 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Web.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The Password UserModuleBase is used to manage Users Passwords.</summary>
     public partial class Password : UserModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Password>();
         private readonly IEventLogger eventLogger;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;

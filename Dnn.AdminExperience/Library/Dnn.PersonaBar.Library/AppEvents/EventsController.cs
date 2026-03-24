@@ -17,9 +17,11 @@ namespace Dnn.PersonaBar.Library.AppEvents
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public class EventsController : ServiceLocator<IEventsController, EventsController>, IEventsController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<EventsController>();
 
         private static readonly object LockThis = new object();
         private static bool isInitialized;

@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A web API controller for the Member Directory module.</summary>
     /// <param name="listController">The list controller.</param>
@@ -33,7 +34,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     public class MemberDirectoryController(ListController listController, IHostSettings hostSettings)
         : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MemberDirectoryController>();
         private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 

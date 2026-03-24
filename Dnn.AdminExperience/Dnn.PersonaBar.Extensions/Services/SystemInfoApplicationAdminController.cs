@@ -18,10 +18,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class SystemInfoApplicationAdminController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoApplicationAdminController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SystemInfoApplicationAdminController>();
 
         public static string FirstCharToUpper(string input)
             => FirstCharToUpper(input, CultureInfo.CurrentCulture);

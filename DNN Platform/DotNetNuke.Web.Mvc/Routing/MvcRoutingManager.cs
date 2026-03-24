@@ -18,9 +18,11 @@ namespace DotNetNuke.Web.Mvc.Routing
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Mvc.Common;
 
+    using Microsoft.Extensions.Logging;
+
     public sealed class MvcRoutingManager : IMapRoute, IRoutingManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MvcRoutingManager>();
         private readonly RouteCollection routes;
         private readonly PortalAliasMvcRouteManager portalAliasMvcRouteManager;
 

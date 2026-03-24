@@ -26,11 +26,12 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Services.UserRequest;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The SendPassword UserModuleBase is used to allow a user to retrieve their password.</summary>
     public partial class SendPassword : UserModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SendPassword>();
         private readonly INavigationManager navigationManager;
         private readonly IEventLogger eventLogger;
         private readonly IPortalController portalController;

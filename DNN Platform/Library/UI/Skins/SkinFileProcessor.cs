@@ -17,6 +17,8 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
 
+    using Microsoft.Extensions.Logging;
+
     public enum SkinParser
     {
         /// <summary>Localized parser.</summary>
@@ -29,7 +31,7 @@ namespace DotNetNuke.UI.Skins
     /// <summary>    Handles processing of a list of uploaded skin files into a working skin.</summary>
     public class SkinFileProcessor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SkinFileProcessor>();
         private readonly string dUPLICATEDETAIL = Util.GetLocalizedString("DuplicateSkinObject.Detail");
         private readonly string dUPLICATEERROR = Util.GetLocalizedString("DuplicateSkinObject.Error");
         private readonly string fILESEND = Util.GetLocalizedString("EndSkinFiles");

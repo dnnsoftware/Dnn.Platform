@@ -9,11 +9,12 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Cache;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Manages http routes for services (WebAPI, MVC, etc.).</summary>
     public static class ServicesRoutingManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(ServicesRoutingManager));
 
         /// <summary>Registers all the service routes.</summary>
         public static void RegisterServiceRoutes()

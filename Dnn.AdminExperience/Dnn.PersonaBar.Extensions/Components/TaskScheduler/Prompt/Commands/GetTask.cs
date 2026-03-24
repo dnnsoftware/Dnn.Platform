@@ -17,13 +17,15 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("get-task", Constants.SchedulerCategory, "Prompt_GetTask_Description")]
     public class GetTask : ConsoleCommandBase
     {
         [FlagParameter("id", "Prompt_GetTask_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GetTask));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<GetTask>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;

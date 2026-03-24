@@ -16,10 +16,12 @@ namespace Dnn.Modules.TelerikRemoval
     using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Web;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>An <see cref="IUpgradeable"/> implementation.</summary>
     public class UpgradeController : IUpgradeable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UpgradeController>();
 
         private readonly IServiceProvider serviceProvider = GetServiceProvider();
 

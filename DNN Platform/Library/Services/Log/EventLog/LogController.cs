@@ -25,12 +25,13 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Instrumentation;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="ILogController" />
     public class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
         private const int WriterLockTimeout = 10000; // milliseconds
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LogController>();
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
         private readonly IApplicationStatusInfo appStatus;
 

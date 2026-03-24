@@ -17,6 +17,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Internal.SourceGenerators;
     using ICSharpCode.SharpZipLib.Zip;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Directory = SchwabenCode.QuickIO.QuickIODirectory;
     using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
@@ -25,7 +26,7 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>File System utilities.</summary>
     public partial class FileSystemUtils
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileSystemUtils>();
 
         /// <summary>Adds a File to a Zip File.</summary>
         /// <param name="zipFile">The Zip File to add to.</param>

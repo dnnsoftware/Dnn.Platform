@@ -15,9 +15,11 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
 
+    using Microsoft.Extensions.Logging;
+
     internal class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabWorkflowTracker));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabWorkflowTracker>();
         private readonly ITabController tabController;
         private readonly IWorkflowEngine workflowEngine;
         private readonly IWorkflowManager workflowManager;

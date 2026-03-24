@@ -47,6 +47,7 @@ namespace Dnn.PersonaBar.Security.Services
     using DotNetNuke.Web.Api.Auth.ApiTokens.Models;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Constants = Dnn.PersonaBar.Library.Constants;
     using Localization = DotNetNuke.Services.Localization.Localization;
@@ -58,7 +59,7 @@ namespace Dnn.PersonaBar.Security.Services
         private const string BULLETINXMLNODEPATH = "//channel/item";
         private const string UserRequestIPHeaderSettingName = "UserRequestIPHeader";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SecurityController>();
 
         private readonly Components.SecurityController controller;
         private readonly IPagesController pagesController;

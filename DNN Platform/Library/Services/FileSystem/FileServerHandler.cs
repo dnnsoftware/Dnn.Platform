@@ -19,9 +19,11 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.FileSystem.EventArgs;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class FileServerHandler : IHttpHandler
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileServerHandler>();
 
         /// <inheritdoc />
         public bool IsReusable => true;

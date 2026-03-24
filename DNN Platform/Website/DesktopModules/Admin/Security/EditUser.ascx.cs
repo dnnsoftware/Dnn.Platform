@@ -33,13 +33,14 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
     /// <summary>The ManageUsers UserModuleBase is used to manage Users.</summary>
     public partial class EditUser : UserModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditUser));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<EditUser>();
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;

@@ -14,13 +14,14 @@ namespace DotNetNuke.Services.FileSystem.Internal
     using DotNetNuke.Instrumentation;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     public class FileDeletionController(IFileLockingController fileLockingController, IFileVersionController fileVersionController, IFolderMappingController folderMappingController, IContentController contentController, DataProvider dataProvider)
         : ServiceLocator<IFileDeletionController, FileDeletionController>, IFileDeletionController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileDeletionController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileDeletionController>();
         private readonly IFileLockingController fileLockingController = fileLockingController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFileLockingController>();
         private readonly IFileVersionController fileVersionController = fileVersionController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFileVersionController>();
         private readonly IFolderMappingController folderMappingController = folderMappingController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFolderMappingController>();

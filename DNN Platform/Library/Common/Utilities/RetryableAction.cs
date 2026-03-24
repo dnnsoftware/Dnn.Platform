@@ -10,13 +10,15 @@ namespace DotNetNuke.Common.Utilities.Internal
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Allows an action to be run and retried after a delay when an exception is thrown.
     /// <remarks>If the action never succeeds the final exception will be re-thrown for the caller to catch.</remarks>
     /// </summary>
     public class RetryableAction
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RetryableAction>();
 
         static RetryableAction()
         {
