@@ -5,8 +5,11 @@ namespace DotNetNuke.Instrumentation
 {
     using System;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>A contract specifying the ability to provide <see cref="ILog"/> instances.</summary>
-    public interface ILoggerSource
+    [DnnDeprecated(10, 4, 0, "Use Microsoft.Extensions.Logging.ILogger<T>")]
+    public partial interface ILoggerSource
     {
         /// <summary>Gets the logger for the given <paramref name="type"/>.</summary>
         /// <param name="type">The type providing the name for the logger instance.</param>

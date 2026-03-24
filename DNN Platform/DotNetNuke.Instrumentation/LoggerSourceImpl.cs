@@ -8,10 +8,13 @@ namespace DotNetNuke.Instrumentation
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     using Serilog;
 
     /// <summary>An <see cref="ILoggerSource"/> implementation.</summary>
     [SuppressMessage("Microsoft.Design", "CA1711:IdentifiersShouldNotHaveIncorrectSuffix", Justification = "Breaking change")]
+    [DnnDeprecated(10, 4, 0, "Use Microsoft.Extensions.Logging.ILogger<T>")]
     public partial class LoggerSourceImpl : ILoggerSource
     {
         /// <inheritdoc />
