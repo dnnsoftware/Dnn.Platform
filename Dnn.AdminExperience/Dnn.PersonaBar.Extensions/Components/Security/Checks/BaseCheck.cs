@@ -9,15 +9,27 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Base class for security checks.</summary>
     public abstract class BaseCheck : IAuditCheck
     {
-        private readonly Lazy<ILog> logger;
+        private readonly Lazy<ILog> log;
+        private readonly ILogger logger;
 
         /// <summary>Initializes a new instance of the <see cref="BaseCheck"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.4.0. Use overload with ILogger. Scheduled removal in v12.0.0.")]
         public BaseCheck()
+            : this(null)
         {
-            this.logger = new Lazy<ILog>(() => LoggerSource.Instance.GetLogger(this.GetType()));
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="BaseCheck"/> class.</summary>
+        /// <param name="logger">The logger.</param>
+        public BaseCheck(ILogger logger)
+        {
+            this.log = new Lazy<ILog>(() => LoggerSource.Instance.GetLogger(this.GetType()));
+            this.logger = logger ?? DnnLoggingController.GetLogger(this.GetType());
         }
 
         /// <inheritdoc cref="IAuditCheck.Id" />
@@ -31,7 +43,8 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Security/App_LocalResources/Security.resx";
 
         /// <summary>Gets a typed instance of the <see cref="ILog"/> interface.</summary>
-        protected virtual ILog Logger => this.logger.Value;
+        [Obsolete("Deprecated in DotNetNuke 10.4.0. Use Microsoft.Extensions.Logging.ILogger. Scheduled removal in v12.0.0.")]
+        protected virtual ILog Logger => this.log.Value;
 
         /// <inheritdoc cref="IAuditCheck.Execute" />
         public virtual CheckResult Execute()
@@ -42,7 +55,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
             catch (Exception ex)
             {
-                this.Logger.Error($"{this.Id} failed.", ex);
+                this.logger.Error($"{this.Id} failed.", ex);
                 return this.Unverified("An internal error occurred. See logs for details.");
             }
         }
