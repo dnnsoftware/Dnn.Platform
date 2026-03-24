@@ -26,8 +26,8 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using DotNetNuke.Framework;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Membership;
-    using DotNetNuke.Web.Api;
     using DotNetNuke.Services.Log.EventLog;
+    using DotNetNuke.Web.Api;
     using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.JsonWebTokens;
     using Microsoft.IdentityModel.Tokens;
