@@ -36,6 +36,7 @@ namespace Dnn.ExportImport.Components.Engines
     using DotNetNuke.Services.Scheduling;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
@@ -46,7 +47,7 @@ namespace Dnn.ExportImport.Components.Engines
     {
         private const StringComparison IgnoreCaseComp = StringComparison.InvariantCultureIgnoreCase;
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ExportImportEngine>();
 
         private static readonly string ExportFolder;
 

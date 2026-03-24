@@ -32,6 +32,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A page which installs or upgrades DNN.</summary>
     public partial class Install : Page
@@ -42,7 +43,7 @@ namespace DotNetNuke.Services.Install
         // ReSharper disable once InconsistentNaming
         protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Install>();
         private static readonly object InstallLocker = new object();
 
         private readonly IApplicationStatusInfo appStatus;

@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.Groups
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A web API controller for moderation in the Groups module.</summary>
     /// <param name="navigationManager">The navigation manager.</param>
@@ -43,7 +44,7 @@ namespace DotNetNuke.Modules.Groups
     public class ModerationServiceController(INavigationManager navigationManager, RoleProvider roleProvider, IRoleController roleController, IEventManager eventManager, IPortalController portalController, IUserController userController, IEventLogger eventLogger, IHostSettings hostSettings)
         : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModerationServiceController>();
         private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
         private readonly IRoleController roleController = roleController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IRoleController>();
         private readonly IEventManager eventManager = eventManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventManager>();

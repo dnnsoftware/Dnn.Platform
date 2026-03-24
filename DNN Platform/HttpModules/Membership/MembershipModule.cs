@@ -35,11 +35,12 @@ namespace DotNetNuke.HttpModules.Membership
     using DotNetNuke.UI.Skins.EventListeners;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Information about membership.</summary>
     public partial class MembershipModule : IHttpModule
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MembershipModule>();
 
         /// <summary>Initializes a new instance of the <see cref="MembershipModule"/> class.</summary>
         public MembershipModule()

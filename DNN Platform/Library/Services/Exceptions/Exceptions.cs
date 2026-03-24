@@ -23,6 +23,8 @@ namespace DotNetNuke.Services.Exceptions
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.UI.Modules;
+
+    using Microsoft.Extensions.Logging;
     using Microsoft.VisualBasic.CompilerServices;
 
     /// <summary>Exceptions class provides operation to log most of the exceptions occurred in system.</summary>
@@ -49,7 +51,7 @@ namespace DotNetNuke.Services.Exceptions
     [StandardModule]
     public sealed class Exceptions
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Exceptions));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Exceptions>();
 
         /// <summary>Gets the exception info.</summary>
         /// <param name="e">The exception.</param>

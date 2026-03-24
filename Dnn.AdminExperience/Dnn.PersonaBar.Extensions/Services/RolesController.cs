@@ -26,10 +26,12 @@ namespace Dnn.PersonaBar.Roles.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class RolesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RolesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RolesController>();
 
         [HttpGet]
         public HttpResponseMessage GetRoles(int groupId, string keyword, int startIndex, int pageSize)

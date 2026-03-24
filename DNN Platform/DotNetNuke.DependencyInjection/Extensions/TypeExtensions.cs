@@ -12,6 +12,8 @@ namespace DotNetNuke.DependencyInjection.Extensions
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary><see cref="Type"/> specific extensions to be used in Dependency Injection invocations.</summary>
     public static partial class TypeExtensions
     {
@@ -93,7 +95,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// <summary>Logs the exceptions in <see cref="TypesResult.OtherExceptions"/> of <paramref name="result" /> using <paramref name="logger"/>.</summary>
         /// <param name="result">The types result to log.</param>
         /// <param name="logger">The logger.</param>
-        public static void LogOtherExceptions(this TypesResult result, ILog logger)
+        public static void LogOtherExceptions(this TypesResult result, ILogger logger)
         {
             if (logger is null)
             {

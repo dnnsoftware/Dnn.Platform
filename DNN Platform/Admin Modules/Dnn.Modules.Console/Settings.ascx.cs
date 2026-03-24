@@ -20,10 +20,12 @@ namespace Dnn.Modules.Console
     using DotNetNuke.Web.Common;
     using DotNetNuke.Web.UI.WebControls.Internal;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Loads and saves the module settings.</summary>
     public partial class Settings : ModuleSettingsBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Settings>();
 
         /// <inheritdoc />
         public override void LoadSettings()

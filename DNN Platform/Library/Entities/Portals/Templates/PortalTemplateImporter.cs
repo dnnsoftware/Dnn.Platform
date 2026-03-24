@@ -38,11 +38,13 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     internal class PortalTemplateImporter
     {
         public const string HtmlTextTimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlTextAutoSaveEnabled = "HtmlText_AutoSaveEnabled";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalTemplateImporter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalTemplateImporter>();
         private readonly IPermissionDefinitionService permissionDefinitionService;
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly ListController listController;

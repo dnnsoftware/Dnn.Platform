@@ -28,6 +28,7 @@ namespace Dnn.EditBar.UI.Services
     using DotNetNuke.Web.InternalServices;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A web API controller for content editing.</summary>
     /// <param name="appStatus">The application status.</param>
@@ -39,7 +40,7 @@ namespace Dnn.EditBar.UI.Services
     {
         private const string DefaultExtensionImage = "icon_extensions_32px.png";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ContentEditorController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ContentEditorController>();
         private readonly IApplicationStatusInfo appSettings = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
         private readonly IHostSettings hostSettings = hostSettings ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IHostSettings>();
 

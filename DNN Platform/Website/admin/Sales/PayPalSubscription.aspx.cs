@@ -18,11 +18,13 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A page which receives subscription messages from PayPal.</summary>
     [DnnDeprecated(10, 0, 2, "No replacement")]
     public partial class PayPalSubscription : PageBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PayPalSubscription));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PayPalSubscription>();
 
         /// <summary>Initializes a new instance of the <see cref="PayPalSubscription"/> class.</summary>
         public PayPalSubscription()

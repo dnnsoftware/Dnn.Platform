@@ -18,11 +18,12 @@ namespace DotNetNuke.Data
     using DotNetNuke.Instrumentation;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public sealed class SqlDataProvider : DataProvider
     {
         private const string ScriptDelimiter = @"(?<=(?:[^\w]+|^))GO(?=(?: |\t)*?(?:\r?\n|$))";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SqlDataProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SqlDataProvider>();
         private static DatabaseConnectionProvider dbConnectionProvider = DatabaseConnectionProvider.Instance() ?? new SqlDatabaseConnectionProvider();
 
         /// <summary>Initializes a new instance of the <see cref="SqlDataProvider"/> class.</summary>

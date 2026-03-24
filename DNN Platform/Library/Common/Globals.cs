@@ -55,6 +55,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.VisualBasic.CompilerServices;
 
     using DataCache = DotNetNuke.UI.Utilities.DataCache;
@@ -208,7 +209,7 @@ namespace DotNetNuke.Common
 
         private static readonly Stopwatch AppStopwatch = Stopwatch.StartNew();
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Globals>();
         private static readonly HashSet<string> AdminControlKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "tab", "module", "importmodule", "exportmodule", "help", };
         private static string applicationPath;
         private static string desktopModulePath;

@@ -14,11 +14,13 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem.FolderMappings;
 
+    using Microsoft.Extensions.Logging;
+
     public class FolderMappingsConfigController : ServiceLocator<IFolderMappingsConfigController, FolderMappingsConfigController>, IFolderMappingsConfigController
     {
         private const string ConfigNodeValue = "folderMappingsSettings";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FolderMappingsConfigController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FolderMappingsConfigController>();
         private static readonly string DefaultConfigFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
 
         /// <summary>Initializes a new instance of the <see cref="FolderMappingsConfigController"/> class.</summary>

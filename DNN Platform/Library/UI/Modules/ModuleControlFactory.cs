@@ -15,11 +15,13 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules.Html5;
 
+    using Microsoft.Extensions.Logging;
+
     /// <inheritdoc cref="IModuleControlPipeline" />
     [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]
     public partial class ModuleControlFactory
     {
-        private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private static readonly ILogger TracelLogger = DnnLoggingController.GetLogger("DNN.Trace");
 
         /// <inheritdoc cref="IModuleControlPipeline.LoadModuleControl(TemplateControl,ModuleInfo,string,string)" />
         [DnnDeprecated(9, 4, 0, "This implementation has moved to DotNetNuke.ModulePipeline.ModuleControlPipeline")]

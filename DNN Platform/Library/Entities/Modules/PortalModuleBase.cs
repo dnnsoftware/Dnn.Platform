@@ -24,6 +24,8 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Modules;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The PortalModuleBase class defines a custom base class inherited by all
     /// desktop portal modules within the Portal.
@@ -38,7 +40,7 @@ namespace DotNetNuke.Entities.Modules
             RegexOptions.IgnoreCase | RegexOptions.Compiled,
             TimeSpan.FromSeconds(1));
 
-        private readonly ILog tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private readonly ILogger tracelLogger = DnnLoggingController.GetLogger("DNN.Trace");
         private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
         private string localResourceFile;
         private ModuleInstanceContext moduleContext;

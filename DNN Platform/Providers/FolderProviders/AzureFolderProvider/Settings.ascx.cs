@@ -17,6 +17,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.WindowsAzure.Storage;
     using Microsoft.WindowsAzure.Storage.Auth;
     using Microsoft.WindowsAzure.Storage.Blob;
@@ -24,7 +25,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     /// <summary>Windows Azure Storage Settings Control.</summary>
     public partial class Settings : FolderMappingSettingsControlBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Settings>();
         private readonly ICryptographyProvider cryptographyProvider;
         private readonly IHostSettings hostSettings;
 

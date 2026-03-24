@@ -27,6 +27,8 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Search.Vectorhighlight;
     using Lucene.Net.Store;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>  The Impl Controller class for Lucene.</summary>
@@ -43,7 +45,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string HtmlPreTag = "<b>";
         private const string HtmlPostTag = "</b>";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LuceneControllerImpl>();
         private static readonly TimeSpan DefaultRereadTimeSpan = TimeSpan.FromSeconds(30);
         private readonly object writerLock = new object();
         private readonly TimeSpan readerTimeSpan;

@@ -13,11 +13,12 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Internals;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The SearchEngineScheduler implements a SchedulerClient for the Indexing of portal content.</summary>
     public class SearchEngineScheduler : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngineScheduler));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SearchEngineScheduler>();
         private readonly IBusinessControllerProvider businessControllerProvider;
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngineScheduler"/> class.</summary>

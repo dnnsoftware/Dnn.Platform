@@ -11,9 +11,11 @@ namespace Dnn.PersonaBar.Library.Common
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public class IocUtil
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<IocUtil>();
 
         /// <summary>Register a component into the IOC container for later instantiation.</summary>
         /// <typeparam name="TContract">Contract interface for the component to registr with the IOC container.</typeparam>

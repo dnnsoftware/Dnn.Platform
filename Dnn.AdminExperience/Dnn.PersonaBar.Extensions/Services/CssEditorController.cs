@@ -22,10 +22,12 @@ namespace Dnn.PersonaBar.CssEditor.Services
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class CssEditorController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CssEditorController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CssEditorController>();
 
         /// GET: api/CssEditor/GetStyleSheet
         /// <summary>Gets portal.css of specific portal.</summary>

@@ -15,9 +15,11 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class PortalTemplateInfo : IPortalTemplateInfo
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalController>();
         private string resourceFilePath;
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.</summary>

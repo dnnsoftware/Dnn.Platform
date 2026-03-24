@@ -19,10 +19,12 @@ namespace DotNetNuke.Services.Installer.Writers
     using DotNetNuke.Security;
     using DotNetNuke.Services.Installer.Packages;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The ModulePackageWriter class.</summary>
     public class ModulePackageWriter : PackageWriterBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModulePackageWriter>();
 
         /// <summary>Initializes a new instance of the <see cref="ModulePackageWriter"/> class.</summary>
         /// <param name="manifestNav">The legacy manifest XPath navigator.</param>

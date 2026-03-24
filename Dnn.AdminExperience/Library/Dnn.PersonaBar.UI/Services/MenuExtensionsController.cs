@@ -22,12 +22,13 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An API controller for the menu of the Persona Bar.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class MenuExtensionsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuExtensionsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MenuExtensionsController>();
         private readonly IServiceProvider serviceProvider;
 
         /// <summary>Initializes a new instance of the <see cref="MenuExtensionsController"/> class.</summary>

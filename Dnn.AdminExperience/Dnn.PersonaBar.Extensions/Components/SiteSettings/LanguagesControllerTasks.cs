@@ -19,13 +19,16 @@ namespace Dnn.PersonaBar.SiteSettings.Components
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     internal class LanguagesControllerTasks
     {
         private const string LocalResourcesFile = "~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.SiteSettings/App_LocalResources/SiteSettings.resx";
         private const string LocalizationProgressFile = "PersonaBarLocalizationProgress.txt";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesControllerTasks));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LanguagesControllerTasks>();
 
         public static void LocalizeSitePages(LocalizationProgress progress, int portalId, bool translatePages, string defaultLanguage)
         {

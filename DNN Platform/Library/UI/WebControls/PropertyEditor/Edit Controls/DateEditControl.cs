@@ -14,6 +14,8 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     using Calendar = DotNetNuke.Common.Utilities.Calendar;
 
     /// <summary>
@@ -23,7 +25,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DateEditControl>();
         private TextBox dateField;
         private HyperLink linkCalendar;
 

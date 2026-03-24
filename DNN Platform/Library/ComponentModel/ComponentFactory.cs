@@ -9,9 +9,11 @@ namespace DotNetNuke.ComponentModel
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public static class ComponentFactory
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentFactory));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(ComponentFactory));
 
         public static IContainer Container { get; set; }
 

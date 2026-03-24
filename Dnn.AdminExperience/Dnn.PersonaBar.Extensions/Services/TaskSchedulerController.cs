@@ -24,12 +24,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.Logging;
     using Microsoft.VisualBasic;
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class TaskSchedulerController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TaskSchedulerController>();
         private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
         private Components.TaskSchedulerController controller = new Components.TaskSchedulerController();
 

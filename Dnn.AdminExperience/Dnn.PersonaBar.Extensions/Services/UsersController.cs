@@ -29,10 +29,12 @@ namespace Dnn.PersonaBar.Users.Services
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(MenuName = "Dnn.Users")]
     public class UsersController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UsersController>();
 
         /// <summary>Create a User.</summary>
         /// <param name="contract">Information about the user to create.</param>

@@ -46,6 +46,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Search.Entities;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>ModuleController provides the Business Layer for Modules.</summary>
     /// <param name="eventLogger">The event logger.</param>
@@ -54,7 +55,7 @@ namespace DotNetNuke.Entities.Modules
     public partial class ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         : ServiceLocator<IModuleController, ModuleController>, IModuleController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleController>();
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();

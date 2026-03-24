@@ -31,13 +31,14 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The SecurityRoles PortalModuleBase is used to manage the users and roles they have.</summary>
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SecurityRoles>();
         private readonly INavigationManager navigationManager;
         private readonly RoleProvider roleProvider;
         private readonly IRoleController roleController;

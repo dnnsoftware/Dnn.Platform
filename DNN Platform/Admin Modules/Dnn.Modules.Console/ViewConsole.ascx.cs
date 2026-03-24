@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace Dnn.Modules.Console;
 
 using System;
@@ -31,11 +32,12 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Personalization;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>Implements the module view logic.</summary>
 public partial class ViewConsole : PortalModuleBase
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<ViewConsole>();
     private readonly INavigationManager navigationManager;
     private readonly IJavaScriptLibraryHelper javaScript;
     private readonly IClientResourceController clientResourceController;

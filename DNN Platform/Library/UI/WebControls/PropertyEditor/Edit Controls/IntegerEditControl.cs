@@ -10,11 +10,13 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The IntegerEditControl control provides a standard UI component for editing integer properties.</summary>
     [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
     public class IntegerEditControl : EditControl
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<IntegerEditControl>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="IntegerEditControl"/> class.

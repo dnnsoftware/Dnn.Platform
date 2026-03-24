@@ -8,10 +8,12 @@ namespace DotNetNuke.UI.WebControls
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The SettingInfo class provides a helper class for the Settings Editor.</summary>
     public class SettingInfo
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SettingInfo));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SettingInfo>();
         private Type type;
 
         /// <summary>Initializes a new instance of the <see cref="SettingInfo"/> class.</summary>

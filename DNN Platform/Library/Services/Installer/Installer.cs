@@ -24,10 +24,12 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The Installer class provides a single entrypoint for Package Installation.</summary>
     public class Installer : IDisposable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Installer>();
         private readonly MemoryStream inputStream;
 
         /// <summary>

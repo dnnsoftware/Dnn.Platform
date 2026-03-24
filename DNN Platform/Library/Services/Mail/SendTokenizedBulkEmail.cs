@@ -26,6 +26,8 @@ namespace DotNetNuke.Services.Mail
     using DotNetNuke.Services.Messaging.Data;
     using DotNetNuke.Services.Tokens;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>
@@ -34,7 +36,7 @@ namespace DotNetNuke.Services.Mail
     /// </summary>
     public class SendTokenizedBulkEmail : IDisposable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SendTokenizedBulkEmail>();
 
         // ReSharper restore InconsistentNaming
         private readonly List<string> addressedRoles = new List<string>();

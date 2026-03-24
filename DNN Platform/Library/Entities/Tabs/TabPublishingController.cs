@@ -20,10 +20,11 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class TabPublishingController : ServiceLocator<ITabPublishingController, TabPublishingController>, ITabPublishingController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabPublishingController>();
         private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="TabPublishingController"/> class.</summary>

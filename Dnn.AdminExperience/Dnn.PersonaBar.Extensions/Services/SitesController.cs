@@ -22,10 +22,12 @@ namespace Dnn.PersonaBar.Sites.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SitesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SitesController>();
         private readonly Components.SitesController controller = new Components.SitesController();
 
         /// <summary>Gets list of portals.</summary>

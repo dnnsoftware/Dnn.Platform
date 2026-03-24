@@ -24,6 +24,9 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.ModuleCache;
     using DotNetNuke.Services.Tokens;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     /// <summary>ModuleInfo provides the Entity Layer for Modules.</summary>
@@ -31,7 +34,7 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class ModuleInfo : ContentItem, IPropertyAccess
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInfo));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleInfo>();
         private string authorizedEditRoles;
         private string authorizedViewRoles;
         private string cultureCode;

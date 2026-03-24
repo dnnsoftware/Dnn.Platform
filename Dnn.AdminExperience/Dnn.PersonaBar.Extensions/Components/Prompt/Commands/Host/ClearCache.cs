@@ -12,11 +12,13 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("clear-cache", Constants.HostCategory, "Prompt_ClearCache_Description")]
 
     public class ClearCache : ConsoleCommandBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClearCache));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ClearCache>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;

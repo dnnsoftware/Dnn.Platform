@@ -34,6 +34,7 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
@@ -43,7 +44,7 @@ namespace DotNetNuke.UI.Modules
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleHost>();
 
         private static readonly Regex CdfMatchRegex = new Regex(
             @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",

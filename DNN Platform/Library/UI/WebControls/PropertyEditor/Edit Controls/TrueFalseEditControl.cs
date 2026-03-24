@@ -11,11 +11,13 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The TrueFalseEditControl control provides a standard UI component for editing true/false (boolean) properties.</summary>
     [ToolboxData("<{0}:TrueFalseEditControl runat=server></{0}:TrueFalseEditControl>")]
     public class TrueFalseEditControl : EditControl
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TrueFalseEditControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TrueFalseEditControl>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TrueFalseEditControl"/> class.

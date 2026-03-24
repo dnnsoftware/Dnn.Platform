@@ -18,11 +18,13 @@ namespace DotNetNuke.Services.Analytics.Config
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     [Serializable]
     [XmlRoot("AnalyticsConfig")]
     public class AnalyticsConfiguration
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AnalyticsConfiguration>();
         private AnalyticsRuleCollection rules;
         private AnalyticsSettingCollection settings;
 

@@ -27,6 +27,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using IConsoleCommand = DotNetNuke.Abstractions.Prompt.IConsoleCommand;
 #pragma warning disable CS0618
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     [RequireHost]
     public class CommandController : ControllerBase, IServiceRouteMapper
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CommandController>();
         private static readonly string[] DenyList = ["smtppassword", "password", "pwd", "pass", "apikey",];
         private static readonly string[] Namespaces = ["Dnn.PersonaBar.Prompt.Services",];
         private static readonly char[] Separators = [',', '|', ' ',];

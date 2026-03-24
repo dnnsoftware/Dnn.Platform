@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -44,7 +45,7 @@ namespace DotNetNuke.Services.FileSystem
         : ComponentBase<IFileManager, FileManager>, IFileManager
     {
         private const int BufferSize = 4096;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileManager>();
 
         private readonly IFolderManager folderManager = FolderManager.Instance;
         private readonly IFileSecurityController fileSecurityController = fileSecurityController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFileSecurityController>();

@@ -52,6 +52,7 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Web.Client;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
     using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
@@ -65,7 +66,7 @@ namespace DotNetNuke.Entities.Portals
     {
         protected const string HttpContextKeyPortalSettingsDictionary = "PortalSettingsDictionary{0}{1}";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalController>();
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;
@@ -2881,7 +2882,7 @@ namespace DotNetNuke.Entities.Portals
         [DnnDeprecated(9, 11, 1, "Use DotNetNuke.Entities.Portals.Templates.PortalTemplateInfo instead")]
         public partial class PortalTemplateInfo
         {
-            private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+            private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalController>();
             private readonly IHostSettings hostSettings;
             private readonly string originalCultureCode;
             private string resourceFilePath;

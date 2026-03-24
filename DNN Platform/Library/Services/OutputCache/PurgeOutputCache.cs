@@ -10,9 +10,11 @@ namespace DotNetNuke.Services.OutputCache
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
 
+    using Microsoft.Extensions.Logging;
+
     public class PurgeOutputCache : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeOutputCache));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PurgeOutputCache>();
 
         /// <summary>Initializes a new instance of the <see cref="PurgeOutputCache"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The schedule history item.</param>

@@ -25,12 +25,13 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Implements the logic for the CreateModule view.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CreateModule>();
         private readonly INavigationManager navigationManager;
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";

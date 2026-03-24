@@ -14,10 +14,12 @@ namespace DotNetNuke.Web.Api.Auth
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Base class for authentication providers message handlers.</summary>
     public abstract class AuthMessageHandlerBase : DelegatingHandler
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthMessageHandlerBase));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AuthMessageHandlerBase>();
 
         /// <summary>Initializes a new instance of the <see cref="AuthMessageHandlerBase"/> class.</summary>
         /// <param name="includeByDefault">A value indicating whether this handler should be included by default in all API endpoints.</param>

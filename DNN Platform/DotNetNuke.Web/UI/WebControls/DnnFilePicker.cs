@@ -23,13 +23,14 @@ namespace DotNetNuke.Web.UI.WebControls
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     /// <summary>The FilePicker Class provides a File Picker Control for DotNetNuke.</summary>
     public class DnnFilePicker : CompositeControl, ILocalizable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DnnFilePicker>();
         private readonly IHostSettings hostSettings;
         private readonly IPortalController portalController;
         private readonly IApplicationStatusInfo appStatus;

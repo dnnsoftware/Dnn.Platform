@@ -48,12 +48,13 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.WebControls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The Signin UserModuleBase is used to provide a login for a registered user.</summary>
     public partial class Login : UserModuleBase
     {
         private const string LOGINPATH = "/login";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Login>();
 
         private static readonly Regex UserLanguageRegex = new Regex("(.*)(&|\\?)(language=)([^&\\?]+)(.*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 

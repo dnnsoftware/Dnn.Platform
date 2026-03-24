@@ -21,6 +21,7 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Security.Membership;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The DNNRoleProvider overrides the default MembershipProvider to provide
@@ -28,7 +29,7 @@ namespace DotNetNuke.Security.Roles
     /// </summary>
     public class DNNRoleProvider(IHostSettings hostSettings, DataProvider dataProvider, IUserController userController) : RoleProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DNNRoleProvider>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private readonly DataProvider dataProvider = dataProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<DataProvider>();
         private readonly IUserController userController = userController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IUserController>();

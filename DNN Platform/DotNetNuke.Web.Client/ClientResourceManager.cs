@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using DotNetNuke.Web.Client.ResourceManager;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Provides the ability to request that client resources (JavaScript and CSS) be loaded on the client browser.</summary>
     [DnnDeprecated(10, 2, 0, "Please use IClientResourceController instead.")]
@@ -32,7 +33,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>The default javascript provider.</summary>
         internal const string DefaultJsProvider = "DnnBodyProvider";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ClientResourceManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ClientResourceManager>();
         private static readonly Dictionary<string, bool> FileExistsCache = new Dictionary<string, bool>();
         private static readonly ReaderWriterLockSlim LockFileExistsCache = new ReaderWriterLockSlim();
 

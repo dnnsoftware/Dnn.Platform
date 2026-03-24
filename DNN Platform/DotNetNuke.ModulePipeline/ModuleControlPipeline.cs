@@ -13,13 +13,16 @@ namespace DotNetNuke.ModulePipeline
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.Modules;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The Module Pipeline that determines which Module pattern
     /// to invoke based on the input module type.
     /// </summary>
     public class ModuleControlPipeline : IModuleControlPipeline
     {
-        private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
+        private static readonly ILogger TraceLogger = DnnLoggingController.GetLogger("DNN.Trace");
+
         private readonly IModuleControlFactory[] factories;
 
         /// <summary>Initializes a new instance of the <see cref="ModuleControlPipeline"/> class.</summary>

@@ -41,6 +41,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
@@ -57,7 +58,7 @@ namespace Dnn.ExportImport.Components.Services
     public class PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings)
         : BasePortableService
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ExportImportEngine>();
 
         private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();

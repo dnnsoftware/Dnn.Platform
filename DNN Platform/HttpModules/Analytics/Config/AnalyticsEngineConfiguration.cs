@@ -18,6 +18,7 @@ namespace DotNetNuke.HttpModules.Config
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Class definition for AnalyticsEngineConfiguration which is used to create
@@ -27,7 +28,7 @@ namespace DotNetNuke.HttpModules.Config
     [XmlRoot("AnalyticsEngineConfig")]
     public class AnalyticsEngineConfiguration
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsEngineConfiguration));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AnalyticsEngineConfiguration>();
 
         /// <summary>Gets or sets the collection of analytics engines.</summary>
         public AnalyticsEngineCollection AnalyticsEngines { get; set; }

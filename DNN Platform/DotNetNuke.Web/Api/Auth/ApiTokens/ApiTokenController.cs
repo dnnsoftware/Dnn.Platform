@@ -27,13 +27,14 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using DotNetNuke.Web.Api.Auth.ApiTokens.Repositories;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc />
     public class ApiTokenController : IApiTokenController
     {
         private const string AuthScheme = "Bearer";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApiTokenController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ApiTokenController>();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
         private readonly IApiTokenRepository apiTokenRepository;

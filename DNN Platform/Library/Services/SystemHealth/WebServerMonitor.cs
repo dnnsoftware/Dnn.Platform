@@ -12,12 +12,14 @@ namespace DotNetNuke.Services.SystemHealth
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// When run on each server it updates the last activity date for the server and removes any servers that haven't been seen in 24 hours.
     /// </summary>
     public class WebServerMonitor : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebServerMonitor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<WebServerMonitor>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="WebServerMonitor"/> class.

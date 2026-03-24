@@ -27,12 +27,14 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Services.Mail.OAuth;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Provides the APIs for SMTP settings management.</summary>
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsSmtpHostController : PersonaBarApiController
     {
         private const string ObfuscateString = "*****";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsSmtpHostController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServerSettingsSmtpHostController>();
         private readonly IHostSettingsService hostSettingsService;
         private readonly ISmtpOAuthController smtpOAuthController;
 

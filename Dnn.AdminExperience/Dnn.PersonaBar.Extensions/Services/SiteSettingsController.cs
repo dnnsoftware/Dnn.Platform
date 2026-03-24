@@ -53,6 +53,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using DotNetNuke.Web.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Constants = Dnn.PersonaBar.Library.Constants;
     using FileInfo = System.IO.FileInfo;
@@ -91,7 +92,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private const string SearchAuthorBoostSetting = "Search_Author_Boost";
 
         private const double DefaultMessagingThrottlingInterval = 0.5; // set default MessagingThrottlingInterval value to 30 seconds.
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteSettingsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SiteSettingsController>();
 
         private readonly Components.SiteSettingsController controller = new Components.SiteSettingsController();
         private readonly INavigationManager navigationManager = navigationManager ?? Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();

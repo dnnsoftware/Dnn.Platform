@@ -14,10 +14,12 @@ namespace DotNetNuke.Application
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade;
 
+    using Microsoft.Extensions.Logging;
+
     /// <inheritdoc />
     public class ApplicationStatusInfo : IApplicationStatusInfo
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApplicationStatusInfo));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ApplicationStatusInfo>();
 
         private readonly IApplicationInfo applicationInfo;
 

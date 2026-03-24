@@ -13,11 +13,13 @@ namespace DotNetNuke.Data.PetaPoco
     using DotNetNuke.Instrumentation;
     using global::PetaPoco;
 
+    using Microsoft.Extensions.Logging;
+
     public static class PetaPocoHelper
     {
         private const string SqlProviderName = "System.Data.SqlClient";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(PetaPocoHelper));
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
         {

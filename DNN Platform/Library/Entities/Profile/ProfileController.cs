@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Services.FileSystem;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The ProfileController class provides Business Layer methods for profiles and
@@ -31,7 +32,7 @@ namespace DotNetNuke.Entities.Profile
     /// </summary>
     public partial class ProfileController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ProfileController>();
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private static readonly ProfileProvider ProfileProvider = ProfileProvider.Instance();
         private static int orderCounter;

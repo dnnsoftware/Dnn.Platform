@@ -16,6 +16,8 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     using Image = System.Drawing.Image;
 
     /// <summary>
@@ -38,7 +40,7 @@ namespace DotNetNuke.UI.Skins
         // ReSharper disable once InconsistentNaming
         protected RadioButtonList OptSkin;
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinThumbNailControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SkinThumbNailControl>();
 
         public string Border
         {

@@ -17,6 +17,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("delete-role", Constants.RolesCategory, "Prompt_DeleteRole_Description")]
 
     public class DeleteRole : ConsoleCommandBase
@@ -24,7 +26,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_DeleteRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DeleteRole>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;

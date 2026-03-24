@@ -15,6 +15,8 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Implementation of <see cref="IAttachmentController"/>.</summary>
     public class AttachmentController : IAttachmentController
     {
@@ -23,7 +25,7 @@ namespace DotNetNuke.Entities.Content
         internal const string VideoKey = "Videos";
         internal const string TitleKey = "Title";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AttachmentController>();
 
         private readonly IContentController contentController;
 

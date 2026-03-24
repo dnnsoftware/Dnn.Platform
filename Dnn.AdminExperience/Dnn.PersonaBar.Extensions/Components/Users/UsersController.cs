@@ -30,11 +30,13 @@ namespace Dnn.PersonaBar.Users.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
+    using Microsoft.Extensions.Logging;
+
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
     public class UsersController : ServiceLocator<IUsersController, UsersController>, IUsersController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Services.UsersController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Services.UsersController>();
 
         private static PortalSettings PortalSettings => PortalSettings.Current;
 

@@ -11,10 +11,12 @@ namespace DotNetNuke.HttpModules.Exceptions
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Handles the exception that occur with http modules.</summary>
     public class ExceptionModule : IHttpModule
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ExceptionModule>();
 
         /// <summary>Gets the name of the module.</summary>
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

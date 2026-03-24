@@ -9,12 +9,14 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>AddFcnModeVerificationStep - Step that performs FcnMode verification checks prior to installation.</summary>
     public class AddFcnModeStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddFcnModeStep));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AddFcnModeStep>();
 
         /// <inheritdoc />
         public override void Execute()

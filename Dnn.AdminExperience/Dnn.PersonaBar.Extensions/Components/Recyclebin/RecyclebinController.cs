@@ -27,13 +27,15 @@ namespace Dnn.PersonaBar.Recyclebin.Components
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class RecyclebinController : ServiceLocator<IRecyclebinController, RecyclebinController>,
         IRecyclebinController
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         [SuppressMessage("Microsoft.Design", "CA1051:DoNotDeclareVisibleInstanceFields", Justification = "Breaking change")]
         public static readonly string PageDateTimeFormat = "yyyy-MM-dd hh:mm tt";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RecyclebinController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RecyclebinController>();
         private readonly ITabController tabController;
         private readonly ITabVersionSettings tabVersionSettings;
         private readonly ITabChangeSettings tabChangeSettings;

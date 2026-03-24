@@ -32,11 +32,12 @@ namespace DotNetNuke.Security.Membership
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The AspNetMembershipProvider overrides the default MembershipProvider to provide an AspNet Membership Component (MemberRole) implementation.</summary>
     public partial class AspNetMembershipProvider : MembershipProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetMembershipProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AspNetMembershipProvider>();
         private static Random random = new Random();
 
         private readonly DataProvider dataProvider = DataProvider.Instance();

@@ -12,10 +12,12 @@ namespace DotNetNuke.DependencyInjection.Extensions
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Adds property injection extension methods.</summary>
     internal static class BuildUpExtensions
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BuildUpExtensions));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(BuildUpExtensions));
 
         /// <summary>Injects property dependency for properties that are decorated with <see cref="DependencyAttribute"/>.</summary>
         /// <param name="container">The service provider.</param>

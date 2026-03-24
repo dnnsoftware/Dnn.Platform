@@ -25,6 +25,7 @@ namespace Dnn.PersonaBar.Library.Permissions
     using DotNetNuke.Security.Roles;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
 
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private const string ViewPermissionKey = "VIEW";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuPermissionController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MenuPermissionController>();
 
         private static readonly DataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();

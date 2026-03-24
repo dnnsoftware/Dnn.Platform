@@ -23,13 +23,14 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Services.Installer.Packages;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
     /// <summary>An export service for extension packages.</summary>
     public class PackagesExportService : BasePortableService
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PackagesExportService));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PackagesExportService>();
 
         private static readonly Regex ExtensionPackageFilesRegex = new Regex(@"^(.+?)_(.+?)_(\d+\.\d+\.\d+).resources$", RegexOptions.Compiled);
 

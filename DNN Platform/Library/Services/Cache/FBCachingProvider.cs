@@ -16,13 +16,15 @@ namespace DotNetNuke.Services.Cache
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public class FBCachingProvider : CachingProvider
     {
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal const string CacheFileExtension = ".resources";
         [SuppressMessage("StyleCop.CSharp.MaintainabilityRules", "SA1401:FieldsMustBePrivate", Justification = "Breaking change")]
         internal static string CachingDirectory = "Cache\\";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FBCachingProvider>();
 
         /// <summary>Initializes a new instance of the <see cref="FBCachingProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]

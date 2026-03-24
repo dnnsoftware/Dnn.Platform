@@ -26,6 +26,7 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Upgrade;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Win32;
 
     using SchedulerMode = DotNetNuke.Abstractions.Application.SchedulerMode;
@@ -33,7 +34,7 @@ namespace DotNetNuke.Common
     /// <summary>The Object to initialize application.</summary>
     public class Initialize
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Initialize>();
         private static readonly object InitializeLock = new object();
         private static bool alreadyInitialized;
 

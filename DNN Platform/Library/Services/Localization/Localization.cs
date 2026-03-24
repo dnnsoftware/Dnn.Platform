@@ -33,6 +33,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.UI.Modules;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Localization class support localization in system.</summary>
     /// <remarks>
@@ -56,7 +57,7 @@ namespace DotNetNuke.Services.Localization
     /// </example>
     public partial class Localization
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Localization>();
         private static string defaultKeyName = "resourcekey";
 
         ////private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;

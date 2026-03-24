@@ -19,12 +19,15 @@ namespace Dnn.PersonaBar.AdminLogs.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json.Linq;
 
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class AdminLogsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AdminLogsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AdminLogsController>();
         private readonly Components.AdminLogsController controller = new Components.AdminLogsController();
 
         /// GET: api/AdminLogs/GetLogTypes

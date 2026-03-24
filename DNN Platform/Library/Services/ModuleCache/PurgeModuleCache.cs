@@ -10,9 +10,11 @@ namespace DotNetNuke.Services.ModuleCache
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
 
+    using Microsoft.Extensions.Logging;
+
     public class PurgeModuleCache : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PurgeModuleCache>();
 
         /// <summary>Initializes a new instance of the <see cref="PurgeModuleCache"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The schedule history item.</param>

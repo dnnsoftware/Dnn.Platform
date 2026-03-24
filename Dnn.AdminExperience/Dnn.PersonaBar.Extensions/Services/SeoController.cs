@@ -33,10 +33,12 @@ namespace Dnn.PersonaBar.Seo.Services
     using DotNetNuke.Services.Url.FriendlyUrl;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(MenuName = "Dnn.Seo")]
     public class SeoController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SeoController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SeoController>();
         private static readonly string LocalResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Seo/App_LocalResources/Seo.resx");
 
         private readonly Components.SeoController controller;

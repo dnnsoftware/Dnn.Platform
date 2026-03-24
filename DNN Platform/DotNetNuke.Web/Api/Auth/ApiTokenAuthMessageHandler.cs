@@ -12,12 +12,14 @@ namespace DotNetNuke.Web.Api.Auth
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api.Auth.ApiTokens;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Authentication message handler that authorizes an HTTP request based on a valid API token.
     /// </summary>
     public class ApiTokenAuthMessageHandler : AuthMessageHandlerBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ApiTokenAuthMessageHandler));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ApiTokenAuthMessageHandler>();
 
         private readonly IApiTokenController apiTokenController;
 

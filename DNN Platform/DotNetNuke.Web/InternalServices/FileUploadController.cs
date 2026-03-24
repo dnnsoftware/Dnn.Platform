@@ -39,6 +39,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
@@ -46,7 +47,7 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 [DnnAuthorize]
 public class FileUploadController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileUploadController>();
     private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static readonly List<string> ImageExtensions = Globals.ImageFileTypes.Split(',').ToList();
 
@@ -710,10 +711,10 @@ public class FileUploadController : DnnApiController
     private static IPortalInfo[] GetMyPortalGroup()
     {
         return (
-                from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
-                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                select portals.Cast<IPortalInfo>().ToArray())
+            from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
+            select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+            where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+            select portals.Cast<IPortalInfo>().ToArray())
             .FirstOrDefault();
     }
 

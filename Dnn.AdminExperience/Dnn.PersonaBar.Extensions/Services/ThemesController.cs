@@ -29,11 +29,12 @@ namespace Dnn.PersonaBar.Themes.Services
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class ThemesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ThemesController>();
         private readonly IThemesController controller;
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;

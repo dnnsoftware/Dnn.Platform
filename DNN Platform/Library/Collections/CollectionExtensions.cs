@@ -16,10 +16,12 @@ namespace DotNetNuke.Collections
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Provides a collection of useful extensions to collections.</summary>
     public static class CollectionExtensions
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CollectionExtensions));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(CollectionExtensions));
 
         /// <summary>
         /// Converts a string with multiple key-value pairs into a Dictionary, if there are duplicated keys in your string
