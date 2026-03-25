@@ -175,6 +175,7 @@ namespace DotNetNuke
             services.AddTransient<IFileDeletionController, FileDeletionController>();
             services.AddTransient<IFileVersionController, FileVersionController>();
             services.AddTransient<IFolderPermissionController, FolderPermissionController>();
+            services.AddTransient<IFileLinkClickController, FileLinkClickController>();
             services.AddTransient<IPathUtils>(_ => new PathUtils());
             if (CryptoConfig.AllowOnlyFipsAlgorithms)
             {
