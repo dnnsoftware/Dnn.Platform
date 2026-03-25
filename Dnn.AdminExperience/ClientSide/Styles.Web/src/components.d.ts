@@ -31,7 +31,7 @@ export { LocalJSX as JSX };
 declare module "@stencil/core" {
     export namespace JSX {
         interface IntrinsicElements {
-            "dnn-styles-module": LocalJSX.DnnStylesModule & JSXBase.HTMLAttributes<HTMLDnnStylesModuleElement>;
+            "dnn-styles-module": LocalJSX.IntrinsicElements["dnn-styles-module"] & JSXBase.HTMLAttributes<HTMLDnnStylesModuleElement>;
         }
     }
 }
