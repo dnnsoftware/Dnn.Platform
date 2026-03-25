@@ -1587,7 +1587,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@npm:10.3.0, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@npm:10.3.1, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -6227,7 +6227,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -9364,7 +9364,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-sitegroups@workspace:Dnn.AdminExperience/ClientSide/SiteGroups.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -9389,7 +9389,7 @@ __metadata:
     "@babel/plugin-transform-object-assign": "npm:7.27.1"
     "@babel/preset-env": "npm:7.29.0"
     "@babel/preset-react": "npm:7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -9423,7 +9423,7 @@ __metadata:
     "@babel/plugin-transform-react-jsx": "npm:^7.27.1"
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -10894,7 +10894,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "export-bundle@workspace:Dnn.AdminExperience/ClientSide/Bundle.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -10949,7 +10949,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "extensions@workspace:Dnn.AdminExperience/ClientSide/Extensions.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -13988,7 +13988,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "licensing@workspace:Dnn.AdminExperience/ClientSide/Licensing.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -15830,7 +15830,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -16774,7 +16774,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "prompt@workspace:Dnn.AdminExperience/ClientSide/Prompt.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -18220,7 +18220,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "roles@workspace:Dnn.AdminExperience/ClientSide/Roles.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -18757,7 +18757,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -18873,7 +18873,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seo@workspace:Dnn.AdminExperience/ClientSide/Seo.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -18941,7 +18941,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "servers@workspace:Dnn.AdminExperience/ClientSide/Servers.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -19155,7 +19155,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -19205,7 +19205,7 @@ __metadata:
     "@babel/preset-env": "npm:^7.28.3"
     "@babel/preset-react": "npm:^7.27.1"
     "@babel/preset-typescript": "npm:^7.28.5"
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -19240,7 +19240,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sites@workspace:Dnn.AdminExperience/ClientSide/Sites.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -20042,7 +20042,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -20070,7 +20070,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "taxonomy@workspace:Dnn.AdminExperience/ClientSide/Vocabularies.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -20160,7 +20160,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "themes@workspace:Dnn.AdminExperience/ClientSide/Themes.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
@@ -20930,7 +20930,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "users@workspace:Dnn.AdminExperience/ClientSide/Users.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.0"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
