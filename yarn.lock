@@ -4010,6 +4010,40 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rsbuild/plugin-react@npm:^1.4.6":
+  version: 1.4.6
+  resolution: "@rsbuild/plugin-react@npm:1.4.6"
+  dependencies:
+    "@rspack/plugin-react-refresh": "npm:^1.6.1"
+    react-refresh: "npm:^0.18.0"
+  peerDependencies:
+    "@rsbuild/core": ^1.0.0 || ^2.0.0-0
+  peerDependenciesMeta:
+    "@rsbuild/core":
+      optional: true
+  checksum: 10/0ebfd28777955dcbd25435c1ce1896825716cd04f1dc6acb9dbebdc50be9063f4611836cdde028a36dc701b9749df3b56262d11d57d9a2986c2ce5387f9dc1dd
+  languageName: node
+  linkType: hard
+
+"@rsbuild/plugin-svgr@npm:^1.2.0":
+  version: 1.3.1
+  resolution: "@rsbuild/plugin-svgr@npm:1.3.1"
+  dependencies:
+    "@rsbuild/plugin-react": "npm:^1.4.6"
+    "@svgr/core": "npm:8.1.0"
+    "@svgr/plugin-jsx": "npm:8.1.0"
+    "@svgr/plugin-svgo": "npm:8.1.0"
+    deepmerge: "npm:^4.3.1"
+    loader-utils: "npm:^3.3.1"
+  peerDependencies:
+    "@rsbuild/core": ^1.0.0 || ^2.0.0-0
+  peerDependenciesMeta:
+    "@rsbuild/core":
+      optional: true
+  checksum: 10/258303484995ed548787d0089f0501c0ce91151a0a2bb2a27016331b6add94aa2c82420f8c09b7fbf72ce814ff1bf130b85b2a537dee9cfbae46bdfc4e641996
+  languageName: node
+  linkType: hard
+
 "@rsbuild/plugin-svgr@npm:^1.2.2":
   version: 1.2.2
   resolution: "@rsbuild/plugin-svgr@npm:1.2.2"
@@ -4173,6 +4207,22 @@ __metadata:
     webpack-hot-middleware:
       optional: true
   checksum: 10/3886a13dca3d42e9245480283ab839c16015a48eceda0d7352114de26968e319e8f110c5ec4dbe4c20d4a8457b368401840c736ce49f774edd450cf3ba193f62
+  languageName: node
+  linkType: hard
+
+"@rspack/plugin-react-refresh@npm:^1.6.1":
+  version: 1.6.1
+  resolution: "@rspack/plugin-react-refresh@npm:1.6.1"
+  dependencies:
+    error-stack-parser: "npm:^2.1.4"
+    html-entities: "npm:^2.6.0"
+  peerDependencies:
+    react-refresh: ">=0.10.0 <1.0.0"
+    webpack-hot-middleware: 2.x
+  peerDependenciesMeta:
+    webpack-hot-middleware:
+      optional: true
+  checksum: 10/c55f6662b3d476ee1d89aa0ca2e00a4e968695713ee3768646364656bc383a2fda4216bbc8563fc750227839c4df9440de1ebe9cd059770947fd3289db82f067
   languageName: node
   linkType: hard
 
@@ -18895,6 +18945,7 @@ __metadata:
     "@rsbuild/core": "npm:^1.6.3"
     "@rsbuild/plugin-less": "npm:^1.5.0"
     "@rsbuild/plugin-react": "npm:^1.4.2"
+    "@rsbuild/plugin-svgr": "npm:^1.2.0"
     "@types/react": "npm:^19.2.2"
     "@types/react-dom": "npm:^19.2.2"
     "@types/redux": "npm:^3.6.31"
