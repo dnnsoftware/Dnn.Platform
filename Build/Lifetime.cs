@@ -5,6 +5,7 @@
 namespace DotNetNuke.Build
 {
     using Cake.Common;
+    using Cake.Common.Build;
     using Cake.Common.Diagnostics;
     using Cake.Core;
     using Cake.Core.IO;
@@ -18,7 +19,7 @@ namespace DotNetNuke.Build
         /// <inheritdoc />
         public override void Setup(Context context, ISetupContext info)
         {
-            context.IsRunningInCI = context.HasEnvironmentVariable("TF_BUILD");
+            context.IsRunningInCI = !context.BuildSystem().IsLocalBuild;
             context.Information("Is Running in CI : {0}", context.IsRunningInCI);
             if (context.Settings.Version == "auto" && !context.IsRunningInCI)
             {
