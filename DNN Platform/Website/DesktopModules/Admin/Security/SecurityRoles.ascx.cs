@@ -598,8 +598,8 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
 
-            this.effectiveDatePicker.SelectedDate = effectiveDate;
-            this.expiryDatePicker.SelectedDate = expiryDate;
+            this.effectiveDatePicker.Text = effectiveDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+            this.expiryDatePicker.Text = expiryDate?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
         }
 
         private void CboUsers_SelectedIndexChanged(object sender, EventArgs e)
@@ -660,34 +660,23 @@ namespace DotNetNuke.Modules.Admin.Security
                         // do not modify the portal Administrator account dates
                         if (this.User.UserID == this.PortalSettings.AdministratorId && this.Role.RoleID == this.PortalSettings.AdministratorRoleId)
                         {
-                            this.effectiveDatePicker.SelectedDate = null;
-                            this.expiryDatePicker.SelectedDate = null;
+                            this.effectiveDatePicker.Text = null;
+                            this.expiryDatePicker.Text = null;
                         }
 
-                        DateTime datEffectiveDate;
-                        if (this.effectiveDatePicker.SelectedDate != null)
-                        {
-                            datEffectiveDate = this.effectiveDatePicker.SelectedDate.Value;
-                        }
-                        else
+                        if (!DateTime.TryParseExact(this.effectiveDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var datEffectiveDate))
                         {
                             datEffectiveDate = Null.NullDate;
                         }
 
-                        DateTime datExpiryDate;
-                        if (this.expiryDatePicker.SelectedDate != null)
-                        {
-                            datExpiryDate = this.expiryDatePicker.SelectedDate.Value;
-                        }
-                        else
+                        if (!DateTime.TryParseExact(this.expiryDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var datExpiryDate))
                         {
                             datExpiryDate = Null.NullDate;
                         }
 
                         // Add User to Role
                         var isOwner = false;
-
-                        if ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both))
+                        if (this.Role.SecurityMode is SecurityMode.SocialGroup or SecurityMode.Both)
                         {
                             isOwner = this.chkIsOwner.Checked;
                         }
@@ -709,27 +698,23 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             try
             {
-                DataGridItem item = e.Item;
-
-                var cmdDeleteUserRole = e.Item.FindControl("cmdDeleteUserRole") as ImageButton;
-                var role = e.Item.DataItem as UserRoleInfo;
-
-                if (cmdDeleteUserRole != null)
+                if (e.Item.FindControl("cmdDeleteUserRole") is ImageButton cmdDeleteUserRole)
                 {
+                    var userRoleInfo = (UserRoleInfo)e.Item.DataItem;
                     if (this.roleId == Null.NullInteger)
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), userRoleInfo.FullName, userRoleInfo.RoleName));
                     }
                     else
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(CultureInfo.CurrentCulture, Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), userRoleInfo.FullName, userRoleInfo.RoleName));
                     }
 
-                    cmdDeleteUserRole.Attributes.Add("roleId", role.RoleID.ToString());
-                    cmdDeleteUserRole.Attributes.Add("userId", role.UserID.ToString());
+                    cmdDeleteUserRole.Attributes.Add("roleId", userRoleInfo.RoleID.ToString());
+                    cmdDeleteUserRole.Attributes.Add("userId", userRoleInfo.UserID.ToString());
                 }
 
-                item.Cells[5].Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
+                e.Item.Cells[5].Visible = this.Role.SecurityMode is SecurityMode.SocialGroup or SecurityMode.Both;
             }
             catch (Exception exc)
             {

@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.Collections;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
+    using System.Globalization;
     using System.Linq;
     using System.Text;
     using System.Threading;
@@ -482,13 +483,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Module.Header = this.txtHeader.Text;
                     this.Module.Footer = this.txtFooter.Text;
 
-                    this.Module.StartDate = this.startDatePicker.SelectedDate != null
-                                        ? this.startDatePicker.SelectedDate.Value
-                                        : Null.NullDate;
-
-                    this.Module.EndDate = this.endDatePicker.SelectedDate != null
-                                        ? this.endDatePicker.SelectedDate.Value
-                                        : Null.NullDate;
+                    this.Module.StartDate = DateTime.TryParseExact(this.startDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var startDate) ? startDate : Null.NullDate;
+                    this.Module.EndDate = DateTime.TryParseExact(this.endDatePicker.Text, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var endDate) ? endDate : Null.NullDate;
 
                     this.Module.ContainerSrc = this.moduleContainerCombo.SelectedValue;
                     this.Module.ModulePermissions.Clear();
@@ -668,12 +664,12 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                 if (!Null.IsNull(this.Module.StartDate))
                 {
-                    this.startDatePicker.SelectedDate = this.Module.StartDate;
+                    this.startDatePicker.Text = this.Module.StartDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 }
 
-                if (!Null.IsNull(this.Module.EndDate) && this.Module.EndDate <= this.endDatePicker.MaxDate)
+                if (!Null.IsNull(this.Module.EndDate) && this.Module.EndDate <= DateTime.MaxValue)
                 {
-                    this.endDatePicker.SelectedDate = this.Module.EndDate;
+                    this.endDatePicker.Text = this.Module.EndDate.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
                 }
 
                 this.BindContainers();

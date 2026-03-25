@@ -211,7 +211,7 @@ class AdminLogPanelBody extends Component {
         return <div className="logHeader-wrapper">{tableHeaders}</div>;
     }
 
-     
+
     renderedLogList() {
         const {props} = this;
         return props.logList.map((term, index) => {

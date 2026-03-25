@@ -92,13 +92,13 @@ namespace DotNetNuke.Modules.Admin.Security {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker effectiveDatePicker;
+        protected global::System.Web.UI.WebControls.TextBox effectiveDatePicker;
         /// <summary>expiryDatePicker control.</summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::DotNetNuke.Web.UI.WebControls.Internal.DnnDatePicker expiryDatePicker;
+        protected global::System.Web.UI.WebControls.TextBox expiryDatePicker;
         /// <summary>placeIsOwner control.</summary>
         /// <remarks>
         /// Auto-generated field.

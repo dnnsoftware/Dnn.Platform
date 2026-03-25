@@ -10,7 +10,7 @@ class TaskQueuePanelBody extends Component {
     constructor() {
         super();
     }
-     
+
     renderedTaskStatusList() {
         const { props } = this;
         return props.taskStatusList.map((term, index) => {

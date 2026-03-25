@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     using System.Data.SqlTypes;
     using System.Globalization;
     using System.Web.UI;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -16,18 +17,13 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
     using Microsoft.Extensions.DependencyInjection;
 
-    /// <summary>
-    /// The DateEditControl control provides a standard UI component for editing
-    /// date properties.
-    /// </summary>
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>The DateEditControl control provides a standard UI component for editing date properties.</summary>
+    /// <remarks>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</remarks>
     [ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
     public class DateTimeEditControl : EditControl
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateTimeEditControl));
-        private DnnDateTimePicker dateControl;
+        private TextBox dateControl;
 
         /// <inheritdoc />
         public override string ID
@@ -57,10 +53,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
-        /// <summary>
-        /// Gets defaultDateFormat is a string that will be used to format the date in the absence of a
-        /// FormatAttribute.
-        /// </summary>
+        /// <summary>Gets a string that will be used to format the date in the absence of a FormatAttribute.</summary>
         /// <value>A String representing the default format to use to render the date.</value>
         /// <returns>A Format String.</returns>
         protected virtual string DefaultFormat => "g";
@@ -77,10 +70,9 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 {
                     foreach (Attribute attribute in this.CustomAttributes)
                     {
-                        if (attribute is FormatAttribute)
+                        if (attribute is FormatAttribute formatAttribute)
                         {
-                            var formatAtt = (FormatAttribute)attribute;
-                            format = formatAtt.Format;
+                            format = formatAttribute.Format;
                             break;
                         }
                     }
@@ -135,7 +127,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
-        private DnnDateTimePicker DateControl => this.dateControl ??= ActivatorUtilities.CreateInstance<DnnDateTimePicker>(Globals.GetCurrentServiceProvider());
+        private TextBox DateControl => this.dateControl ??= new TextBox { TextMode = TextBoxMode.DateTimeLocal, };
 
         /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -153,7 +145,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 else
                 {
-                    if (DateTime.TryParseExact(postedValue, "yyyy-MM-dd-HH-mm-ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var value))
+                    if (DateTime.TryParseExact(postedValue, "yyyy-MM-dd'T'HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var value))
                     {
                         this.Value = value;
                         dataChanged = true;
@@ -181,7 +173,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             if (this.DateValue != Null.NullDate)
             {
-                this.DateControl.SelectedDate = this.DateValue;
+                this.DateControl.Text = this.DateValue.ToString("yyyy-MM-dd'T'HH:mm", CultureInfo.InvariantCulture);
             }
         }
 
