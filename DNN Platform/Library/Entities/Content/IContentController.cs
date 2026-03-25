@@ -11,7 +11,7 @@ namespace DotNetNuke.Entities.Content
     using DotNetNuke.Entities.Content.Taxonomy;
 
     /// <summary>IContentController provides the business layer of ContentItem.</summary>
-    /// <seealso cref="Util.GetContentController"/>
+    /// <remarks>It's better to request <see cref="IContentController"/> via Dependency Injection instead of creating a new instance directly.</remarks>
     /// <example>
     /// <code lang="C#">
     /// IContentController contentController = Util.GetContentController();

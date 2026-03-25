@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.Components.Controllers
                 ? kvp => kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm)
                 : kvp => kvp.Value.DesktopModule.Category == category && kvp.Key.ToLower(CultureInfo.InvariantCulture).Contains(formattedSearchTerm);
 
-            return DesktopModuleController.GetPortalDesktopModules(portalId).Where(filter);
+            return DesktopModuleController.GetPortalDesktopModules(this.hostSettings, portalId).Where(filter);
         }
 
         /// <inheritdoc />
@@ -96,7 +96,7 @@ namespace DotNetNuke.Web.Components.Controllers
             var bookmarkCategory = PortalController.GetPortalSetting(this.portalController, BookmarkCategoryProperty, portalId, string.Empty);
             if (string.IsNullOrEmpty(bookmarkCategory))
             {
-                PortalController.UpdatePortalSetting(portalId, BookmarkCategoryProperty, "Common");
+                PortalController.UpdatePortalSetting(this.portalController, portalId, BookmarkCategoryProperty, "Common");
                 return "Common";
             }
 
@@ -175,7 +175,7 @@ namespace DotNetNuke.Web.Components.Controllers
 
             var bookmarkItemsKeys = bookmarkItems.ToString().Split(',').ToList();
 
-            return DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
+            return DesktopModuleController.GetPortalDesktopModules(this.hostSettings, PortalSettings.Current.PortalId)
                 .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));
         }
     }

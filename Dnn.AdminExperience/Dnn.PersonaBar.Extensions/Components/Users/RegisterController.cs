@@ -80,7 +80,9 @@ namespace Dnn.PersonaBar.Users.Components
 
             var cleanUsername = PortalSecurity.Instance.InputFilter(
                 username,
+#pragma warning disable CS0618 // Type or member is obsolete
                 PortalSecurity.FilterFlag.NoScripting | PortalSecurity.FilterFlag.NoAngleBrackets | PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
 
             if (!cleanUsername.Equals(username, StringComparison.Ordinal))
             {

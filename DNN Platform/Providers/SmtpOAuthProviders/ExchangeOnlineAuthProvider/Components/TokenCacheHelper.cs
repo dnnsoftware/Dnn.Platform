@@ -93,7 +93,7 @@ public class TokenCacheHelper
         }
         else
         {
-            PortalController.UpdateEncryptedString(this.hostSettings, HashAlgorithmName.SHA512, this.portalId, Constants.AuthenticationSettingName, settingValue, Config.GetDecryptionkey());
+            PortalController.UpdateEncryptedString(this.hostSettings, this.portalController, HashAlgorithmName.SHA512, this.portalId, Constants.AuthenticationSettingName, settingValue, Config.GetDecryptionkey());
         }
     }
 }

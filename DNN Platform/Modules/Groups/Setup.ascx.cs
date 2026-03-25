@@ -13,6 +13,7 @@ namespace DotNetNuke.Modules.Groups
     using System.Linq;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -37,6 +38,7 @@ namespace DotNetNuke.Modules.Groups
         private readonly IEventLogger eventLogger;
         private readonly IUserController userController;
         private readonly IPermissionDefinitionService permissionDefinitionService;
+        private readonly IHostSettings hostSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Setup"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
@@ -50,12 +52,25 @@ namespace DotNetNuke.Modules.Groups
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="userController">The user controller.</param>
         /// <param name="permissionDefinitionService">The permission definition service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public Setup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPermissionDefinitionService permissionDefinitionService)
+            : this(roleProvider, eventLogger, userController, permissionDefinitionService, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="Setup"/> class.</summary>
+        /// <param name="roleProvider">The role provider.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="userController">The user controller.</param>
+        /// <param name="permissionDefinitionService">The permission definition service.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public Setup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         {
             this.roleProvider = roleProvider ?? this.DependencyProvider.GetRequiredService<RoleProvider>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
             this.userController = userController ?? this.DependencyProvider.GetRequiredService<IUserController>();
             this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
+            this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
         }
 
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Breaking Change")]
@@ -111,9 +126,9 @@ namespace DotNetNuke.Modules.Groups
             this.btnGo.Click += this.btGo_Click;
         }
 
-        private static int GetDesktopModuleId(int portalId, string moduleName)
+        private static int GetDesktopModuleId(IHostSettings hostSettings, int portalId, string moduleName)
         {
-            var info = DesktopModuleController.GetDesktopModuleByModuleName(moduleName, portalId);
+            var info = DesktopModuleController.GetDesktopModuleByModuleName(hostSettings, moduleName, portalId);
             return info?.DesktopModuleID ?? -1;
         }
 
@@ -219,7 +234,7 @@ namespace DotNetNuke.Modules.Groups
             int id = -1;
             if (module == null)
             {
-                int desktopModuleId = GetDesktopModuleId(portalId, moduleName);
+                int desktopModuleId = GetDesktopModuleId(this.hostSettings, portalId, moduleName);
                 int moduleId = -1;
                 if (desktopModuleId > -1)
                 {

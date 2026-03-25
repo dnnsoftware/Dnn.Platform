@@ -452,7 +452,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                 var installer = new Installer(package, Globals.ApplicationMapPath);
                 installer.UnInstall(deletePackage.DeleteFiles);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {
@@ -984,7 +984,7 @@ namespace Dnn.PersonaBar.Extensions.Services
                     }
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception ex)
             {

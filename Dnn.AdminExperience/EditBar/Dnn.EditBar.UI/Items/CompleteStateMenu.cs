@@ -8,9 +8,23 @@ namespace Dnn.EditBar.UI.Items
 
     using Dnn.EditBar.Library;
 
+    using DotNetNuke.Entities.Content;
+    using DotNetNuke.Entities.Content.Workflow;
+
+    /// <summary>A <see cref="WorkflowBaseMenuItem"/> for the complete state menu item.</summary>
+    /// <param name="contentController">The content controller.</param>
+    /// <param name="workflowEngine">The workflow engine.</param>
     [Serializable]
-    public class CompleteStateMenu : WorkflowBaseMenuItem
+    public class CompleteStateMenu(IContentController contentController, IWorkflowEngine workflowEngine)
+        : WorkflowBaseMenuItem(contentController, workflowEngine)
     {
+        /// <summary>Initializes a new instance of the <see cref="CompleteStateMenu"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IContentController. Scheduled removal in v12.0.0.")]
+        public CompleteStateMenu()
+            : this(null, null)
+        {
+        }
+
         /// <inheritdoc />
         public override string Name { get; } = "CompleteState";
 

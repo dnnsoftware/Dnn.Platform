@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Profile;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Exceptions;
@@ -37,13 +38,18 @@ namespace DotNetNuke.Modules.Admin.Users
         private readonly INavigationManager navigationManager;
         private readonly IHostSettings hostSettings;
         private readonly IEventLogger eventLogger;
+        private readonly IPortalController portalController;
+        private readonly IApplicationStatusInfo appStatus;
+        private readonly IPortalGroupController portalGroupController;
+        private readonly ListController listController;
+
         private ProfilePropertyDefinitionCollection profileProperties;
         private bool requiredColumnHidden;
 
         /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions()
-            : this(null, null, null)
+            : this(null, null, null, null, null, null, null)
         {
         }
 
@@ -52,15 +58,37 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="hostSettings">The host settings.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings)
-            : this(navigationManager, hostSettings, null)
+            : this(navigationManager, hostSettings, null, null, null, null, null)
         {
         }
 
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings, IEventLogger eventLogger)
+            : this(navigationManager, hostSettings, eventLogger, null, null, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="ProfileDefinitions"/> class.</summary>
+        /// <param name="navigationManager">The navigation manager.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="eventLogger">The event logger.</param>
+        /// <param name="listController">The list controller.</param>
+        /// <param name="portalController">The portal controller.</param>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="portalGroupController">The portal group controller.</param>
+        public ProfileDefinitions(INavigationManager navigationManager, IHostSettings hostSettings, IEventLogger eventLogger, ListController listController, IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
             this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
+            this.listController = listController ?? this.DependencyProvider.GetRequiredService<ListController>();
+            this.portalController = portalController ?? this.DependencyProvider.GetRequiredService<IPortalController>();
+            this.appStatus = appStatus ?? this.DependencyProvider.GetRequiredService<IApplicationStatusInfo>();
+            this.portalGroupController = portalGroupController ?? this.DependencyProvider.GetRequiredService<IPortalGroupController>();
         }
 
         /// <summary>Gets the Return Url for the page.</summary>
@@ -137,7 +165,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// <summary>Gets the collection of Profile Properties.</summary>
         protected ProfilePropertyDefinitionCollection ProfileProperties
-            => this.profileProperties ??= ProfileController.GetPropertyDefinitionsByPortal(this.hostSettings, this.UsersPortalId, false, false);
+            => this.profileProperties ??= ProfileController.GetPropertyDefinitionsByPortal(this.hostSettings, this.portalController, this.appStatus, this.portalGroupController, this.UsersPortalId, false, false);
 
         /// <summary>Gets the Portal ID whose Users we are managing.</summary>
         protected int UsersPortalId
@@ -157,8 +185,7 @@ namespace DotNetNuke.Modules.Admin.Users
         public string DisplayDataType(ProfilePropertyDefinition definition)
         {
             string retValue = Null.NullString;
-            var listController = new ListController();
-            ListEntryInfo definitionEntry = listController.GetListEntryInfo("DataType", definition.DataType);
+            ListEntryInfo definitionEntry = this.listController.GetListEntryInfo("DataType", definition.DataType);
             if (definitionEntry != null)
             {
                 retValue = definitionEntry.Value;
@@ -348,7 +375,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="index">The index of the Property to delete.</param>
         private void DeleteProperty(int index)
         {
-            ProfileController.DeletePropertyDefinition(this.eventLogger, this.ProfileProperties[index]);
+            ProfileController.DeletePropertyDefinition(this.eventLogger, this.portalController, this.appStatus, this.portalGroupController, this.ProfileProperties[index]);
 
             this.RefreshGrid();
         }
@@ -454,7 +481,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         property.Required = false;
                     }
 
-                    ProfileController.UpdatePropertyDefinition(this.eventLogger, property);
+                    ProfileController.UpdatePropertyDefinition(this.eventLogger, this.portalController, this.appStatus, this.portalGroupController, property);
                 }
             }
         }

@@ -7,7 +7,9 @@ namespace DotNetNuke.Modules.Admin.Users
     using System.Web;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Common.Lists;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
@@ -17,15 +19,20 @@ namespace DotNetNuke.Modules.Admin.Users
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A control which handles a user's consent to the site's usage of their data.</summary>
-    public partial class DataConsent : UserModuleBase
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="listController">The list controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    public partial class DataConsent(INavigationManager navigationManager, IEventLogger eventLogger, ListController listController, IHostSettings hostSettings)
+        : UserModuleBase(listController, hostSettings)
     {
-        private readonly INavigationManager navigationManager;
-        private readonly IEventLogger eventLogger;
+        private readonly INavigationManager navigationManager = navigationManager ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
+        private readonly IEventLogger eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
         /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
         public DataConsent()
-            : this(null)
+            : this(null, null, null, null)
         {
         }
 
@@ -33,17 +40,17 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <param name="navigationManager">The navigation manager.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IEventLogger. Scheduled removal in v12.0.0.")]
         public DataConsent(INavigationManager navigationManager)
-            : this(navigationManager, null)
+            : this(navigationManager, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="DataConsent"/> class.</summary>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="eventLogger">The event logger.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
         public DataConsent(INavigationManager navigationManager, IEventLogger eventLogger)
+            : this(navigationManager, eventLogger, null, null)
         {
-            this.navigationManager = navigationManager ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
-            this.eventLogger = eventLogger ?? Common.Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>A function which handles the <see cref="DataConsent.DataConsentCompleted"/> event.</summary>

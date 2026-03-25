@@ -173,7 +173,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                 HostController.Instance.Update("SchedulerMode", request.SchedulerMode, false);
                 HostController.Instance.Update("SchedulerdelayAtAppStart", request.SchedulerdelayAtAppStart);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -312,7 +312,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     scheduleDto.Servers);
                 SchedulingProvider.Instance().AddSchedule(scheduleItem);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -374,7 +374,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     SchedulingProvider.Instance().UpdateScheduleWithoutExecution(updatedItem);
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -478,7 +478,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             try
             {
                 SchedulingProvider.Instance().StartAndWaitForResponse();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -497,7 +497,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             try
             {
                 this.controller.StopSchedule();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -538,7 +538,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
                     SchedulingProvider.Instance().ReStart("Change made to schedule.");
                 }
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
@@ -559,7 +559,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             {
                 var objScheduleItem = new ScheduleItem { ScheduleID = scheduleDto.ScheduleID };
                 SchedulingProvider.Instance().DeleteSchedule(objScheduleItem);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {

@@ -8,6 +8,7 @@ namespace DotNetNuke.Services.Sitemap
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
     using DotNetNuke.Common.Utilities;
@@ -40,7 +41,7 @@ namespace DotNetNuke.Services.Sitemap
             var currentLanguage = ps.CultureCode;
             if (string.IsNullOrEmpty(currentLanguage))
             {
-                currentLanguage = Localization.GetPageLocale(ps).Name;
+                currentLanguage = Localization.GetPageLocale((IPortalSettings)ps).Name;
             }
 
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;

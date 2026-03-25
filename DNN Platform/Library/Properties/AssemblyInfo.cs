@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 using System;
@@ -16,7 +16,7 @@ using DotNetNuke.Application;
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: CLSCompliant(true)]
 
-[assembly: AssemblyStatus(ReleaseMode.Alpha)]
+[assembly: AssemblyStatus(ReleaseMode.Beta)]
 
 // Allow internal variables to be visible to testing projects
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Core")]

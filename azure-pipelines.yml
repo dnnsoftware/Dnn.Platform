@@ -1,5 +1,5 @@
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'windows-2025-vs2026'
 
 variables:
   - name: "Build.ArtifactStagingDirectory"
@@ -127,3 +127,14 @@ steps:
 - publish: 'Artifacts'
   artifact: 'Artifacts$(System.JobAttempt)'
   condition: always()
+
+- task: PowerShell@2
+  displayName: 'Create GitHub Pull Request'
+  inputs:
+    targetType: filePath
+    filePath: ./build.ps1
+    arguments: '--target=CreateGitHubPullRequest --verbosity=${{ parameters.CakeVerbosity }}'
+  env:
+    GITHUB_APP_ID: $(GitHubAppId)
+    GITHUB_APP_PRIVATE_KEY: $(GitHubAppPrivateKey)
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'), or(eq(variables['Build.SourceBranch'], 'refs/heads/develop'), eq(variables['Build.SourceBranch'], 'refs/heads/main'), startsWith(variables['Build.SourceBranch'], 'refs/heads/release/')))

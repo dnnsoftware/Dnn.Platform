@@ -7,7 +7,12 @@ namespace DotNetNuke.UI.Skins
     using System.Globalization;
     using System.Xml;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Internal.SourceGenerators;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public enum SkinDefaultType
     {
@@ -18,8 +23,9 @@ namespace DotNetNuke.UI.Skins
         ContainerInfo = 1,
     }
 
+    /// <summary>The skinning defaults config.</summary>
     [Serializable]
-    public class SkinDefaults
+    public partial class SkinDefaults
     {
         private string adminDefaultName;
         private string defaultName;
@@ -29,7 +35,7 @@ namespace DotNetNuke.UI.Skins
         {
             string nodename = Enum.GetName(defaultType.GetType(), defaultType).ToLowerInvariant();
             string filePath = Config.GetPathToFile(Config.ConfigFileType.DotNetNuke);
-            var dnndoc = new XmlDocument { XmlResolver = null };
+            var dnndoc = new XmlDocument { XmlResolver = null, };
             using (var xmlReader = XmlReader.Create(filePath, new XmlReaderSettings { XmlResolver = null, }))
             {
                 dnndoc.Load(xmlReader);
@@ -43,47 +49,38 @@ namespace DotNetNuke.UI.Skins
 
         public string AdminDefaultName
         {
-            get
-            {
-                return this.adminDefaultName;
-            }
-
-            set
-            {
-                this.adminDefaultName = value;
-            }
+            get => this.adminDefaultName;
+            set => this.adminDefaultName = value;
         }
 
         public string DefaultName
         {
-            get
-            {
-                return this.defaultName;
-            }
-
-            set
-            {
-                this.defaultName = value;
-            }
+            get => this.defaultName;
+            set => this.defaultName = value;
         }
 
         public string Folder
         {
-            get
-            {
-                return this.folder;
-            }
-
-            set
-            {
-                this.folder = value;
-            }
+            get => this.folder;
+            set => this.folder = value;
         }
 
-        public static SkinDefaults GetSkinDefaults(SkinDefaultType defaultType)
+        /// <summary>Gets the defaults for the <paramref name="defaultType"/>.</summary>
+        /// <param name="defaultType">The type.</param>
+        /// <returns>A <see cref="SkinDefaults"/> instance.</returns>
+        [DnnDeprecated(10, 2, 4, "Use overload taking IHostSettings")]
+        public static partial SkinDefaults GetSkinDefaults(SkinDefaultType defaultType)
+            => GetSkinDefaults(Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), defaultType);
+
+        /// <summary>Gets the defaults for the <paramref name="defaultType"/>.</summary>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="defaultType">The type.</param>
+        /// <returns>A <see cref="SkinDefaults"/> instance.</returns>
+        public static SkinDefaults GetSkinDefaults(IHostSettings hostSettings, SkinDefaultType defaultType)
         {
             return
                 CBO.GetCachedObject<SkinDefaults>(
+                    hostSettings,
                     new CacheItemArgs(string.Format(CultureInfo.InvariantCulture, DataCache.SkinDefaultsCacheKey, defaultType), DataCache.SkinDefaultsCacheTimeOut, DataCache.SkinDefaultsCachePriority, defaultType),
                     GetSkinDefaultsCallback);
         }

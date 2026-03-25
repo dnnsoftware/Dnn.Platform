@@ -1,44 +1,65 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-const getUrl = (code) => {
-    try {
-        return require(`./img/flags/${code}.png`);
-    } catch (error) {
-        return require("./img/flags/none.png");
-    }
-};
-
-const getStyle = (code, isGeneric) => ({
-    backgroundColor: isGeneric ? "#78BEDB" : "transparent",
-    backgroundRepeat: "no-repeat",
-    backgroundImage: isGeneric ? "none" : `url(${getUrl(code)})`,
-    backgroundPositionY: "50%",
-    backgroundPositionX: "50%",
-    color: "#FFF",
-    textTransform: "uppercase",
-    display: "inline-block",
-    marginRight: "5px",
-    fontWeight: "bold",
+const getStyle = (url) => ({
+    position: "relative",
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
     width: "27px",
     height: "18px",
-    lineHeight: "18px",
-    verticalAlign: "middle",
-    textAlign: "center"
+    marginRight: "5px",
+    backgroundColor: "transparent",
+    backgroundImage: url ? `url(${url})` : "none",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center",
+    backgroundSize: "contain",
+    color: "#FFF",
+    fontWeight: "bold",
+    textTransform: "uppercase",
 });
 
-class Flag extends Component {
-    constructor(props) {
-        super(props);
-    }
+const overlayStyle = {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "8px",
+    fontWeight: "900",
+    color: "#000",
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+    transform: "scale(0.9, 1.1)",
+};
 
-    render() {
-        const isGeneric = !this.props.culture.includes("-");
-        return <div
-            onClick={this.props.onClick}
-            title={this.props.title}
-            style={getStyle(this.props.culture, isGeneric)}>{isGeneric ? this.props.culture : ""}</div>;
-    }
+function Flag({ culture = "", onClick, title }) {
+    const [flagUrl, setFlagUrl] = useState(undefined);
+    const [isFallback, setIsFallback] = useState(false);
+
+    useEffect(() => {
+        try {
+            setFlagUrl(require(`./img/flags/${culture}.png`).default);
+            setIsFallback(false);
+        } catch {
+            try {
+                setFlagUrl(require("./img/flags/none.png").default);
+                setIsFallback(true);
+            } catch {
+                setFlagUrl(undefined);
+                setIsFallback(true);
+            }
+        }
+    }, [culture]);
+
+    return (
+        <div onClick={onClick} title={title} style={getStyle(flagUrl)}>
+            {isFallback && culture ? <div style={overlayStyle}>{culture}</div> : null}
+        </div>
+    );
 }
 
 Flag.propTypes = {

@@ -40,8 +40,17 @@ namespace Dnn.ExportImport.Components.Services
 
         /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
         /// <param name="appStatus">The application status.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public PageTemplatesExportService(IApplicationStatusInfo appStatus)
-            : base(appStatus)
+            : this(appStatus, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="PageTemplatesExportService"/> class.</summary>
+        /// <param name="appStatus">The application status.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        public PageTemplatesExportService(IApplicationStatusInfo appStatus, IHostSettings hostSettings)
+            : base(appStatus, hostSettings)
         {
             appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             this.templatesFolder = $"{appStatus.ApplicationMapPath}{Constants.ExportFolder}{{0}}\\{Constants.ExportZipTemplates}";

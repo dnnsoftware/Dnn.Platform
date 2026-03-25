@@ -9,6 +9,7 @@ namespace DotNetNuke.Services.Localization.Internal
     using System.Globalization;
     using System.Linq;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
 
@@ -72,13 +73,13 @@ namespace DotNetNuke.Services.Localization.Internal
         /// <inheritdoc />
         public CultureInfo GetPageLocale(PortalSettings portalSettings)
         {
-            return Localization.GetPageLocale(portalSettings);
+            return Localization.GetPageLocale((IPortalSettings)portalSettings);
         }
 
         /// <inheritdoc />
         public void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
         {
-            Localization.SetThreadCultures(cultureInfo, portalSettings);
+            Localization.SetThreadCultures(cultureInfo, (IPortalSettings)portalSettings);
         }
     }
 }

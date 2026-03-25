@@ -1,6 +1,6 @@
 {
   "name": "servers",
-  "version": "10.2.3",
+  "version": "10.2.4",
   "private": true,
   "scripts": {
     "build": "set NODE_ENV=production&&rsbuild build",
@@ -9,10 +9,11 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.2.3",
+    "@dnnsoftware/dnn-react-common": "10.2.4",
     "@rsbuild/core": "^1.6.3",
     "@rsbuild/plugin-less": "^1.5.0",
     "@rsbuild/plugin-react": "^1.4.2",
+    "@rsbuild/plugin-svgr": "^1.2.0",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@types/redux": "^3.6.31",

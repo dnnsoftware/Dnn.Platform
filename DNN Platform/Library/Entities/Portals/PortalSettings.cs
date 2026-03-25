@@ -134,7 +134,21 @@ namespace DotNetNuke.Entities.Portals
             HardDelete = 3,
         }
 
+        public enum CspMode
+        {
+            /// <summary>Content Security Header is not added.</summary>
+            Off = 0,
+
+            /// <summary>Content Security Header is added in Report Only mode.</summary>
+            ReportOnly = 1,
+
+            /// <summary>Content Security Header is added.</summary>
+            On = 2,
+        }
+
+#pragma warning disable CS0618 // Type or member is obsolete
         public static PortalSettings Current => PortalController.Instance.GetCurrentPortalSettings();
+#pragma warning restore CS0618 // Type or member is obsolete
 
         /// <inheritdoc />
         public CacheLevel Cacheability => CacheLevel.fullyCacheable;
@@ -528,6 +542,14 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets whitelist of file extensions for end users.</summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
+
+        public CspMode CspHeaderMode { get; internal set; }
+
+        public bool CspHeaderFixed { get; internal set; }
+
+        public string CspHeader { get; internal set; }
+
+        public string CspReportingHeader { get; internal set; }
 
         /// <inheritdoc />
         public bool ShowQuickModuleAddMenu => PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);

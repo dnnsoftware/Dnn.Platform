@@ -7,14 +7,28 @@ namespace DotNetNuke.Modules.Groups.Components
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Social.Notifications;
 
-    public class Notifications
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>Manages groups notifications.</summary>
+    /// <param name="hostSettings">The host settings.</param>
+    public class Notifications(IHostSettings hostSettings)
     {
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="Notifications"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public Notifications()
+            : this(null)
+        {
+        }
+
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)
         {
             return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);
@@ -68,7 +82,7 @@ namespace DotNetNuke.Modules.Groups.Components
             body = body.Replace("[DisplayName]", initiatingUser.DisplayName);
             body = body.Replace("[ProfileUrl]", Globals.UserProfileURL(initiatingUser.UserID));
             body = tokenReplace.ReplaceGroupItemTokens(body);
-            var roleCreator = UserController.GetUserById(group.PortalID, group.CreatedByUserID);
+            var roleCreator = UserController.GetUserById(this.hostSettings, group.PortalID, group.CreatedByUserID);
 
             var roleOwners = new List<UserInfo>();
 
@@ -77,7 +91,7 @@ namespace DotNetNuke.Modules.Groups.Components
                 var userRoleInfo = RoleController.Instance.GetUserRole(group.PortalID, userInfo.UserID, group.RoleID);
                 if (userRoleInfo.IsOwner && userRoleInfo.UserID != group.CreatedByUserID)
                 {
-                    roleOwners.Add(UserController.GetUserById(group.PortalID, userRoleInfo.UserID));
+                    roleOwners.Add(UserController.GetUserById(this.hostSettings, group.PortalID, userRoleInfo.UserID));
                 }
             }
 

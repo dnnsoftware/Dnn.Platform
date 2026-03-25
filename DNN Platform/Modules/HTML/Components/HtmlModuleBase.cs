@@ -11,27 +11,33 @@ namespace DotNetNuke.Modules.Html.Components
 
     using DotNetNuke.Entities.Modules;
 
+    using Microsoft.Extensions.DependencyInjection;
+
     public class HtmlModuleBase : PortalModuleBase
     {
         private HtmlModuleSettings settings;
 
+        /// <summary>Initializes a new instance of the <see cref="HtmlModuleBase"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
+        public HtmlModuleBase()
+            : this(null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HtmlModuleBase"/> class.</summary>
+        /// <param name="settingsRepository">The settings repository.</param>
+        public HtmlModuleBase(HtmlModuleSettingsRepository settingsRepository)
+        {
+            this.SettingsRepository = settingsRepository ?? this.DependencyProvider.GetRequiredService<HtmlModuleSettingsRepository>();
+        }
+
         public new HtmlModuleSettings Settings
         {
-            get
-            {
-                if (this.settings == null)
-                {
-                    var repo = new HtmlModuleSettingsRepository();
-                    this.settings = repo.GetSettings(this.ModuleConfiguration);
-                }
-
-                return this.settings;
-            }
-
-            set
-            {
-                this.settings = value;
-            }
+            get => this.settings ??= this.SettingsRepository.GetSettings(this.ModuleConfiguration);
+            set => this.settings = value;
         }
+
+        /// <summary>Gets the settings repository.</summary>
+        protected HtmlModuleSettingsRepository SettingsRepository { get; }
     }
 }

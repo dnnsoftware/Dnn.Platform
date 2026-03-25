@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Controllers;
+    using DotNetNuke.Entities.Host;
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Social.Subscriptions;
     using DotNetNuke.Services.Social.Subscriptions.Data;
@@ -45,7 +46,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             DataService.SetTestableInstance(this.mockDataService.Object);
 
             // Setup SUT
-            this.subscriptionTypeController = new SubscriptionTypeController();
+            this.subscriptionTypeController = new SubscriptionTypeController(this.mockDataService.Object, new HostSettings((IHostSettingsService)this.mockHostController.Object));
 
             this.serviceProvider = FakeServiceProvider.Setup(
                 services =>

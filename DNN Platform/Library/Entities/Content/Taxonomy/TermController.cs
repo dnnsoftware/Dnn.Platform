@@ -10,11 +10,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     using System.Web;
     using System.Web.Caching;
 
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Common;
     using DotNetNuke.Entities.Content.Data;
     using DotNetNuke.Entities.Users;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>The Main Business layer of Taxonomy.</summary>
     /// <example>
@@ -26,23 +29,26 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     /// }
     /// </code>
     /// </example>
-    public class TermController : ITermController
+    public class TermController(IDataService dataService, IHostSettings hostSettings) : ITermController
     {
         private const CacheItemPriority CachePriority = CacheItemPriority.Normal;
         private const int CacheTimeOut = 20;
-        private readonly IDataService dataService;
+        private readonly IDataService dataService = dataService ?? Util.GetDataService();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="TermController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TermController()
-            : this(Util.GetDataService())
+            : this(null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="TermController"/> class.</summary>
         /// <param name="dataService">The data service.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public TermController(IDataService dataService)
+            : this(dataService, null)
         {
-            this.dataService = dataService;
         }
 
         /// <summary>Adds the term.</summary>
@@ -158,7 +164,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // Argument Contract
             Requires.NotNegative("vocabularyId", vocabularyId);
 
-            return CBO.GetCachedObject<List<Term>>(new CacheItemArgs(string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, vocabularyId), CacheTimeOut, CachePriority, vocabularyId), this.GetTermsCallBack).AsQueryable();
+            var cacheKey = string.Format(CultureInfo.InvariantCulture, DataCache.TermCacheKey, vocabularyId);
+            var terms = CBO.GetCachedObject<List<Term>>(
+                this.hostSettings,
+                new CacheItemArgs(cacheKey, CacheTimeOut, CachePriority, vocabularyId),
+                this.GetTermsCallBack);
+            return terms.AsQueryable();
         }
 
         /// <summary>Gets the terms by vocabulary name.</summary>

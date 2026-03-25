@@ -1,31 +1,33 @@
-name: Update Browserslist database
+name: "Update Browserslist database"
 
 on:
   schedule:
-    - cron: '0 2 1,15 * *'
+    - cron: "0 2 1,15 * *"
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: "read"
 
 jobs:
   update-browserslist-database:
-    runs-on: ubuntu-latest
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "write"
+      pull-requests: "write"
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
+      - name: "Checkout repository"
+        uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
         with:
           fetch-depth: 0
-      - name: Configure git
+      - name: "Configure git"
         run: |
           # Setup for commiting using built-in token. See https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
           git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"         
-      - run: corepack enable
-      - name: Update Browserslist database and create PR if applies
-        uses: c2corg/browserslist-update-action@v2
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      - run: "corepack enable"
+      - name: "Update Browserslist database and create PR if applies"
+        uses: "c2corg/browserslist-update-action@a76abb476199caea5399f9e28ff3f16e491ec566" # v2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: browserslist-update
-          base_branch: develop
-          labels: 'javascript, Type: Maintenance'
+          branch: "browserslist-update"
+          base_branch: "develop"
+          labels: "javascript, Type: Maintenance"

@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.DDRMenu
         {
             try
             {
-                var templateDef = TemplateDefinition.FromName(menuStyle, "*menudef.xml");
+                var templateDef = TemplateDefinition.FromName(hostSettings, menuStyle, "*menudef.xml");
                 return new MenuBase(localiser, hostSettings, tabController) { TemplateDef = templateDef, };
             }
             catch (Exception exc)
@@ -219,7 +219,7 @@ namespace DotNetNuke.Web.DDRMenu
         {
             this.menuSettings.NodeXmlPath =
                 this.MapPath(
-                    new PathResolver(this.TemplateDef.Folder).Resolve(
+                    new PathResolver(this.hostSettings, this.TemplateDef.Folder).Resolve(
                         this.menuSettings.NodeXmlPath,
                         PathResolver.RelativeTo.Manifest,
                         PathResolver.RelativeTo.Skin,

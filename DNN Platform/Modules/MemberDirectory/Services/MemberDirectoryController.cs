@@ -12,6 +12,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     using System.Net.Http;
     using System.Web.Http;
 
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Common;
     using DotNetNuke.Common.Lists;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
@@ -21,11 +23,26 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.DependencyInjection;
+
+    /// <summary>A web API controller for the Member Directory module.</summary>
+    /// <param name="listController">The list controller.</param>
+    /// <param name="hostSettings">The host settings.</param>
     [SupportedModules("DotNetNuke.Modules.MemberDirectory")]
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
-    public class MemberDirectoryController : DnnApiController
+    public class MemberDirectoryController(ListController listController, IHostSettings hostSettings)
+        : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
+        private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
+        private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
+        /// <summary>Initializes a new instance of the <see cref="MemberDirectoryController"/> class.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with ListController. Scheduled removal in v12.0.0.")]
+        public MemberDirectoryController()
+            : this(null, null)
+        {
+        }
 
         [HttpGet]
         public HttpResponseMessage AdvancedSearch(int userId, int groupId, int pageIndex, int pageSize, string searchTerm1, string searchTerm2, string searchTerm3, string searchTerm4)
@@ -44,10 +61,10 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                 var propertyNames = string.Empty;
                 var propertyValues = string.Empty;
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField1, searchTerm1);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField2, searchTerm2);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField3, searchTerm3);
-                AddSearchTerm(ref propertyNames, ref propertyValues, searchField4, searchTerm4);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField1, searchTerm1);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField2, searchTerm2);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField3, searchTerm3);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, searchField4, searchTerm4);
 
                 var members = this.GetUsers(userId, groupId, searchTerm1, pageIndex, pageSize, propertyNames, propertyValues);
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(members));
@@ -80,7 +97,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             try
             {
                 var users = new List<UserInfo>();
-                var user = UserController.GetUserById(this.PortalSettings.PortalId, userId);
+                var user = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, userId);
                 users.Add(user);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, this.GetMembers(users));
@@ -116,9 +133,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AcceptFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -133,9 +150,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.AddFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -150,9 +167,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
+                var follow = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.FollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -167,9 +184,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var friend = UserController.GetUserById(this.PortalSettings.PortalId, postData.FriendId);
+                var friend = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FriendId);
                 FriendsController.Instance.DeleteFriend(friend);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -184,9 +201,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                var follow = UserController.GetUserById(this.PortalSettings.PortalId, postData.FollowId);
+                var follow = UserController.GetUserById(this.hostSettings, this.PortalSettings.PortalId, postData.FollowId);
                 FollowersController.Instance.UnFollowUser(follow);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", });
             }
             catch (Exception exc)
             {
@@ -195,7 +212,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
         }
 
-        private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
+        private static void AddSearchTerm(ListController listController, ref string propertyNames, ref string propertyValues, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -204,16 +221,16 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 if (name.Equals("Country", StringComparison.InvariantCultureIgnoreCase) ||
                     name.Equals("Region", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    value = GetMatchedListEntryIds(name, value);
+                    value = GetMatchedListEntryIds(listController, name, value);
                 }
 
                 propertyValues += value + ",";
             }
         }
 
-        private static string GetMatchedListEntryIds(string name, string value)
+        private static string GetMatchedListEntryIds(ListController listController, string name, string value)
         {
-            var listEntries = new ListController().GetListEntryInfoItems(name)
+            var listEntries = listController.GetListEntryInfoItems(name)
                 .Where(i => i.Text.StartsWith(value, StringComparison.InvariantCultureIgnoreCase)
                             || i.TextNonLocalized.StartsWith(value, StringComparison.InvariantCultureIgnoreCase)
                             || i.Value.StartsWith(value, StringComparison.InvariantCultureIgnoreCase))
@@ -290,14 +307,14 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             if (string.IsNullOrEmpty(propertyNames))
             {
                 isBasicSearch = true;
-                AddSearchTerm(ref propertyNames, ref propertyValues, "DisplayName", searchTerm);
+                AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, "DisplayName", searchTerm);
             }
 
             IList<UserInfo> users;
             switch (filterBy)
             {
                 case "User":
-                    users = new List<UserInfo> { UserController.GetUserById(portalId, userId) };
+                    users = new List<UserInfo> { UserController.GetUserById(this.hostSettings, portalId, userId) };
                     break;
                 case "Group":
                     if (groupId == -1)
@@ -344,7 +361,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     break;
                 case "ProfileProperty":
                     var propertyValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterPropertyValue", string.Empty);
-                    AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
+                    AddSearchTerm(this.listController, ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
                     users = UserController.Instance.GetUsersAdvancedSearch(
                         portalId,
