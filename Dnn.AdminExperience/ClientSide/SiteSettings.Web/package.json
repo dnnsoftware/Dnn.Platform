@@ -1,6 +1,6 @@
 {
   "name": "site-settings",
-  "version": "10.3.0",
+  "version": "10.3.1",
   "private": true,
   "scripts": {
     "test": "jest",
@@ -17,7 +17,7 @@
     "@babel/preset-env": "^7.28.3",
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.28.5",
-    "@dnnsoftware/dnn-react-common": "10.3.0",
+    "@dnnsoftware/dnn-react-common": "10.3.1",
     "@rsbuild/core": "^1.6.3",
     "@rsbuild/plugin-less": "^1.5.0",
     "@rsbuild/plugin-react": "^1.4.2",
