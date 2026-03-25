@@ -28,7 +28,7 @@
     "sass-embedded": "^1.98.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "zip-lib": "^1.3.0"
+    "zip-lib": "^1.3.1"
   },
   "browserslist": [
     "last 2 versions",
