@@ -1,4 +1,7 @@
 import { defineConfig } from "@rsbuild/core";
+import { pluginReact } from "@rsbuild/plugin-react";
+import { pluginLess } from "@rsbuild/plugin-less";
+import { pluginSvgr } from "@rsbuild/plugin-svgr";
 import path from "path";
 import { defaultConfig, resolveWebsitePath } from "../modules.rsbuild.config";
 
