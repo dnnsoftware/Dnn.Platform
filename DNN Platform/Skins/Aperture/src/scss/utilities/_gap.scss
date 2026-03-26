@@ -13,11 +13,11 @@ $gap-sizes: (
 // Gap Mixin
 @mixin gap($type, $size, $important: false) {
     @if $type == 'gap' {
-        gap: $size if($important, !important, null);
+        gap: $size if(sass($important): !important);
     } @else if $type == 'row-gap' {
-        row-gap: $size if($important, !important, null);
+        row-gap: $size if(sass($important): !important);
     } @else if $type == 'column-gap' {
-        column-gap: $size if($important, !important, null);
+        column-gap: $size if(sass($important): !important);
     }    
 }
 

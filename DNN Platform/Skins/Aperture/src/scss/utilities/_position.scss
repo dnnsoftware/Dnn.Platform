@@ -2,7 +2,7 @@
 
 // Position Mixin
 @mixin position($type) {
-    position: if($type == 'sticky', '-webkit-sticky', $type);
+    position: if(sass($type == 'sticky'): '-webkit-sticky'; else: $type);
     position: $type;
 }
 
