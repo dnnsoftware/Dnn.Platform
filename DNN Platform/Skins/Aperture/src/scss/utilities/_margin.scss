@@ -14,15 +14,15 @@ $margin-sizes: (
 // Margin Mixin
 @mixin margin($side, $size, $important: false) {
     @if $side == 'all' {
-        margin: $size if($important, !important, null);
+        margin: $size if(sass($important): !important);
     } @else if $side == 'x' {
-        margin-left: $size if($important, !important, null);
-        margin-right: $size if($important, !important, null);
+        margin-left: $size if(sass($important): !important);
+        margin-right: $size if(sass($important): !important);
     } @else if $side == 'y' {
-        margin-top: $size if($important, !important, null);
-        margin-bottom: $size if($important, !important, null);
+        margin-top: $size if(sass($important): !important);
+        margin-bottom: $size if(sass($important): !important);
     } @else {
-        margin-#{$side}: $size if($important, !important, null);
+        margin-#{$side}: $size if(sass($important): !important);
     }    
 }
 
