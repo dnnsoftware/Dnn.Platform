@@ -3,11 +3,11 @@
 // Mixin for generating flex-direction classes
 // usage: @include flex-direction('row');
 @mixin flex-direction($direction, $important: false) {
-    -webkit-box-orient: if($direction == 'row', horizontal, vertical) if($important, !important, null);
-    -webkit-box-direction: normal if($important, !important, null);
-    -webkit-flex-direction: #{$direction} if($important, !important, null);
-    -ms-flex-direction: #{$direction} if($important, !important, null);
-    flex-direction: #{$direction} if($important, !important, null);
+    -webkit-box-orient: if(sass($direction == 'row'): horizontal; else: vertical) if(sass($important): !important);
+    -webkit-box-direction: normal if(sass($important): !important);
+    -webkit-flex-direction: #{$direction} if(sass($important): !important);
+    -ms-flex-direction: #{$direction} if(sass($important): !important);
+    flex-direction: #{$direction} if(sass($important): !important);
 }
 
 // Mixin for generating media queries for flex-direction
