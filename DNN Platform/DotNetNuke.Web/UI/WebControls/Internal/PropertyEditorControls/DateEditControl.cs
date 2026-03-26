@@ -8,26 +8,19 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     using System.Data.SqlTypes;
     using System.Globalization;
     using System.Web.UI;
+    using System.Web.UI.WebControls;
 
-    using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.WebControls;
 
-    using Microsoft.Extensions.DependencyInjection;
-
-    /// <summary>
-    /// The DateEditControl control provides a standard UI component for editing
-    /// date properties.
-    /// </summary>
-    /// <remarks>
-    /// This control is only for internal use, please don't reference it in any other place as it may be removed in future.
-    /// </remarks>
+    /// <summary>The DateEditControl control provides a standard UI component for editing date properties.</summary>
+    /// <remarks>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</remarks>
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
-        private DnnDatePicker dateControl;
+        private TextBox dateControl;
 
         /// <inheritdoc />
         public override string EditControlClientId
@@ -145,7 +138,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             }
         }
 
-        private DnnDatePicker DateControl => this.dateControl ??= ActivatorUtilities.CreateInstance<DnnDatePicker>(Globals.GetCurrentServiceProvider());
+        private TextBox DateControl => this.dateControl ??= new TextBox { TextMode = TextBoxMode.Date, };
 
         /// <inheritdoc />
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -188,7 +181,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         {
             if (this.DateValue != Null.NullDate)
             {
-                this.DateControl.SelectedDate = this.DateValue.Date;
+                this.DateControl.Text = this.DateValue.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
             }
         }
 

@@ -28,6 +28,8 @@
 
 .dnnFormItem{
     input[type="text"],
+    input[type="date"],
+    input[type="datetime-local"],
     select,
     textarea,
     input[type="email"],
@@ -110,6 +112,9 @@
     input[type="text"]:active, .dnnFormItem input[type="text"]:focus,
     input[type="password"]:focus, .dnnFormItem input[type="password"]:active,
     input[type="email"]:active, .dnnFormItem input[type="email"]:focus,
+    input[type="date"]:active, .dnnFormItem input[type="date"]:focus,
+    input[type="datetime-local"]:active, .dnnFormItem input[type="datetime-local"]:focus,
+    input[type="datetime-local"]:active, .dnnFormItem input[type="datetime-local"]:focus,
     select:active, .dnnFormItem select:focus,
     textarea:active, .dnnFormItem textarea:focus,
     input[type="search"]:active, .dnnFormItem input[type="search"]:focus {
@@ -347,6 +352,8 @@ legend.required:after {
 }
 .error{
     input[type="text"],
+    input[type="date"],
+    input[type="datetime-local"],
     select, .error textarea,
     input[type="email"],
     input[type="search"] {
@@ -359,6 +366,8 @@ legend.required:after {
         color: var(--dnn-color-danger, red);
     }
     input[type="text"],
+    input[type="date"],
+    input[type="datetime-local"],
     input[type="password"],
     input[type="email"],
     input[type="tel"],
@@ -436,7 +445,7 @@ legend.required:after {
 .dnnFormItem{
     input[type="text"] + a.dnnPrimaryAction,
     input[type="text"] + a.dnnSecondaryAction,
-    input[type="text"] + a.dnnTerriaryAction { 
+    input[type="text"] + a.dnnTertiaryAction { 
         margin-left: 0.3125rem;
     }
     input[type="checkbox"] + span,

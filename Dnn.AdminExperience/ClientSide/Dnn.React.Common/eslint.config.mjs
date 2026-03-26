@@ -2,7 +2,6 @@ import { defineConfig } from "eslint/config";
 import react from "eslint-plugin-react";
 import _import from "eslint-plugin-import";
 import { fixupPluginRules } from "@eslint/compat";
-import babelParser from "@babel/eslint-parser";
 
 export default defineConfig([
   {
@@ -15,7 +14,6 @@ export default defineConfig([
       import: fixupPluginRules(_import),
     },
     languageOptions: {
-      parser: babelParser,
       ecmaVersion: 2020,
       sourceType: "module",
       parserOptions: {

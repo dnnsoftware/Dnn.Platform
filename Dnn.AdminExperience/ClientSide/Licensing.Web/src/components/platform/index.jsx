@@ -31,7 +31,7 @@ class Platform extends Component {
         window.open("https://docs.dnncommunity.org", "_blank");
     }
 
-     
+
     renderLinks() {
         return (
             <div className="links-wrapper">

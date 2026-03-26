@@ -59,12 +59,6 @@ const config = [
         }
     },
     {
-        files: ["webpack.config.js"],
-        languageOptions: {
-            sourceType: "commonjs",
-        }
-    },
-    {
         settings: {
             react: {
                 version: "detect"

@@ -1,5 +1,5 @@
 import esbuild from "esbuild";
-import * as sass from "sass";
+import * as sass from "sass-embedded";
 import path from "path";
 import fs from "fs";
 import chokidar from "chokidar";
@@ -52,7 +52,7 @@ function normalizePath(filePath: string): string {
 // Compile SCSS to CSS with sourcemaps
 async function buildScss(input: string, output: string): Promise<void> {
   try {
-    const result = sass.compile(
+    const result = await sass.compileAsync(
         input,
         {
           sourceMap: true,

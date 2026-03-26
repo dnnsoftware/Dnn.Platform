@@ -14,10 +14,10 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
+    [Obsolete("Deprecated in DotNetNuke 10.3.0. Please use TextBox with TextMode=TextBoxMode.DateTimeLocal. Scheduled removal in v12.0.0.")]
     public class DnnDateTimePicker : DnnDatePicker
     {
         /// <summary>Initializes a new instance of the <see cref="DnnDateTimePicker"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public DnnDateTimePicker()
             : this(null, null, null)
         {
@@ -36,19 +36,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         /// <inheritdoc />
-        protected override string Format => "yyyy-MM-dd HH:mm:ss";
-
-        /// <inheritdoc />
-        protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
+        protected override string Format => "yyyy-MM-dd'T'HH:mm";
 
         /// <inheritdoc />
         protected override IDictionary<string, object> GetSettings()
         {
             var settings = base.GetSettings();
 
-            settings.Add("showTime", true);
-            settings.Add("use24hour", true);
-            settings.Add("autoClose", true);
+            settings["type"] = "datetime-local";
 
             return settings;
         }

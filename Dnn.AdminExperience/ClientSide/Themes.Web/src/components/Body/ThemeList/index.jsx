@@ -14,7 +14,7 @@ class ThemeList extends Component {
         this.state = {};
     }
 
-     
+
     render() {
         const { props } = this;
         let globalThemes = props.dataSource.filter(t => t.level === 4);

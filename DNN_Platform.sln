@@ -614,8 +614,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{AC5B9AB0-6049-43F3-B0C6-3E3090CBA5C2}"
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\image-actions.yml = .github\workflows\image-actions.yml
-		.github\workflows\open-merged-pr-to-future.yml = .github\workflows\open-merged-pr-to-future.yml
-		.github\workflows\updateVersions.yml = .github\workflows\updateVersions.yml
+		.github\workflows\browserslist-update-db.yml = .github\workflows\browserslist-update-db.yml
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\dependency-review.yml = .github\workflows\dependency-review.yml
+		.github\workflows\ossf-scorecard.yml = .github\workflows\ossf-scorecard.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{4FBA4C58-559B-4CD2-9926-CDA3498FE20E}"
@@ -631,7 +633,7 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Dnn.ClientSide", "DNN Platf
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy", "DNN Platform\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj", "{33C9571D-E3AF-46FC-DC75-9CA082BBDC3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy.Tests", "DNN Platform\Tests\DotNetNuke.Tests.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.Tests.csproj", "{66524EA5-0C3A-5159-DA42-2063DD4EB949}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Tests.ContentSecurityPolicy", "DNN Platform\Tests\DotNetNuke.Tests.ContentSecurityPolicy\DotNetNuke.Tests.ContentSecurityPolicy.csproj", "{66524EA5-0C3A-5159-DA42-2063DD4EB949}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.Web.Client.ResourceManager", "DNN Platform\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj", "{039BAFBD-E2DB-40C4-B565-C27467D9B5E1}"
 EndProject

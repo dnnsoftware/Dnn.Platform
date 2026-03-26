@@ -40,11 +40,11 @@ class App extends Component {
         let tabHeaders = [];
         if (canViewAdminLogs) {
             tabHeaders.push(Localization.get("AdminLogs.Header"));
-            renderTabs.push(<AdminLogs />);
+            renderTabs.push(<AdminLogs key="admin-logs-tab" />);
         }
         if (canViewLogSettings) {
             tabHeaders.push(Localization.get("LogSettings.Header"));
-            renderTabs.push(<LogSettings />);
+            renderTabs.push(<LogSettings key="log-settings-tab" />);
         }
 
         return (

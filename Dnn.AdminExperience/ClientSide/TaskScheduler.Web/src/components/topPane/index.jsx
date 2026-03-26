@@ -143,7 +143,7 @@ class TopPane extends Component {
         }
     }
 
-     
+
     render() {
         const {props, state} = this;
         return (

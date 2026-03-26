@@ -25,7 +25,7 @@ class InstalledExtensions extends Component {
         return !props.installedPackages || props.installedPackages.length === 0;
     }
 
-    UNSAFE_componentWillMount() {        
+    UNSAFE_componentWillMount() {
         const {props} = this;
         if (this.checkIfPackageTypesEmpty(props)) {
             props.dispatch(ExtensionActions.getPackageTypes());
@@ -71,13 +71,13 @@ class InstalledExtensions extends Component {
 
     renderLoading() {
 
-         
+
         return <div className="loading-extensions">
             <h2>{Localization.get("Loading")}</h2>
             <p>{Localization.get("Loading.Tooltip")}</p>
             <div><FetchingIcon /></div>
         </div>;
-         
+
     }
 
     render() {
