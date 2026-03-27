@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Localization.Internal;
 
@@ -57,6 +58,8 @@ namespace DotNetNuke.Web.Api.Internal
             var portalSettings = new PortalSettings(tabId, alias);
 
             request.GetHttpContext().Items["PortalSettings"] = portalSettings;
+            DnnLoggingController.AddToLogContext("PortalId", portalSettings.PortalId);
+            DnnLoggingController.AddToLogContext("TabId", portalSettings.ActiveTab.TabID);
             return portalSettings;
 #pragma warning restore CS0618 // Type or member is obsolete
         }

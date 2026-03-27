@@ -69,5 +69,18 @@ namespace DotNetNuke.Instrumentation
 
             return new SerilogLoggerFactory(Log.Logger).CreateLogger(categoryName);
         }
+
+        /// <summary>Adds a property to the Serilog log context.</summary>
+        /// <param name="key">The property key/name to add to the log context.</param>
+        /// <param name="value">The value to associate with the property.</param>
+        /// <remarks>
+        /// Properties added to the log context will be included in all subsequent log events
+        /// until the context is disposed or cleared. The property is added using Serilog's
+        /// <see cref="Serilog.Context.LogContext.PushProperty(string, object, bool)"/> method.
+        /// </remarks>
+        public static void AddToLogContext(string key, object value)
+        {
+            Serilog.Context.LogContext.PushProperty(key, value);
+        }
     }
 }
