@@ -193,7 +193,6 @@ namespace DotNetNuke.HttpModules.Membership
                 else
                 {
                     context.Items.Add("UserInfo", user);
-                    DnnLoggingController.AddToLogContext("UserId", user.UserID);
                 }
 
                 // Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded

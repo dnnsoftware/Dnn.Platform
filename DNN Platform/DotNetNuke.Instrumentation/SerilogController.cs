@@ -36,6 +36,7 @@ internal sealed class SerilogController
         {
             config = new LoggerConfiguration()
                 .Enrich.FromLogContext()
+                .Enrich.With(new DnnEnricher())
                 .ReadFrom.Configuration(new ConfigurationBuilder()
                     .AddJsonFile(configFile, optional: false, reloadOnChange: true)
                     .Build());
@@ -44,6 +45,7 @@ internal sealed class SerilogController
         {
             config = new LoggerConfiguration()
                 .Enrich.FromLogContext()
+                .Enrich.With(new DnnEnricher())
                 .WriteTo.File(
                     Path.Combine(applicationMapPath, "Portals\\_default\\Logs\\log.resources"),
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
