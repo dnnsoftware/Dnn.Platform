@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputPath>bin/Providers</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <TargetFramework>net48</TargetFramework>
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
