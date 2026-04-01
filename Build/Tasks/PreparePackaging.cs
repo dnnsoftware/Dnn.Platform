@@ -28,9 +28,6 @@ namespace DotNetNuke.Build.Tasks
             context.PackagingPatterns = context.DeserializeJsonFromFile<PackagingPatterns>("./Build/Tasks/packaging.json");
 
             // Various fixes
-            context.CopyFile(
-                "./DNN Platform/Components/DataAccessBlock/bin/Microsoft.ApplicationBlocks.Data.dll",
-                context.WebsiteFolder + "bin/Microsoft.ApplicationBlocks.Data.dll");
             context.CopyFiles(
                 "./DNN Platform/Components/Lucene.Net.Contrib/bin/Lucene.Net.Contrib.Analyzers.*",
                 context.WebsiteFolder + "bin/");

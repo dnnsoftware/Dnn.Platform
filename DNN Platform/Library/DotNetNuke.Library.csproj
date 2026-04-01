@@ -26,6 +26,7 @@
     <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-j92c-7v7g-gj3f" />
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="MailKit" />
+    <PackageReference Include="Microsoft.ApplicationBlocks.Data" />
     <PackageReference Include="Microsoft.AspNet.WebPages" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" />
@@ -58,11 +59,6 @@
     </Reference>
     <Reference Include="Lucene.Net.Contrib.FastVectorHighlighter">
       <HintPath>..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.FastVectorHighlighter.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.ApplicationBlocks.Data, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-      <Private>False</Private>
     </Reference>
   </ItemGroup>
 
