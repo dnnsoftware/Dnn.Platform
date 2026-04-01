@@ -33,14 +33,6 @@
             </uninstall>
           </config>
         </component>
-        <component type="Assembly">
-          <assemblies>
-            <assembly Action="UnRegister">
-              <path>bin</path>
-              <name>Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</name>
-            </assembly>
-          </assemblies>
-        </component>
         <component type="Cleanup" version="10.00.00">
           <files>
             <file>

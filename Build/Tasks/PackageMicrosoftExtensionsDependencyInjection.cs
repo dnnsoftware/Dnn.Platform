@@ -46,6 +46,7 @@ public sealed class PackageMicrosoftExtensionsDependencyInjection : FrostingTask
 
         var assemblies =
             from XmlNode assemblyNode in manifest.SelectNodes("//assembly")
+            where assemblyNode.Attributes?["action"]?.Value != "UnRegister"
             from XmlNode childNode in assemblyNode.ChildNodes
             where childNode.LocalName.Equals("name", System.StringComparison.Ordinal)
             select childNode;

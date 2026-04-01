@@ -13,6 +13,7 @@
     "/release.config",
     "/web.*.config",
     "/App_Data/RadSpell/en-US.tdf",
+    "/bin/roslyn/*",
     "/bin/Dnn.AuthServices.Jwt.*",
     "/bin/Dnn.EditBar.*",
     "/bin/Dnn.Modules.*",
@@ -58,6 +59,7 @@
     "/bin/System.Numerics.Vectors.dll",
     "/bin/System.Formats.Asn1.dll",
     "/bin/System.Memory.dll",
+    "/bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll",
     "/Install/Module/DNNCE_Website.Deprecated_*_Install.zip",
     "/Install/Module/DNNCE_TelerikRemoval_*_Install.zip"
   ],
