@@ -358,8 +358,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScript
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 		Build\BuildScripts\ProviderPackage.targets = Build\BuildScripts\ProviderPackage.targets
 		Build\BuildScripts\PublishArtifacts.ps1 = Build\BuildScripts\PublishArtifacts.ps1
-		Build\BuildScripts\Yahoo.Yui.Compressor.dll = Build\BuildScripts\Yahoo.Yui.Compressor.dll
-		Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll = Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{4F538A14-38F5-473F-8386-60D81F3F530A}"
