@@ -12,7 +12,7 @@
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
   <Target Name="CopyAndPackage" BeforeTargets="Build" DependsOnTargets="GetFiles;DebugProject;Package" />
-    <Target Name="GetFiles">
+  <Target Name="GetFiles">
     <ItemGroup>
       <TextFiles Include="*.txt" Exclude="license.txt;releasenotes.txt" />
       <Views Include="AzureFolderProvider/*.ascx" />
