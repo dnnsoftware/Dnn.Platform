@@ -17,7 +17,7 @@
     "create-react-class": "^15.7.0",
     "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^16.5.0",
+    "globals": "^17.4.0",
     "less": "4.6.4",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
