@@ -510,6 +510,16 @@ namespace DotNetNuke.UI.Modules
             var actionable = this.moduleControl as IActionable;
             if (actionable != null)
             {
+                // Async module controls populate ModuleActions only after their async task executes.
+                // Leave this.actions as null so the Actions getter retries once results are available.
+                if (this.moduleControl is IAsyncModuleControl && actionable.ModuleActions == null)
+                {
+                    this.actions = null;
+
+                    // TODO: Should we throw instead to be able to identify code that tries to call it too early?
+                    return;
+                }
+
                 this.moduleSpecificActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
 
                 ModuleActionCollection moduleActions = actionable.ModuleActions;
