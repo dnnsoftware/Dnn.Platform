@@ -69,7 +69,7 @@ steps:
 - task: UseDotNet@2
   displayName: 'Use .NET SDK'
   inputs:
-    useGlobalJson: true
+    version: "10.0.103"
 
 - task: PowerShell@2
   displayName: 'Run DNN Update Versions'
