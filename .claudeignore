@@ -1,0 +1,41 @@
+# Build outputs
+**/bin/
+**/obj/
+**/packages/
+
+# Generated code
+*.designer.cs
+*.generated.cs
+**/Service References/
+**/Web References/
+**/Reference.cs
+
+# Third-party vendored code
+DNN Platform/DotNetNuke.Log4net/log4net/
+DNN Platform/JavaScript Libraries/
+
+# Binary and non-code assets
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.zip
+*.png
+*.jpg
+*.gif
+*.ico
+*.svg
+*.css
+*.less
+*.scss
+*.min.js
+
+# Build scripts
+Build/
+
+# Client-side code (not relevant for .NET demos)
+DNN Platform/Dnn.ClientSide/
+**/node_modules/
+
+# Skin HTML templates
+DNN Platform/Skins/
