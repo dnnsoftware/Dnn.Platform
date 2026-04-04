@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Journal
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileUploadControllerUploadFileException(exc);
             }
 
             return IframeSafeJson(statuses);

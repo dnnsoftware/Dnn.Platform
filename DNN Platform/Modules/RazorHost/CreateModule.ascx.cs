@@ -178,13 +178,13 @@ namespace DotNetNuke.Modules.RazorHost
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CreateModuleDeleteFileException(ex);
             }
 
             // Optionally goto new Page
             if (this.chkAddPage.Checked)
             {
-                string tabName = "Test " + this.txtName.Text + " Page";
+                string tabName = $"Test {this.txtName.Text} Page";
                 string tabPath = Globals.GenerateTabPath(Null.NullInteger, tabName);
                 int tabID = TabController.GetTabByTabPath(this.ModuleContext.PortalId, tabPath, this.ModuleContext.PortalSettings.CultureCode);
 

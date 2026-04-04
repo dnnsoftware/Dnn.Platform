@@ -350,7 +350,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseCreatedException(ex);
             }
 
             newOutline.Category = ParseElement(node, "category");
@@ -360,7 +360,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseXmlUrlException(ex);
             }
 
             try
@@ -369,7 +369,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseHtmlUrlException(ex);
             }
 
             newOutline.Language = ParseElement(node, "language");
@@ -381,7 +381,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseUrlException(ex);
             }
 
             newOutline.Description = ParseElement(node, "description");

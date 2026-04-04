@@ -47,6 +47,8 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.UserControls;
     using DotNetNuke.UI.WebControls;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -437,7 +439,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 catch (Exception ex)
                 {
                     // control not there
-                    Logger.Error(ex);
+                    Logger.AuthenticationLoginPageNoException(ex);
                 }
             }
 

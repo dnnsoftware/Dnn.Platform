@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Syndication
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.RssDownloadManagerDeleteException(ex);
                     }
 
                     // try next file

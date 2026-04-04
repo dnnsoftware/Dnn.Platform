@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Urls.Config
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
-                Logger.Error(log);
+                Logger.RewriterConfigurationGetConfigFailed(log);
             }
 
             return config;

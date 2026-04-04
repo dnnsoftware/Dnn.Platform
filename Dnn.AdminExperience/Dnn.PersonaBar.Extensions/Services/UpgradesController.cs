@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UpgradesControllerDeleteException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = ex.Message, });
             }
 
@@ -173,7 +173,7 @@ namespace Dnn.PersonaBar.Extensions.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UpgradesControllerUploadException(ex);
                 return Task.FromResult(this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { message = ex.Message, }));
             }
         }

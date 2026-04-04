@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Localization
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -102,7 +101,7 @@ namespace DotNetNuke.Services.Localization
 
             if (!keyFound)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
+                Logger.LocalizationProviderMissingLocalizationKey(key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
             return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
@@ -568,7 +567,7 @@ namespace DotNetNuke.Services.Localization
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LocalizationProviderGetLocaleException(ex);
             }
 
             if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))

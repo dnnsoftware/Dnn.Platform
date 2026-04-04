@@ -164,10 +164,7 @@ namespace DotNetNuke.Web.Api
                     return ids.First();
                 }
 
-                if (Logger.IsWarnEnabled)
-                {
-                    Logger.WarnFormat(CultureInfo.InvariantCulture, "The specified moniker ({0}) is not defined in the system", monikerValue);
-                }
+                Logger.StandardTabAndModuleInfoProviderMonikerIsNotDefined(monikerValue);
             }
 
             return Null.NullInteger;

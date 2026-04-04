@@ -755,7 +755,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         if (retry == 0)
                         {
-                            Logger.Error(exc);
+                            Logger.ConfigSaveFileIOException(exc);
                             retMsg = exc.Message;
                         }
 
@@ -770,7 +770,7 @@ namespace DotNetNuke.Common.Utilities
             catch (Exception exc)
             {
                 // the file permissions may not be set properly
-                Logger.Error(exc);
+                Logger.ConfigSaveFileException(exc);
                 retMsg = exc.Message;
             }
 
@@ -800,7 +800,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigTouchException(exc);
                 return false;
             }
         }
@@ -924,7 +924,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ConfigUpdateMachineKeyException(ex);
                 strError += ex.Message;
             }
 
@@ -982,7 +982,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ConfigUpdateValidationKeyException(ex);
                 strError += ex.Message;
             }
 
@@ -1105,7 +1105,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ConfigUpdateInstallVersionException(ex);
                     strError += ex.Message;
                 }
 
@@ -1163,7 +1163,7 @@ namespace DotNetNuke.Common.Utilities
             catch (Exception ex)
             {
                 // in case of error installation shouldn't be stopped, log into log4net
-                Logger.Error(ex);
+                Logger.ConfigAddFcnModeException(ex);
             }
 
             return string.Empty;

@@ -60,8 +60,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
-                string value;
-                if (packageSettings.EditorActions.TryGetValue("customCdn", out value)
+                if (packageSettings.EditorActions.TryGetValue("customCdn", out var value)
                     && !string.IsNullOrEmpty(value))
                 {
                     var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == packageSettings.PackageId);
@@ -72,7 +71,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.JsLibraryPackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

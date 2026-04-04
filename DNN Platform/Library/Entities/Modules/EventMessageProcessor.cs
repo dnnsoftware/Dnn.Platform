@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.EventMessageProcessorProcessMessageException(ex);
                 message.ExceptionMessage = ex.Message;
                 return false;
             }

@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Authentication
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.AuthenticationControllerGetAuthenticationTypeException(ex);
                 }
             }
 

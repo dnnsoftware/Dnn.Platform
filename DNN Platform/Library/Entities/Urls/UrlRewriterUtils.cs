@@ -175,8 +175,8 @@ namespace DotNetNuke.Entities.Urls
                     log.BypassBuffering = true;
                     LogController.Instance.AddLog(log);
 
-                    // Log this error in lig4net
-                    Logger.Error(ex);
+                    // Log this error in log4net
+                    Logger.UrlRewriterUtilsLogExceptionInRequest(ex);
                 }
             }
         }

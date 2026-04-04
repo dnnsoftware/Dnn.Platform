@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.Groups
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModerationServiceControllerApproveGroupException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -165,7 +165,7 @@ namespace DotNetNuke.Modules.Groups
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModerationServiceControllerRejectGroupException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.Groups
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModerationServiceControllerJoinGroupException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.Groups
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModerationServiceControllerLeaveGroupException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
@@ -299,7 +299,7 @@ namespace DotNetNuke.Modules.Groups
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModerationServiceControllerApproveMemberException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
@@ -345,7 +345,7 @@ namespace DotNetNuke.Modules.Groups
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModerationServiceControllerRejectMemberException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 

@@ -11,6 +11,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
+    using DotNetNuke.Web;
 
     using Microsoft.Extensions.Logging;
 
@@ -41,7 +42,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
                     }
                     catch (Exception exception)
                     {
-                        Logger.Error(exception);
+                        Logger.BuildUpExtensionsSetValueException(exception);
                     }
                 }
             }

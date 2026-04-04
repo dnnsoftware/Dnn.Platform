@@ -358,7 +358,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                     {
                         if (retry == 0)
                         {
-                            Logger.Error(exc);
+                            Logger.ConfigConsoleControllerSaveNonConfigFileIOException(exc);
                             retMsg = exc.Message;
                         }
 
@@ -373,7 +373,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             catch (Exception exc)
             {
                 // the file permissions may not be set properly
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerSaveNonConfigFileGeneralException(exc);
                 retMsg = exc.Message;
             }
 
@@ -413,7 +413,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
                     {
                         if (retry == 0)
                         {
-                            Logger.Error(exc);
+                            Logger.ConfigConsoleControllerSaveNonConfigFileIOException(exc);
                             retMsg = exc.Message;
                         }
 
@@ -428,7 +428,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Components
             catch (Exception exc)
             {
                 // the file permissions may not be set properly
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerSaveNonConfigFileGeneralException(exc);
                 retMsg = exc.Message;
             }
 

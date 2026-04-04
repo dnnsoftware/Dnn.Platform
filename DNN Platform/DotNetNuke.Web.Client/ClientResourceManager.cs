@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <summary>Remove the client dependency configuration from the <c>web.config</c>.</summary>
         public static void RemoveConfiguration()
         {
-            Logger.Info("Removing ClientDependency from web.config");
+            Logger.ClientResourceManagerRemovingClientDependencyFromWebConfig();
 
             var configPath = HostingEnvironment.MapPath("~/web.config");
             if (string.IsNullOrEmpty(configPath))
@@ -151,45 +151,36 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             // Config Sections
             var sectionsConfig = xmlDoc.DocumentElement?.SelectSingleNode("configSections");
-            if (sectionsConfig != null)
+            var clientDependencySectionConfig = sectionsConfig?.SelectSingleNode("section[@name='clientDependency']");
+            if (clientDependencySectionConfig != null)
             {
-                var clientDependencySectionConfig = sectionsConfig.SelectSingleNode("section[@name='clientDependency']");
-                if (clientDependencySectionConfig != null)
-                {
-                    Logger.Info("Removing configSections/clientDependency");
-                    sectionsConfig.RemoveChild(clientDependencySectionConfig);
-                }
+                Logger.ClientResourceManagerRemovingClientDependencyConfigSection();
+                sectionsConfig.RemoveChild(clientDependencySectionConfig);
             }
 
             // Module Config
             var systemWebServerModulesConfig = xmlDoc.DocumentElement?.SelectSingleNode("system.webServer/modules");
-            if (systemWebServerModulesConfig != null)
+            var moduleConfig = systemWebServerModulesConfig?.SelectSingleNode("add[@name=\"ClientDependencyModule\"]");
+            if (moduleConfig != null)
             {
-                var moduleConfig = systemWebServerModulesConfig.SelectSingleNode("add[@name=\"ClientDependencyModule\"]");
-                if (moduleConfig != null)
-                {
-                    Logger.Info("Removing system.webServer/modules/ClientDependencyModule");
-                    systemWebServerModulesConfig.RemoveChild(moduleConfig);
-                }
+                Logger.ClientResourceManagerRemovingClientDependencyModule();
+                systemWebServerModulesConfig.RemoveChild(moduleConfig);
             }
 
             // Handler Config
             var systemWebServerHandlersConfig = xmlDoc.DocumentElement?.SelectSingleNode("system.webServer/handlers");
-            if (systemWebServerHandlersConfig != null)
+            var handlerConfig = systemWebServerHandlersConfig?.SelectSingleNode("add[@name=\"ClientDependencyHandler\"]");
+            if (handlerConfig != null)
             {
-                var handlerConfig = systemWebServerHandlersConfig.SelectSingleNode("add[@name=\"ClientDependencyHandler\"]");
-                if (handlerConfig != null)
-                {
-                    Logger.Info("Removing system.webServer/handlers/ClientDependencyHandler");
-                    systemWebServerHandlersConfig.RemoveChild(handlerConfig);
-                }
+                Logger.ClientResourceManagerRemovingClientDependencyHandler();
+                systemWebServerHandlersConfig.RemoveChild(handlerConfig);
             }
 
             // ClientDependency Config
             var clientDependencyConfig = xmlDoc.DocumentElement?.SelectSingleNode("clientDependency");
             if (clientDependencyConfig != null)
             {
-                Logger.Info("Removing clientDependency");
+                Logger.ClientResourceManagerRemovingClientDependencyElement();
                 xmlDoc.DocumentElement?.RemoveChild(clientDependencyConfig);
             }
 

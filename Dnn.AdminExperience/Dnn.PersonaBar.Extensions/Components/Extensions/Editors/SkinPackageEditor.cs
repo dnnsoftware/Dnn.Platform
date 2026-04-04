@@ -44,10 +44,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
                 if (isHostUser)
                 {
-                    string value;
                     var skin = SkinController.GetSkinByPackageID(packageSettings.PackageId);
 
-                    if (packageSettings.EditorActions.TryGetValue("themePackageName", out value)
+                    if (packageSettings.EditorActions.TryGetValue("themePackageName", out var value)
                         && !string.IsNullOrEmpty(value))
                     {
                         skin.SkinName = value;
@@ -59,7 +58,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SkinPackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

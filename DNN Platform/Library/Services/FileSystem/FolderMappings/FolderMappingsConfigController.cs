@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FolderMappingsConfigControllerLoadConfigException(ex);
             }
         }
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             if (!File.Exists(DefaultConfigFilePath))
             {
-                var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
+                var folderMappingsConfigContent = $"<{this.ConfigNode}>{folderMappinsSettings}</{this.ConfigNode}>";
                 File.AppendAllText(DefaultConfigFilePath, folderMappingsConfigContent);
                 var configDocument = new XmlDocument { XmlResolver = null };
                 using (var configReader = XmlReader.Create(new StringReader(folderMappingsConfigContent), new XmlReaderSettings { XmlResolver = null, }))

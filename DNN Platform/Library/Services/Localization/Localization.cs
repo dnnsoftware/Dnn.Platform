@@ -1074,7 +1074,7 @@ namespace DotNetNuke.Services.Localization
             }
             catch (NullReferenceException ex)
             {
-                Logger.Error(ex);
+                Logger.LocalizationGetSystemMessageException(ex);
                 return messageName;
             }
         }

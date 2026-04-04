@@ -84,11 +84,11 @@ public class ModuleServiceController : DnnApiController
         if (desktopModule == null)
         {
             var message = $"Cannot find module ID {moduleId} (tab ID {tabId}, portal ID {portalId})";
-            Logger.Error(message);
+            Logger.ModuleServiceControllerCannotFindModule(moduleId, tabId, portalId);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
         }
 
-        return this.Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning });
+        return this.Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning, });
     }
 
     /// <summary>Moves a module.</summary>

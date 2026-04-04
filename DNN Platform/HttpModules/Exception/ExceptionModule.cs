@@ -71,14 +71,14 @@ namespace DotNetNuke.HttpModules.Exceptions
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ExceptionModuleAddLogException(ex);
                 }
             }
             catch (Exception exc)
             {
                 // it is possible when terminating the request for the context not to exist
                 // in this case we just want to exit since there is nothing else we can do
-                Logger.Error(exc);
+                Logger.ExceptionModuleOnErrorRequestException(exc);
             }
         }
     }

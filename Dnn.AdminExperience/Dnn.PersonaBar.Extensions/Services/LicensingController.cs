@@ -44,7 +44,7 @@ namespace Dnn.PersonaBar.Licensing.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.LicensingControllerGetProductException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

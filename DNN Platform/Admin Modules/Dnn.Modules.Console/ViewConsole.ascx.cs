@@ -514,7 +514,7 @@ public partial class ViewConsole : PortalModuleBase
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ViewConsoleParseConsoleModuleIdException(exc);
 
             consoleModuleId = -1;
         }

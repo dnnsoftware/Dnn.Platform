@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                     catch (Exception ex)
                     {
-                        Logger.ErrorFormat(CultureInfo.InvariantCulture, "Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
+                        Logger.InternalSearchControllerSearchDocumentError(ex, searchDoc);
                     }
                 }
 

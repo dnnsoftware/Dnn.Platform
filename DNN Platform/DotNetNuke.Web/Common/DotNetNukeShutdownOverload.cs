@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.Common.Internal
     using Microsoft.Extensions.Logging;
 
     /// <summary>Watches <c>bin</c> folder and root files and unloads the app domain proactively when they change.</summary>
-    internal static class DotNetNukeShutdownOverload
+    internal static partial class DotNetNukeShutdownOverload
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(DotNetNukeShutdownOverload));
 
@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Common.Internal
 
                 if (fileChangesMonitor == null)
                 {
-                    Logger.Info("fileChangesMonitor is null");
+                    Logger.ShutdownOverloadFileChangesMonitorIsNull();
 
                     ////AddSiteFilesMonitoring(true);
                 }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Common.Internal
                         .GetField("_FCNMode", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.IgnoreCase)
                         .GetValue(fileChangesMonitor);
 
-                    Logger.Info("FCNMode = " + fcnVal + " (Modes: NotSet/Default=0, Disabled=1, Single=2)");
+                    Logger.ShutdownOverloadFileChangeNotificationMode(fcnVal);
 
                     var dirMonCompletion = typeof(HttpRuntime).Assembly.GetType("System.Web.DirMonCompletion");
                     var dirMonCount = (int)dirMonCompletion.InvokeMember(
@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.Common.Internal
                         null,
                         null,
                         CultureInfo.InvariantCulture);
-                    Logger.Trace("DirMonCompletion count: " + dirMonCount);
+                    Logger.ShutdownOverloadDirMonCompletionCount(dirMonCount);
 
                     // enable our monitor only when fcnMode="Disabled"
                     ////AddSiteFilesMonitoring(fcnVal.ToString() == "1");
@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
             catch (Exception e)
             {
-                Logger.Info(e);
+                Logger.ShutdownOverloadInitializeFcnSettingsException(e);
             }
         }
 
@@ -111,11 +111,11 @@ namespace DotNetNuke.Web.Common.Internal
 
                             // begin watching;
                             binOrRootWatcher.EnableRaisingEvents = true;
-                            Logger.Trace("Added watcher for: " + binOrRootWatcher.Path + @"\" + binOrRootWatcher.Filter);
+                            Logger.ShutdownOverloadAddedWatcherFor(binOrRootWatcher.Path, binOrRootWatcher.Filter);
                         }
                         catch (Exception ex)
                         {
-                            Logger.Trace("Error adding our own file monitoring object. " + ex);
+                            Logger.ShutdownOverloadErrorAddingOurOwnFileMonitoringObject(ex);
                         }
                     }
                 }
@@ -136,11 +136,11 @@ namespace DotNetNuke.Web.Common.Internal
             catch (Exception ex)
             {
                 shutdownInprogress = false;
-                Logger.Error(ex);
+                Logger.ShutdownOverloadUnloadAppDomainException(ex);
             }
         }
 
-        private static void ShceduleShutdown()
+        private static void ScheduleShutdown()
         {
             // no need for locking; worst case is timer extended a bit more
             if (handleShutdowns && !shutdownInprogress)
@@ -154,61 +154,61 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void WatcherOnChanged(object sender, FileSystemEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
+            if (!e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
+                Logger.ShutdownOverloadWatcherActivity(e.ChangeType, e.FullPath);
             }
 
             if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
-                ShceduleShutdown();
+                ScheduleShutdown();
             }
         }
 
         private static void WatcherOnCreated(object sender, FileSystemEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
+            if (!e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
+                Logger.ShutdownOverloadWatcherActivity(e.ChangeType, e.FullPath);
             }
 
             if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
-                ShceduleShutdown();
+                ScheduleShutdown();
             }
         }
 
         private static void WatcherOnRenamed(object sender, RenamedEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
+            if (!e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
+                Logger.ShutdownOverloadWatcherRenamedActivity(e.ChangeType, e.FullPath, e.OldFullPath);
             }
 
             if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
-                ShceduleShutdown();
+                ScheduleShutdown();
             }
         }
 
         private static void WatcherOnDeleted(object sender, FileSystemEventArgs e)
         {
-            if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
+            if (!e.FullPath.EndsWith(".log.resources", StringComparison.OrdinalIgnoreCase))
             {
-                Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
+                Logger.ShutdownOverloadWatcherActivity(e.ChangeType, e.FullPath);
             }
 
             if (handleShutdowns && !shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(binFolder, StringComparison.OrdinalIgnoreCase))
             {
-                ShceduleShutdown();
+                ScheduleShutdown();
             }
         }
 
         private static void WatcherOnError(object sender, ErrorEventArgs e)
         {
-            if (Logger.IsInfoEnabled)
+            if (Logger.IsEnabled(LogLevel.Information))
             {
-                Logger.Info("Watcher Activity: N/A. Error: " + e.GetException());
+                Logger.ShutdownOverloadWatcherError(e.GetException());
             }
         }
     }

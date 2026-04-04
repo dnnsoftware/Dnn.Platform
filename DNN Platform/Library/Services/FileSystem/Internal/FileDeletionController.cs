@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileDeletionControllerDeleteFileException(ex);
                 throw new FolderProviderException(Localization.GetExceptionMessage("DeleteFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been deleted."), ex);
             }
 

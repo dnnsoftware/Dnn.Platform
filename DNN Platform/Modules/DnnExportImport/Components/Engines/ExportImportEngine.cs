@@ -725,11 +725,7 @@ namespace Dnn.ExportImport.Components.Engines
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "Unable to clear {0} while calling CleanupDatabaseIfDirty. Error: {1}",
-                        type.Name,
-                        e.Message);
+                    Logger.ExportImportEngineUnableToClear(e, type.Name);
                 }
             }
         }

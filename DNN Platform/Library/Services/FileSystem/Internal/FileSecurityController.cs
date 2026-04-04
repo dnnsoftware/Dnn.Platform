@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Create File Security Checker for '{extension}' failed.", ex);
+                    Logger.FileSecurityControllerCreateFileSecurityCheckerFailed(ex, extension);
                 }
             }
 

@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Modules
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>ModuleHost hosts a Module Control (or its cached Content).</summary>
-    public sealed class ModuleHost : Panel
+    public sealed partial class ModuleHost : Panel
     {
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
@@ -249,7 +249,7 @@ namespace DotNetNuke.UI.Modules
             return content;
         }
 
-        /// <summary>LoadModuleControl loads the ModuleControl (PortalModuelBase).</summary>
+        /// <summary>LoadModuleControl loads the ModuleControl (PortalModuleBase).</summary>
         private void LoadModuleControl()
         {
             try
@@ -275,24 +275,21 @@ namespace DotNetNuke.UI.Modules
                     this.control = this.moduleControlPipeline.CreateModuleControl(this.moduleConfiguration);
                 }
 
-                if (this.Skin != null)
-                {
-                    // check for IMC
-                    this.Skin.Communicator.LoadCommunicator(this.control);
-                }
+                // check for IMC
+                this.Skin?.Communicator.LoadCommunicator(this.control);
 
                 // add module settings
                 this.ModuleControl.ModuleContext.Configuration = this.moduleConfiguration;
             }
             catch (ThreadAbortException exc)
             {
-                Logger.Debug(exc);
+                Logger.ModuleHostThreadAbortException(exc);
 
                 Thread.ResetAbort();
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModuleHostLoadModuleControlException(exc);
 
                 // add module settings
                 this.control = this.moduleControlPipeline.CreateModuleControl(this.moduleConfiguration);

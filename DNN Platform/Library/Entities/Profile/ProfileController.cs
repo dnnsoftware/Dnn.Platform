@@ -631,7 +631,7 @@ namespace DotNetNuke.Entities.Profile
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ProfileControllerCreateThumbnailsException(ex);
                 }
             }
 
@@ -756,7 +756,7 @@ namespace DotNetNuke.Entities.Profile
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ProfileControllerFillPropertyDefinitionInfoException(ex);
             }
             finally
             {
@@ -768,8 +768,6 @@ namespace DotNetNuke.Entities.Profile
 
         private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr, bool checkForOpenDataReader)
         {
-            ProfilePropertyDefinition definition;
-
             // read datareader
             var canContinue = true;
             if (checkForOpenDataReader)
@@ -784,7 +782,7 @@ namespace DotNetNuke.Entities.Profile
 
             var portalId = 0;
             portalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], portalId), CultureInfo.InvariantCulture);
-            definition = new ProfilePropertyDefinition(portalId);
+            var definition = new ProfilePropertyDefinition(portalId);
             definition.PropertyDefinitionId = Convert.ToInt32(Null.SetNull(dr["PropertyDefinitionId"], definition.PropertyDefinitionId), CultureInfo.InvariantCulture);
             definition.ModuleDefId = Convert.ToInt32(Null.SetNull(dr["ModuleDefId"], definition.ModuleDefId), CultureInfo.InvariantCulture);
             definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType), CultureInfo.InvariantCulture);

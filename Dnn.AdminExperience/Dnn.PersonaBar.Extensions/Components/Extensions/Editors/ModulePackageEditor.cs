@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ModulePackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

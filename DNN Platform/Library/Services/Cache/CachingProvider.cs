@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Cache
         internal static void DisableCacheExpiration()
         {
             CacheExpirationDisable = true;
-            Logger.Warn("Disable cache expiration.");
+            Logger.CachingProviderDisableCacheExpiration();
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.Cache
         {
             CacheExpirationDisable = false;
             DataCache.ClearHostCache(true);
-            Logger.Warn("Enable cache expiration.");
+            Logger.CachingProviderEnableCacheExpiration();
         }
 
         /// <summary>Clears the cache internal.</summary>

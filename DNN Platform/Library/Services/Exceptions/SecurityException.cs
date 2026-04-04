@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 this.ip = string.Empty;
                 this.querystring = string.Empty;
-                Logger.Error(exc);
+                Logger.SecurityExceptionInitializeProviderVariablesException(exc);
             }
         }
 

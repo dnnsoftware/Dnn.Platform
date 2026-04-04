@@ -482,7 +482,7 @@ namespace DotNetNuke.UI.Skins
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SkinControllerExceptionLoggingInstallationEvent(exc);
             }
 
             return strMessage;

@@ -2386,7 +2386,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException ex)
             {
-                Logger.Debug(ex);
+                Logger.DataProviderSqlExceptionFromAddPropertyDefinition(ex);
 
                 // If not a duplicate (throw an Exception)
                 retValue = -ex.Number;
@@ -4079,7 +4079,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException ex)
             {
-                Logger.Error(ex);
+                Logger.DataProviderSqlExceptionFromAddSearchDeletedItems(ex);
             }
         }
 
@@ -4091,7 +4091,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException ex)
             {
-                Logger.Error(ex);
+                Logger.DataProviderSqlExceptionFromDeleteProcessedSearchDeletedItems(ex);
             }
         }
 

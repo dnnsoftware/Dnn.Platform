@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.BasePortalExceptionExceptionGettingDataProviderType(exc);
 
                     this.DefaultDataProvider = string.Empty;
                 }
@@ -223,7 +223,7 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.BasePortalExceptionExceptionGettingStackTrace(exc);
 
                     this.stackTrace = string.Empty;
                 }
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.BasePortalExceptionExceptionGettingMessage(exc);
 
                     this.message = string.Empty;
                 }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.BasePortalExceptionExceptionGettingSource(exc);
 
                     this.source = string.Empty;
                 }
@@ -270,7 +270,7 @@ namespace DotNetNuke.Services.Exceptions
                 this.stackTrace = string.Empty;
                 this.message = string.Empty;
                 this.source = string.Empty;
-                Logger.Error(exc);
+                Logger.BasePortalExceptionInitializePrivateVariablesException(exc);
             }
         }
 

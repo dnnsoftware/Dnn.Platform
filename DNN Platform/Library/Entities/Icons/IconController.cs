@@ -140,7 +140,7 @@ namespace DotNetNuke.Entities.Icons
                     var iconPhysicalPath = Path.Combine(appStatus.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
-                        Logger.Warn($"Icon Not Present on Disk {iconPhysicalPath}");
+                        Logger.IconControllerIconNotPresentOnDisk(iconPhysicalPath);
                     }
                 }
             }

@@ -274,7 +274,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SettingsStorageCredentialsException(ex);
 
                 this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                 this.valContainerName.IsValid = false;
@@ -320,7 +320,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                         case "ContainerAlreadyExists":
                             return true;
                         default:
-                            Logger.Error(ex);
+                            Logger.SettingsCreateContainerStorageException(ex);
                             this.valContainerName.ErrorMessage = Localization.GetString(
                                 "NewContainer.ErrorMessage",
                                 this.LocalResourceFile);
@@ -334,7 +334,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SettingsCreateContainerGeneralException(ex);
                 this.valContainerName.ErrorMessage = Localization.GetString("NewContainer.ErrorMessage", this.LocalResourceFile);
             }
 
@@ -361,7 +361,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SettingsStorageCredentialsException(ex);
 
                 this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                 this.valContainerName.IsValid = false;
@@ -389,7 +389,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                             this.valContainerName.ErrorMessage = Localization.GetString("AuthenticationFailure.ErrorMessage", this.LocalResourceFile);
                             break;
                         default:
-                            Logger.Error(ex);
+                            Logger.SettingsLoadContainersStorageException(ex);
                             this.valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", this.LocalResourceFile);
                             break;
                     }
@@ -403,7 +403,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SettingsLoadContainersGeneralException(ex);
                 this.valContainerName.ErrorMessage = Localization.GetString("ListContainers.ErrorMessage", this.LocalResourceFile);
                 this.valContainerName.IsValid = false;
             }

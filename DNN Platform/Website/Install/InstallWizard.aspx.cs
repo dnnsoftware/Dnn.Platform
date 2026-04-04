@@ -39,6 +39,7 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Website;
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -795,7 +796,7 @@ namespace DotNetNuke.Services.Install
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("WIZARD ERROR:" + ex);
+                    Logger.InstallWizardError(ex);
                     CurrentStepActivity("ERROR:" + ex.Message);
                     installerRunning = false;
                     return;

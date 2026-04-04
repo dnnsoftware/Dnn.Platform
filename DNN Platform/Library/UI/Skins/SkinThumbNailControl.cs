@@ -333,7 +333,7 @@ namespace DotNetNuke.UI.Skins
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.SkinThumbNailControlCreateThumbnailException(ex);
                 }
             }
 

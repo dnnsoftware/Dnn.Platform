@@ -353,8 +353,7 @@ namespace Dnn.ExportImport.Components.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(
-                    $"Failed to delete the job data. Error:{ex.Message}. It will need to be deleted manually. Folder Path:{jobFolder}");
+                Logger.BaseControllerFailedToDeleteJobData(ex, ex.Message, jobFolder);
             }
         }
     }

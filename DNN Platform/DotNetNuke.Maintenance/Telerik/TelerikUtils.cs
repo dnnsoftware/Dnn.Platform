@@ -134,7 +134,7 @@ namespace DotNetNuke.Maintenance.Telerik
             catch (Exception ex)
             {
                 // If we can't get the referenced assemblies, then it can't depend on Telerik.
-                this.log.Warn("Could not determine Telerik dependencies on some assemblies.", ex);
+                this.log.TelerikUtilsCountNotDetermineTelerikDependenciesOnSomeAssemblies(ex);
                 return false;
             }
         }

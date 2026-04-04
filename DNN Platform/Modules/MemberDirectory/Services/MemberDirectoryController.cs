@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerAdvancedSearchException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -87,7 +87,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerBasicSearchException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerGetMemberException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -123,7 +123,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerGetSuggestionsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -140,7 +140,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerAcceptFriendException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerAddFriendException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerFollowException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerRemoveFriendException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.MemberDirectoryControllerUnfollowException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

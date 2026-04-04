@@ -38,8 +38,7 @@ namespace Dnn.PersonaBar.Roles.Services
         {
             try
             {
-                int total;
-                var roles = Components.RolesController.Instance.GetRoles(this.PortalSettings, groupId, keyword, out total, startIndex, pageSize)
+                var roles = Components.RolesController.Instance.GetRoles(this.PortalSettings, groupId, keyword, out var total, startIndex, pageSize)
                     .Select(RoleDto.FromRoleInfo);
                 var loadMore = total > startIndex + pageSize;
                 var rsvpLink = Globals.AddHTTP(Globals.GetDomainName(HttpContext.Current.Request)) + "/" + Globals.glbDefaultPage + "?portalid=" + this.PortalId;
@@ -47,7 +46,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerGetRolesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -75,7 +74,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerSaveRoleException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -108,7 +107,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerGetRoleGroupsException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -163,7 +162,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerSaveRoleGroupException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -218,7 +217,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerDeleteRoleGroupException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -267,7 +266,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerGetRoleUsersException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -286,8 +285,7 @@ namespace Dnn.PersonaBar.Roles.Services
                     userRoleDto.StartTime = userRoleDto.ExpiresTime = Null.NullDate;
                 }
 
-                HttpResponseMessage response;
-                var user = this.GetUser(userRoleDto.UserId, out response);
+                var user = this.GetUser(userRoleDto.UserId, out var response);
                 if (user == null)
                 {
                     return response;
@@ -344,7 +342,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerAddUserToRoleException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -384,7 +382,7 @@ namespace Dnn.PersonaBar.Roles.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RolesControllerRemoveUserFromRoleException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }

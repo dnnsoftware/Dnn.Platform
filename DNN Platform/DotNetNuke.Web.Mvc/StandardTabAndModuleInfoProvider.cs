@@ -4,10 +4,8 @@
 
 namespace DotNetNuke.Web.Mvc
 {
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Net.Http;
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
@@ -157,10 +155,7 @@ namespace DotNetNuke.Web.Mvc
                     return ids.First();
                 }
 
-                if (Logger.IsWarnEnabled)
-                {
-                    Logger.WarnFormat(CultureInfo.InvariantCulture, "The specified moniker ({0}) is not defined in the system", monikerValue);
-                }
+                Logger.StandardTabAndModuleInfoProviderMonikerIsNotDefined(monikerValue);
             }
 
             return Null.NullInteger;

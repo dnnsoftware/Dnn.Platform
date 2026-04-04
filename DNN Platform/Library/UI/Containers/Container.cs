@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Containers
     using Microsoft.Extensions.Logging;
 
     /// <summary>Container is the base for the Containers.</summary>
-    public class Container : UserControl
+    public partial class Container : UserControl
     {
         private readonly ILogger tracelLogger = DnnLoggingController.GetLogger("DNN.Trace");
         private readonly IClientResourceController clientResourceController;
@@ -275,10 +275,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>ProcessModule processes the module which is attached to this container.</summary>
         private void ProcessModule()
         {
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
-            }
+            this.tracelLogger.ContainerProcessModuleStart(this.PortalSettings.ActiveTab.TabID, this.ModuleConfiguration.ModuleDefinition.DesktopModuleID, this.ModuleConfiguration.ModuleDefinition.FriendlyName);
 
             if (this.ContentPane != null)
             {
@@ -300,10 +297,7 @@ namespace DotNetNuke.UI.Containers
 
                 // Try to load the module control
                 this.moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
-                if (this.tracelLogger.IsDebugEnabled)
-                {
-                    this.tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this.moduleHost.ID})");
-                }
+                this.tracelLogger.ContainerProcessModuleInfo(this.PortalSettings.ActiveTab.TabID, this.ModuleConfiguration.ModuleDefinition.DesktopModuleID, this.moduleHost.ID);
 
                 this.ContentPane.Controls.Add(this.ModuleHost);
 
@@ -320,16 +314,10 @@ namespace DotNetNuke.UI.Containers
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
 
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
-            }
+            this.tracelLogger.ContainerProcessModuleEnd(this.PortalSettings.ActiveTab.TabID, this.ModuleConfiguration.ModuleDefinition.DesktopModuleID, this.ModuleConfiguration.ModuleDefinition.FriendlyName);
         }
 
-        /// <summary>
-        /// ProcessStylesheets processes the Module and Container stylesheets and adds
-        /// them to the Page.
-        /// </summary>
+        /// <summary>ProcessStylesheets processes the Module and Container stylesheets and adds them to the Page.</summary>
         private void ProcessStylesheets(bool includeModuleCss)
         {
             this.clientResourceController.RegisterStylesheet(this.ContainerPath + "container.css", FileOrder.Css.ContainerCss, true);

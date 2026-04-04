@@ -17,6 +17,7 @@ namespace DotNetNuke.Modules.Admin.Sales
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
+    using DotNetNuke.Website;
 
     using Microsoft.Extensions.Logging;
 
@@ -179,7 +180,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         catch (Exception ex)
                         {
                             // issue getting user address
-                            Logger.Error(ex);
+                            Logger.PayPalSubscriptionUserAddressException(ex);
                         }
 
                         // Return URL

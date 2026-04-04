@@ -67,7 +67,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.PortalsControllerGetPortalsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

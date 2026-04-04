@@ -1138,7 +1138,7 @@ namespace Dnn.ExportImport.Components.Services
                     catch (Exception ex)
                     {
                         this.Result.AddLogEntry("EXCEPTION importing tab module, Module ID=" + local.ModuleID, ex.Message, ReportLevel.Error);
-                        Logger.Error(ex);
+                        Logger.PagesExportServiceImportNewTabModuleException(ex);
                     }
                 }
                 else
@@ -1308,7 +1308,7 @@ namespace Dnn.ExportImport.Components.Services
                         catch (Exception ex)
                         {
                             this.Result.AddLogEntry("EXCEPTION importing tab module, Module ID=" + local.ModuleID, ex.Message, ReportLevel.Error);
-                            Logger.Error(ex);
+                            Logger.PagesExportServiceImportExistingTabModuleException(ex);
                         }
                     }
                 }
@@ -1327,7 +1327,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(new ImportException($"Delete TabModule Failed: {moduleId}", ex));
+                        Logger.PagesExportServiceDeleteTabModuleException(new ImportException($"Delete TabModule Failed: {moduleId}", ex));
                     }
 
                     this.Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);
@@ -1552,17 +1552,8 @@ namespace Dnn.ExportImport.Components.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.Result.AddLogEntry(
-                                        "Error importing module data, Module ID=" + localModule.ModuleID,
-                                        ex.Message,
-                                        ReportLevel.Error);
-                                    Logger.ErrorFormat(
-                                        CultureInfo.InvariantCulture,
-                                        "ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
-                                        localModule.ModuleID,
-                                        ex,
-                                        Environment.NewLine,
-                                        moduleContent.XmlContent);
+                                    this.Result.AddLogEntry($"Error importing module data, Module ID={localModule.ModuleID}", ex.Message, ReportLevel.Error);
+                                    Logger.PagesExportServiceModuleContentError(ex, localModule.ModuleID, moduleContent.XmlContent);
                                 }
                             }
                         }
@@ -1570,14 +1561,14 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (restoreCount > 0)
                 {
-                    this.Result.AddLogEntry("Added/Updated module content inside Tab ID=" + tabId, "Module ID=" + localModule.ModuleID);
+                    this.Result.AddLogEntry($"Added/Updated module content inside Tab ID={tabId}", $"Module ID={localModule.ModuleID}");
                     return restoreCount;
                 }
             }
             catch (Exception ex)
             {
                 this.Result.AddLogEntry("Error creating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
-                Logger.Error("Error creating business class type. " + ex);
+                Logger.PagesExportServiceErrorCreatingBusinessClassType(ex);
             }
 
             return 0;
@@ -1964,7 +1955,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.PagesExportServiceExportModulePackageException(ex);
                         return 0;
                     }
                 }
@@ -2052,7 +2043,7 @@ namespace Dnn.ExportImport.Components.Services
             catch (Exception ex)
             {
                 this.Result.AddLogEntry("Error creating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
-                Logger.Error("Error creating business class type. " + ex);
+                Logger.PagesExportServiceErrorCreatingBusinessClassType(ex);
             }
 
             return 0;

@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Portal
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ClearLogRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearLog_Error"));
             }
 

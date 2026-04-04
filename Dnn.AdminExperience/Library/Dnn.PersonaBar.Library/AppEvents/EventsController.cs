@@ -19,7 +19,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
 
     using Microsoft.Extensions.Logging;
 
-    public class EventsController : ServiceLocator<IEventsController, EventsController>, IEventsController
+    /// <summary>The default <see cref="IEventsController"/> implementation.</summary>
+    public partial class EventsController : ServiceLocator<IEventsController, EventsController>, IEventsController
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<EventsController>();
 
@@ -47,12 +48,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.ApplicationStart threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        e.Message,
-                        e.StackTrace);
+                    Logger.EventsControllerApplicationStartThrewAnException(e, instance.GetType().FullName);
                 }
             });
         }
@@ -68,12 +64,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.ApplicationEnd threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        e.Message,
-                        e.StackTrace);
+                    Logger.EventsControllerApplicationEndThrewAnException(e, instance.GetType().FullName);
                 }
             });
         }
@@ -98,11 +89,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "Unable to create {0} while calling Application start implementors.  {1}",
-                        type.FullName,
-                        e.Message);
+                    Logger.EventsControllerUnableToCreateAppEventHandler(e, type.FullName);
                     appEventHandler = null;
                 }
 
@@ -139,12 +126,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
 
             if (!matched)
             {
-                Logger.InfoFormat(
-                    CultureInfo.InvariantCulture,
-                    "Type \"{0}\"'s version ({1}) doesn't match current version({2}) so ignored",
-                    t.FullName,
-                    typeVersion,
-                    currentVersion);
+                Logger.EventsControllerVersionMismatch(t.FullName, typeVersion, currentVersion);
             }
 
             return matched;

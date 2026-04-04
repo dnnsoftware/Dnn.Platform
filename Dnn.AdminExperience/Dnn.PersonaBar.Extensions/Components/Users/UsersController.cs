@@ -165,7 +165,7 @@ namespace Dnn.PersonaBar.Users.Components
             catch (MembershipPasswordException exc)
             {
                 // Password Answer missing
-                Logger.Error(exc);
+                Logger.ComponentsUsersControllerChangePasswordMembershipPasswordException(exc);
                 throw new InvalidPasswordException(Localization.GetString("PasswordInvalid", Constants.LocalResourcesFile), exc);
             }
             catch (ThreadAbortException)
@@ -175,13 +175,13 @@ namespace Dnn.PersonaBar.Users.Components
             catch (InvalidPasswordException exc)
             {
                 // Password validation has failed
-                Logger.Error(exc);
+                Logger.ComponentsUsersControllerChangePasswordInvalidPasswordException(exc);
                 throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile), exc);
             }
             catch (Exception exc)
             {
                 // Fail
-                Logger.Error(exc);
+                Logger.ComponentsUsersControllerChangePasswordGeneralException(exc);
                 throw new InvalidPasswordException(Localization.GetString("PasswordResetFailed", Constants.LocalResourcesFile), exc);
             }
         }

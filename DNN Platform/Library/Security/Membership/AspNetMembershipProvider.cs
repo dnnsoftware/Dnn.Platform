@@ -1172,7 +1172,7 @@ namespace DotNetNuke.Security.Membership
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.AspNetMembershipProviderDeleteUserException(exc);
             }
         }
 

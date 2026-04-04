@@ -77,7 +77,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ListRolesRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ListRolesFailed"));
             }
         }

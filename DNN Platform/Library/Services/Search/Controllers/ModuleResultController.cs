@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.ModuleResultControllerGetModuleSearchUrlException(ex);
                     }
 
                     break;

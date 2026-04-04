@@ -44,6 +44,8 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Client.ResourceManager;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -280,7 +282,7 @@ namespace DotNetNuke.Framework
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("CSP error", ex);
+                        Logger.DefaultCspError(ex);
                     }
                 }
             }

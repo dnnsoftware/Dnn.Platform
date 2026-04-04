@@ -52,7 +52,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             }
             catch (Exception ex)
             {
-                this.Log.Error(ex);
+                this.Log.StepBaseExecuteException(ex);
                 this.Success = false;
                 this.Notes = this.Localize("UninstallStepInternalError");
             }

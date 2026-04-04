@@ -596,7 +596,7 @@ namespace DotNetNuke.Common.Utilities
             catch (Exception exc)
             {
                 // Swallow exception
-                Logger.Error(exc);
+                Logger.DataCacheItemRemovedCallbackException(exc);
             }
         }
 

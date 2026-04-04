@@ -15,18 +15,13 @@ namespace DotNetNuke.Services.UserProfile
 
     using Microsoft.Extensions.Logging;
 
-    public class UserProfilePageHandler : IHttpHandler
+    /// <summary>Redirects to the user's profile page.</summary>
+    public partial class UserProfilePageHandler : IHttpHandler
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<UserProfilePageHandler>();
 
         /// <inheritdoc />
-        public bool IsReusable
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public bool IsReusable => true;
 
         /// <summary>This handler handles requests for LinkClick.aspx, but only those specific to file serving.</summary>
         /// <param name="context">System.Web.HttpContext.</param>
@@ -88,7 +83,7 @@ namespace DotNetNuke.Services.UserProfile
             }
             catch (Exception exc)
             {
-                Logger.Debug(exc);
+                Logger.UserProfilePageHandlerException(exc);
 
                 // The user cannot be found (potential DOS)
                 Exceptions.Exceptions.ProcessHttpException(context.Request);

@@ -41,8 +41,7 @@ namespace DotNetNuke.Web
             if (allTypes.LoadExceptions.Any())
             {
                 var messageBuilder = allTypes.LoadExceptions.BuildLoaderExceptionsMessage();
-                messageBuilder.Insert(0, "While loading IDnnStartup types, the following assemblies had types that could not be loaded. This is only an issue if these types contain DNN startup logic that could not be loaded:");
-                Logger.Warn(messageBuilder.ToString());
+                Logger.DependencyInjectionInitializeAssembliesCouldNotBeLoaded(messageBuilder.ToString());
             }
 
             var startupTypes = allTypes.Types
@@ -59,7 +58,7 @@ namespace DotNetNuke.Web
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Unable to configure services for {startup.GetType().FullName}, see exception for details", ex);
+                    Logger.DependencyInjectionInitializeUnableToConfigureServicesFor(ex, startup.GetType().FullName);
                 }
             }
         }
@@ -72,7 +71,7 @@ namespace DotNetNuke.Web
             }
             catch (Exception ex)
             {
-                Logger.Error($"Unable to instantiate startup code for {startupType.FullName}", ex);
+                Logger.DependencyInjectionInitializeUnableToInstantiateStartupCodeFor(ex, startupType.FullName);
                 return null;
             }
         }

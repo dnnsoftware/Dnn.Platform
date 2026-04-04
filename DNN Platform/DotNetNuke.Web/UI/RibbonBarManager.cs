@@ -509,7 +509,7 @@ namespace DotNetNuke.Web.UI
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RibbonBarManagerAddOrUpdateTabException(ex);
 
                 if (ex.Message.StartsWith("Page Exists", StringComparison.OrdinalIgnoreCase))
                 {

@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.ModulePackageWriterConvertControlTypeException(exc);
 
                     throw new ReadManifestException(Util.EXCEPTION_Type, exc);
                 }

@@ -250,13 +250,13 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
+                Logger.InstallerExceptionDeletingFolderWhileInstalling(ex, this.TempInstallFolder, this.InstallerInfo.ManifestFile.Name);
                 Exceptions.Exceptions.LogException(ex);
             }
         }
 
-        /// <summary>The Install method installs the feature.</summary>
-        /// <returns>A value indicating whether the install succeeded.</returns>
+        /// <summary>Installs the feature.</summary>
+        /// <returns>A value indicating whether the installation succeeded.</returns>
         public bool Install()
         {
             this.InstallerInfo.Log.StartJob(Util.INSTALL_Start);
@@ -410,7 +410,7 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.InstallerBackupStreamInfoFileException(ex);
             }
         }
 
@@ -469,7 +469,7 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.InstallerLogInstallEventException(exc);
             }
         }
 

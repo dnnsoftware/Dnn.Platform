@@ -19,7 +19,7 @@ namespace DotNetNuke.ModulePipeline
     /// The Module Pipeline that determines which Module pattern
     /// to invoke based on the input module type.
     /// </summary>
-    public class ModuleControlPipeline : IModuleControlPipeline
+    public partial class ModuleControlPipeline : IModuleControlPipeline
     {
         private static readonly ILogger TraceLogger = DnnLoggingController.GetLogger("DNN.Trace");
 
@@ -35,10 +35,7 @@ namespace DotNetNuke.ModulePipeline
         /// <inheritdoc />
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
-            if (TraceLogger.IsDebugEnabled)
-            {
-                TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-            }
+            TraceLogger.ModuleControlPipelineLoadModuleControlStart(moduleConfiguration.TabID, moduleConfiguration.ModuleID, moduleConfiguration.ModuleControl.ControlSrc);
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration, controlSrc);
@@ -48,35 +45,26 @@ namespace DotNetNuke.ModulePipeline
                 control = controlFactory.CreateControl(containerControl, controlKey, controlSrc);
             }
 
-            // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+            // set the control ID to the resource file name ( i.e. controlname.ascx = controlname )
             // this is necessary for the Localization in PageBase
             if (control != null)
             {
                 control.ID = Path.GetFileNameWithoutExtension(controlSrc);
 
-                var moduleControl = control as IModuleControl;
-
-                if (moduleControl != null)
+                if (control is IModuleControl moduleControl)
                 {
                     moduleControl.ModuleContext.Configuration = moduleConfiguration;
                 }
             }
 
-            if (TraceLogger.IsDebugEnabled)
-            {
-                TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-            }
-
+            TraceLogger.ModuleControlPipelineLoadModuleControlEnd(moduleConfiguration.TabID, moduleConfiguration.ModuleID, moduleConfiguration.ModuleControl.ControlSrc);
             return control;
         }
 
         /// <inheritdoc />
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            if (TraceLogger.IsDebugEnabled)
-            {
-                TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-            }
+            TraceLogger.ModuleControlPipelineLoadModuleControlStart(moduleConfiguration.TabID, moduleConfiguration.ModuleID, moduleConfiguration.ModuleControl.ControlSrc);
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration, moduleConfiguration.ModuleControl.ControlSrc);
@@ -86,35 +74,26 @@ namespace DotNetNuke.ModulePipeline
                 control = controlFactory.CreateModuleControl(containerControl, moduleConfiguration);
             }
 
-            // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+            // set the control ID to the resource file name ( i.e. controlname.ascx = controlname )
             // this is necessary for the Localization in PageBase
             if (control != null)
             {
                 control.ID = Path.GetFileNameWithoutExtension(moduleConfiguration.ModuleControl.ControlSrc);
 
-                var moduleControl = control as IModuleControl;
-
-                if (moduleControl != null)
+                if (control is IModuleControl moduleControl)
                 {
                     moduleControl.ModuleContext.Configuration = moduleConfiguration;
                 }
             }
 
-            if (TraceLogger.IsDebugEnabled)
-            {
-                TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-            }
-
+            TraceLogger.ModuleControlPipelineLoadModuleControlEnd(moduleConfiguration.TabID, moduleConfiguration.ModuleID, moduleConfiguration.ModuleControl.ControlSrc);
             return control;
         }
 
         /// <inheritdoc />
         public Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            if (TraceLogger.IsDebugEnabled)
-            {
-                TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-            }
+            TraceLogger.ModuleControlPipelineLoadSettingsControlStart(moduleConfiguration.TabID, moduleConfiguration.ModuleID, moduleConfiguration.ModuleControl.ControlSrc);
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration, controlSrc);
@@ -124,7 +103,7 @@ namespace DotNetNuke.ModulePipeline
                 control = controlFactory.CreateSettingsControl(containerControl, moduleConfiguration, controlSrc);
             }
 
-            // set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+            // set the control ID to the resource file name ( i.e. controlname.ascx = controlname )
             // this is necessary for the Localization in PageBase
             if (control != null)
             {
@@ -134,19 +113,13 @@ namespace DotNetNuke.ModulePipeline
                     control.ID = fileNameWithoutExtension.Replace('.', '-');
                 }
 
-                var settingsControl = control as ISettingsControl;
-
-                if (settingsControl != null)
+                if (control is ISettingsControl settingsControl)
                 {
                     settingsControl.ModuleContext.Configuration = moduleConfiguration;
                 }
             }
 
-            if (TraceLogger.IsDebugEnabled)
-            {
-                TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
-            }
-
+            TraceLogger.ModuleControlPipelineLoadSettingsControlEnd(moduleConfiguration.TabID, moduleConfiguration.ModuleID, moduleConfiguration.ModuleControl.ControlSrc);
             return control;
         }
 

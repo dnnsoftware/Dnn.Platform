@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerGetGeneralSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -128,7 +128,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerUpdateGeneralSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -166,7 +166,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerGetRegexSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -250,7 +250,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerUpdateRegexSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -307,7 +307,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerGetSitemapSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -327,7 +327,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerCreateVerificationException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -370,7 +370,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerUpdateSitemapSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -389,7 +389,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerResetCacheException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -419,7 +419,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerGetSitemapProvidersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -452,7 +452,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerUpdateSitemapProviderException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -482,7 +482,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerGetExtensionUrlProvidersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -510,7 +510,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerUpdateExtensionUrlProviderStatusException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -539,7 +539,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerTestUrlException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -567,7 +567,7 @@ namespace Dnn.PersonaBar.Seo.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SeoControllerTestUrlRewriteException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

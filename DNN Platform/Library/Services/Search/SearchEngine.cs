@@ -183,7 +183,7 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (NotImplementedException exc)
                 {
-                    Logger.Warn("Indexer not implemented", exc);
+                    Logger.SearchEngineIndexerNotImplemented(exc);
                 }
             }
 
@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (NotImplementedException exc)
             {
-                Logger.Warn("Indexer not implemented", exc);
+                Logger.SearchEngineIndexerNotImplemented(exc);
             }
 
             return indexedCount;

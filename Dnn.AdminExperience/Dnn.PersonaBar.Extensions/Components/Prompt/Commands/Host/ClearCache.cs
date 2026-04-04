@@ -33,7 +33,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Host
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ClearCacheRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ClearCache_Error"));
             }
 

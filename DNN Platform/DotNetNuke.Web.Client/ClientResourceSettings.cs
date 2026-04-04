@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception exception)
             {
-                DnnLoggingController.GetLogger<ClientResourceSettings>().Warn("Failed to get get types for reflection", exception);
+                DnnLoggingController.GetLogger<ClientResourceSettings>().ClientResourceSettingsFailedToGetTypesForReflection(exception);
             }
         }
 
@@ -242,7 +242,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception exception)
             {
-                DnnLoggingController.GetLogger<ClientResourceSettings>().Warn("Failed to Get Portal Setting Through Reflection", exception);
+                DnnLoggingController.GetLogger<ClientResourceSettings>().ClientResourceSettingsFailedToGetPortalSettingThroughReflection(exception);
             }
 
             return null;
@@ -265,7 +265,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception exception)
             {
-                DnnLoggingController.GetLogger<ClientResourceSettings>().Warn("Failed to Get Portal ID Through Reflection", exception);
+                DnnLoggingController.GetLogger<ClientResourceSettings>().ClientResourceSettingsFailedToGetPortalIdThroughReflection(exception);
             }
 
             return null;
@@ -286,7 +286,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception exception)
             {
-                DnnLoggingController.GetLogger<ClientResourceSettings>().Warn("Failed to Get Host Setting Through Reflection", exception);
+                DnnLoggingController.GetLogger<ClientResourceSettings>().ClientResourceSettingsFailedToGetHostSettingThroughReflection(exception);
             }
 
             return null;
@@ -302,7 +302,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception exception)
             {
-                DnnLoggingController.GetLogger<ClientResourceSettings>().Warn("Failed to Get Status By Reflection", exception);
+                DnnLoggingController.GetLogger<ClientResourceSettings>().ClientResourceSettingsFailedToGetStatusThroughReflection(exception);
                 return UpgradeStatus.Unknown;
             }
         }

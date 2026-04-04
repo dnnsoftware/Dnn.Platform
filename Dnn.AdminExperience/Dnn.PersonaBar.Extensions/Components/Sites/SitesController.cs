@@ -405,7 +405,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ComponentsSitesControllerCreatePortalException(ex);
 
                     intPortalId = Null.NullInteger;
                     message = ex.Message;
@@ -454,7 +454,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.ComponentsSitesControllerSendMailException(exc);
                         message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UnknownSendMail.Error", this.LocalResourcesFile), webUrl, closePopUpStr);
                     }
 
@@ -506,7 +506,7 @@ namespace Dnn.PersonaBar.Sites.Components
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsSitesControllerTryDeleteCreatingPortalException(ex);
             }
         }
 

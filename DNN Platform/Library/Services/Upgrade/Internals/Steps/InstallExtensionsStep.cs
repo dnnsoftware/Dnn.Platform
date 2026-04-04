@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 var packageType = package.Value.PackageType;
                 var message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("InstallingExtension", this.LocalInstallResourceFile), packageType, Path.GetFileName(file));
                 this.Details = message;
-                Logger.Trace(this.Details);
+                Logger.InstallExtensionsStepInstallingExtensionPackage(this.Details);
                 var success = Upgrade.InstallPackage(file, packageType, false);
                 if (!success)
                 {

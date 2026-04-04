@@ -265,7 +265,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.MembershipModuleRequireLogoutException(ex);
                 return true;
             }
         }

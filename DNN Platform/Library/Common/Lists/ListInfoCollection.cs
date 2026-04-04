@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionAddException(exc);
             }
         }
 
@@ -64,7 +64,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionItemIndexException(exc);
                 return null;
             }
         }
@@ -86,7 +86,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionItemKeyException(exc);
                 return null;
             }
         }
@@ -111,7 +111,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionItemKeyCacheException(exc);
             }
 
             // key will be in format Country.US:Region

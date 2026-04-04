@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.Syndication
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.OpmlDownloadManagerDeleteException(ex);
                     }
 
                     // try next file

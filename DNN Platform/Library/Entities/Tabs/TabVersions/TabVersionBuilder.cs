@@ -166,7 +166,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
                 catch (DnnTabVersionException e)
                 {
-                    Logger.Error($"There was a problem making rollback of the module {rollbackDetail.ModuleId}. Message: {e.Message}.");
+                    Logger.TabVersionBuilderProblemMakingRollbackOfTheModule(e, rollbackDetail.ModuleId);
                     continue;
                 }
 
@@ -783,7 +783,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.TabVersionBuilderConvertToModuleInfoException(ex);
             }
 
             return modules;

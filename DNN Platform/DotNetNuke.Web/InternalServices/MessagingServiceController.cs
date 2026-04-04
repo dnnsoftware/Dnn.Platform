@@ -69,7 +69,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerWaitTimeForNextMessageException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -121,7 +121,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerCreateException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -172,7 +172,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerSearchException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }

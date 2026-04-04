@@ -70,7 +70,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SetTaskRunException(exc);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_TaskUpdateFailed"));
             }
         }

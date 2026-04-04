@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.CoreMessagingBusinessControllerUpgradeModuleException(exc);
 
                 return "Failed";
             }
