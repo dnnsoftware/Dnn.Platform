@@ -29,12 +29,6 @@ namespace DotNetNuke.Build.Tasks
 
             // Various fixes
             context.CopyFile(
-                "./DNN Platform/Components/DataAccessBlock/bin/Microsoft.ApplicationBlocks.Data.dll",
-                context.WebsiteFolder + "bin/Microsoft.ApplicationBlocks.Data.dll");
-            context.CopyFiles(
-                "./DNN Platform/Components/Lucene.Net.Contrib/bin/Lucene.Net.Contrib.Analyzers.*",
-                context.WebsiteFolder + "bin/");
-            context.CopyFile(
                 "./DNN Platform/Library/bin/PetaPoco.dll",
                 context.WebsiteFolder + "bin/PetaPoco.dll");
 
