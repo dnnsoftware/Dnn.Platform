@@ -18,9 +18,9 @@ jobs:
           username: Administrator
           password: ${{ secrets.VULTR_SERVER_PASSWORD }}
           port: 22
+          command_timeout: 20m
           script: |
             cd C:\dnn-platform
             git pull origin develop
-            C:\ProgramData\chocolatey\bin\nuget.exe restore DNN_Platform.sln -NonInteractive
-            & "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" DNN_Platform.sln /p:Configuration=Release "/p:Platform=Any CPU" /m /verbosity:minimal
+            Copy-Item "C:\dnn-platform\DNN Platform\Website\test-deploy.html" "C:\dnn-website\test-deploy.html" -Force -ErrorAction SilentlyContinue
             Import-Module WebAdministration; Restart-WebAppPool DNN_Demo
