@@ -1,0 +1,26 @@
+name: Deploy to Vultr Windows Server
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    name: Deploy DNN Platform
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.VULTR_SERVER_IP }}
+          username: Administrator
+          password: ${{ secrets.VULTR_SERVER_PASSWORD }}
+          port: 22
+          script: |
+            cd C:\dnn-platform
+            git pull origin develop
+            C:\ProgramData\chocolatey\bin\nuget.exe restore DNN_Platform.sln -NonInteractive
+            & "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" DNN_Platform.sln /p:Configuration=Release "/p:Platform=Any CPU" /m /verbosity:minimal
+            Import-Module WebAdministration; Restart-WebAppPool DNN_Demo
