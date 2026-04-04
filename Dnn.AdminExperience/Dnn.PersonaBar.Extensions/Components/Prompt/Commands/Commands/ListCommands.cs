@@ -51,7 +51,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Commands
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ListCommandsRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ListCommands_Error"));
             }
         }

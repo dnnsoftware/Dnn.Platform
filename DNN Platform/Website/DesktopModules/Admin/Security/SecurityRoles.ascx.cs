@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Website;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -329,9 +330,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.CurrentPage = 1;
             if (this.Request.QueryString["CurrentPage"] != null)
             {
-                var currentPage = 0;
-                if (int.TryParse(this.Request.QueryString["CurrentPage"], out currentPage)
-                    && currentPage > 0)
+                if (int.TryParse(this.Request.QueryString["CurrentPage"], out var currentPage) && currentPage > 0)
                 {
                     this.CurrentPage = currentPage;
                 }
@@ -367,13 +366,13 @@ namespace DotNetNuke.Modules.Admin.Security
                     return;
                 }
 
-                this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
-                this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
+                this.placeIsOwner.Visible = this.Role.SecurityMode is SecurityMode.SocialGroup or SecurityMode.Both;
+                this.placeIsOwnerHeader.Visible = this.Role.SecurityMode is SecurityMode.SocialGroup or SecurityMode.Both;
             }
             catch (ThreadAbortException exc)
             {
                 // Do nothing if ThreadAbort as this is caused by a redirect
-                Logger.Debug(exc);
+                Logger.SecurityRolesThreadAbortException(exc);
             }
             catch (Exception exc)
             {

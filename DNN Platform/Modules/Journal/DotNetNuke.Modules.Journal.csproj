@@ -117,6 +117,7 @@
     <Compile Include="Components\LinkInfo.cs" />
     <Compile Include="Components\ProfilePicPropertyAccess.cs" />
     <Compile Include="Components\Utilities.cs" />
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="NotificationServicesController.cs" />
     <Compile Include="FilesStatus.cs" />
     <Compile Include="FileUploadController.cs" />

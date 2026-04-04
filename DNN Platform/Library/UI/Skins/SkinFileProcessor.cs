@@ -58,10 +58,7 @@ namespace DotNetNuke.UI.Skins
             this.ObjectFactory = new ObjectParser(this.controlList);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinFileProcessor"/> class.
-        ///     SkinFileProcessor class constructor.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinFileProcessor"/> class.</summary>
         /// <param name="skinPath">File path to the portals upload directory.</param>
         /// <param name="skinRoot">Specifies type of skin (Skins or Containers).</param>
         /// <param name="skinName">Name of folder in which skin will reside (Zip file name).</param>
@@ -101,7 +98,7 @@ namespace DotNetNuke.UI.Skins
                 catch (Exception ex)
                 {
                     // could not load XML file
-                    Logger.Error(ex);
+                    Logger.SkinFileProcessorLoadXmlFileException(ex);
                     this.Message += SkinController.FormatMessage(string.Format(CultureInfo.CurrentCulture, this.pACKAGELOADERROR, ex.Message), Path.GetFileName(fileName), 2, true);
                 }
             }
@@ -885,7 +882,7 @@ namespace DotNetNuke.UI.Skins
                             catch (Exception exc)
                             {
                                 // could not load XML file
-                                Logger.Error(exc);
+                                Logger.SkinFileLoadXmlFileException(exc);
                                 this.fileAttributes = skinAttributes;
                                 this.messages += SkinController.FormatMessage(this.fileLoadError, fileName, 2, true);
                             }

@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Analytics
                 LogController.Instance.AddLog(log);
                 fileReader?.Close();
 
-                Logger.Error(ex);
+                Logger.GoogleAnalyticsControllerGetConfigFileException(ex);
             }
 
             return fileReader;

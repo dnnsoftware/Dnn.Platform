@@ -923,7 +923,7 @@ namespace DotNetNuke.Security.Roles
                 catch (Exception exc)
                 {
                     // user already belongs to role
-                    Logger.Error(exc);
+                    Logger.RoleControllerUserAlreadyBelongsToRoleException(exc);
                 }
             }
         }

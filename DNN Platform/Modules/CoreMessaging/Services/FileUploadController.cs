@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileUploadControllerUploadFileException(exc);
             }
 
             return this.IframeSafeJson(statuses);

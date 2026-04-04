@@ -323,7 +323,7 @@ namespace DotNetNuke.Framework
             }
             catch (InvalidOperationException exception)
             {
-                Logger.Warn($"Unable to create type via service provider: {typeof(T)}", exception);
+                Logger.ReflectionUnableToCreateTypeViaServiceProvider(exception, typeof(T));
                 return Activator.CreateInstance<T>();
             }
         }
@@ -349,7 +349,7 @@ namespace DotNetNuke.Framework
             }
             catch (InvalidOperationException exception)
             {
-                Logger.Warn($"Unable to create type via service provider: {type}", exception);
+                Logger.ReflectionUnableToCreateTypeViaServiceProvider(exception, type);
                 return Activator.CreateInstance(type);
             }
         }
@@ -419,7 +419,7 @@ namespace DotNetNuke.Framework
                 {
                     if (!ignoreErrors)
                     {
-                        Logger.Error(typeName, exc);
+                        Logger.ReflectionCreateTypeException(exc, typeName);
                     }
                 }
             }

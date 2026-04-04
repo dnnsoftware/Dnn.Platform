@@ -157,7 +157,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ModulesControllerCopyModuleException(ex);
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, Localization.GetString(moveBahaviour ? "Prompt_ErrorWhileMoving" : "Prompt_ErrorWhileCopying"));
                 }
 
@@ -184,7 +184,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ModulesControllerDeleteModuleException(ex);
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
                 }
             }

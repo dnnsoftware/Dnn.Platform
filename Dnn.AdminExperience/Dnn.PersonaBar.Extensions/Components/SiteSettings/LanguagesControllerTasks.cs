@@ -86,7 +86,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 {
                     try
                     {
-                        Logger.Error(ex);
+                        Logger.LanguageControllerTasksLocalizeSitePagesException(ex);
                         progress.Reset().Error = ex.ToString();
                         SaveProgressToFile(progress);
                     }
@@ -125,7 +125,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 {
                     try
                     {
-                        Logger.Error(ex);
+                        Logger.LanguageControllerTasksLocalizeLanguagePagesException(ex);
                         progress.Reset().Error = ex.ToString();
                         SaveProgressToFile(progress);
                     }

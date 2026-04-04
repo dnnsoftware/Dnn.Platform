@@ -77,9 +77,7 @@ namespace DotNetNuke.Entities.Host
                 .ToList();
         }
 
-        /// <summary>
-        /// Gets the servers, that have no activtiy in the specified time frame.
-        /// </summary>
+        /// <summary>Gets the servers, that have no activity in the specified time frame.</summary>
         /// <param name="lastMinutes">The number of recent minutes activity had to occur.</param>
         /// <returns>A list of servers with no activity for the specified minutes. Defaults to 24 hours.</returns>
         public static List<ServerInfo> GetInActiveServers(int lastMinutes = 1440)
@@ -98,7 +96,7 @@ namespace DotNetNuke.Entities.Host
                 executingServerName += "-" + Globals.IISAppName;
             }
 
-            Logger.Debug("GetExecutingServerName:" + executingServerName);
+            Logger.ServerControllerGetExecutingServerName(executingServerName);
             return executingServerName;
         }
 
@@ -110,7 +108,7 @@ namespace DotNetNuke.Entities.Host
                 serverName += "-" + webServer.IISAppName;
             }
 
-            Logger.Debug("GetServerName:" + serverName);
+            Logger.ServerControllerGetServerName(serverName);
             return serverName;
         }
 
@@ -196,17 +194,17 @@ namespace DotNetNuke.Entities.Host
         {
             try
             {
-                var adpapter = GetServerWebRequestAdapter();
-                if (adpapter == null)
+                var adapter = GetServerWebRequestAdapter();
+                if (adapter == null)
                 {
                     return string.Empty;
                 }
 
-                return adpapter.GetServerUrl();
+                return adapter.GetServerUrl();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ServerControllerGetServerUrlException(ex);
                 return string.Empty;
             }
         }
@@ -215,17 +213,17 @@ namespace DotNetNuke.Entities.Host
         {
             try
             {
-                var adpapter = GetServerWebRequestAdapter();
-                if (adpapter == null)
+                var adapter = GetServerWebRequestAdapter();
+                if (adapter == null)
                 {
                     return string.Empty;
                 }
 
-                return adpapter.GetServerUniqueId();
+                return adapter.GetServerUniqueId();
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ServerControllerGetServerUniqueIdException(ex);
                 return string.Empty;
             }
         }

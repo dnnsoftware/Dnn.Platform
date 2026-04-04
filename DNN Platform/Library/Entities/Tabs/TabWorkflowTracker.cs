@@ -92,12 +92,12 @@ namespace DotNetNuke.Entities.Tabs
             try
             {
                 var tabInfo = this.tabController.GetTab(tabId, portalId);
-                if (tabInfo != null && !tabInfo.IsDeleted && this.workflowEngine.IsWorkflowCompleted(tabInfo))
+                if (tabInfo is { IsDeleted: false, } && this.workflowEngine.IsWorkflowCompleted(tabInfo))
                 {
                     var workflow = this.GetCurrentOrDefaultWorkflow(tabInfo, portalId);
                     if (workflow == null)
                     {
-                        Logger.Warn("Current Workflow and Default workflow are not found on NotifyWorkflowAboutChanges");
+                        Logger.TabWorkflowTrackerCurrentWorkflowAndDefaultWorkflowAreNotFoundOnNotifyWorkflowAboutChanges();
                         return;
                     }
 

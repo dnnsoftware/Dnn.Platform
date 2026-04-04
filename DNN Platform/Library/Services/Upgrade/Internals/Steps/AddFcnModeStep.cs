@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>AddFcnModeVerificationStep - Step that performs FcnMode verification checks prior to installation.</summary>
-    public class AddFcnModeStep : BaseInstallationStep
+    public partial class AddFcnModeStep : BaseInstallationStep
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<AddFcnModeStep>();
 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             if (!string.IsNullOrEmpty(strError))
             {
                 this.Errors.Add(Localization.GetString("FcnMode", this.LocalInstallResourceFile) + ": " + strError);
-                Logger.TraceFormat(CultureInfo.InvariantCulture, "Adding FcnMode : {0}", strError);
+                Logger.AddFcnModeStepAddingFcnMode(strError);
             }
 
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;

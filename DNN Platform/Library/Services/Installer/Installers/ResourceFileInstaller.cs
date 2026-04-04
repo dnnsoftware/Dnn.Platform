@@ -149,7 +149,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ResourceFileInstallerInstallFileException(exc);
 
                 retValue = false;
             }

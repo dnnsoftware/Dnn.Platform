@@ -388,7 +388,7 @@ namespace DotNetNuke.Entities.Users
                     var dataType = listController.GetListEntryInfo("DataType", profileProp.DataType);
                     if (dataType == null)
                     {
-                        DnnLoggingController.GetLogger<UserProfile>().ErrorFormat(CultureInfo.InvariantCulture, "Invalid data type {0} for profile property {1}", profileProp.DataType, profileProp.PropertyName);
+                        DnnLoggingController.GetLogger<UserProfile>().UserProfileInvalidDataType(profileProp.DataType, profileProp.PropertyName);
                         return propValue;
                     }
 

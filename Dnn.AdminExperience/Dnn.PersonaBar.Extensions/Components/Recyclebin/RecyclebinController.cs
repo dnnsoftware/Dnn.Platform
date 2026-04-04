@@ -377,7 +377,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
                         }
                         catch (Exception exc)
                         {
-                            Logger.Error(exc);
+                            Logger.RecyclebinControllerDeleteModuleForTabException(exc);
                         }
                     }
                 }
@@ -409,7 +409,7 @@ namespace Dnn.PersonaBar.Recyclebin.Components
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.RecyclebinControllerHardDeleteModuleException(exc);
             }
 
             // hard-delete Tab Module Instance

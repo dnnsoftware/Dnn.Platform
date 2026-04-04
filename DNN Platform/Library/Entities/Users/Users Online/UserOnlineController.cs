@@ -134,7 +134,7 @@ namespace DotNetNuke.Entities.Users
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.UserOnlineControllerUpdateUsersOnlineException(exc);
             }
 
             // Remove users that have expired

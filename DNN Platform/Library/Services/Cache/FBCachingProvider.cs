@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Cache
                         catch (Exception exc)
                         {
                             // an error occurred
-                            Logger.Error(exc);
+                            Logger.FbCachingProviderPurgeDeleteFileException(exc);
 
                             purgeErrors += 1;
                         }

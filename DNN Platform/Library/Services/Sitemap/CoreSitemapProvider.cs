@@ -65,9 +65,9 @@ namespace DotNetNuke.Services.Sitemap
                                 pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
                                 urls.Add(pageUrl);
                             }
-                            catch (Exception)
+                            catch (Exception exception)
                             {
-                                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error has occurred getting PageUrl for {0}", tab.TabName);
+                                Logger.CoreSitemapProviderErrorGettingPageUrl(exception, tab.TabName);
                             }
                         }
                     }

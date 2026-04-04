@@ -34,6 +34,8 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Services.UserRequest;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -731,7 +733,7 @@ namespace DotNetNuke.Services.Install
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UpgradeWizardAntiForgeryTokenException(ex);
                 return false; // malformed token.
             }
 

@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Search
     using Microsoft.Extensions.Logging;
 
     /// <summary>An implementation of <see cref="IndexingProviderBase"/> for pages.</summary>
-    public class TabIndexer : IndexingProviderBase
+    public partial class TabIndexer : IndexingProviderBase
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabIndexer>();
         private static readonly int TabSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("tab").SearchTypeId;
@@ -90,11 +90,7 @@ namespace DotNetNuke.Services.Search
                 searchDoc.Tags = tab.Terms.Select(t => t.Name);
             }
 
-            if (Logger.IsTraceEnabled)
-            {
-                Logger.Trace($"TabIndexer: Search document for metaData added for page [{tab.Title} tid:{tab.TabID}]");
-            }
-
+            Logger.TabIndexerPageMetadataDocumentAdded(tab.Title, tab.TabID);
             return searchDoc;
         }
 

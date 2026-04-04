@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsSmtpHostControllerGetSmtpSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -199,7 +199,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsSmtpHostControllerUpdateSmtpSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -257,7 +257,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsSmtpHostControllerSendTestEmailException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -298,7 +298,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsSmtpHostControllerGetSmtpOAuthProvidersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

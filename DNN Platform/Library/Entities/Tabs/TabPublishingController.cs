@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 var errorMessage = Localization.GetExceptionMessage("PublishPagePermissionsNotMet", "Permissions are not met. The page has not been published.");
                 var permissionsNotMetExc = new PermissionsNotMetException(tabID, errorMessage);
-                Logger.Error(errorMessage, permissionsNotMetExc);
+                Logger.TabPublishingControllerPermissionsAreNotMetThePageHasNotBeenPublished(permissionsNotMetExc, errorMessage);
                 throw permissionsNotMetExc;
             }
 

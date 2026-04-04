@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.SettingInfoBoolParseException(exc);
                 }
             }
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.SettingInfoInt32ParseException(exc);
                 }
             }
         }

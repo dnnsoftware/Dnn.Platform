@@ -17,7 +17,7 @@ namespace DotNetNuke.Application
     using Microsoft.Extensions.Logging;
 
     /// <inheritdoc />
-    public class ApplicationStatusInfo : IApplicationStatusInfo
+    public partial class ApplicationStatusInfo : IApplicationStatusInfo
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<ApplicationStatusInfo>();
 
@@ -28,9 +28,7 @@ namespace DotNetNuke.Application
 
         /// <summary>Initializes a new instance of the <see cref="ApplicationStatusInfo"/> class.</summary>
         /// <param name="applicationInfo">The application info.</param>
-        /// <remarks>
-        /// This constructor is designed to be used with Dependency Injection.
-        /// </remarks>
+        /// <remarks>This constructor is designed to be used with Dependency Injection.</remarks>
         public ApplicationStatusInfo(IApplicationInfo applicationInfo)
         {
             this.applicationInfo = applicationInfo;
@@ -46,7 +44,7 @@ namespace DotNetNuke.Application
                     return this.status;
                 }
 
-                Logger.Trace("Getting application status");
+                Logger.ApplicationStatusInfoGettingStatus();
                 var tempStatus = UpgradeStatus.None;
 
                 // first call GetProviderPath - this insures that the Database is Initialised correctly
@@ -62,7 +60,7 @@ namespace DotNetNuke.Application
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.ApplicationStatusInfoDatabaseVersionException(ex);
                         strMessage = "ERROR:" + ex.Message;
                     }
                 }
@@ -114,8 +112,8 @@ namespace DotNetNuke.Application
 
                 this.status = tempStatus;
 
-                Logger.Trace($"result of getting providerpath: {strMessage}");
-                Logger.Trace("Application status is " + this.status);
+                Logger.ApplicationStatusInfoResultOfGettingProviderPath(strMessage);
+                Logger.ApplicationStatusInfoStatusIs(this.status);
 
                 return this.status;
             }

@@ -228,7 +228,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.InstallControllerDeleteTempInstallFilesException(ex);
             }
         }
 
@@ -244,7 +244,7 @@ namespace Dnn.PersonaBar.Extensions.Components
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.InstallControllerDeleteInstallFileException(ex);
             }
         }
 
@@ -288,7 +288,7 @@ namespace Dnn.PersonaBar.Extensions.Components
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.InstallControllerReadAzureCompatibleException(ex);
                 }
             }
 

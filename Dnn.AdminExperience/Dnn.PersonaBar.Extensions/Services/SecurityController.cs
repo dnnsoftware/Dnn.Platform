@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Security.Services
 
     /// <summary>Provides REST APIs to manage security settings.</summary>
     [MenuPermission(MenuName = Components.Constants.MenuName)]
-    public class SecurityController : PersonaBarApiController
+    public partial class SecurityController : PersonaBarApiController
     {
         private const string BULLETINXMLNODEPATH = "//channel/item";
         private const string UserRequestIPHeaderSettingName = "UserRequestIPHeader";
@@ -174,7 +174,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetBasicLoginSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateBasicLoginSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -255,7 +255,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetIpFiltersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -288,7 +288,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetIpFilterException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -304,18 +304,20 @@ namespace Dnn.PersonaBar.Security.Services
         {
             try
             {
-                var ipf = new IPFilterInfo();
-                ipf.IPAddress = request.IPAddress;
-                ipf.SubnetMask = request.SubnetMask;
-                ipf.RuleType = request.RuleType;
-                ipf.Notes = request.Notes;
+                var ipf = new IPFilterInfo
+                {
+                    IPAddress = request.IPAddress,
+                    SubnetMask = request.SubnetMask,
+                    RuleType = request.RuleType,
+                    Notes = request.Notes,
+                };
 
-                if ((ipf.IPAddress == "127.0.0.1" || ipf.IPAddress == "localhost" || ipf.IPAddress == "::1" || ipf.IPAddress == "*") && ipf.RuleType == 2)
+                if (ipf.IPAddress is "127.0.0.1" or "localhost" or "::1" or "*" && ipf.RuleType == 2)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CannotDeleteLocalhost.Text", Components.Constants.LocalResourcesFile));
                 }
 
-                if (IPFilterController.Instance.IsAllowableDeny(HttpContext.Current.Request.UserHostAddress, ipf) == false)
+                if (!IPFilterController.Instance.IsAllowableDeny(HttpContext.Current.Request.UserHostAddress, ipf))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CannotDeleteIPInUse.Text", Components.Constants.LocalResourcesFile));
                 }
@@ -334,12 +336,12 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (ArgumentException exc)
             {
-                Logger.Info(exc);
+                Logger.SecurityControllerUpdateIpFilterArgumentException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateIpFilterException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -356,23 +358,19 @@ namespace Dnn.PersonaBar.Security.Services
             try
             {
                 IList<IPFilterInfo> currentRules = IPFilterController.Instance.GetIPFilters();
-                List<IPFilterInfo> currentWithDeleteRemoved = (from p in currentRules where p.IPFilterID != filterId select p).ToList();
+                List<IPFilterInfo> currentWithDeleteRemoved = currentRules.Where(p => p.IPFilterID != filterId).ToList();
 
-                if (IPFilterController.Instance.CanIPStillAccess(HttpContext.Current.Request.UserHostAddress, currentWithDeleteRemoved) == false)
+                if (!IPFilterController.Instance.CanIPStillAccess(HttpContext.Current.Request.UserHostAddress, currentWithDeleteRemoved))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, Localization.GetString("CannotDelete.Text", Components.Constants.LocalResourcesFile));
                 }
-                else
-                {
-                    var ipf = new IPFilterInfo();
-                    ipf.IPFilterID = filterId;
-                    IPFilterController.Instance.DeleteIPFilter(ipf);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
-                }
+
+                IPFilterController.Instance.DeleteIPFilter(new IPFilterInfo { IPFilterID = filterId, });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerDeleteIpFilterException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -412,7 +410,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetMemberSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -444,7 +442,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateMemberSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -509,7 +507,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetRegistrationSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -551,7 +549,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetSslSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -600,7 +598,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateRegistrationSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -647,7 +645,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateSslSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -667,7 +665,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerSetAllPagesSecureException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -744,7 +742,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetSecurityBulletinsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -784,7 +782,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetOtherSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -833,7 +831,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateOtherSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -860,7 +858,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetAuditCheckResultsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -887,14 +885,14 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetAuditCheckResultException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// GET: api/Security/GetSuperuserActivities
-        /// <summary>Gets super user activities.</summary>
-        /// <returns>super user activities.</returns>
+        /// <summary>Gets superuser activities.</summary>
+        /// <returns>superuser activities.</returns>
         [HttpGet]
         [RequireHost]
         public HttpResponseMessage GetSuperuserActivities()
@@ -926,7 +924,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetSuperuserActivitiesException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -962,7 +960,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerSearchFileSystemAndDatabaseException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -1000,7 +998,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetLastModifiedFilesException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -1073,7 +1071,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetLastModifiedSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -1100,7 +1098,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetApiTokenSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -1148,7 +1146,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateApiTokenSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -1445,7 +1443,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerGetCspSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -1515,7 +1513,7 @@ namespace Dnn.PersonaBar.Security.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SecurityControllerUpdateCspSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

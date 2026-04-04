@@ -154,7 +154,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ComponentsTaskSchedulerControllerGetScheduleItemsException(exc);
                 return null;
             }
         }

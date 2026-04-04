@@ -213,7 +213,7 @@ namespace Dnn.ExportImport.Components.Services
                             catch (Exception ex)
                             {
                                 this.Result.AddLogEntry("Import Theme error", file);
-                                Logger.Error(ex);
+                                Logger.ThemesExportServiceImportThemeFileException(ex);
                             }
                         }
 

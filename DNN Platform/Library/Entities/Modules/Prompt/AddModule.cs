@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.AddModuleRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_AddModuleError"));
             }
         }

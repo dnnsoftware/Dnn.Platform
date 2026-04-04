@@ -6,13 +6,15 @@ namespace DotNetNuke.Services.OutputCache
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
 
     using Microsoft.Extensions.Logging;
 
-    public class PurgeOutputCache : SchedulerClient
+    /// <summary>A scheduled task to purge the output cache.</summary>
+    public partial class PurgeOutputCache : SchedulerClient
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<PurgeOutputCache>();
 
@@ -33,16 +35,16 @@ namespace DotNetNuke.Services.OutputCache
                 {
                     try
                     {
-                        foreach (PortalInfo portal in portals)
+                        foreach (IPortalInfo portal in portals)
                         {
-                            kvp.Value.PurgeExpiredItems(portal.PortalID);
+                            kvp.Value.PurgeExpiredItems(portal.PortalId);
                             this.ScheduleHistoryItem.AddLogNote($"Purged output cache for {kvp.Key}.  ");
                         }
                     }
                     catch (NotSupportedException exc)
                     {
                         // some output caching providers don't use this feature
-                        Logger.Debug(exc);
+                        Logger.PurgeOutputCachePurgeNotSupportedException(exc);
                     }
                 }
 

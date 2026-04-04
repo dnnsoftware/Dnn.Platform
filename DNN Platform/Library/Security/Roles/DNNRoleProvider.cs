@@ -176,7 +176,7 @@ namespace DotNetNuke.Security.Roles
             catch (Exception exc)
             {
                 // Clear User (duplicate User information)
-                Logger.Error(exc);
+                Logger.DnnRoleProviderAddUserToRoleException(exc);
 
                 createStatus = false;
             }

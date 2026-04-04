@@ -52,7 +52,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerControllerRestartApplicationException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -69,7 +69,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerControllerClearCacheException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

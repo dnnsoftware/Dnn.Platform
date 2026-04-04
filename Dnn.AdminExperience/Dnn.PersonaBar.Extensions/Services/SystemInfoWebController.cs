@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoWebControllerGetWebServerInfoException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

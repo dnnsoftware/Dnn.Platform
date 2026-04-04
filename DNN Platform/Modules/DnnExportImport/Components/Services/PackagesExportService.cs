@@ -192,7 +192,7 @@ namespace Dnn.ExportImport.Components.Services
             catch (Exception ex)
             {
                 this.Result.AddLogEntry("Import Package error", $"{filePath}. ERROR: {ex.Message}");
-                Logger.Error(ex);
+                Logger.PackagesExportServiceInstallPackageException(ex);
             }
         }
 
@@ -291,7 +291,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.Result.AddLogEntry(
                     "Import Package error",
                     $"{exportPackage.PackageName} : {exportPackage.Version} - {ex.Message}");
-                Logger.Error(ex);
+                Logger.PackagesExportServiceProcessImportModulePackageException(ex);
             }
         }
 

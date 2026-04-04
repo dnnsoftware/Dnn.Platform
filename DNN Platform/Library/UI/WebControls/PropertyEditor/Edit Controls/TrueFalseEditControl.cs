@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.TrueFalseEditControlBooleanValueException(exc);
                 }
 
                 return boolValue;
@@ -58,12 +58,12 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-                    // Try and cast the value to an Boolean
+                    // Try and cast the value to a Boolean
                     boolValue = Convert.ToBoolean(this.OldValue, CultureInfo.InvariantCulture);
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.TrueFalseEditControlOldBooleanValueException(exc);
                 }
 
                 return boolValue;

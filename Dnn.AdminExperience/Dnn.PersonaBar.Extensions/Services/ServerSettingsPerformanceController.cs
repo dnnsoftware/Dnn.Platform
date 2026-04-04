@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerGetPerformanceSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -116,7 +116,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerIncrementPortalVersionException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -137,7 +137,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerIncrementHostVersionException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -182,7 +182,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerUpdatePerformanceSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

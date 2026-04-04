@@ -114,7 +114,7 @@ namespace Dnn.Modules.Console
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.SettingsParseWidthException(exc);
 
                         throw new Exception("ConsoleWidth value is invalid. Value must be numeric.");
                     }

@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.DateTimeEditControlDateValueException(exc);
                 }
 
                 return dteValue;
@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.DateTimeEditControlOldDateValueException(exc);
                 }
 
                 return dteValue;

@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
     using Microsoft.Extensions.Logging;
 
     /// <inheritdoc />
-    public class ApiTokenController : IApiTokenController
+    public partial class ApiTokenController : IApiTokenController
     {
         private const string AuthScheme = "Bearer";
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         {
             if (!ApiTokenAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.ApiTokenControllerSchemeIsNotEnabledInWebConfig(this.SchemeType);
                 return (null, null);
             }
 
@@ -204,10 +204,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
 
             if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.OrdinalIgnoreCase))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Authorization header scheme in the request is not equal to " + AuthScheme);
-                }
+                Logger.ApiTokenControllerAuthorizationHeaderSchemeDoesNotMatchAuthScheme(AuthScheme);
 
                 return null;
             }
@@ -215,11 +212,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             var authorization = authHdr.Parameter;
             if (string.IsNullOrEmpty(authorization))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Missing authorization header value in the request");
-                }
-
+                Logger.ApiTokenControllerMissingAuthorizationHeaderValue();
                 return null;
             }
 
@@ -246,10 +239,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
             {
                 if (apiToken.ExpiresOn < DateUtils.GetDatabaseUtcTime() || apiToken.IsRevoked)
                 {
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.Trace("Token expired");
-                    }
+                    Logger.ApiTokenControllerTokenExpired();
 
                     this.eventLogger.AddLog("Token Auth", authorization, EventLogType.APITOKEN_AUTHENTICATION_FAILED);
                     return (null, null);
@@ -263,11 +253,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                         var userInfo = UserController.GetUserById(this.hostSettings, PortalSettings.PortalId, apiToken.CreatedByUserId);
                         if (userInfo == null)
                         {
-                            if (Logger.IsTraceEnabled)
-                            {
-                                Logger.Trace("Invalid user");
-                            }
-
+                            Logger.ApiTokenControllerInvalidUser();
                             return (null, null);
                         }
 

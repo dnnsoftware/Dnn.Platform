@@ -74,9 +74,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // URL validation
             // check for ".." escape characters commonly used by hackers to traverse the folder tree on the server
             // the application should always use the exact relative location of the resource it is requesting
-            var strURL = request.Url.AbsolutePath;
-            var strDoubleDecodeURL = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
-            if (Globals.FileEscapingRegex.IsMatch(strURL) || Globals.FileEscapingRegex.IsMatch(strDoubleDecodeURL))
+            var strUrl = request.Url.AbsolutePath;
+            var strDoubleDecodeUrl = server.UrlDecode(server.UrlDecode(request.RawUrl)) ?? string.Empty;
+            if (Globals.FileEscapingRegex.IsMatch(strUrl) || Globals.FileEscapingRegex.IsMatch(strDoubleDecodeUrl))
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
@@ -94,11 +94,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 // DNN 5479
                 // request.physicalPath throws an exception when the path of the request exceeds 248 chars.
                 // example to test: http://localhost/dotnetnuke_2/xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/default.aspx
-                Logger.Error(exc);
+                Logger.BasicUrlRewriterPhysicalPathTooLong(exc);
             }
 
-            string domainName;
-            this.RewriteUrl(app, out domainName);
+            this.RewriteUrl(app, out var domainName);
 
             // blank DomainName indicates RewriteUrl couldn't locate a current portal
             // reprocess url for portal alias if auto add is an option
@@ -194,19 +193,19 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 if (app.Request.Url.AbsoluteUri.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    strURL = "https://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
+                                    strUrl = "https://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
                                 else
                                 {
-                                    strURL = "http://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
+                                    strUrl = "http://" + portalAliasInfo.HttpAlias.Replace("*.", string.Empty);
                                 }
 
-                                if (!strURL.Contains(domainName, StringComparison.OrdinalIgnoreCase))
+                                if (!strUrl.Contains(domainName, StringComparison.OrdinalIgnoreCase))
                                 {
-                                    strURL += app.Request.Url.PathAndQuery;
+                                    strUrl += app.Request.Url.PathAndQuery;
                                 }
 
-                                response.Redirect(strURL, true);
+                                response.Redirect(strUrl, true);
                             }
                         }
                     }
@@ -250,11 +249,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             catch (Exception ex)
             {
                 // 500 Error - Redirect to ErrorPage
-                Logger.Error(ex);
+                Logger.BasicUrlRewriterRewriteUrlException(ex);
 
-                strURL = "~/ErrorPage.aspx?status=500&error=" + server.UrlEncode(ex.Message);
+                strUrl = "~/ErrorPage.aspx?status=500&error=" + server.UrlEncode(ex.Message);
                 HttpContext.Current.Response.Clear();
-                HttpContext.Current.Server.Transfer(strURL);
+                HttpContext.Current.Server.Transfer(strUrl);
             }
 
             if (portalId != -1)
@@ -311,7 +310,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 if (request.Url.AbsolutePath.EndsWith(".aspx", StringComparison.InvariantCultureIgnoreCase))
                 {
                     // request is for a standard page
-                    strURL = string.Empty;
+                    strUrl = string.Empty;
 
                     switch (portalSettings.SSLSetup)
                     {
@@ -319,7 +318,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             if (!request.IsSecureConnection)
                             {
                                 // switch to secure connection
-                                strURL = requestedPath.Replace("http://", "https://");
+                                strUrl = requestedPath.Replace("http://", "https://");
                             }
 
                             break;
@@ -330,8 +329,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 !UrlUtils.IsSslOffloadEnabled(this.HostSettingsService, request))
                             {
                                 // switch to secure connection
-                                strURL = requestedPath.Replace("http://", "https://");
-                                strURL = FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
+                                strUrl = requestedPath.Replace("http://", "https://");
+                                strUrl = FormatDomain(strUrl, portalSettings.STDURL, portalSettings.SSLURL);
                             }
 
                             if (portalSettings.SSLEnforced)
@@ -342,8 +341,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                     // check if connection has already been forced to secure or else SSL offload is disabled
                                     if (request.QueryString["ssl"] == null)
                                     {
-                                        strURL = requestedPath.Replace("https://", "http://");
-                                        strURL = FormatDomain(strURL, portalSettings.SSLURL, portalSettings.STDURL);
+                                        strUrl = requestedPath.Replace("https://", "http://");
+                                        strUrl = FormatDomain(strUrl, portalSettings.SSLURL, portalSettings.STDURL);
                                     }
                                 }
                             }
@@ -352,12 +351,12 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     }
 
                     // if a protocol switch is necessary
-                    if (!string.IsNullOrEmpty(strURL))
+                    if (!string.IsNullOrEmpty(strUrl))
                     {
-                        if (strURL.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
+                        if (strUrl.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                         {
                             // redirect to secure connection
-                            response.RedirectPermanent(strURL);
+                            response.RedirectPermanent(strUrl);
                         }
                         else
                         {
@@ -365,11 +364,11 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             response.Clear();
 
                             // add a refresh header to the response
-                            response.AddHeader("Refresh", "0;URL=" + strURL);
+                            response.AddHeader("Refresh", "0;URL=" + strUrl);
 
                             // add the clientside javascript redirection script
                             response.Write("<html><head><title></title>");
-                            response.Write("<!-- <script language=\"javascript\">window.location.replace(\"" + strURL +
+                            response.Write("<!-- <script language=\"javascript\">window.location.replace(\"" + strUrl +
                                            "\")</script> -->");
                             response.Write("</head><body></body></html>");
 
@@ -385,9 +384,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 // and all attempts to find another have failed
                 // this should only happen if the HostPortal does not have any aliases
                 // 404 Error - Redirect to ErrorPage
-                strURL = "~/ErrorPage.aspx?status=404&error=" + domainName;
+                strUrl = "~/ErrorPage.aspx?status=404&error=" + domainName;
                 HttpContext.Current.Response.Clear();
-                HttpContext.Current.Server.Transfer(strURL);
+                HttpContext.Current.Server.Transfer(strUrl);
             }
 
             if (app.Context.Items["FirstRequest"] != null)

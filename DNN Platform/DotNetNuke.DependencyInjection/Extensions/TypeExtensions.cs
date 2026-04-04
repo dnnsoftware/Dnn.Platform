@@ -49,16 +49,12 @@ namespace DotNetNuke.DependencyInjection.Extensions
 
             if (exception is ReflectionTypeLoadException loadException)
             {
-                var messageBuilder = BuildLoaderExceptionMessage(
-                    new StringBuilder($"Unable to get all types for {assembly.FullName}, see exception for details").AppendLine(),
-                    assembly,
-                    loadException);
-
-                logger.Warn(messageBuilder.ToString(), loadException);
+                var messageBuilder = BuildLoaderExceptionMessage(new StringBuilder(), assembly, loadException);
+                logger.TypeExtensionsUnableToGetAllTypesFor(loadException, assembly.FullName, messageBuilder.ToString());
             }
             else
             {
-                logger.Error($"Unable to get any types for {assembly.FullName}, see exception for details", exception);
+                logger.TypeExtensionsUnableToGetAnyTypesFor(exception, assembly.FullName);
             }
 
             return types.ToArray();
@@ -114,7 +110,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
             {
                 var assembly = exceptionPair.Key;
                 var exception = exceptionPair.Value;
-                logger.Error($"Unable to get any types for {assembly.FullName}, see exception for details", exception);
+                logger.TypeExtensionsOtherExceptions(exception, assembly.FullName);
             }
         }
 

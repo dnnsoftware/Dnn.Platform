@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.CleanupInstallerCleanupFileException(exc);
 
                 return false;
             }
@@ -231,12 +231,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    Logger.Warn($"Ignoring invalid cleanup folder path '{path}' in package '{this.Package?.Name}'.");
+                    Logger.CleanupInstallerIgnoringInvalidCleanupFolderPath(path, this.Package?.Name);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CleanupInstallerCleanupFolderException(ex);
             }
         }
 

@@ -267,7 +267,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ControlBarControllerParseVisibilityException(exc);
                 permissionType = 0;
             }
 
@@ -284,7 +284,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.ControlBarControllerParseSortException(exc);
                 }
             }
 
@@ -310,7 +310,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ControlBarControllerParseModuleIdException(exc);
                 moduleLstId = -1;
             }
 
@@ -328,7 +328,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
                         }
                         catch (Exception exc)
                         {
-                            Logger.Error(exc);
+                            Logger.ControlBarControllerParsePageIdException(exc);
                             pageId = -1;
                         }
 
@@ -347,7 +347,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ControlBarControllerAddModuleException(ex);
             }
         }
 

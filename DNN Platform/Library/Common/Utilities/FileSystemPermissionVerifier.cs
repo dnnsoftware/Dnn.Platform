@@ -93,7 +93,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileSystemPermissionVerifierFileCreateException(exc);
                 verified = false;
             }
 
@@ -113,7 +113,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileSystemPermissionVerifierFileDeleteException(exc);
                 verified = false;
             }
 
@@ -133,7 +133,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileSystemPermissionVerifierFolderCreateException(exc);
                 verified = false;
             }
 
@@ -153,7 +153,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileSystemPermissionVerifierFolderDeleteException(exc);
                 verified = false;
             }
 

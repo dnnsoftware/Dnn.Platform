@@ -16,7 +16,7 @@ namespace DotNetNuke.Common.Utilities.Internal
     /// Allows an action to be run and retried after a delay when an exception is thrown.
     /// <remarks>If the action never succeeds the final exception will be re-thrown for the caller to catch.</remarks>
     /// </summary>
-    public class RetryableAction
+    public partial class RetryableAction
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<RetryableAction>();
 
@@ -100,10 +100,7 @@ namespace DotNetNuke.Common.Utilities.Internal
                 try
                 {
                     this.Action();
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.TraceFormat(CultureInfo.InvariantCulture, "Action succeeded - {0}", this.Description);
-                    }
+                    Logger.RetryableActionSucceeded(this.Description);
 
                     return;
                 }
@@ -111,14 +108,11 @@ namespace DotNetNuke.Common.Utilities.Internal
                 {
                     if (retriesRemaining <= 0)
                     {
-                        Logger.WarnFormat(CultureInfo.InvariantCulture, "All retries of action failed - {0}", this.Description);
+                        Logger.RetryableActionAllRetriesFailed(this.Description);
                         throw;
                     }
 
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.TraceFormat(CultureInfo.InvariantCulture, "Retrying action {0} - {1}", retriesRemaining, this.Description);
-                    }
+                    Logger.RetryableActionRetrying(retriesRemaining, this.Description);
 
                     SleepAction.Invoke(currentDelay);
 

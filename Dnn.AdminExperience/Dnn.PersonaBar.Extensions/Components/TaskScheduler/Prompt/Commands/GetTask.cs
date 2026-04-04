@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.GetTaskRunException(exc);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_FetchTaskFailed"));
             }
         }

@@ -39,7 +39,7 @@ namespace Dnn.PersonaBar.Prompt.Components.Commands.Application
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.RestartApplicationRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_UserRestart_Error"));
             }
 

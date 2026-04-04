@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsControllerGetRoleGroupsException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
@@ -118,7 +118,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsControllerGetSuggestionUsersException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
@@ -164,7 +164,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsControllerGetSuggestionRolesException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }

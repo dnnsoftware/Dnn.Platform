@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 {
                     // we shouldn't break the install process when LP download failed, for admin user can install the LP after website created.
                     // so we logged what's wrong here, and user can check it later.
-                    Logger.Error(ex);
+                    Logger.UpdateLanguagePackStepExecuteException(ex);
                 }
             }
 

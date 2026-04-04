@@ -32,6 +32,8 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -378,7 +380,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.EditUserUpdateException(exc);
                     if (exc.Message == "Display Name must be unique")
                     {
                         this.AddModuleMessage("DisplayNameNotUnique", ModuleMessage.ModuleMessageType.RedError, true);

@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Website;
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
@@ -602,7 +603,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.UserUpdateException(exc);
 
                         var args = new UserUpdateErrorArgs(this.User.UserID, this.User.Username, "EmailError");
                         this.OnUserUpdateError(args);

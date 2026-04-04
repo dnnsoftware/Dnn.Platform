@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Api.Internal
     using Microsoft.Extensions.Logging;
 
     /// <summary>Allows registering web API routes.</summary>
-    public sealed class ServicesRoutingManager : IMapRoute, IRoutingManager
+    public sealed partial class ServicesRoutingManager : IMapRoute, IRoutingManager
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServicesRoutingManager>();
         private readonly IServiceProvider serviceProvider;
@@ -92,10 +92,7 @@ namespace DotNetNuke.Web.Api.Internal
                 var routeUrl = this.portalAliasRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 var route = this.MapHttpRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 mappedRoutes.Add(route);
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
-                }
+                Logger.ServicesRoutingManagerMappingRoute(fullRouteName, routeUrl);
 
                 // compatible with old service path: DesktopModules/{namespace}/API/{controller}/{action}.
                 var oldRouteName = $"{fullRouteName}-old";
@@ -106,10 +103,7 @@ namespace DotNetNuke.Web.Api.Internal
 
                 var oldRoute = this.MapHttpRouteWithNamespace(oldRouteName, oldRouteUrl, defaults, constraints, namespaces);
                 mappedRoutes.Add(oldRoute);
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Mapping route: " + oldRouteName + " @ " + oldRouteUrl);
-                }
+                Logger.ServicesRoutingManagerMappingOldRoute(oldRouteName, oldRouteUrl);
             }
 
             return mappedRoutes;
@@ -176,7 +170,7 @@ namespace DotNetNuke.Web.Api.Internal
                 this.LocateServicesAndMapRoutes();
             }
 
-            Logger.TraceFormat(CultureInfo.InvariantCulture, "Registered a total of {0} routes", this.routes.Count);
+            Logger.ServicesRoutingManagerRegisteredRoutes(this.routes.Count);
         }
 
         /// <summary>Determines whether the given <paramref name="type"/> is a valid <see cref="IServiceRouteMapper"/>.</summary>
@@ -218,7 +212,7 @@ namespace DotNetNuke.Web.Api.Internal
             {
                 if (!handlerEntry.Enabled)
                 {
-                    Logger.Trace("The following handler is disabled " + handlerEntry.ClassName);
+                    Logger.ServicesRoutingManagerHandlerIsDisabled(handlerEntry.ClassName);
                     continue;
                 }
 
@@ -233,14 +227,14 @@ namespace DotNetNuke.Web.Api.Internal
                     var schemeName = handler.AuthScheme.ToUpperInvariant();
                     if (registeredSchemes.Contains(schemeName))
                     {
-                        Logger.Trace($"The following handler scheme '{handlerEntry.ClassName}' is already added and will be skipped");
+                        Logger.ServicesRoutingManagerHandlerIsAlreadyAdded(handlerEntry.ClassName);
                         handler.Dispose();
                         continue;
                     }
 
                     GlobalConfiguration.Configuration.MessageHandlers.Add(handler);
                     registeredSchemes.Add(schemeName);
-                    Logger.Trace($"Instantiated/Activated instance of {handler.AuthScheme}, class: {handler.GetType().FullName}");
+                    Logger.ServicesRoutingManagerHandlerIsActivated(handler.AuthScheme, handler.GetType().FullName);
 
                     if (handlerEntry.DefaultInclude)
                     {
@@ -254,7 +248,7 @@ namespace DotNetNuke.Web.Api.Internal
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("Cannot instantiate/activate instance of " + handlerEntry.ClassName + Environment.NewLine + ex);
+                    Logger.ServicesRoutingManagerCannotInstantiateInstanceOf(ex, handlerEntry.ClassName);
                 }
             }
         }
@@ -273,7 +267,7 @@ namespace DotNetNuke.Web.Api.Internal
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
+                    Logger.ServicesRoutingManagerRegisterRoutesThrewAnException(e, routeMapper.GetType().FullName);
                 }
             }
         }
@@ -294,7 +288,7 @@ namespace DotNetNuke.Web.Api.Internal
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
+                    Logger.ServicesRoutingManagerUnableToCreateRouteMapper(e, routeMapperType.FullName);
                     routeMapper = null;
                 }
 

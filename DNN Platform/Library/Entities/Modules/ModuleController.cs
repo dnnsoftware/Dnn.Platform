@@ -628,7 +628,7 @@ namespace DotNetNuke.Entities.Modules
             catch (Exception exc)
             {
                 // module already in the page, ignore error
-                Logger.Error(exc);
+                Logger.ModuleControllerModuleAlreadyOnThePageException(exc);
             }
 
             this.ClearCache(sourceModule.TabID);
@@ -1245,14 +1245,11 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error localizing module, moduleId: {0}, full exception: {1}", sourceModule.ModuleID, ex);
+                Logger.ModuleControllerErrorLocalizingModule(ex, sourceModule.ModuleID);
             }
         }
 
-        /// <summary>
-        /// MoveModule moves a Module from one Tab to another including all the
-        ///     TabModule settings.
-        /// </summary>
+        /// <summary>MoveModule moves a Module from one Tab to another including all the TabModule settings.</summary>
         /// <param name="moduleId">The ID of the module to move.</param>
         /// <param name="fromTabId">The ID of the source tab.</param>
         /// <param name="toTabId">The ID of the destination tab.</param>
@@ -1786,7 +1783,7 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModuleControllerAddContentException(exc);
             }
         }
 

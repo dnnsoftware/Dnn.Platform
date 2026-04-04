@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SiteGroupsControllerSaveException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SiteGroupsControllerDeleteException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }

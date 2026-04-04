@@ -77,7 +77,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CoreLanguagePackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

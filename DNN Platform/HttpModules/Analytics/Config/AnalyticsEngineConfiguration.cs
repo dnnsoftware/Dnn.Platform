@@ -95,7 +95,7 @@ namespace DotNetNuke.HttpModules.Config
 
                 log.AddProperty("ExceptionMessage", ex.Message);
                 eventLogger.AddLog(log);
-                Logger.Error(log);
+                Logger.AnalyticsEngineConfigurationGetConfigException(ex, log);
             }
 
             return config;

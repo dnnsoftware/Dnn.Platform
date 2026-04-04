@@ -128,12 +128,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
             catch (SetRoleException se)
             {
-                Logger.Error(se);
+                Logger.SetRoleRunSetRoleException(se);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleUpdated.SystemRoleError"));
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SetRoleRunGeneralException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleUpdated.Error"));
             }
         }

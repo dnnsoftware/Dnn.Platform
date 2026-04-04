@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.PortalTemplateImporterParseTemplateException(ex);
                     }
                 }
 
@@ -655,7 +655,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 catch (InvalidFileExtensionException ex)
                 {
                     // when the file is not allowed, we should not break parse process, but just log the error.
-                    Logger.Error(ex.Message);
+                    Logger.PortalTemplateImporterParseFilesInvalidFileExtensionException(ex, ex.Message);
                 }
             }
         }
@@ -793,7 +793,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.PortalTemplateImporterGetFolderMappingException(ex);
                             folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                         }
 
@@ -806,7 +806,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.PortalTemplateImporterAddFolderException(ex);
 
                             // Retry with default folderMapping
                             var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);

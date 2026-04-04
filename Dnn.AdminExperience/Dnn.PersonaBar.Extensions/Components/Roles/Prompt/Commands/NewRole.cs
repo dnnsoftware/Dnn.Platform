@@ -110,7 +110,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.NewRoleRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleAdded.Error"));
             }
         }

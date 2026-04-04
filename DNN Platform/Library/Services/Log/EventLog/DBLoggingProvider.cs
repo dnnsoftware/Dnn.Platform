@@ -473,7 +473,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.DbLoggingProviderFillLogInfoException(exc);
             }
 
             return (LogInfo)obj;
@@ -572,12 +572,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             catch (SqlException exc)
             {
-                Logger.Error(exc);
+                Logger.DbLoggingProviderWriteLogSqlException(exc);
                 WriteError(logTypeConfigInfo, exc, "SQL Exception", SqlUtils.TranslateSQLException(exc));
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.DbLoggingProviderWriteLogGeneralException(exc);
                 WriteError(logTypeConfigInfo, exc, "Unhandled Error", exc.Message);
             }
         }

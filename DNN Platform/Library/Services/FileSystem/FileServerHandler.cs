@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.FileSystem
                                 }
                                 catch (Exception ex)
                                 {
-                                    Logger.Error(ex);
+                                    Logger.FileServerHandlerHandleFileLinkException(ex);
                                 }
                             }
 

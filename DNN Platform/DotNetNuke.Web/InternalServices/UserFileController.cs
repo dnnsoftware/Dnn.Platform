@@ -71,7 +71,7 @@ public class UserFileController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.UserFileControllerGetItemsException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }

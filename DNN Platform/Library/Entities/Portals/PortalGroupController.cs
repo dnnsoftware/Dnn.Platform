@@ -393,7 +393,7 @@ namespace DotNetNuke.Entities.Portals
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.PortalGroupControllerLogEventException(exc);
             }
         }
 

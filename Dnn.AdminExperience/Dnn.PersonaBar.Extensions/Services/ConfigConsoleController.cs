@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerGetConfigFilesListException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -92,7 +92,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerGetConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -119,7 +119,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerValidateConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -143,7 +143,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerUpdateConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -163,7 +163,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerMergeConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

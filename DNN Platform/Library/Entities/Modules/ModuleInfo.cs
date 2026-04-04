@@ -616,7 +616,7 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModuleInfoFillException(exc);
             }
         }
 

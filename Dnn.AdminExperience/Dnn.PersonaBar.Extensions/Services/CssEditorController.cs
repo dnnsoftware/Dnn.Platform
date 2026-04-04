@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.CssEditor.Services
 
         /// GET: api/CssEditor/GetStyleSheet
         /// <summary>Gets portal.css of specific portal.</summary>
-        /// <param name="portalId">Id of portal.</param>
+        /// <param name="portalId">ID of portal.</param>
         /// <returns>Content of portal.css.</returns>
         [HttpGet]
         public HttpResponseMessage GetStyleSheet(int portalId)
@@ -42,40 +42,36 @@ namespace Dnn.PersonaBar.CssEditor.Services
                 {
                     throw new SecurityException("No Permission");
                 }
-                else
+
+                var activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
+                var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
+
+                string uploadDirectory = string.Empty;
+                string styleSheetContent = string.Empty;
+                if (portal != null)
                 {
-                    var activeLanguage = LocaleController.Instance.GetDefaultLocale(portalId).Code;
-                    var portal = PortalController.Instance.GetPortal(portalId, activeLanguage);
-
-                    string uploadDirectory = string.Empty;
-                    string styleSheetContent = string.Empty;
-                    if (portal != null)
-                    {
-                        uploadDirectory = portal.HomeDirectoryMapPath;
-                    }
-
-                    // read CSS file
-                    if (File.Exists(uploadDirectory + "portal.css"))
-                    {
-                        using (var text = File.OpenText(uploadDirectory + "portal.css"))
-                        {
-                            styleSheetContent = text.ReadToEnd();
-                        }
-                    }
-
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = styleSheetContent });
+                    uploadDirectory = portal.HomeDirectoryMapPath;
                 }
+
+                // read CSS file
+                if (File.Exists(uploadDirectory + "portal.css"))
+                {
+                    using var text = File.OpenText(uploadDirectory + "portal.css");
+                    styleSheetContent = text.ReadToEnd();
+                }
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Content = styleSheetContent });
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.CssEditorControllerGetStyleSheetException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/CssEditor/UpdateStyleSheet
         /// <summary>Updates portal.css of specific portal.</summary>
-        /// <param name="request">Content of portal css.</param>
+        /// <param name="request">Content of portal CSS.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -85,109 +81,99 @@ namespace Dnn.PersonaBar.CssEditor.Services
             {
                 throw new SecurityException("No Permission");
             }
-            else
+
+            try
             {
-                try
+                string strUploadDirectory = string.Empty;
+                var relativePath = string.Empty;
+
+                PortalInfo objPortal = PortalController.Instance.GetPortal(request.PortalId);
+                if (objPortal != null)
                 {
-                    string strUploadDirectory = string.Empty;
-                    var relativePath = string.Empty;
-
-                    PortalInfo objPortal = PortalController.Instance.GetPortal(request.PortalId);
-                    if (objPortal != null)
-                    {
-                        strUploadDirectory = objPortal.HomeDirectoryMapPath;
-                        relativePath = $"{Globals.ApplicationPath}/{objPortal.HomeDirectory}/portal.css";
-                    }
-
-                    // reset attributes
-                    if (File.Exists(strUploadDirectory + "portal.css"))
-                    {
-                        File.SetAttributes(strUploadDirectory + "portal.css", FileAttributes.Normal);
-                    }
-
-                    // write CSS file
-                    using (var writer = File.CreateText(strUploadDirectory + "portal.css"))
-                    {
-                        writer.WriteLine(request.StyleSheetContent);
-                    }
-
-                    // Clear client resource cache
-                    var overrideSetting =
-                        PortalController.GetPortalSetting(
-                            ClientResourceSettings.OverrideDefaultSettingsKey,
-                            request.PortalId,
-                            "False");
-                    bool overridePortal;
-                    if (bool.TryParse(overrideSetting, out overridePortal))
-                    {
-                        if (overridePortal)
-                        {
-                            // increment this portal version only
-                            PortalController.IncrementCrmVersion(request.PortalId);
-                        }
-                        else
-                        {
-                            // increment host version, do not increment other portal versions though.
-                            HostController.Instance.IncrementCrmVersion(false);
-                        }
-                    }
-
-                    ClientResourceManager.ClearFileExistsCache(relativePath);
-
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
+                    strUploadDirectory = objPortal.HomeDirectoryMapPath;
+                    relativePath = $"{Globals.ApplicationPath}/{objPortal.HomeDirectory}/portal.css";
                 }
-                catch (Exception exc)
+
+                // reset attributes
+                if (File.Exists(strUploadDirectory + "portal.css"))
                 {
-                    Logger.Error(exc);
-                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+                    File.SetAttributes(strUploadDirectory + "portal.css", FileAttributes.Normal);
                 }
+
+                // write CSS file
+                using (var writer = File.CreateText(strUploadDirectory + "portal.css"))
+                {
+                    writer.WriteLine(request.StyleSheetContent);
+                }
+
+                // Clear client resource cache
+                var overrideSetting = PortalController.GetPortalSetting(ClientResourceSettings.OverrideDefaultSettingsKey, request.PortalId, "False");
+                if (bool.TryParse(overrideSetting, out var overridePortal))
+                {
+                    if (overridePortal)
+                    {
+                        // increment this portal version only
+                        PortalController.IncrementCrmVersion(request.PortalId);
+                    }
+                    else
+                    {
+                        // increment host version, do not increment other portal versions though.
+                        HostController.Instance.IncrementCrmVersion(false);
+                    }
+                }
+
+                ClientResourceManager.ClearFileExistsCache(relativePath);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
+            }
+            catch (Exception exc)
+            {
+                Logger.CssEditorControllerUpdateStyleSheetException(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 
         /// POST: api/CssEditor/RestoreStyleSheet
         /// <summary>Restores portal.css of specific portal.</summary>
-        /// <param name="request">Id of portal.</param>
+        /// <param name="request">ID of portal.</param>
         /// <returns>Content of portal.css.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RestoreStyleSheet(RestoreCssRequest request)
         {
-            if (!PortalSettings.Current.UserInfo.IsSuperUser &&
-                PortalSettings.Current.UserInfo.PortalID != request.PortalId)
+            if (!PortalSettings.Current.UserInfo.IsSuperUser && PortalSettings.Current.UserInfo.PortalID != request.PortalId)
             {
                 throw new SecurityException("No Permission");
             }
-            else
+
+            try
             {
-                try
+                PortalInfo portal = PortalController.Instance.GetPortal(request.PortalId);
+                if (portal != null)
                 {
-                    PortalInfo portal = PortalController.Instance.GetPortal(request.PortalId);
-                    if (portal != null)
+                    if (File.Exists(portal.HomeDirectoryMapPath + "portal.css"))
                     {
-                        if (File.Exists(portal.HomeDirectoryMapPath + "portal.css"))
-                        {
-                            // delete existing style sheet
-                            File.Delete(portal.HomeDirectoryMapPath + "portal.css");
-                        }
-
-                        // copy file from Host
-                        if (File.Exists(Globals.HostMapPath + "portal.css"))
-                        {
-                            File.Copy(Globals.HostMapPath + "portal.css", portal.HomeDirectoryMapPath + "portal.css");
-                        }
-
-                        ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
+                        // delete existing style sheet
+                        File.Delete(portal.HomeDirectoryMapPath + "portal.css");
                     }
 
-                    var content = LoadStyleSheet(request.PortalId);
+                    // copy file from Host
+                    if (File.Exists(Globals.HostMapPath + "portal.css"))
+                    {
+                        File.Copy(Globals.HostMapPath + "portal.css", portal.HomeDirectoryMapPath + "portal.css");
+                    }
 
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, StyleSheetContent = content });
+                    ClientResourceManager.ClearFileExistsCache($"{Globals.ApplicationPath}/{portal.HomeDirectory}/portal.css");
                 }
-                catch (Exception exc)
-                {
-                    Logger.Error(exc);
-                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-                }
+
+                var content = LoadStyleSheet(request.PortalId);
+
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, StyleSheetContent = content });
+            }
+            catch (Exception exc)
+            {
+                Logger.CssEditorControllerRestoreStyleSheetException(exc);
+                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
 

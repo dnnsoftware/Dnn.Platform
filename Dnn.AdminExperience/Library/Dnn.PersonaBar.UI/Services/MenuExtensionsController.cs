@@ -120,7 +120,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.MenuExtensionsControllerGetExtensionControllerException(ex);
                 return null;
             }
         }

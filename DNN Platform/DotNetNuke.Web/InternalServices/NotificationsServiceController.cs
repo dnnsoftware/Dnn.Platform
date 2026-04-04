@@ -54,7 +54,7 @@ public partial class NotificationsServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.NotificationsServiceControllerDismissException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }

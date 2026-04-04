@@ -55,7 +55,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
             }
             catch (Exception ex)
             {
-                this.logger.Error($"{this.Id} failed.", ex);
+                this.logger.BaseCheckFailed(ex, this.Id);
                 return this.Unverified("An internal error occurred. See logs for details.");
             }
         }

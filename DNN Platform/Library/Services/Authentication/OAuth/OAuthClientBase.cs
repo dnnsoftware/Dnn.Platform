@@ -708,7 +708,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 if (responseStream != null)
                 {
                     using var responseReader = new StreamReader(responseStream);
-                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "WebResponse exception: {0}", responseReader.ReadToEnd());
+                    Logger.OAuthClientBaseWebResponseException(ex, responseReader.ReadToEnd());
                 }
             }
 

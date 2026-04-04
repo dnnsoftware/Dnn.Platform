@@ -104,7 +104,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.PersonaBarControllerIsVisibleException(ex);
                     visible = false;
                 }
             }
@@ -156,7 +156,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.PersonaBarControllerGetMenuItemControllerException(ex);
                 return null;
             }
         }
@@ -220,7 +220,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.PersonaBarControllerUpdateParametersException(ex);
             }
         }
 
@@ -237,7 +237,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.PersonaBarControllerGetMenuSettingsException(ex);
                 settings = new Dictionary<string, object>();
             }
 

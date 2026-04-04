@@ -120,15 +120,15 @@ public class ContainerWithServiceProviderFallback : IContainer
     /// <inheritdoc />
     public TContract GetComponent<TContract>()
     {
-        Logger.Trace($"Getting component for {typeof(TContract).FullName}");
+        Logger.ContainerWithServiceProviderFallbackGettingComponent(typeof(TContract).FullName);
         var service = this.container.GetComponent<TContract>();
         if (service is not null)
         {
-            Logger.Trace($"Got component for {typeof(TContract).FullName} from container");
+            Logger.ContainerWithServiceProviderFallbackGotComponentFromContainer(typeof(TContract).FullName);
             return service;
         }
 
-        Logger.Trace($"Getting component for {typeof(TContract).FullName} from service provider");
+        Logger.ContainerWithServiceProviderFallbackGettingComponentFromServiceProvider(typeof(TContract).FullName);
         return this.serviceProvider.GetService<TContract>();
     }
 

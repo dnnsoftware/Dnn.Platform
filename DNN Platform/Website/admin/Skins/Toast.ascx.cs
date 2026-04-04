@@ -20,6 +20,8 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
@@ -215,7 +217,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ToastInitializeConfigException(ex);
             }
         }
     }

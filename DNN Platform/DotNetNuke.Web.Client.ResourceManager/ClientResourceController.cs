@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
     using Microsoft.Extensions.Logging;
 
     /// <inheritdoc />
-    public class ClientResourceController : IClientResourceController
+    public partial class ClientResourceController : IClientResourceController
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<ClientResourceController>();
         private readonly IHostSettings hostSettings;
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 this.crmVersion = clientResourceSettings.OverrideDefaultSettings ? clientResourceSettings.PortalCrmVersion : clientResourceSettings.HostCrmVersion;
             }
 
-            Logger.Debug($"ClientResourceController initialized with ID {this.controllerId}");
+            Logger.ClientResourceControllerControllerInitialized(this.controllerId);
         }
 
         private List<IFontResource> Fonts { get; set; } = [];
@@ -225,7 +225,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
         public string RenderDependencies(ResourceType resourceType, string provider, string applicationPath)
         {
             this.hasBegunRendering = true;
-            Logger.Debug($"Rendering dependencies for CRC id {this.controllerId} with ResourceType={resourceType}, Provider={provider}, ApplicationPath={applicationPath}. We have {this.Scripts.Count} scripts, {this.Stylesheets.Count} stylesheets and {this.Fonts.Count} fonts.");
+            Logger.ClientResourceControllerRenderingDependencies(this.controllerId, resourceType, provider, applicationPath, this.Scripts.Count, this.Stylesheets.Count, this.Fonts.Count);
             var sortedList = new List<IResource>();
             if (resourceType is ResourceType.Font or ResourceType.All)
             {
@@ -294,11 +294,11 @@ namespace DotNetNuke.Web.Client.ResourceManager
             where T : IResource
         {
             resource.ResolvedPath = this.ResolvePath(resource.FilePath, resource.PathNameAlias);
-            Logger.Debug($"Adding resource {resource.ResolvedPath} to CRC id {this.controllerId} which currently has {resources.Count} resources");
+            Logger.ClientResourceControllerAddingResource(resource.ResolvedPath, this.controllerId, resources.Count);
 
             if (this.hasBegunRendering)
             {
-                Logger.Error($"Cannot add resource {resource.ResolvedPath} to CRC id {this.controllerId} because rendering has already begun");
+                Logger.ClientResourceControllerCannotAddResourceBecauseRenderingHasAlreadyBegun(resource.ResolvedPath, this.controllerId);
 
                 ////throw new InvalidOperationException("Cannot add resources after rendering has begun.");
             }

@@ -126,7 +126,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (module == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by module ID. ID:{0} PortalID:{1}", desktopModuleId, portalId);
+                Logger.DesktopModuleControllerUnableToFindModuleByModuleId(desktopModuleId, portalId);
             }
 
             return module;
@@ -153,7 +153,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (desktopModuleByPackageId == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by package ID. ID:{0}", packageId);
+                Logger.DesktopModuleControllerUnableToFindModuleByPackageId(packageId);
             }
 
             return desktopModuleByPackageId;
@@ -187,7 +187,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (desktopModuleByModuleName == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by name. Name:{0} portalId:{1}", moduleName, portalId);
+                Logger.DesktopModuleControllerUnableToFindModuleByName(moduleName, portalId);
             }
 
             return desktopModuleByModuleName;
@@ -229,7 +229,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (module == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by friendly name. Name:{0}", friendlyName);
+                Logger.DesktopModuleControllerUnableToFindModuleByFriendlyName(friendlyName);
             }
 
             return module;

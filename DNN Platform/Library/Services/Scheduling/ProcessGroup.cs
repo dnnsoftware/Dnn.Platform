@@ -65,15 +65,11 @@ namespace DotNetNuke.Services.Scheduling
                     // in case the scheduler client
                     // didn't have proper exception handling
                     // make sure we fire the Errored event
-                    Logger.Error(exc);
+                    Logger.ProcessGroupDoWorkException(exc);
 
                     if (process != null)
                     {
-                        if (process.ScheduleHistoryItem != null)
-                        {
-                            process.ScheduleHistoryItem.Succeeded = false;
-                        }
-
+                        process.ScheduleHistoryItem?.Succeeded = false;
                         process.Errored(ref exc);
                     }
                 }

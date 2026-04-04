@@ -324,31 +324,17 @@ namespace DotNetNuke.Entities.Modules
         /// <inheritdoc />
         protected override void OnInit(EventArgs e)
         {
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-
+            this.tracelLogger.PortalModuleBaseOnInitStart(this.PortalSettings.ActiveTab.TabID, this.ModuleId, this.GetType());
             base.OnInit(e);
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
+            this.tracelLogger.PortalModuleBaseOnInitEnd(this.PortalSettings.ActiveTab.TabID, this.ModuleId, this.GetType());
         }
 
         /// <inheritdoc />
         protected override void OnLoad(EventArgs e)
         {
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
-
+            this.tracelLogger.PortalModuleBaseOnLoadStart(this.PortalSettings.ActiveTab.TabID, this.ModuleId, this.GetType());
             base.OnLoad(e);
-            if (this.tracelLogger.IsDebugEnabled)
-            {
-                this.tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
-            }
+            this.tracelLogger.PortalModuleBaseOnLoadEnd(this.PortalSettings.ActiveTab.TabID, this.ModuleId, this.GetType());
         }
 
         /// <summary>Helper method that can be used to add an ActionEventHandler to the Skin for this Module Control.</summary>
@@ -356,10 +342,7 @@ namespace DotNetNuke.Entities.Modules
         protected void AddActionHandler(ActionEventHandler e)
         {
             UI.Skins.Skin parentSkin = UI.Skins.Skin.GetParentSkin(this);
-            if (parentSkin != null)
-            {
-                parentSkin.RegisterModuleActionEvent(this.ModuleId, e);
-            }
+            parentSkin?.RegisterModuleActionEvent(this.ModuleId, e);
         }
 
         /// <inheritdoc cref="Localization.GetString(string,string)"/>

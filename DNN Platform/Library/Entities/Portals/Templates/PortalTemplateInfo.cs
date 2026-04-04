@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
             catch (Exception e)
             {
-                Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
+                Logger.PortalTemplateInfoErrorWhileParsing(e, this.TemplateFilePath);
             }
         }
 
@@ -105,17 +105,15 @@ namespace DotNetNuke.Entities.Portals.Templates
         {
             try
             {
-                using (var reader = PortalTemplateIO.Instance.OpenTextReader(this.LanguageFilePath))
-                {
-                    var xmlDoc = XDocument.Load(reader);
+                using var reader = PortalTemplateIO.Instance.OpenTextReader(this.LanguageFilePath);
+                var xmlDoc = XDocument.Load(reader);
 
-                    this.Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
-                    this.Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
-                }
+                this.Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
+                this.Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
             }
             catch (Exception e)
             {
-                Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
+                Logger.PortalTemplateInfoErrorWhileParsing(e, this.TemplateFilePath);
             }
         }
 

@@ -108,11 +108,7 @@ namespace Dnn.EditBar.UI.Controllers
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "Unable to create {0} while getting all edit bar menu items. {1}",
-                        type.FullName,
-                        e.Message);
+                    Logger.EditBarControllerUnableToCreateMenuItem(e, type.FullName);
                     menuItem = null;
                 }
 

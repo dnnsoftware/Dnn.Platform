@@ -97,7 +97,7 @@ namespace DotNetNuke.ComponentModel
 
                 if (type == null)
                 {
-                    Logger.Error(new ConfigurationErrorsException($"Could not load provider {provider.Type}"));
+                    Logger.ProviderInstallerCouldNotLoadProvider(new ConfigurationErrorsException($"Could not load provider {provider.Type}"));
                 }
                 else
                 {

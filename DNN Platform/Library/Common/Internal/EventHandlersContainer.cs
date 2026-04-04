@@ -39,7 +39,7 @@ namespace DotNetNuke.Common.Internal
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.Message, ex);
+                Logger.EventHandlersContainerConstructorException(ex, ex.Message);
             }
         }
 

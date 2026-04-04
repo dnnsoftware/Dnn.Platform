@@ -28,7 +28,7 @@ namespace DotNetNuke.Common.Internal
             }
             catch (Exception e)
             {
-                Logger.Error("Unable to register service routes", e);
+                Logger.ServicesRoutingManagerUnableToRegisterServiceRoutes(e);
             }
         }
 

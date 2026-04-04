@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Search
             try
             {
                 var lastSuccessFulDateTime = SearchHelper.Instance.GetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID);
-                Logger.Trace("Search: Site Crawler - Starting. Content change start time " + lastSuccessFulDateTime.ToString("g", CultureInfo.InvariantCulture));
+                Logger.SearchEngineSchedulerStarting(lastSuccessFulDateTime);
                 this.ScheduleHistoryItem.AddLogNote(string.Format(CultureInfo.InvariantCulture, "Starting. Content change start time <b>{0:g}</b>", lastSuccessFulDateTime));
 
                 var searchEngine = new SearchEngine(this.ScheduleHistoryItem, lastSuccessFulDateTime, this.businessControllerProvider);
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Search
                 this.ScheduleHistoryItem.AddLogNote("<br/><b>Indexing Successful</b>");
                 SearchHelper.Instance.SetLastSuccessfulIndexingDateTime(this.ScheduleHistoryItem.ScheduleID, this.ScheduleHistoryItem.StartDate);
 
-                Logger.Trace("Search: Site Crawler - Indexing Successful");
+                Logger.SearchEngineSchedulerSuccessful();
             }
             catch (Exception ex)
             {

@@ -130,7 +130,7 @@ namespace DotNetNuke.Entities.Content
                     // On second thought, I don't know how much sense it makes to be throwing an exception here.  If the file
                     // has been deleted or is otherwise unavailable, there's really no reason we can't continue on handling the
                     // ContentItem without its attachment.  Better than the yellow screen of death? --cbond
-                    Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to load file properties for File ID {0}", fileId);
+                    Logger.AttachmentControllerUnableToLoadFileProperties(fileId);
                 }
 
                 if (fileInfo != null)

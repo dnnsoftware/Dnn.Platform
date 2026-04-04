@@ -98,7 +98,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 log.AddProperty("Analytics.AnalyticsModule", "OnPreRequestHandlerExecute");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 this.eventLogger.AddLog(log);
-                Logger.Error(log);
+                Logger.AnalyticsModuleOnPreRequestHandlerExecuteException(ex, log);
             }
         }
 
@@ -192,7 +192,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 this.eventLogger.AddLog(log);
-                Logger.Error(ex);
+                Logger.AnalyticsModuleOnPagePreRenderException(ex);
             }
         }
     }

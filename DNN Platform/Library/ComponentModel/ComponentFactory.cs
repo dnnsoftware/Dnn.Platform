@@ -206,7 +206,7 @@ namespace DotNetNuke.ComponentModel
         {
             if (Container == null)
             {
-                Logger.Warn("Container was null, instantiating SimpleContainer");
+                Logger.ComponentFactoryInstantiatingSimpleContainer();
                 Container = new SimpleContainer();
             }
         }

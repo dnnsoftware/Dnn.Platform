@@ -80,7 +80,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.AspNetClientCapabilityDetectOperatingSystemException(ex);
                 }
             }
         }

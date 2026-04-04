@@ -14,40 +14,31 @@ namespace DotNetNuke.Services.SystemHealth
 
     using Microsoft.Extensions.Logging;
 
-    /// <summary>
-    /// When run on each server it updates the last activity date for the server and removes any servers that haven't been seen in 24 hours.
-    /// </summary>
-    public class WebServerMonitor : SchedulerClient
+    /// <summary>When run on each server it updates the last activity date for the server and removes any servers that haven't been seen in 24 hours.</summary>
+    public partial class WebServerMonitor : SchedulerClient
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<WebServerMonitor>();
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="WebServerMonitor"/> class.
-        /// Constructs a WebServerMonitor SchedulerClient.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="WebServerMonitor"/> class.</summary>
         /// <param name="objScheduleHistoryItem">A SchedulerHistoryItem.</param>
-        /// <remarks>
-        /// This must be run on all servers.
-        /// </remarks>
+        /// <remarks>This must be run on all servers.</remarks>
         public WebServerMonitor(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
-        /// <summary>
-        /// Runs on the active server and updates the last activity date for the current server.
-        /// </summary>
+        /// <summary>Runs on the active server and updates the last activity date for the current server.</summary>
         public override void DoWork()
         {
             try
             {
-                Logger.Info("Starting WebServerMonitor");
+                Logger.WebServerMonitorStartingWebServerMonitor();
 
                 UpdateCurrentServerActivity();
                 DisableServersWithoutRecentActivity();
                 RemoveInActiveServers();
 
-                Logger.Info("Finished WebServerMonitor");
+                Logger.WebServerMonitorFinishedWebServerMonitor();
                 this.ScheduleHistoryItem.Succeeded = true;
             }
             catch (Exception exc)
@@ -55,20 +46,20 @@ namespace DotNetNuke.Services.SystemHealth
                 this.ScheduleHistoryItem.Succeeded = false;
                 this.ScheduleHistoryItem.AddLogNote($"Updating server health failed: {exc}.");
                 this.Errored(ref exc);
-                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error in WebServerMonitor: {0}. {1}", exc.Message, exc.StackTrace);
+                Logger.WebServerMonitorErrorInWebServerMonitor(exc, exc.Message, exc.StackTrace);
                 Exceptions.LogException(exc);
             }
         }
 
         private static void UpdateCurrentServerActivity()
         {
-            Logger.Info("Starting UpdateCurrentServerActivity");
+            Logger.WebServerMonitorStartingUpdateCurrentServerActivity();
 
             // Creating a new ServerInfo object, by default points it at the current server
             var currentServer = new ServerInfo();
             ServerController.UpdateServerActivity(currentServer);
 
-            Logger.Info("Finished UpdateCurrentServerActivity");
+            Logger.WebServerMonitorFinishedUpdateCurrentServerActivity();
         }
 
         private static void DisableServersWithoutRecentActivity()
@@ -91,7 +82,7 @@ namespace DotNetNuke.Services.SystemHealth
 
         private static void RemoveInActiveServers()
         {
-            Logger.Info("Starting RemoveInActiveServers");
+            Logger.WebServerMonitorStartingRemoveInActiveServers();
             var serversWithActivity = ServerController.GetEnabledServersWithActivity();
             var newServer = serversWithActivity.FirstOrDefault();
 
@@ -106,7 +97,7 @@ namespace DotNetNuke.Services.SystemHealth
                 }
             }
 
-            Logger.Info("Finished RemoveInActiveServers");
+            Logger.WebServerMonitorFinishedRemoveInActiveServers();
         }
     }
 }

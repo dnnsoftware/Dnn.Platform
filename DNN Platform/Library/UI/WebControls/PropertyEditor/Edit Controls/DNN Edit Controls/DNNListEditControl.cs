@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.DnnListEditControlIntegerValueException(exc);
                 }
 
                 return intValue;
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.DnnListEditControlOldIntegerValueException(exc);
                 }
 
                 return intValue;

@@ -14,7 +14,7 @@ namespace Dnn.Modules.ResourceManager.Components
     using Microsoft.Extensions.Logging;
 
     /// <summary>Provides upgrade support for module.</summary>
-    public class ResourceManagerController : IUpgradeable
+    public partial class ResourceManagerController : IUpgradeable
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<ResourceManagerController>();
 
@@ -26,7 +26,7 @@ namespace Dnn.Modules.ResourceManager.Components
                 switch (version)
                 {
                     case "00.00.01":
-                        Logger.Info("Adding Global Assets host menu item.");
+                        Logger.ResourceManagerControllerAddingGlobalAssetsHostMenuItem();
                         ModuleDefinitionInfo mDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("ResourceManager");
 
                         // Add tab to Admin Menu
@@ -43,11 +43,11 @@ namespace Dnn.Modules.ResourceManager.Components
                             var moduleId = Upgrade.AddModuleToPage(hostPage, mDef.ModuleDefID, "Global Assets Management", "~/Icons/Sigma/Files_32X32_Standard.png", true);
                             ModuleController.Instance.UpdateModuleSetting(moduleId, Constants.HomeFolderSettingName, "1");
                             ModuleController.Instance.UpdateModuleSetting(moduleId, Constants.ModeSettingName, "0");
-                            Logger.Info("Added Global Assets host menu item.");
+                            Logger.ResourceManagerControllerAddedGlobalAssetsHostMenuItem();
                         }
 
                         // Remove Previous Host File Manager pages
-                        Logger.Info("Removing old pages.");
+                        Logger.ResourceManagerControllerRemovingOldPages();
                         Upgrade.RemoveHostPage("File Manager");
                         Upgrade.RemoveHostPage("File Management");
 
@@ -58,7 +58,7 @@ namespace Dnn.Modules.ResourceManager.Components
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ResourceManagerControllerUpgradeModuleException(exc);
                 return "Failed";
             }
         }

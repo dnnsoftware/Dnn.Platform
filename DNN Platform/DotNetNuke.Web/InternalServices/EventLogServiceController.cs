@@ -70,7 +70,7 @@ public class EventLogServiceController : DnnApiController
         }
         catch (Exception ex)
         {
-            Logger.Error(ex);
+            Logger.EventLogServiceControllerGetLogDetailsException(ex);
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
         }
     }

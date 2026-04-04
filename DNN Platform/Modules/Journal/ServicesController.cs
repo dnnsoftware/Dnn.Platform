@@ -83,7 +83,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerCreateException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -115,7 +115,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerDeleteException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -146,7 +146,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerSoftDeleteException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -162,7 +162,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerPreviewUrlException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -178,7 +178,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerGetListForProfileException(exc);
             throw new HttpException(500, exc.Message);
         }
     }
@@ -207,7 +207,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerLikeException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -250,7 +250,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerCommentSaveException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -286,7 +286,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerCommentDeleteException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -325,7 +325,7 @@ public class ServicesController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.ServicesControllerGetSuggestionsException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }

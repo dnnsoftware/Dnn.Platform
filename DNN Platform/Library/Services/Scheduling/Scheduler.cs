@@ -21,11 +21,13 @@ namespace DotNetNuke.Services.Scheduling
     using Microsoft.Extensions.Logging;
     using Microsoft.VisualBasic;
 
-    internal static class Scheduler
+    /// <summary>The scheduler.</summary>
+    internal static partial class Scheduler
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(Scheduler));
 
-        internal static class CoreScheduler
+        /// <summary>The scheduler implementation.</summary>
+        internal static partial class CoreScheduler
         {
             // If KeepRunning gets switched to false,
             // the scheduler stops running.
@@ -315,10 +317,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     // The reader lock request timed out.
                     Interlocked.Increment(ref readerTimeouts);
-                    if (Logger.IsDebugEnabled)
-                    {
-                        Logger.Debug(ex);
-                    }
+                    Logger.SchedulerReaderLockRequestTimeout(ex);
 
                     return 0;
                 }
@@ -458,10 +457,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     // The reader lock request timed out.
                     Interlocked.Increment(ref readerTimeouts);
-                    if (Logger.IsDebugEnabled)
-                    {
-                        Logger.Debug(ex);
-                    }
+                    Logger.SchedulerReaderLockRequestTimeout(ex);
 
                     return false;
                 }
@@ -471,10 +467,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
-                if (Logger.IsDebugEnabled)
-                {
-                    Logger.Debug("loadqueue executingServer:" + executingServer);
-                }
+                Logger.SchedulerLoadQueue(executingServer);
 
                 var thisServer = GetServer(executingServer);
                 if (thisServer == null)
@@ -511,10 +504,7 @@ namespace DotNetNuke.Services.Scheduling
                 forceReloadSchedule = false;
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
-                if (Logger.IsDebugEnabled)
-                {
-                    Logger.Debug("LoadQueueFromTimer executingServer:" + executingServer);
-                }
+                Logger.SchedulerLoadQueueFromTimer(executingServer);
 
                 var thisServer = GetServer(executingServer);
                 if (thisServer == null)
@@ -1363,10 +1353,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     // The reader lock request timed out.
                     Interlocked.Increment(ref readerTimeouts);
-                    if (Logger.IsDebugEnabled)
-                    {
-                        Logger.Debug(ex);
-                    }
+                    Logger.SchedulerReaderLockRequestTimeout(ex);
 
                     return false;
                 }

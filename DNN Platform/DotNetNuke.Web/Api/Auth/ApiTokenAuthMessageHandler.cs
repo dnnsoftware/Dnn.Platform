@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Api.Auth
     /// <summary>
     /// Authentication message handler that authorizes an HTTP request based on a valid API token.
     /// </summary>
-    public class ApiTokenAuthMessageHandler : AuthMessageHandlerBase
+    public partial class ApiTokenAuthMessageHandler : AuthMessageHandlerBase
     {
         private static readonly ILogger Logger = DnnLoggingController.GetLogger<ApiTokenAuthMessageHandler>();
 
@@ -42,9 +42,7 @@ namespace DotNetNuke.Web.Api.Auth
         /// <inheritdoc />
         public override bool BypassAntiForgeryToken => true;
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the authentication message handler is enabled in the web.config.
-        /// </summary>
+        /// <summary>Gets or sets a value indicating whether the authentication message handler is enabled in the <c>web.config</c>.</summary>
         internal static bool IsEnabled { get; set; }
 
         /// <inheritdoc />
@@ -65,10 +63,7 @@ namespace DotNetNuke.Web.Api.Auth
                 var (token, user) = this.apiTokenController.ValidateToken(request);
                 if (token != null)
                 {
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.Trace($"Authenticated using API token {token.ApiTokenId}");
-                    }
+                    Logger.ApiTokenAuthMessageHandlerAuthenticatedUsingApiToken(token.ApiTokenId);
 
                     this.apiTokenController.SetApiTokenForRequest(token);
 
@@ -80,7 +75,7 @@ namespace DotNetNuke.Web.Api.Auth
             }
             catch (Exception ex)
             {
-                Logger.Error("Unexpected error authenticating API Token. " + ex);
+                Logger.ApiTokenAuthMessageHandlerUnexpectedErrorAuthenticatingApiToken(ex);
             }
         }
     }

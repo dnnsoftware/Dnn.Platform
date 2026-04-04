@@ -73,12 +73,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.Init threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsInitThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
@@ -93,12 +88,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.Load threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsLoadThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
@@ -113,12 +103,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.PreRender threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsPreRenderThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
@@ -133,12 +118,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.UnLoad threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsUnLoadThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
