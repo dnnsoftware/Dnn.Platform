@@ -5,18 +5,20 @@
 namespace DotNetNuke.Web.MvcPipeline.Controllers
 {
     using System;
+    using System.Reflection;
+    using System.Web.Mvc;
+    using System.Web.UI.WebControls;
 
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Web.Mvc.Routing;
+    using DotNetNuke.Web.MvcPipeline.Models;
 
     /// <summary>
     /// Base controller for MVC module controllers, exposing common DNN context and services.
     /// </summary>
     public class ModuleControllerBase : DnnPageController, IMvcController
     {
-        private readonly Lazy<ModuleInfo> activeModule;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ModuleControllerBase"/> class.
         /// </summary>
@@ -24,28 +26,16 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         public ModuleControllerBase(IServiceProvider dependencyProvider)
             : base(dependencyProvider)
         {
-            this.activeModule = new Lazy<ModuleInfo>(this.InitModuleInfo);
         }
 
         /// <summary>
-        /// Gets the user information for the current user.
+        /// Gets the module info.
         /// </summary>
-        public UserInfo UserInfo
+        /// <param name="input">The module model containing the module and tab IDs.</param>
+        /// <returns>ModuleInfo.</returns>
+        public static ModuleInfo GetModuleInfo(ModuleModelBase input)
         {
-            get { return this.PortalSettings.UserInfo; }
-        }
-
-        /// <summary>
-        /// Gets the active module associated with the current request.
-        /// </summary>
-        public ModuleInfo ActiveModule
-        {
-            get { return this.activeModule.Value; }
-        }
-
-        private ModuleInfo InitModuleInfo()
-        {
-            return this.HttpContext.Request.FindModuleInfo();
+            return ModuleController.Instance.GetModule(input.ModuleId, input.TabId, false);
         }
     }
 }

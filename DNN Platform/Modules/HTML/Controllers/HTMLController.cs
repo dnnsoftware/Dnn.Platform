@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Html.Controllers
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Web.Mvc;
 
     using DotNetNuke.Abstractions;
@@ -114,6 +115,7 @@ namespace DotNetNuke.Modules.Html.Controllers
 
             try
             {
+                var activeModule = GetModuleInfo(model);
                 int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
                 var htmlContent = this.GetLatestHTMLContent(workflowID, model.ModuleId);
 
@@ -123,7 +125,7 @@ namespace DotNetNuke.Modules.Html.Controllers
                 var versions = this.htmlTextController.GetAllHtmlText(model.ModuleId);
                 model.VersionItems = versions.Cast<HtmlTextInfo>().ToList();
 
-                return this.PartialView(this.ActiveModule, "EditHtml", model);
+                return this.PartialView(activeModule, "EditHtml", model);
             }
             catch (Exception exc)
             {
@@ -142,8 +144,9 @@ namespace DotNetNuke.Modules.Html.Controllers
 
             try
             {
+                var activeModule = GetModuleInfo(model);
                 model.PreviewContent = model.EditorContent; // HttpUtility.HtmlDecode(model.HiddenEditorContent);
-                return this.PartialView(this.ActiveModule, "EditHtml", model);
+                return this.PartialView(activeModule, "EditHtml", model);
             }
             catch (Exception exc)
             {
@@ -159,7 +162,8 @@ namespace DotNetNuke.Modules.Html.Controllers
             model.RedirectUrl = this.navigationManager.NavigateURL(model.TabId);
             try
             {
-                return this.PartialView(this.ActiveModule, "EditHtml", model);
+                var activeModule = GetModuleInfo(model);
+                return this.PartialView(activeModule, "EditHtml", model);
             }
             catch (Exception exc)
             {
@@ -194,13 +198,14 @@ namespace DotNetNuke.Modules.Html.Controllers
 
             try
             {
+                var activeModule = GetModuleInfo(model);
                 int workflowID = this.htmlTextController.GetWorkflow(model.ModuleId, model.TabId, this.PortalSettings.PortalId).Value;
                 var htmlContent = this.htmlTextController.GetHtmlText(model.ModuleId, model.ItemID);
 
-                var moduleSettings = this.settingsRepository.GetSettings(this.ActiveModule);
+                var moduleSettings = this.settingsRepository.GetSettings(activeModule);
                 model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, this.PortalSettings, this.clientResourceController);
 
-                return this.PartialView(this.ActiveModule, "EditHtml", model);
+                return this.PartialView(activeModule, "EditHtml", model);
             }
             catch (Exception exc)
             {

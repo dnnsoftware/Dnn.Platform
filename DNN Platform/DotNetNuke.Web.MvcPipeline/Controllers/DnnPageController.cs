@@ -8,6 +8,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     using System.Web.Mvc;
 
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Users;
 
     /// <summary>
     /// Base controller for DNN MVC page controllers, exposing common services and portal context.
@@ -37,6 +38,14 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
             {
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
+        }
+
+        /// <summary>
+        /// Gets the user information for the current user.
+        /// </summary>
+        public UserInfo UserInfo
+        {
+            get { return this.PortalSettings.UserInfo; }
         }
     }
 }
