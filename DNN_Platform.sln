@@ -358,8 +358,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BuildScripts", "BuildScript
 		Build\BuildScripts\Provider.build = Build\BuildScripts\Provider.build
 		Build\BuildScripts\ProviderPackage.targets = Build\BuildScripts\ProviderPackage.targets
 		Build\BuildScripts\PublishArtifacts.ps1 = Build\BuildScripts\PublishArtifacts.ps1
-		Build\BuildScripts\Yahoo.Yui.Compressor.dll = Build\BuildScripts\Yahoo.Yui.Compressor.dll
-		Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll = Build\BuildScripts\Yahoo.Yui.Compressor.MsBuild.dll
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Symbols", "Symbols", "{4F538A14-38F5-473F-8386-60D81F3F530A}"
@@ -491,7 +489,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microsoft.CodeDom.Providers
 	ProjectSection(SolutionItems) = preProject
 		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dnn
 		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\releaseNotes.txt = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\releaseNotes.txt
-		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\roslyn.zip = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\roslyn.zip
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Newtonsoft", "Newtonsoft", "{CBBA26D2-68FF-4FDB-BD9E-17D4C2CE717F}"
@@ -646,11 +643,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.ContactList.Spa", "DNN Platform\Modules\Samples\Dnn.ContactList.Spa\Dnn.ContactList.Spa.csproj", "{735974ED-BE2B-6C25-CD75-1528175F6206}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.ContactList.SpaReact", "DNN Platform\Modules\Samples\Dnn.ContactList.SpaReact\Dnn.ContactList.SpaReact.csproj", "{19727E7F-6D3E-917D-920A-112FD03CA96F}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bin", "bin", "{8696BBF6-427F-4E90-B00F-D55469133819}"
-	ProjectSection(SolutionItems) = preProject
-		DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll = DNN Platform\Components\Microsoft.CodeDom.Providers.DotNetCompilerPlatform\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
-	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DotNetNuke.WebControls", "DNN Platform\Controls\DotNetNuke.WebControls\DotNetNuke.WebControls.vbproj", "{6C10669D-7897-BEA4-F994-4F74EED33F5A}"
 EndProject
@@ -2712,7 +2704,6 @@ Global
 		{A1615D6C-F956-AB32-5B07-C3CC75888398} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{735974ED-BE2B-6C25-CD75-1528175F6206} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{19727E7F-6D3E-917D-920A-112FD03CA96F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
-		{8696BBF6-427F-4E90-B00F-D55469133819} = {F3E526A3-3420-4B0B-9C31-FD813CCD83F7}
 		{6C10669D-7897-BEA4-F994-4F74EED33F5A} = {1DFA65CE-5978-49F9-83BA-CFBD0C7A1814}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

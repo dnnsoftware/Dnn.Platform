@@ -4,11 +4,5 @@
 namespace DotNetNuke.Build.Tasks;
 
 /// <summary>A cake task to generate the ASP.NET MVC package.</summary>
-public sealed class PackageAspNetMvc : PackageComponentTask
-{
-    /// <summary>Initializes a new instance of the <see cref="PackageAspNetMvc"/> class.</summary>
-    public PackageAspNetMvc()
-        : base("AspNetMvc", "System.Web.Mvc.dll", "Microsoft.AspNetMvc")
-    {
-    }
-}
+public sealed class PackageAspNetMvc()
+    : PackageComponentTaskBase("AspNetMvc", "System.Web.Mvc.dll", "Microsoft.AspNetMvc");

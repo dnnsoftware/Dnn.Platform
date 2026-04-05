@@ -26,12 +26,6 @@
   <ItemGroup>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="Lucene.Net">
-      <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net.Contrib.Analyzers">
-      <HintPath>..\..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.Analyzers.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

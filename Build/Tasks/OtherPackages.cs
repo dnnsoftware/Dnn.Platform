@@ -27,6 +27,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(PackageSharpZipLib))]
     [IsDependentOn(typeof(PackageMicrosoftExtensionsDependencyInjection))]
     [IsDependentOn(typeof(PackageMicrosoftWebInfrastructure))]
+    [IsDependentOn(typeof(PackageMicrosoftCodeDomProvidersDotNetCompilerPlatform))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
         private static readonly string[] IncludeAll = ["**/*",];
