@@ -120,8 +120,6 @@ namespace DotNetNuke.Website.Controllers
                 }
             }
 
-            // this.HttpContext.Items.Add("CSP-NONCE", this.contentSecurityPolicy.Nonce);
-
             // There could be a pending installation/upgrade process
             if (InstallBlocker.Instance.IsInstallInProgress())
             {
@@ -185,7 +183,7 @@ namespace DotNetNuke.Website.Controllers
                 this.contentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
             }
 
-            this.contentSecurityPolicy.AddWebformsSupport();
+            this.contentSecurityPolicy.AddMVCSupport();
         }
 
         /// <summary>
