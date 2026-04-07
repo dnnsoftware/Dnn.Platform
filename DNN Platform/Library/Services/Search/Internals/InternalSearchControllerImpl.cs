@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string SearchableModuleDefsCacheKey = "SearchableModuleDefs";
         private const string LocalizedResxFile = "~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx";
 
-        private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
+        private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(?>(?:\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))*)?\\s*/?>";
 
         private const string AttrText = "[\"'](?<text>.*?)[\"']";
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
@@ -49,10 +49,10 @@ namespace DotNetNuke.Services.Search.Internals
         private static readonly string[] HtmlAttributesToRetain = { "alt", "title" };
         private static readonly DataProvider DataProvider = DataProvider.Instance();
 
-        private static readonly Regex StripOpeningTagsRegex = new Regex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex StripClosingTagsRegex = new Regex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex HtmlTagsRegex = new Regex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        private static readonly Regex AttrTextRegex = new Regex(AttrText, RegexOptions.Compiled);
+        private static readonly Regex StripOpeningTagsRegex = RegexUtils.GetCachedRegex(@"<\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled, 2);
+        private static readonly Regex StripClosingTagsRegex = RegexUtils.GetCachedRegex(@"</\w*\s*>", RegexOptions.IgnoreCase | RegexOptions.Compiled, 2);
+        private static readonly Regex HtmlTagsRegex = RegexUtils.GetCachedRegex(HtmlTagsWithAttrs, RegexOptions.IgnoreCase | RegexOptions.Compiled, 2);
+        private static readonly Regex AttrTextRegex = RegexUtils.GetCachedRegex(AttrText, RegexOptions.Compiled, 2);
 
         private readonly IHostSettings hostSettings;
         private readonly IServiceProvider serviceProvider;
@@ -298,42 +298,93 @@ namespace DotNetNuke.Services.Search.Internals
             if (!string.IsNullOrEmpty(strippedString))
             {
                 // Remove all opening HTML Tags with no attributes
-                strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
+                try
+                {
+                    strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    return strippedString;
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    throw;
+                }
 
                 // Remove all closing HTML Tags
-                strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
+                try
+                {
+                    strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    return strippedString;
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    throw;
+                }
             }
 
             if (!string.IsNullOrEmpty(strippedString))
             {
                 var list = new List<string>();
-
-                foreach (var match in HtmlTagsRegex.Matches(strippedString).Cast<Match>())
+                try
                 {
-                    var captures = match.Groups["attr"].Captures;
-                    foreach (var capture in captures.Cast<Capture>())
+                    foreach (var match in HtmlTagsRegex.Matches(strippedString).Cast<Match>())
                     {
-                        var val = capture.Value.Trim();
-                        var pos = val.IndexOf('=');
-                        if (pos > 0)
+                        var captures = match.Groups["attr"].Captures;
+                        foreach (var capture in captures.Cast<Capture>())
                         {
-                            var attr = val.Substring(0, pos).Trim();
-                            if (attributesList.Contains(attr))
+                            var val = capture.Value.Trim();
+                            var pos = val.IndexOf('=');
+                            if (pos > 0)
                             {
-                                var text = AttrTextRegex.Match(val).Groups["text"].Value.Trim();
-                                if (text.Length > 0 && !list.Contains(text))
+                                var attr = val.Substring(0, pos).Trim();
+                                if (attributesList.Contains(attr))
                                 {
-                                    list.Add(text);
+                                    try
+                                    {
+                                        var text = AttrTextRegex.Match(val).Groups["text"].Value.Trim();
+                                        if (text.Length > 0 && !list.Contains(text))
+                                        {
+                                            list.Add(text);
+                                        }
+                                    }
+                                    catch (RegexMatchTimeoutException ex)
+                                    {
+                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                                        return strippedString;
+                                    }
+                                    catch (Exception ex)
+                                    {
+                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                                        throw;
+                                    }
                                 }
                             }
                         }
-                    }
 
-                    if (list.Count > 0)
-                    {
-                        strippedString = strippedString.Replace(match.ToString(), string.Join(" ", list));
-                        list.Clear();
+                        if (list.Count > 0)
+                        {
+                            strippedString = strippedString.Replace(match.ToString(), string.Join(" ", list));
+                            list.Clear();
+                        }
                     }
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    return strippedString;
+                }
+                catch (Exception ex)
+                {
+                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
+                    throw;
                 }
             }
 
