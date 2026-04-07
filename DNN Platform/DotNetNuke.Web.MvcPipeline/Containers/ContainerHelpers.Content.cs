@@ -10,6 +10,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
 
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.ClientDependency;
@@ -60,7 +61,7 @@ namespace DotNetNuke.Web.MvcPipeline.Containers
                 moduleContentPaneDiv.AddCssClass(model.ContentPaneCssClass);
             }
 
-            if (!DotNetNuke.UI.Modules.ModuleHost.IsViewMode(model.ModuleConfiguration, model.PortalSettings) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
+            if (!DotNetNuke.UI.Modules.ModuleHost.IsViewMode(model.ModuleConfiguration, PortalSettings.Current) && htmlHelper.ViewContext.HttpContext.Request.QueryString["dnnprintmode"] != "true")
             {
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 if (model.EditMode && model.ModuleConfiguration.ModuleID > 0 && moduleControl != null)

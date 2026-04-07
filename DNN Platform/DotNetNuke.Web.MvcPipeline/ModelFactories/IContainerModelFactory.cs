@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Web.MvcPipeline.Models;
@@ -21,6 +22,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <param name="containerSrc">The container source path.</param>
         /// <param name="containerPath">The container folder.</param>
         /// <returns>The created <see cref="ContainerModel"/>.</returns>
-        ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc, string containerPath);
+        ContainerModel CreateContainerModel(ModuleInfo configuration, IPortalSettings portalSettings, string containerSrc, string containerPath);
     }
 }

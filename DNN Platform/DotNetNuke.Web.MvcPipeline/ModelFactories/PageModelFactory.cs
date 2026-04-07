@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         {
             var ctl = page.Request.QueryString["ctl"] != null ? page.Request.QueryString["ctl"] : string.Empty;
             var portalSettings = page.PortalSettings;
-            TabInfo activeTab = page.PortalSettings.ActiveTab;
+            TabInfo activeTab = TabController.CurrentPage;
             var pageModel = new PageModel
             {
                 IsEditMode = Globals.IsEditMode(),

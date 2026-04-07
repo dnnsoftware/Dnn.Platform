@@ -203,7 +203,7 @@ namespace DotNetNuke.Modules.Html.Controllers
                 var htmlContent = this.htmlTextController.GetHtmlText(model.ModuleId, model.ItemID);
 
                 var moduleSettings = this.settingsRepository.GetSettings(activeModule);
-                model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, this.PortalSettings, this.clientResourceController);
+                model.PreviewContent = HtmlTextController.FormatHtmlText(model.ModuleId, htmlContent.Content, moduleSettings, Entities.Portals.PortalSettings.Current, this.clientResourceController);
 
                 return this.PartialView(activeModule, "EditHtml", model);
             }

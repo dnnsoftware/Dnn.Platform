@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Web.MvcPipeline.Models
@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     using System.Collections.Generic;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
 
@@ -16,7 +17,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
     {
         private ModuleInfo moduleConfiguration;
         private ModuleHostModel moduleHost;
-        private PortalSettings portalSettings;
+        private IPortalSettings portalSettings;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContainerModel"/> class.
@@ -24,7 +25,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// <param name="moduleConfiguration">The module configuration.</param>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public ContainerModel(ModuleInfo moduleConfiguration, PortalSettings portalSettings, IHostSettings hostSettings)
+        public ContainerModel(ModuleInfo moduleConfiguration, IPortalSettings portalSettings, IHostSettings hostSettings)
         {
             this.moduleConfiguration = moduleConfiguration;
             this.moduleHost = new ModuleHostModel(moduleConfiguration, hostSettings);
@@ -34,7 +35,7 @@ namespace DotNetNuke.Web.MvcPipeline.Models
         /// <summary>
         /// Gets the portal settings associated with this container.
         /// </summary>
-        public PortalSettings PortalSettings
+        public IPortalSettings PortalSettings
         {
             get
             {

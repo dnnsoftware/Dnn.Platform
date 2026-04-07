@@ -11,10 +11,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
     using System.Web;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Personalization;
@@ -49,7 +51,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public PaneModel InjectModule(DnnPageController page, PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings)
+        public PaneModel InjectModule(DnnPageController page, PaneModel pane, ModuleInfo moduleInfo, IPortalSettings portalSettings)
         {
             try
             {
@@ -78,7 +80,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return pane;
         }
 
-        private ContainerModel LoadContainerFromCookie(HttpRequestBase request, PortalSettings portalSettings)
+        private ContainerModel LoadContainerFromCookie(HttpRequestBase request, IPortalSettings portalSettings)
         {
             ContainerModel container = null;
             var cookie = request.Cookies["_ContainerSrc" + portalSettings.PortalId];
@@ -93,9 +95,10 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return container;
         }
 
-        private ContainerModel LoadModuleContainer(DnnPageController page, ModuleInfo module, PortalSettings portalSettings)
+        private ContainerModel LoadModuleContainer(DnnPageController page, ModuleInfo module, IPortalSettings portalSettings)
         {
             var containerSrc = Null.NullString;
+            var cuurrentPage = TabController.CurrentPage;
 
             // var request = this.PaneControl.Page.Request;
             ContainerModel container = null;
@@ -105,11 +108,11 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 containerSrc = module.ContainerPath + "popUpContainer.ascx";
 
                 // Check Skin for a popup Container
-                if (module.ContainerSrc == portalSettings.ActiveTab.ContainerSrc)
+                if (module.ContainerSrc == cuurrentPage.ContainerSrc)
                 {
                     if (File.Exists(HttpContext.Current.Server.MapPath(containerSrc)))
                     {
-                        container = this.LoadContainerByPath(containerSrc, module, portalSettings);
+                        container = this.LoadContainerByPath(containerSrc, module, PortalSettings.Current);
                     }
                 }
 
@@ -117,12 +120,12 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                 if (container == null)
                 {
                     containerSrc = Globals.HostPath + "Containers/_default/popUpContainer.ascx";
-                    container = this.LoadContainerByPath(containerSrc, module, portalSettings);
+                    container = this.LoadContainerByPath(containerSrc, module, PortalSettings.Current);
                 }
             }
             else
             {
-                container = (this.LoadContainerFromQueryString(module, page.Request, portalSettings) ?? this.LoadContainerFromCookie(page.Request, portalSettings)) ?? this.LoadNoContainer(module, portalSettings);
+                container = (this.LoadContainerFromQueryString(module, page.Request, PortalSettings.Current) ?? this.LoadContainerFromCookie(page.Request, portalSettings)) ?? this.LoadNoContainer(module, portalSettings);
                 /* not sur what this dous
                 if (container == null)
                 {
@@ -149,27 +152,27 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
                     containerSrc = module.ContainerSrc;
                     if (!string.IsNullOrEmpty(containerSrc))
                     {
-                        containerSrc = SkinController.FormatSkinSrc(containerSrc, portalSettings);
-                        container = this.LoadContainerByPath(containerSrc, module, portalSettings);
+                        containerSrc = SkinController.FormatSkinSrc(containerSrc, PortalSettings.Current);
+                        container = this.LoadContainerByPath(containerSrc, module, PortalSettings.Current);
                     }
                 }
 
                 // error loading container - load from tab
                 if (container == null)
                 {
-                    containerSrc = portalSettings.ActiveTab.ContainerSrc;
+                    containerSrc = cuurrentPage.ContainerSrc;
                     if (!string.IsNullOrEmpty(containerSrc))
                     {
-                        containerSrc = SkinController.FormatSkinSrc(containerSrc, portalSettings);
-                        container = this.LoadContainerByPath(containerSrc, module, portalSettings);
+                        containerSrc = SkinController.FormatSkinSrc(containerSrc, PortalSettings.Current);
+                        container = this.LoadContainerByPath(containerSrc, module, PortalSettings.Current);
                     }
                 }
 
                 // error loading container - load default
                 if (container == null)
                 {
-                    containerSrc = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalContainer(), portalSettings);
-                    container = this.LoadContainerByPath(containerSrc, module, portalSettings);
+                    containerSrc = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalContainer(), PortalSettings.Current);
+                    container = this.LoadContainerByPath(containerSrc, module, PortalSettings.Current);
                 }
             }
 
@@ -190,7 +193,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return container;
         }
 
-        private ContainerModel LoadContainerByPath(string containerPath, ModuleInfo module, PortalSettings portalSettings)
+        private ContainerModel LoadContainerByPath(string containerPath, ModuleInfo module, IPortalSettings portalSettings)
         {
             if (containerPath.IndexOf("/skins/", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("/skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 || containerPath.IndexOf("\\skins\\", StringComparison.InvariantCultureIgnoreCase) != -1 ||
                 containerPath.IndexOf("\\skins/", StringComparison.InvariantCultureIgnoreCase) != -1)
@@ -248,7 +251,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return container;
         }
 
-        private ContainerModel LoadNoContainer(ModuleInfo module, PortalSettings portalSettings)
+        private ContainerModel LoadNoContainer(ModuleInfo module, IPortalSettings portalSettings)
         {
             string noContainerSrc = "[G]" + SkinController.RootContainer + "/_default/No Container.ascx";
             ContainerModel container = null;
@@ -267,7 +270,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
                 if (displayTitle == false)
                 {
-                    container = this.LoadContainerByPath(SkinController.FormatSkinSrc(noContainerSrc, portalSettings), module, portalSettings);
+                    container = this.LoadContainerByPath(SkinController.FormatSkinSrc(noContainerSrc, PortalSettings.Current), module, portalSettings);
                 }
             }
 

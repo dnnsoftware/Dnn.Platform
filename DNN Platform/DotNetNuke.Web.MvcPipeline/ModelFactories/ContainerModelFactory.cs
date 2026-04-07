@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -9,6 +9,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -40,7 +41,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         }
 
         /// <inheritdoc/>
-        public ContainerModel CreateContainerModel(ModuleInfo configuration, PortalSettings portalSettings, string containerSrc, string containerPath)
+        public ContainerModel CreateContainerModel(ModuleInfo configuration, IPortalSettings portalSettings, string containerSrc, string containerPath)
         {
             var container = new ContainerModel(configuration, portalSettings, this.hostSettings);
             container.ContainerSrc = containerSrc;
@@ -53,7 +54,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return container;
         }
 
-        private ContainerModel ProcessModule(ContainerModel container, PortalSettings portalSettings)
+        private ContainerModel ProcessModule(ContainerModel container, IPortalSettings portalSettings)
         {
             // Process Content Pane Attributes
             container = this.ProcessContentPane(container, portalSettings);
@@ -70,7 +71,7 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             return container;
         }
 
-        private ContainerModel ProcessContentPane(ContainerModel container, PortalSettings portalSettings)
+        private ContainerModel ProcessContentPane(ContainerModel container, IPortalSettings portalSettings)
         {
             container = this.SetAlignment(container);
 

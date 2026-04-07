@@ -109,14 +109,16 @@ namespace DotNetNuke.Website.Controllers
         /// </returns>
         public ActionResult Page(int tabid, string language)
         {
-            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly ||
-                    this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On)
+            var internalPortalSettings = Entities.Portals.PortalSettings.Current;
+
+            if (internalPortalSettings.CspHeaderMode == Entities.Portals.PortalSettings.CspMode.ReportOnly ||
+                    internalPortalSettings.CspHeaderMode == Entities.Portals.PortalSettings.CspMode.On)
             {
                 bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
 
                 if (!disableCsp)
                 {
-                    this.AddCspHeaders();
+                    this.AddCspHeaders(internalPortalSettings);
                 }
             }
 
@@ -126,24 +128,24 @@ namespace DotNetNuke.Website.Controllers
                 Exceptions.ProcessHttpException(new HttpException(503, Localization.GetString("SiteAccessedWhileInstallationWasInProgress.Error", Localization.GlobalResourceFile)));
             }
 
-            var user = this.PortalSettings.UserInfo;
+            var user = this.UserInfo;
 
-            if (PortalSettings.Current.UserId > 0)
+            if (this.UserInfo.UserID > 0)
             {
                 // TODO: should we do this? It creates a dependency towards the PersonaBar which is probably not a great idea
                 MvcContentEditorManager.CreateManager(this, this.clientResourceController, this.appStatus, this.eventLogger, this.portalController, this.hostSettings, this.userController, this.hostSettingsService, this.servicesFramework);
             }
 
             // Configure the ActiveTab with Skin/Container information
-            PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
+            PortalSettingsController.Instance().ConfigureActiveTab(Entities.Portals.PortalSettings.Current);
 
             try
             {
                 PageModel model = this.pageModelFactory.CreatePageModel(this);
-                this.clientResourceController.RegisterPathNameAlias("SkinPath", this.PortalSettings.ActiveTab.SkinPath);
+                this.clientResourceController.RegisterPathNameAlias("SkinPath", TabController.CurrentPage.SkinPath);
                 model.ClientResourceController = this.clientResourceController;
                 model.PageService = this.pageService;
-                this.InitializePage(model);
+                this.InitializePage(model, internalPortalSettings);
 
                 // DotNetNuke.Framework.JavaScriptLibraries.MvcJavaScript.Register(this.ControllerContext);
                 model.ClientVariables = MvcClientAPI.GetClientVariableList();
@@ -171,16 +173,16 @@ namespace DotNetNuke.Website.Controllers
             }
         }
 
-        private void AddCspHeaders()
+        private void AddCspHeaders(Entities.Portals.PortalSettings internalPortalSettings)
         {
-            if (!string.IsNullOrEmpty(this.PortalSettings.CspHeader))
+            if (!string.IsNullOrEmpty(internalPortalSettings.CspHeader))
             {
-                this.contentSecurityPolicy.AddHeader(this.PortalSettings.CspHeader);
+                this.contentSecurityPolicy.AddHeader(internalPortalSettings.CspHeader);
             }
 
-            if (!string.IsNullOrEmpty(this.PortalSettings.CspReportingHeader))
+            if (!string.IsNullOrEmpty(internalPortalSettings.CspReportingHeader))
             {
-                this.contentSecurityPolicy.AddReportEndpointHeader(this.PortalSettings.CspReportingHeader);
+                this.contentSecurityPolicy.AddReportEndpointHeader(internalPortalSettings.CspReportingHeader);
             }
 
             this.contentSecurityPolicy.AddMVCSupport();
@@ -224,12 +226,13 @@ namespace DotNetNuke.Website.Controllers
         /// Initializes the page by handling tab name redirects, setting cache control headers, and configuring cookie consent.
         /// </summary>
         /// <param name="page">The page model to initialize.</param>
-        private void InitializePage(PageModel page)
+        /// <param name="internalPortalSettings">portalSettings.</param>
+        private void InitializePage(PageModel page, Entities.Portals.PortalSettings internalPortalSettings)
         {
             // redirect to a specific tab based on name
             if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
             {
-                var tab = TabController.Instance.GetTabByName(this.Request.QueryString["TabName"], this.PortalSettings.PortalId);
+                var tab = TabController.Instance.GetTabByName(this.Request.QueryString["TabName"], internalPortalSettings.PortalId);
                 if (tab != null)
                 {
                     var parameters = new List<string>(); // maximum number of elements
@@ -278,10 +281,10 @@ namespace DotNetNuke.Website.Controllers
             }
 
             // Cookie Consent
-            if (this.PortalSettings.ShowCookieConsent)
+            if (internalPortalSettings.ShowCookieConsent)
             {
                 MvcJavaScript.RegisterClientReference(DotNetNuke.UI.Utilities.ClientAPI.ClientNamespaceReferences.dnn);
-                MvcClientAPI.RegisterClientVariable("cc_morelink", this.PortalSettings.CookieMoreLink, true);
+                MvcClientAPI.RegisterClientVariable("cc_morelink", internalPortalSettings.CookieMoreLink, true);
                 MvcClientAPI.RegisterClientVariable("cc_message", Localization.GetString("cc_message", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_dismiss", Localization.GetString("cc_dismiss", Localization.GlobalResourceFile), true);
                 MvcClientAPI.RegisterClientVariable("cc_link", Localization.GetString("cc_link", Localization.GlobalResourceFile), true);
@@ -290,28 +293,28 @@ namespace DotNetNuke.Website.Controllers
                 this.clientResourceController.RegisterScript("~/js/dnn.cookieconsent.js");
             }
 
-            if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly ||
-                    this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.On)
+            if (internalPortalSettings.CspHeaderMode == Entities.Portals.PortalSettings.CspMode.ReportOnly ||
+                    internalPortalSettings.CspHeaderMode == Entities.Portals.PortalSettings.CspMode.On)
             {
                 bool.TryParse(Config.GetSetting("DisableCsp"), out bool disableCsp);
 
                 if (!disableCsp)
                 {
                     var header = "Content-Security-Policy";
-                    if (this.PortalSettings.CspHeaderMode == PortalSettings.CspMode.ReportOnly)
+                    if (internalPortalSettings.CspHeaderMode == Entities.Portals.PortalSettings.CspMode.ReportOnly)
                     {
                         header = "Content-Security-Policy-Report-Only";
                     }
 
                     page.CspHeader = header;
-                    page.CspHeaderFixed = this.PortalSettings.CspHeaderFixed;
+                    page.CspHeaderFixed = internalPortalSettings.CspHeaderFixed;
 
                     // If fixed, we need to clear any existing contributors and just use the fixed headers
-                    if (this.PortalSettings.CspHeaderFixed)
+                    if (internalPortalSettings.CspHeaderFixed)
                     {
                         this.contentSecurityPolicy.ClearContentSecurityPolicyContributors();
                         this.contentSecurityPolicy.ClearReportingEndpointsContributors();
-                        this.AddCspHeaders();
+                        this.AddCspHeaders(internalPortalSettings);
                         var policy = this.contentSecurityPolicy.GeneratePolicy();
                         if (!string.IsNullOrEmpty(policy))
                         {

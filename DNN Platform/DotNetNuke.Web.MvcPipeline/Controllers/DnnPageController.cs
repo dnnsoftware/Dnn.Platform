@@ -7,14 +7,19 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
     using System;
     using System.Web.Mvc;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>
     /// Base controller for DNN MVC page controllers, exposing common services and portal context.
     /// </summary>
     public abstract class DnnPageController : Controller, IMvcController
     {
+        private readonly IPortalSettings portalSettings;
+        private readonly IUserController userController;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DnnPageController"/> class.
         /// </summary>
@@ -22,6 +27,8 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         protected DnnPageController(IServiceProvider dependencyProvider)
         {
             this.DependencyProvider = dependencyProvider;
+            this.portalSettings = dependencyProvider.GetService<IPortalSettings>();
+            this.userController = dependencyProvider.GetService<IUserController>();
         }
 
         /// <summary>
@@ -32,11 +39,11 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         /// <summary>
         /// Gets the current portal settings.
         /// </summary>
-        public PortalSettings PortalSettings
+        public IPortalSettings PortalSettings
         {
             get
             {
-                return PortalController.Instance.GetCurrentPortalSettings();
+                return this.portalSettings;
             }
         }
 
@@ -45,7 +52,7 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         /// </summary>
         public UserInfo UserInfo
         {
-            get { return this.PortalSettings.UserInfo; }
+            get { return this.userController.GetCurrentUserInfo(); }
         }
     }
 }

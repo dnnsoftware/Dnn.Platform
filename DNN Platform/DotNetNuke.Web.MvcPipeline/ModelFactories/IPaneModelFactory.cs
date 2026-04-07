@@ -4,6 +4,7 @@
 
 namespace DotNetNuke.Web.MvcPipeline.ModelFactories
 {
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Web.MvcPipeline.Controllers;
@@ -29,6 +30,6 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
         /// <param name="moduleInfo">The module to inject.</param>
         /// <param name="portalSettings">The current portal settings.</param>
         /// <returns>The updated <see cref="PaneModel"/>.</returns>
-        PaneModel InjectModule(DnnPageController page, PaneModel pane, ModuleInfo moduleInfo, PortalSettings portalSettings);
+        PaneModel InjectModule(DnnPageController page, PaneModel pane, ModuleInfo moduleInfo, IPortalSettings portalSettings);
     }
 }
