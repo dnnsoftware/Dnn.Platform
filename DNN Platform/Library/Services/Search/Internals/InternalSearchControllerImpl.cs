@@ -305,11 +305,10 @@ namespace DotNetNuke.Services.Search.Internals
                 catch (RegexMatchTimeoutException ex)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    return strippedString;
+                    return string.Empty;
                 }
-                catch (Exception ex)
+                catch
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     throw;
                 }
 
@@ -321,11 +320,10 @@ namespace DotNetNuke.Services.Search.Internals
                 catch (RegexMatchTimeoutException ex)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    return strippedString;
+                    return string.Empty;
                 }
-                catch (Exception ex)
+                catch
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     throw;
                 }
             }
@@ -358,7 +356,11 @@ namespace DotNetNuke.Services.Search.Internals
                                     catch (RegexMatchTimeoutException ex)
                                     {
                                         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                        return strippedString;
+                                        return string.Empty;
+                                    }
+                                    catch
+                                    {
+                                        throw;
                                     }
                                 }
                             }
@@ -374,11 +376,10 @@ namespace DotNetNuke.Services.Search.Internals
                 catch (RegexMatchTimeoutException ex)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                    return strippedString;
+                    return string.Empty;
                 }
-                catch (Exception ex)
+                catch
                 {
-                    DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                     throw;
                 }
             }
