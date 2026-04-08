@@ -360,11 +360,6 @@ namespace DotNetNuke.Services.Search.Internals
                                         DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
                                         return strippedString;
                                     }
-                                    catch (Exception ex)
-                                    {
-                                        DotNetNuke.Services.Exceptions.Exceptions.LogException(ex);
-                                        throw;
-                                    }
                                 }
                             }
                         }
