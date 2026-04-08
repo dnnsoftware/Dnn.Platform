@@ -11,7 +11,10 @@ namespace DotNetNuke.Framework.Controllers
     using Dnn.PersonaBar.Library.Containers;
     using Dnn.PersonaBar.Library.Controllers;
     using Dnn.PersonaBar.UI.Controllers;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
@@ -29,23 +32,26 @@ namespace DotNetNuke.Framework.Controllers
     /// </summary>
     public class PersonaBarContainerController : Controller
     {
-#pragma warning disable CS0618 // Type or member is obsolete
-        private readonly IPersonaBarContainer personaBarContainer = Dnn.PersonaBar.Library.Containers.PersonaBarContainer.Instance;
-#pragma warning restore CS0618 // Type or member is obsolete
-        private readonly IClientResourceController clientResourceController;
+        private readonly IPersonaBarContainer personaBarContainer;
+        private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
+        private readonly IClientResourceController clientResourceController;
         private readonly IContentSecurityPolicy contentSecurityPolicy;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PersonaBarContainerController"/> class.
         /// </summary>
-        /// <param name="clientResourceController">The client resource controller used to manage client-side resources.</param>
-        /// <param name="javaScript">JavaScript Library Helper.</param>
-        /// <param name="contentSecurityPolicy">The content security policy service.</param>
-        public PersonaBarContainerController(IClientResourceController clientResourceController, IJavaScriptLibraryHelper javaScript, IContentSecurityPolicy contentSecurityPolicy)
+        /// <param name="personaBarContainer">The Persona Bar container.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="javaScript">The JavaScript library helper.</param>
+        /// <param name="clientResourceController">The client resources controller.</param>
+        /// <param name="contentSecurityPolicy">The content security policy.</param>
+        public PersonaBarContainerController(IPersonaBarContainer personaBarContainer, IHostSettings hostSettings, IJavaScriptLibraryHelper javaScript, IClientResourceController clientResourceController, IContentSecurityPolicy contentSecurityPolicy)
         {
-            this.clientResourceController = clientResourceController;
+            this.personaBarContainer = personaBarContainer;
+            this.hostSettings = hostSettings;
             this.javaScript = javaScript;
+            this.clientResourceController = clientResourceController;
             this.contentSecurityPolicy = contentSecurityPolicy;
         }
 
@@ -57,9 +63,7 @@ namespace DotNetNuke.Framework.Controllers
         /// <summary>
         /// Gets the build number of the application.
         /// </summary>
-#pragma warning disable CS0618 // Type or member is obsolete
-        public static string BuildNumber => Host.CrmVersion.ToString(CultureInfo.InvariantCulture);
-#pragma warning restore CS0618 // Type or member is obsolete
+        public string BuildNumber => this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture);
 
         /// <summary>
         /// Gets the Persona Bar settings as a JSON string.
@@ -67,31 +71,17 @@ namespace DotNetNuke.Framework.Controllers
         public string PersonaBarSettings => JsonConvert.SerializeObject(this.personaBarContainer.GetConfiguration());
 
         /// <summary>
-        /// Gets the current portal settings.
-        /// </summary>
-        protected static PortalSettings PortalSettings
-        {
-            get
-            {
-#pragma warning disable CS0618 // Type or member is obsolete
-                return PortalController.Instance.GetCurrentPortalSettings();
-#pragma warning restore CS0618 // Type or member is obsolete
-            }
-        }
-
-        /// <summary>
         /// Returns the default view for the Persona Bar container.
         /// </summary>
         /// <returns>An <see cref="ActionResult"/> representing the view.</returns>
-#pragma warning disable CA3147 // Mark Verb Handlers With Validate Antiforgery Token
+        [HttpGet]
         public ActionResult Index()
-#pragma warning restore CA3147 // Mark Verb Handlers With Validate Antiforgery Token
         {
             return this.View(new PersonaBarContainerModel()
             {
                 PersonaBarSettings = this.PersonaBarSettings,
                 AppPath = AppPath,
-                BuildNumber = BuildNumber,
+                BuildNumber = this.BuildNumber,
                 Visible = this.InjectPersonaBar(),
                 Nonce = this.contentSecurityPolicy.Nonce,
             });
@@ -110,7 +100,7 @@ namespace DotNetNuke.Framework.Controllers
                 return false;
             }
 
-            var menuStructure = PersonaBarController.Instance.GetMenu(PortalSettings, UserController.Instance.GetCurrentUserInfo());
+            var menuStructure = PersonaBarController.Instance.GetMenu(PortalSettings.Current, UserController.Instance.GetCurrentUserInfo());
             if (menuStructure.MenuItems == null || !menuStructure.MenuItems.Any())
             {
                 return false;
