@@ -73,6 +73,8 @@ body:
     multiple: true
     options:
     - 10.3.0 (latest release)
+    - 10.3.1-rc1 (release candidate)
+    - 10.2.4-rc1 (release candidate)
     - develop build (unreleased)
   validations:
     required: true
