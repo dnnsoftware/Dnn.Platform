@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.Mvc
 
         protected override void OnPreRenderInternal(EventArgs e)
         {
+            // We need to defer execution to after the async task registered in OnInitInternal above, which will only get executed at the WebForms async point, just before PreRenderComplete.
             this.Page.RegisterAsyncTask(new PageAsyncTask(this.OnPreRenderAsync));
         }
 

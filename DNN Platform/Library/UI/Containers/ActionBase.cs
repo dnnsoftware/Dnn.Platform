@@ -113,6 +113,7 @@ namespace DotNetNuke.UI.Containers
         {
             if (this.ModuleControl is IAsyncModuleControl)
             {
+                // We need to defer accesing this.Actions as it could only be accesible after the WebForms async point.
                 this.Page.RegisterAsyncTask(new PageAsyncTask(ct => this.ProcessActionInternalAsync(actionID, ct)));
             }
             else
