@@ -9,10 +9,15 @@ on:
   schedule:
     - cron: "45 10 * * 0"
   push:
-    branches: ["develop"]
+    branches:
+    - develop
 
 # Declare default permissions as read only.
 permissions: "read-all"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   analysis:
