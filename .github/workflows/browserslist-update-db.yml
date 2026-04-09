@@ -12,6 +12,7 @@ concurrency:
 
 jobs:
   update-browserslist-database:
+    name: "Update Browserslist database"
     runs-on: "ubuntu-latest"
     permissions:
       contents: "write" # creates a commmit for the pull request
