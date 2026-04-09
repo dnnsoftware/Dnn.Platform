@@ -12,8 +12,7 @@ on:
     branches:
     - develop
 
-# Declare default permissions as read only.
-permissions: "read-all"
+permissions: {}
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
