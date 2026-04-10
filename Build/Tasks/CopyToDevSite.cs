@@ -21,8 +21,8 @@ namespace DotNetNuke.Build.Tasks
         public override void Run(Context context)
         {
             context.CleanDirectory(context.Settings.WebsitePath);
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, IncludeAll, context.PackagingPatterns.InstallExclude);
-            files.Add(context.GetFilesByPatterns(context.WebsiteFolder, context.PackagingPatterns.InstallInclude));
+            var files = context.GetFilesByPatterns(context.WebsiteDir, IncludeAll, context.PackagingPatterns.InstallExclude);
+            files.Add(context.GetFilesByPatterns(context.WebsiteDir, context.PackagingPatterns.InstallInclude));
             context.Information("Copying {0} files to {1}", files.Count, context.Settings.WebsitePath);
             context.CopyFiles(files, context.Settings.WebsitePath, true);
         }

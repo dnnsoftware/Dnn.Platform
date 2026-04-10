@@ -17,7 +17,7 @@ namespace DotNetNuke.Build.Tasks
         {
             context.CopyFiles(
                 context.GetFiles("./DNN Platform/Website/bin/**/*"),
-                context.WebsiteFolder + "bin/",
+                context.WebsiteDir + context.Directory("bin/"),
                 true);
         }
     }
