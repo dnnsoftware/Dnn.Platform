@@ -116,13 +116,6 @@ namespace DotNetNuke.Entities.Portals.Templates
                             }
                         }
                 
-                        // if(isModified)
-                        // {
-                        //    using (var writer = PortalTemplateIO.Instance.OpenTextWriter(templateToLoad.LanguageFilePath))
-                        //    {
-                        //        languageDoc.Save(writer);
-                        //    }
-                        // }
                     }
                 }
                 
