@@ -3,10 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-
     using Cake.Common.Diagnostics;
     using Cake.Common.IO;
     using Cake.Frosting;

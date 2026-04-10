@@ -16,9 +16,13 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common;
     using Cake.Common.Build;
     using Cake.Common.Diagnostics;
+    using Cake.Common.IO;
     using Cake.Core;
     using Cake.Core.IO;
+    using Cake.FileHelpers;
     using Cake.Frosting;
+
+    using Dnn.CakeUtils;
 
     using Microsoft.IdentityModel.JsonWebTokens;
     using Microsoft.IdentityModel.Tokens;
@@ -48,8 +52,6 @@ namespace DotNetNuke.Build.Tasks
     public sealed class CreateGitHubPullRequest : FrostingTask<Context>
     {
         private const string TargetBranch = "develop";
-        private const string BugReportPath = ".github/ISSUE_TEMPLATE/bug-report.yml";
-        private const string SolutionInfoPath = "SolutionInfo.cs";
         private const string GitUserName = "DNN Platform CI Bot";
         private const string GitUserEmail = "noreply@dnncommunity.org";
 
@@ -61,6 +63,9 @@ namespace DotNetNuke.Build.Tasks
                 context.Information("Skipping CreateGitHubPullRequest because the build is not running in CI.");
                 return;
             }
+
+            var solutionInfoPath = context.File("SolutionInfo.cs");
+            var bugReportPath = context.File(".github/ISSUE_TEMPLATE/bug-report.yml");
 
             var sourceBranch = context.AzurePipelines().IsRunningOnAzurePipelines
                 ? context.AzurePipelines().Environment.Repository.SourceBranch
@@ -109,11 +114,11 @@ namespace DotNetNuke.Build.Tasks
             context.Information("Authenticated as GitHub App installation.");
 
             // Update bug-report.yml with version info from GitHub releases
-            UpdateBugReportVersions(context, client, owner, repo);
+            UpdateBugReportVersions(context, client, owner, repo, bugReportPath);
 
             // Reset SolutionInfo.cs if only the commit count/SHA changed (not the major.minor.patch)
             // to avoid creating a PR for every single commit.
-            ResetSolutionInfoIfVersionUnchanged(context);
+            ResetSolutionInfoIfVersionUnchanged(context, solutionInfoPath);
 
             // Only proceed with the PR if there are actual changes
             if (!HasUncommittedChanges(context))
@@ -282,7 +287,7 @@ namespace DotNetNuke.Build.Tasks
             return sb.ToString();
         }
 
-        private static void UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo)
+        private static void UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo, FilePath bugReportPath)
         {
             context.Information("Fetching GitHub releases to update bug report template...");
             var releases = client.Repository.Release.GetAll(owner, repo).GetAwaiter().GetResult();
@@ -322,7 +327,7 @@ namespace DotNetNuke.Build.Tasks
 
             // Parse the YAML template and update the affected-versions options
             var yaml = new YamlStream();
-            using (var reader = new StreamReader(BugReportPath))
+            using (var reader = new StreamReader(bugReportPath.FullPath))
             {
                 yaml.Load(reader);
             }
@@ -341,7 +346,7 @@ namespace DotNetNuke.Build.Tasks
 
             if (optionsNode == null)
             {
-                context.Warning("Could not locate affected-versions options in {0}, skipping update.", BugReportPath);
+                context.Warning("Could not locate affected-versions options in {0}, skipping update.", bugReportPath);
                 return;
             }
 
@@ -355,8 +360,8 @@ namespace DotNetNuke.Build.Tasks
             yaml.Save(stringWriter, false);
 
             // YamlStream.Save wraps output in document markers (--- / ...) that the original file doesn't use
-            File.WriteAllText(BugReportPath, StripDocumentMarkers(stringWriter.ToString()));
-            context.Information("Updated {0} with {1} version option(s).", BugReportPath, options.Count);
+            context.FileWriteText(bugReportPath, StripDocumentMarkers(stringWriter.ToString()));
+            context.Information("Updated {0} with {1} version option(s).", bugReportPath, options.Count);
         }
 
         private static string StripDocumentMarkers(string yaml)
@@ -415,25 +420,25 @@ namespace DotNetNuke.Build.Tasks
             return process.GetExitCode() != 0;
         }
 
-        private static void ResetSolutionInfoIfVersionUnchanged(Context context)
+        private static void ResetSolutionInfoIfVersionUnchanged(Context context, FilePath solutionInfoPath)
         {
             var committedProcess = context.StartAndReturnProcess(
                 "git",
                 new ProcessSettings
                 {
-                    Arguments = $"show HEAD:{SolutionInfoPath}",
+                    Arguments = $"show HEAD:{solutionInfoPath}",
                     RedirectStandardOutput = true,
                 });
             committedProcess.WaitForExit();
 
             if (committedProcess.GetExitCode() != 0)
             {
-                context.Information("Could not read committed {0}, skipping reset check.", SolutionInfoPath);
+                context.Information("Could not read committed {0}, skipping reset check.", solutionInfoPath);
                 return;
             }
 
             var committedContent = string.Join("\n", committedProcess.GetStandardOutput());
-            var currentContent = File.ReadAllText(SolutionInfoPath);
+            var currentContent = context.ReadFile(solutionInfoPath);
 
             var committedVersion = ExtractAssemblyVersion(committedContent);
             var currentVersion = ExtractAssemblyVersion(currentContent);
@@ -442,12 +447,12 @@ namespace DotNetNuke.Build.Tasks
 
             if (string.Equals(committedVersion, currentVersion, StringComparison.Ordinal))
             {
-                context.Information("Major.Minor.Patch has not changed. Resetting {0} to avoid a noisy PR.", SolutionInfoPath);
-                Git(context, $"checkout -- {SolutionInfoPath}");
+                context.Information("Major.Minor.Patch has not changed. Resetting {0} to avoid a noisy PR.", solutionInfoPath);
+                Git(context, $"checkout -- {solutionInfoPath}");
             }
             else
             {
-                context.Information("Major.Minor.Patch changed ({0} → {1}). Keeping {2} modifications.", committedVersion, currentVersion, SolutionInfoPath);
+                context.Information("Major.Minor.Patch changed ({0} → {1}). Keeping {2} modifications.", committedVersion, currentVersion, solutionInfoPath);
             }
         }
 

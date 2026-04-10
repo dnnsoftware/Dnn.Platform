@@ -3,10 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-
     using Cake.Common.IO;
     using Cake.Frosting;
 
@@ -26,12 +22,12 @@ namespace DotNetNuke.Build.Tasks
             var packageZip = context.ArtifactsDir + context.File($"DNN_Platform_{context.GetBuildNumber()}_Deploy.zip");
 
             var deployDir = context.Directory("./DotNetNuke/");
-            Directory.Move(context.WebsiteDir.Path.FullPath, deployDir.Path.FullPath);
+            context.MoveDirectory(context.WebsiteDir, deployDir);
             var files = context.GetFilesByPatterns(deployDir, IncludeAll, context.PackagingPatterns.InstallExclude);
             files.Add(context.GetFilesByPatterns(deployDir, context.PackagingPatterns.InstallInclude));
             context.Zip(string.Empty, packageZip, files);
             context.AddFilesToZip(packageZip, "./Build/Deploy", context.GetFiles("./Build/Deploy/*"), append: true);
-            Directory.Move(deployDir.Path.FullPath, context.WebsiteDir.Path.FullPath);
+            context.MoveDirectory(deployDir, context.WebsiteDir);
         }
     }
 }

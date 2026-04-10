@@ -4,7 +4,6 @@
 
 namespace DotNetNuke.Build.Tasks;
 
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Xml;
@@ -57,7 +56,8 @@ public abstract class PackageComponentTaskBase : AsyncFrostingTask<Context>
         var manifestPath = context.GetFiles(packageDir.Path.CombineWithFilePath("*.dnn").ToString()).Single();
         context.Information($"Reading manifest from {manifestPath}");
         var manifest = new XmlDocument();
-        using (var manifestReader = XmlReader.Create(new StringReader(context.ReadFile(manifestPath)), new XmlReaderSettings { XmlResolver = null, }))
+        using (var manifestStream = context.GenerateStreamFromString(context.ReadFile(manifestPath)))
+        using (var manifestReader = XmlReader.Create(manifestStream, new XmlReaderSettings { XmlResolver = null, }))
         {
             manifest.Load(manifestReader);
         }
