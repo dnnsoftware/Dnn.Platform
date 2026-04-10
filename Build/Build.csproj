@@ -23,6 +23,7 @@
     <PackageReference Include="Cake.Frosting.Git" />
     <PackageReference Include="Cake.Issues" />
     <PackageReference Include="Cake.Frosting.Issues.MsBuild" />
+    <PackageReference Include="Cake.Frosting.Issues.PullRequests.GitHubActions" />
     <PackageReference Include="Cake.Json" />
     <PackageReference Include="Cake.XdtTransform" />
     <PackageReference Include="Dnn.CakeUtils" />

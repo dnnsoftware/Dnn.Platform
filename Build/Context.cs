@@ -15,8 +15,11 @@ namespace DotNetNuke.Build
     using Cake.Common.Tools.GitVersion;
     using Cake.Core;
     using Cake.Core.Diagnostics;
+    using Cake.Core.IO;
     using Cake.Frosting;
     using Cake.Json;
+
+    using Path = System.IO.Path;
 
     /// <inheritdoc />
     public class Context : FrostingContext
@@ -42,6 +45,10 @@ namespace DotNetNuke.Build
                 //////////////////////////////////////////////////////////////////////
 
                 // Define directories.
+                this.RootFolder = "./";
+                this.RootDir = context.MakeAbsolute(context.Directory(this.RootFolder));
+                context.Verbose($"RootDir: {this.RootDir}");
+
                 this.TempFolder = "./Temp/";
                 this.TempDir = context.Directory(this.TempFolder);
                 context.Information($"TempDir: {this.TempDir}");
@@ -98,6 +105,12 @@ namespace DotNetNuke.Build
 
         /// <summary>Gets or sets a value indicating whether this build is running in a CI environment.</summary>
         public bool IsRunningInCI { get; set; }
+
+        /// <summary>Gets or sets the path to the root of the repository.</summary>
+        public DirectoryPath RootDir { get; set; }
+
+        /// <summary>Gets or sets the relative path to the root of the repository.</summary>
+        public string RootFolder { get; set; }
 
         /// <summary>Gets or sets the path to the website directory.</summary>
         public ConvertableDirectoryPath WebsiteDir { get; set; }
