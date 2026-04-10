@@ -5,20 +5,16 @@ namespace DotNetNuke.Build.Tasks
 {
     using System;
     using System.Globalization;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography;
     using System.Text;
 
     using Cake.Common.Diagnostics;
     using Cake.Common.IO;
+    using Cake.Common.Security;
     using Cake.Core.IO;
     using Cake.FileHelpers;
     using Cake.Frosting;
 
     using Dnn.CakeUtils;
-
-    using Path = System.IO.Path;
 
     /// <summary>A cake task to generate a <c>checksums.md</c> file with the artifact checksums.</summary>
     [IsDependentOn(typeof(CleanArtifacts))]
@@ -47,7 +43,7 @@ namespace DotNetNuke.Build.Tasks
             foreach (var file in files)
             {
                 var fileName = file.GetFilename();
-                var hash = GetFileHash(file);
+                var hash = GetFileHash(context, file);
                 checksumsMarkdown.AppendLine(CultureInfo.InvariantCulture, $"| {fileName} | {hash}   |");
             }
 
@@ -58,12 +54,10 @@ namespace DotNetNuke.Build.Tasks
             context.Information($"Saved checksums to {filePath}");
         }
 
-        private static string GetFileHash(FilePath file)
+        private static string GetFileHash(Context context, FilePath file)
         {
-            using var hasher = SHA256.Create();
-            using var stream = File.OpenRead(file.FullPath);
-            var hashBytes = hasher.ComputeHash(stream);
-            return Convert.ToHexStringLower(hashBytes);
+            var hash = context.CalculateFileHash(file, HashAlgorithm.SHA256);
+            return Convert.ToHexStringLower(hash.ComputedHash);
         }
     }
 }
