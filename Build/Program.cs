@@ -7,6 +7,7 @@ namespace DotNetNuke.Build
 
     using Cake.AzurePipelines.Module;
     using Cake.Frosting;
+    using Cake.GitHubActions.Module;
 
     /// <summary>Runs the build process.</summary>
     public class Program
@@ -27,6 +28,7 @@ namespace DotNetNuke.Build
                 .UseLifetime<Lifetime>()
                 .UseWorkingDirectory("..")
                 .UseModule<AzurePipelinesModule>()
+                .UseModule<GitHubActionsModule>()
                 .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.7.0"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
