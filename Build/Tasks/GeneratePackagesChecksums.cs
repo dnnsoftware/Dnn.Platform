@@ -11,7 +11,9 @@ namespace DotNetNuke.Build.Tasks
     using System.Text;
 
     using Cake.Common.Diagnostics;
+    using Cake.Common.IO;
     using Cake.Core.IO;
+    using Cake.FileHelpers;
     using Cake.Frosting;
 
     using Dnn.CakeUtils;
@@ -41,7 +43,7 @@ namespace DotNetNuke.Build.Tasks
                 |------------|----------|
                 """);
 
-            var files = context.GetFilesByPatterns(context.ArtifactsFolder, ZipFiles);
+            var files = context.GetFilesByPatterns(context.ArtifactsDir, ZipFiles);
             foreach (var file in files)
             {
                 var fileName = file.GetFilename();
@@ -50,8 +52,8 @@ namespace DotNetNuke.Build.Tasks
             }
 
             checksumsMarkdown.AppendLine();
-            var filePath = Path.Combine(context.ArtifactsFolder, "checksums.md");
-            File.WriteAllText(filePath, checksumsMarkdown.ToString());
+            var filePath = context.ArtifactsDir + context.File("checksums.md");
+            context.FileWriteText(filePath, checksumsMarkdown.ToString());
 
             context.Information($"Saved checksums to {filePath}");
         }
