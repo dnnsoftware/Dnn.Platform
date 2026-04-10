@@ -74,66 +74,7 @@ namespace DotNetNuke.Entities.Portals.Templates
 
             if (!string.IsNullOrEmpty(templateToLoad.LanguageFilePath))
             {
-                XDocument languageDoc;
-                using (var reader = PortalTemplateIO.Instance.OpenTextReader(templateToLoad.LanguageFilePath))
-                {
-                    languageDoc = XDocument.Load(reader);
-                }
-
-                // var localizedData = languageDoc.Descendants("data");
-                var localizedData = languageDoc.Descendants("data")
-                    .Where(x => x.Attribute("name") != null)
-                    .ToDictionary(x => x.Attribute("name").Value, x => x);
-                
-                // check missed localize resource text
-                if (templateToLoad.CultureCode != "en-US")
-                {
-                    // var rootDoc = languageDoc.Root;
-                    var defLangFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(templateToLoad.TemplateFilePath, "en-US");
-                    if (!string.IsNullOrEmpty(defLangFilePath))
-                    {
-                        // var isModified = false;
-                        XDocument defLanguageDoc;
-                        using (var reader = PortalTemplateIO.Instance.OpenTextReader(defLangFilePath))
-                        {
-                            defLanguageDoc = XDocument.Load(reader);
-                        }
-                
-                        var defData = defLanguageDoc.Descendants("data");
-                        foreach (var defNode in defData)
-                        {
-                            var key = defNode.Attribute("name")?.Value;
-                            if (string.IsNullOrEmpty(key))
-                            {
-                                continue;
-                            }
-                
-                            if (!localizedData.ContainsKey(key))
-                            {
-                                // isModified = true;
-                                // rootDoc.Add(new XElement(defNode));
-                                localizedData.Add(key, defNode);
-                            }
-                        }
-                
-                    }
-                }
-                
-                foreach (var node in localizedData.Values)
-                {
-                    var name = node.Attribute("name")?.Value;
-                    if (string.IsNullOrEmpty(name))
-                    {
-                        continue;
-                    }
-                
-                    var valueElement = node.Element("value");
-                    if (valueElement != null)
-                    {
-                        var value = valueElement.Value;
-                        buffer.Replace($"[{name}]", value);
-                    }
-                }
+                ReplaceTemplateTokens(templateToLoad, buffer);
             }
 
             this.TemplatePath = Path.GetDirectoryName(templateToLoad.TemplateFilePath);
@@ -353,6 +294,71 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
 
             return strMessage;
+        }
+
+        private static void ReplaceTemplateTokens(IPortalTemplateInfo templateToLoad, StringBuilder buffer)
+        {
+            XDocument languageDoc;
+            using (var reader = PortalTemplateIO.Instance.OpenTextReader(templateToLoad.LanguageFilePath))
+            {
+                languageDoc = XDocument.Load(reader);
+            }
+
+            var localizedData = languageDoc.Descendants("data")
+                .Where(x => x.Attribute("name") != null)
+                .ToDictionary(x => x.Attribute("name").Value, x => x);
+
+            // add default resource content that's missing in the translated resources
+            if (templateToLoad.CultureCode != "en-US")
+            {
+                AddMissingDefaultResources(templateToLoad, localizedData);
+            }
+
+            foreach (var node in localizedData.Values)
+            {
+                var name = node.Attribute("name")?.Value;
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+
+                var valueElement = node.Element("value");
+                if (valueElement != null)
+                {
+                    var value = valueElement.Value;
+                    buffer.Replace($"[{name}]", value);
+                }
+            }
+        }
+
+        private static void AddMissingDefaultResources(IPortalTemplateInfo templateToLoad, Dictionary<string, XElement> localizedData)
+        {
+            var defaultLangFilePath = PortalTemplateIO.Instance.GetLanguageFilePath(templateToLoad.TemplateFilePath, "en-US");
+            if (string.IsNullOrEmpty(defaultLangFilePath))
+            {
+                return;
+            }
+
+            XDocument defaultLanguageDoc;
+            using (var reader = PortalTemplateIO.Instance.OpenTextReader(defaultLangFilePath))
+            {
+                defaultLanguageDoc = XDocument.Load(reader);
+            }
+
+            var defaultData = defaultLanguageDoc.Descendants("data");
+            foreach (var defaultNode in defaultData)
+            {
+                var key = defaultNode.Attribute("name")?.Value;
+                if (string.IsNullOrEmpty(key))
+                {
+                    continue;
+                }
+
+                if (!localizedData.ContainsKey(key))
+                {
+                    localizedData.Add(key, defaultNode);
+                }
+            }
         }
 
         private static void ParseExtensionUrlProviders(XPathNavigator providersNavigator, int portalId)
@@ -1442,4 +1448,3 @@ namespace DotNetNuke.Entities.Portals.Templates
         }
     }
 }
-
