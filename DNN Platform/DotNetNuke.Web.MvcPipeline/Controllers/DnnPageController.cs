@@ -27,7 +27,8 @@ namespace DotNetNuke.Web.MvcPipeline.Controllers
         protected DnnPageController(IServiceProvider dependencyProvider)
         {
             this.DependencyProvider = dependencyProvider;
-            this.portalSettings = dependencyProvider.GetService<IPortalSettings>();
+            var portalController = dependencyProvider.GetService<IPortalController>();
+            this.portalSettings = portalController.GetCurrentSettings();
             this.userController = dependencyProvider.GetService<IUserController>();
         }
 
