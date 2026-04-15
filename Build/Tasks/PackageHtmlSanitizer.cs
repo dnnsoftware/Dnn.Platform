@@ -4,11 +4,5 @@
 namespace DotNetNuke.Build.Tasks;
 
 /// <summary>A cake task to generate the MailKit package.</summary>
-public sealed class PackageHtmlSanitizer : PackageComponentTask
-{
-    /// <summary>Initializes a new instance of the <see cref="PackageHtmlSanitizer"/> class.</summary>
-    public PackageHtmlSanitizer()
-        : base("HtmlSanitizer")
-    {
-    }
-}
+public sealed class PackageHtmlSanitizer()
+    : PackageComponentTaskBase("HtmlSanitizer");

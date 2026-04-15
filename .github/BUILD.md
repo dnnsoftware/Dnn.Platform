@@ -27,12 +27,12 @@ If you wish to make changes to that project, please keep this in mind.
 
 DNN uses the following technologies to create a working build:
 1. MSBuild. This is Microsoft Visual Studio's built in mechanism to compile C#. It can also run auxiliary tasks (like packaging the included modules). These tasks are specified in `.build` and `.targets` files and can leverage .net assemblies to do its magic. Almost all central MSBuild code is in the `Build/BuildScripts` folder. Main folder location settings can be found in the `DNN_Platform.build` file in the root of the repository which can be overridden using a `DNN_Platform.local.build` file at the same location.
-2. Webpack. The "Admin Experience" (which is the project that contains the UI for managing DNN) contains a number of client-side Javascript projects (mostly React projects). These are built using Webpack. Webpack is triggered in the main build process in the `Build/BuildScripts/AEModule.build` script. But it can be run on individual projects if you need to.
+2. Rsbuild. The "Admin Experience" (which is the project that contains the UI for managing DNN) contains a number of client-side Javascript projects (mostly React projects). These are built using Rsbuild. Rsbuild is triggered in the main build process in the `Build/BuildScripts/AEModule.build` script. But it can be run on individual projects if you need to.
 3. [Cake Build](https://cakebuild.net/). This uses C# code to run build tasks. We use Cake for orchestrating the entire build process (e.g. packaging of the platform) and for auxiliary tasks like creating a dev site. All Cake scripts are found in the `Build/Cake` folder. After Cake first runs it bootstraps itself and creates the `tools` folder where the various assemblies can be found. Note the scripts use the [DNN Cake Utils](https://github.com/DNNCommunity/Dnn.CakeUtils) assembly to do the heavy lifting.
 
 ## Build to create packages
 
-This process uses Cake. Open Powershell at the root of the repository folder and enter:
+This process uses Cake. Open PowerShell at the root of the repository folder and enter:
 
 ```
 .\build.ps1
@@ -115,7 +115,7 @@ To build the .net projects to the right location, you'll need to create your ove
 Once you've created this file every time you click "rebuild" in Visual Studio on a project (or the solution) you'll see the content change in your dev site.
 **Note**: You may have to restart Visual Studio for this new build file to take effect.
 
-For the Webpack projects it is set up to read from the `settings.local.json` file and use the `WebsitePath` to copy generated js files to their right place.
+For the Rsbuild projects it is set up to read from the `settings.local.json` file and use the `WebsitePath` to copy generated js files to their right place.
 
 ## Build React Projects
 

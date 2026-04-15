@@ -14,6 +14,7 @@ namespace DotNetNuke.Build.Tasks
     using System.Text.RegularExpressions;
 
     using Cake.Common;
+    using Cake.Common.Build;
     using Cake.Common.Diagnostics;
     using Cake.Core;
     using Cake.Core.IO;
@@ -61,7 +62,11 @@ namespace DotNetNuke.Build.Tasks
                 return;
             }
 
-            var sourceBranch = context.EnvironmentVariable("BUILD_SOURCEBRANCH") ?? string.Empty;
+            var sourceBranch = context.AzurePipelines().IsRunningOnAzurePipelines
+                ? context.AzurePipelines().Environment.Repository.SourceBranch
+                : context.GitHubActions().IsRunningOnGitHubActions
+                    ? context.GitHubActions().Environment.Workflow.Ref
+                    : string.Empty;
             context.Information("CreateGitHubPullRequest: BUILD_SOURCEBRANCH is '{0}'.", sourceBranch);
             if (!IsTargetedBranch(sourceBranch))
             {
@@ -78,8 +83,11 @@ namespace DotNetNuke.Build.Tasks
             }
 
             // owner/repo – e.g. "dnnsoftware/Dnn.Platform"
-            var repoSlug = context.EnvironmentVariable("BUILD_REPOSITORY_NAME")
-                           ?? throw new CakeException("BUILD_REPOSITORY_NAME environment variable is not set.");
+            var repoSlug = context.AzurePipelines().IsRunningOnAzurePipelines
+                ? context.AzurePipelines().Environment.Repository.RepoName
+                : context.GitHubActions().IsRunningOnGitHubActions
+                    ? context.GitHubActions().Environment.Workflow.Repository
+                    : throw new CakeException("BUILD_REPOSITORY_NAME environment variable is not set.");
 
             var parts = repoSlug.Split('/');
             if (parts.Length != 2)

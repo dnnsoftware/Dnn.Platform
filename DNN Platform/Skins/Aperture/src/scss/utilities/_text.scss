@@ -3,7 +3,7 @@
 
 // Text Mixin
 @mixin text($alignment, $important: false) {
-    text-align: #{$alignment} if($important, !important, null);
+    text-align: #{$alignment} if(sass($important): !important);
 }
 
 // Responsive Text Mixin

@@ -6,30 +6,17 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     using System;
     using System.Collections.Generic;
     using System.Globalization;
-    using System.Web;
-    using System.Web.UI;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Common;
-    using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Services.ClientDependency;
-
-    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</summary>
+    [Obsolete("Deprecated in DotNetNuke 10.3.0. Please use TextBox with TextMode=TextBoxMode.Date. Scheduled removal in v12.0.0.")]
     public class DnnDatePicker : TextBox
     {
-        private readonly IClientResourceController clientResourceController;
-        private readonly IApplicationStatusInfo appStatus;
-        private readonly IEventLogger eventLogger;
-
         /// <summary>Initializes a new instance of the <see cref="DnnDatePicker"/> class.</summary>
-        [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DnnDatePicker()
             : this(null, null, null)
         {
@@ -41,9 +28,6 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         /// <param name="eventLogger">The event logger.</param>
         public DnnDatePicker(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger)
         {
-            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            this.appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-            this.eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         }
 
         /// <summary>Gets or sets the selected date.</summary>
@@ -82,35 +66,23 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         {
             base.OnPreRender(e);
 
-            JavaScript.RequestRegistration(this.appStatus, this.eventLogger, PortalSettings.Current, CommonJs.jQuery);
-
-            this.clientResourceController.RegisterScript("~/Resources/Shared/components/DatePicker/moment.min.js");
-            this.clientResourceController.RegisterScript("~/Resources/Shared/components/DatePicker/pikaday.js");
-            this.clientResourceController.RegisterScript("~/Resources/Shared/components/DatePicker/pikaday.jquery.js");
-
-            this.clientResourceController.RegisterStylesheet("~/Resources/Shared/components/DatePicker/pikaday.css");
-
-            this.RegisterClientResources();
+            var settings = this.GetSettings();
+            foreach (var setting in settings)
+            {
+                this.Attributes[setting.Key] = setting.Value?.ToString();
+            }
         }
 
         /// <summary>Gets the settings.</summary>
-        /// <returns>A dictionary of pikaday settings.</returns>
+        /// <returns>A dictionary of attribute values.</returns>
         protected virtual IDictionary<string, object> GetSettings()
         {
             return new Dictionary<string, object>
             {
-                { "minDate", this.MinDate > DateTime.MinValue ? $"$new Date('{HttpUtility.JavaScriptStringEncode(this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture))}')$" : string.Empty },
-                { "maxDate", this.MaxDate > DateTime.MinValue ? $"$new Date('{HttpUtility.JavaScriptStringEncode(this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture))}')$" : string.Empty },
-                { "format", this.ClientFormat },
+                { "min", this.MinDate > DateTime.MinValue ? this.MinDate.ToString(this.Format, CultureInfo.InvariantCulture) : null },
+                { "max", this.MaxDate > DateTime.MinValue ? this.MaxDate.ToString(this.Format, CultureInfo.InvariantCulture) : null },
+                { "data-client-format", this.ClientFormat },
             };
-        }
-
-        private void RegisterClientResources()
-        {
-            var settings = Json.Serialize(this.GetSettings()).Replace("\"$", string.Empty).Replace("$\"", string.Empty);
-            var script = $"$('#{this.ClientID}').pikaday({settings});";
-
-            ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "DnnDatePicker" + this.ClientID, script, true);
         }
     }
 }

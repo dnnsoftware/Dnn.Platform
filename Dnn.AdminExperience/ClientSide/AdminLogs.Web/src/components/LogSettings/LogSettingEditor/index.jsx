@@ -73,11 +73,12 @@ class LogSettingEditor extends Component {
     }
     getEnabledStatus(key) {
         const {state} = this;
+        const toBoolean = (value) => value === true || value === 1 || value === "1" || value === "true";
         switch (key) {
             case "EmailNotification":
-                return state.logSettingDetail.EmailNotificationIsActive !== undefined ? state.logSettingDetail.EmailNotificationIsActive : false;
+                return state.logSettingDetail.EmailNotificationIsActive !== undefined ? toBoolean(state.logSettingDetail.EmailNotificationIsActive) : false;
             case "Logging":
-                return state.logSettingDetail.LoggingIsActive !== undefined ? state.logSettingDetail.LoggingIsActive : false;
+                return state.logSettingDetail.LoggingIsActive !== undefined ? toBoolean(state.logSettingDetail.LoggingIsActive) : false;
             default:
                 break;
         }
@@ -267,13 +268,12 @@ class LogSettingEditor extends Component {
                     onChange={this.onTextChange.bind(this, "MailToAddress") }/>
             </div>
         </div>;
-        let children = [];
-        children.push(columnOne);
-        children.push(columnTwo);
-         
         return (
             <div className="log-setting-editor">
-                <Grid numberOfColumns={2}>{children}</Grid>
+                <Grid numberOfColumns={2}>
+                    <React.Fragment key="settings-column-left">{columnOne}</React.Fragment>
+                    <React.Fragment key="settings-column-right">{columnTwo}</React.Fragment>
+                </Grid>
                 <div className="buttons-box">
                     {this.props.logTypeSettingId !== "" && <Button type="danger" onClick={this.deleteLogSetting.bind(this) }>{Localization.get("ConfigBtnDelete") }</Button>}
                     <Button type="secondary" onClick={this.props.Collapse.bind(this) }>{Localization.get("ConfigBtnCancel") }</Button>

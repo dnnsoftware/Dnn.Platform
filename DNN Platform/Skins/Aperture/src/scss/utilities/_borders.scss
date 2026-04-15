@@ -13,7 +13,7 @@ $border-radius-sizes: (
 
 // Border Radius Mixin
 @mixin border-radius($size, $important: false) {
-    border-radius: $size if($important, !important, null);
+    border-radius: $size if(sass($important): !important);
 }
 
 // Responsive Border Radius Mixin

@@ -80,11 +80,11 @@
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plStartDate" runat="server" controlname="txtStartDate" />
-                    <dnnweb:dnndatetimepicker id="startDatePicker" runat="server" ViewStateMode="Disabled" />
+                    <asp:TextBox id="startDatePicker" runat="server" TextMode="Date" ViewStateMode="Disabled" />
                 </div>
                 <div class="dnnFormItem">
                     <dnn:label id="plEndDate" runat="server" controlname="txtEndDate" />
-                    <dnnweb:dnndatetimepicker id="endDatePicker" runat="server" ViewStateMode="Disabled" />
+                    <asp:TextBox id="endDatePicker" runat="server" TextMode="Date" ViewStateMode="Disabled" />
                     
                 </div>
 				<div class="dnnFormItem">

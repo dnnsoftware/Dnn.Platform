@@ -1,28 +1,27 @@
 {
   "name": "roles",
-  "version": "10.2.4",
+  "version": "10.3.1",
   "private": true,
   "scripts": {
-    "build": "set NODE_ENV=production&&rsbuild build",
-    "debug": "set NODE_ENV=debug&&rsbuild build",
-    "watch": "set NODE_ENV=debug & rsbuild dev",
-    "analyze": "set NODE_ENV=production&&webpack --mode production --json | webpack-bundle-size-analyzer",
+    "build": "rsbuild build",
+    "debug": "rsbuild build",
+    "watch": "rsbuild dev",
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.2.4",
-    "@rsbuild/core": "^1.6.3",
-    "@rsbuild/plugin-less": "^1.5.0",
-    "@rsbuild/plugin-react": "^1.4.2",
-    "@rsbuild/plugin-svgr": "^1.2.2",
+    "@dnnsoftware/dnn-react-common": "10.3.1",
+    "@rsbuild/core": "^1.7.3",
+    "@rsbuild/plugin-less": "^1.6.2",
+    "@rsbuild/plugin-react": "^1.4.6",
+    "@rsbuild/plugin-svgr": "^1.3.1",
     "array.prototype.find": "^2.2.3",
     "array.prototype.findindex": "^2.2.4",
     "create-react-class": "^15.7.0",
     "es6-object-assign": "^1.1.0",
-    "eslint": "9.38.0",
+    "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^16.4.0",
-    "less": "4.4.2",
+    "globals": "^17.4.0",
+    "less": "4.6.4",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-click-outside": "^3.0.1",
@@ -31,6 +30,6 @@
     "throttle-debounce": "5.0.2"
   },
   "dependencies": {
-    "react-widgets": "^5.8.4"
+    "react-widgets": "^5.8.6"
   }
 }

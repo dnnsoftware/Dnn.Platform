@@ -13,15 +13,15 @@ $padding-sizes: (
 // Padding Mixin
 @mixin padding($side, $size, $important: false) {
     @if $side == 'all' {
-        padding: $size if($important, !important, null);
+        padding: $size if(sass($important): !important);
     } @else if $side == 'x' {
-        padding-left: $size if($important, !important, null);
-        padding-right: $size if($important, !important, null);
+        padding-left: $size if(sass($important): !important);
+        padding-right: $size if(sass($important): !important);
     } @else if $side == 'y' {
-        padding-top: $size if($important, !important, null);
-        padding-bottom: $size if($important, !important, null);
+        padding-top: $size if(sass($important): !important);
+        padding-bottom: $size if(sass($important): !important);
     } @else {
-        padding-#{$side}: $size if($important, !important, null);
+        padding-#{$side}: $size if(sass($important): !important);
     }    
 }
 

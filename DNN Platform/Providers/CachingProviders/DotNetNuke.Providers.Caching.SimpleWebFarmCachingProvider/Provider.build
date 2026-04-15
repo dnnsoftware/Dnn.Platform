@@ -11,7 +11,7 @@
     <InstallPath>$(WebsiteInstallPath)\Provider</InstallPath>
   </PropertyGroup>
   <Import Project="$(BuildScriptsPath)\Package.Targets" />
-  <Target Name="AfterBuild" DependsOnTargets="DebugProject;Package">
+  <Target Name="CopyAndPackage" BeforeTargets="Build" DependsOnTargets="DebugProject;Package">
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <Copy SourceFiles="$(MSBuildProjectDirectory)/bin$(Providers)/$(AssemblyName).dll" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
