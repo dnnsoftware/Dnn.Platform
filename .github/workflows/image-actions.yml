@@ -1,4 +1,5 @@
 name: "Compress images"
+
 on:
   pull_request: # PRs with image (but we can't push changes back to other forks)
     paths:
@@ -7,14 +8,22 @@ on:
       - "**.png"
       - "**.webp"
       - "**.avif"
+
   push:
     branches:
       - development # merging PRs from other forks (will open a new PR)
+
   workflow_dispatch: # on demand
+
   schedule:
     - cron: "0 0 * * 0" # every Sunday at midnight
-permissions:
-  contents: "read"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions: {}
+
 jobs:
   build:
     if: | # Only run on main repo on and PRs that match the main repo.
@@ -23,9 +32,13 @@ jobs:
        github.event.pull_request.head.repo.full_name == github.repository)
     name: "calibreapp/image-actions"
     runs-on: "ubuntu-latest"
+    permissions:
+      contents: "read"
     steps:
       - name: "Checkout Repo"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
+        with:
+          persist-credentials: false
 
       - name: "Compress Images"
         id: "compress_images"

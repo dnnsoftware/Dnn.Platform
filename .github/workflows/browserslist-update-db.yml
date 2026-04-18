@@ -4,20 +4,25 @@ on:
   schedule:
     - cron: "0 2 1,15 * *"
 
-permissions:
-  contents: "read"
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   update-browserslist-database:
+    name: "Update Browserslist database"
     runs-on: "ubuntu-latest"
     permissions:
-      contents: "write"
-      pull-requests: "write"
+      contents: "write" # creates a commmit for the pull request
+      pull-requests: "write" # creates a pull request if there's an update
     steps:
       - name: "Checkout repository"
         uses: "actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd" # v6.0.2
         with:
           fetch-depth: 0
+          persist-credentials: false
       - name: "Configure git"
         run: |
           # Setup for commiting using built-in token. See https://github.com/actions/checkout#push-a-commit-using-the-built-in-token

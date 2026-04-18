@@ -201,7 +201,8 @@ Namespace DotNetNuke.UI.WebControls
         End Sub
 
         Protected Overrides Function SaveViewState() As Object
-            Dim objArray As Object() = New Object() {MyBase.SaveViewState}
+            Dim objArray As Object() = New Object(1) {}
+            objArray(0) = MyBase.SaveViewState
             objArray(1) = If(Object.ReferenceEquals(Me.m_oDNNTabLabel, Nothing), Nothing, DirectCast(Me.Label, IStateManager).SaveViewState)
             Dim num2 As Integer = (objArray.Length - 1)
             Dim index As Integer = 0

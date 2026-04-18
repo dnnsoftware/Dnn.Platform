@@ -4,11 +4,5 @@
 namespace DotNetNuke.Build.Tasks;
 
 /// <summary>A cake task to generate the ASP.NET Web Pages package.</summary>
-public sealed class PackageAspNetWebPages : PackageComponentTask
-{
-    /// <summary>Initializes a new instance of the <see cref="PackageAspNetWebPages"/> class.</summary>
-    public PackageAspNetWebPages()
-        : base("AspNetWebPages", "System.Web.WebPages.dll", "Microsoft.AspNetWebPages")
-    {
-    }
-}
+public sealed class PackageAspNetWebPages()
+    : PackageComponentTaskBase("AspNetWebPages", "System.Web.WebPages.dll", "Microsoft.AspNetWebPages");

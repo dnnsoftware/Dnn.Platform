@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" VersionOverride="10.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.1" />
-    <PackageReference Include="Microsoft.Identity.Client" VersionOverride="4.81.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Identity.Client" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Moq" />
     <PackageReference Include="NUnit" />
@@ -26,12 +26,6 @@
   <ItemGroup>
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
-    <Reference Include="Lucene.Net">
-      <HintPath>..\..\Components\Lucene.Net\bin\Lucene.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Lucene.Net.Contrib.Analyzers">
-      <HintPath>..\..\Components\Lucene.Net.Contrib\bin\Lucene.Net.Contrib.Analyzers.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>

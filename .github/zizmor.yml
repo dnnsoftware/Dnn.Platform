@@ -1,0 +1,5 @@
+rules:
+  secrets-outside-env:
+    config:
+      allow:
+        - SCORECARD_TOKEN

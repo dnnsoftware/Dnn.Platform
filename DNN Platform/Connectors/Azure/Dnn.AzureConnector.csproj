@@ -28,10 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Microsoft.WindowsAzure.Storage, Version=4.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Components\WindowsAzure\Microsoft.WindowsAzure.Storage.dll</HintPath>
-    </Reference>
+    <PackageReference Include="WindowsAzure.Storage" />
   </ItemGroup>
 
   <ItemGroup>
