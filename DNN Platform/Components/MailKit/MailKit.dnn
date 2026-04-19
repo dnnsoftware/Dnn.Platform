@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="DotNetNuke.MailKit" type="Library" version="4.10.0.0">
+    <package name="DotNetNuke.MailKit" type="Library" version="4.16.0.0">
       <friendlyName>MailKit Components</friendlyName>
       <description>Libraries required for MailKit.</description>
       <dependencies/>
@@ -12,7 +12,7 @@
       </owner>
       <license src="License.txt"/>
       <releaseNotes>
-        This package includes MailKit assembly version 4.10.0 and MimeKit assembly version 4.10.0.
+        This package includes MailKit assembly version 4.16.0 and MimeKit assembly version 4.16.0.
         Please go to http://www.mimekit.com/ to view release notes on this particular version.</releaseNotes>
       <components>
         <component type="Assembly">
@@ -20,27 +20,27 @@
             <assembly>
               <path>bin</path>
               <name>MailKit.dll</name>
-              <version>4.10.0.0</version>
+              <version>4.16.0.0</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>MimeKit.dll</name>
-              <version>4.10.0.0</version>
+              <version>4.16.0.0</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>BouncyCastle.Cryptography.dll</name>
-              <version>2.5.0.6119</version>
+              <version>2.6.2.46322</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Buffers.dll</name>
-              <version>4.600.24.56208</version>
+              <version>4.600.125.16908</version>
             </assembly>
             <assembly>
               <path>bin</path>
               <name>System.Memory.dll</name>
-              <version>4.600.24.56208</version>
+              <version>4.600.325.20307</version>
             </assembly>
             <assembly>
               <path>bin</path>
@@ -50,7 +50,7 @@
             <assembly>
               <path>bin</path>
               <name>System.Formats.Asn1.dll</name>
-              <version>9.0.124.61010</version>
+              <version>8.0.724.31311</version>
             </assembly>
             <assembly>
               <path>bin</path>

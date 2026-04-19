@@ -22,7 +22,7 @@
     <PackageVersion Include="HtmlSanitizer" Version="9.1.878-beta" />
     <PackageVersion Include="LiteDB" Version="5.0.21" />
     <PackageVersion Include="Lucene.Net.Contrib" Version="3.0.3" />
-    <PackageVersion Include="MailKit" Version="4.8.0" />
+    <PackageVersion Include="MailKit" Version="4.16.0" />
     <PackageVersion Include="Microsoft.ApplicationBlocks.Data" Version="2.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi" Version="5.3.0" />
@@ -49,7 +49,7 @@
     <PackageVersion Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageVersion Include="Microsoft.Web.Infrastructure" Version="2.0.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
-    <PackageVersion Include="MimeKit" Version="4.15.1" />
+    <PackageVersion Include="MimeKit" Version="4.16.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="NuGet.Packaging" Version="7.3.1" />
     <PackageVersion Include="NuGet.Protocol" Version="7.3.1" />
