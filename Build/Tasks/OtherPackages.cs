@@ -46,10 +46,10 @@ namespace DotNetNuke.Build.Tasks
         {
             var srcFolder = context.RootDir + context.Directory(package.Folder);
             var files = package.Excludes.Length == 0
-                            ? context.GetFiles($"{srcFolder}**/*")
+                            ? context.GetFiles($"{srcFolder}/**/*")
                             : context.GetFilesByPatterns(srcFolder, IncludeAll, package.Excludes);
             var version = "00.00.00";
-            foreach (var dnn in context.GetFiles($"{srcFolder}**/*.dnn"))
+            foreach (var dnn in context.GetFiles($"{srcFolder}/**/*.dnn"))
             {
                 version = context.XmlPeek(dnn, "dotnetnuke/packages/package/@version");
             }
