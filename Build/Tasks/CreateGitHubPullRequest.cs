@@ -153,7 +153,7 @@ namespace DotNetNuke.Build.Tasks
             var encodedToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"x-access-token:{token}"));
             Git(context, $"-c http.extraHeader=\"Authorization: Basic {encodedToken}\" push origin {headBranch}", redactOutput: true);
 
-            var title = $"[Automated] Merge CI changes into {TargetBranch}";
+            const string title = $"[Automated] Merge CI changes into {TargetBranch}";
             var body = $"Automated pull request created by CI build {context.BuildId}.";
 
             context.Information("Creating GitHub PR: {0} → {1} in {2}/{3}", headBranch, TargetBranch, owner, repo);
@@ -291,21 +291,27 @@ namespace DotNetNuke.Build.Tasks
         private static async Task UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo, FilePath bugReportPath)
         {
             context.Information("Fetching GitHub releases to update bug report template…");
-            var releases = await client.Repository.Release.GetAll(owner, repo);
+            var releases =
+                from release in await client.Repository.Release.GetAll(owner, repo)
+                where !release.Draft
+                let versionWithoutPrefix = release.TagName[1..]
+                let versionWithoutSuffix = versionWithoutPrefix.Contains('-') ? versionWithoutPrefix[..versionWithoutPrefix.IndexOf('-')] : versionWithoutPrefix
+                let version = Version.Parse(versionWithoutSuffix)
+                let isReleaseCandidate = release.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase)
+                orderby version descending
+                select new { release, version, isReleaseCandidate, };
+            releases = releases.ToList();
 
-            var latestStable = releases
-                .Where(r => !r.Draft && !r.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(r => r.PublishedAt)
-                .FirstOrDefault();
+            var latestStable = releases.FirstOrDefault();
 
             context.Information(
                 "Latest stable release: {0}",
-                latestStable != null ? latestStable.TagName : "(none)");
+                latestStable != null ? latestStable.release.TagName : "(none)");
 
             var currentRcs = releases
-                .Where(r => !r.Draft && r.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase))
-                .Where(r => latestStable == null || r.PublishedAt > latestStable.PublishedAt)
-                .OrderByDescending(r => r.PublishedAt)
+                .Where(r => r.isReleaseCandidate)
+                .Where(r => latestStable == null || r.release.PublishedAt > latestStable.release.PublishedAt)
+                .OrderByDescending(r => r.version)
                 .ToList();
 
             context.Information("Found {0} currently published RC release(s).", currentRcs.Count);
@@ -314,16 +320,10 @@ namespace DotNetNuke.Build.Tasks
             var options = new List<string>();
             if (latestStable != null)
             {
-                var version = latestStable.TagName.TrimStart('v');
-                options.Add($"{version} (latest release)");
+                options.Add($"{latestStable.version} (latest release)");
             }
 
-            foreach (var rc in currentRcs)
-            {
-                var version = rc.TagName.TrimStart('v');
-                options.Add($"{version} (release candidate)");
-            }
-
+            options.AddRange(currentRcs.Select(rc => $"{rc.version} (release candidate)"));
             options.Add("develop build (unreleased)");
 
             // Parse the YAML template and update the affected-versions options
