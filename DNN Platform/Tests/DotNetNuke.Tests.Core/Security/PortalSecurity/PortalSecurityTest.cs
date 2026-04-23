@@ -4,12 +4,15 @@
 
 namespace DotNetNuke.Tests.Core.Security.PortalSecurity
 {
+    using System;
+
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Logging;
-    using DotNetNuke.Abstractions.Security;
     using DotNetNuke.Common.Lists;
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Security;
+    using DotNetNuke.Services.Cryptography;
     using DotNetNuke.Tests.Utilities.Fakes;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +20,8 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
     using Moq;
 
     using NUnit.Framework;
+
+    using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
     [TestFixture]
     public class PortalSecurityTest
@@ -105,7 +110,7 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
         public void Html_Source_Tag_Should_Not_Be_Allowed(string html, string expectedOutput, PortalSecurity.FilterFlag markup)
         {
             // Arrange
-            var portalSecurity = new PortalSecurity(Mock.Of<ICryptographyProvider>());
+            var portalSecurity = this.CreatePortalSecurity();
 
             // Act
             var filterOutput = portalSecurity.InputFilter(html, markup);
@@ -124,13 +129,57 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
         public void Control_Character_Should_Not_Be_Allowed(string html, string expectedOutput, PortalSecurity.FilterFlag markup)
         {
             // Arrange
-            var portalSecurity = new PortalSecurity(Mock.Of<ICryptographyProvider>());
+            var portalSecurity = this.CreatePortalSecurity();
 
             // Act
             var filterOutput = portalSecurity.InputFilter(html, markup);
 
             // Assert
             Assert.That(expectedOutput, Is.EqualTo(filterOutput));
+        }
+
+        [Test]
+        public void EncryptString_RoundTrips_ViaDecryptString_WithCoreCryptographyProvider()
+        {
+            // Arrange
+            var cryptographyProvider = new CoreCryptographyProvider();
+            ComponentFactory.RegisterComponentInstance<CryptographyProvider>(cryptographyProvider);
+            var portalSecurity = this.CreatePortalSecurity(cryptographyProvider);
+
+            // Act
+            var passphrase = Guid.NewGuid().ToString();
+            var encryptedMessage = portalSecurity.EncryptString("cat", passphrase);
+            var decryptedMessage = portalSecurity.DecryptString(encryptedMessage, passphrase);
+
+            // Assert
+            Assert.That(decryptedMessage, Is.EqualTo("cat"));
+        }
+
+        [Test]
+        public void EncryptString_RoundTrips_ViaDecryptString_WithFipsCompilanceCryptographyProvider()
+        {
+            // Arrange
+            var cryptographyProvider = new FipsCompilanceCryptographyProvider();
+            ComponentFactory.RegisterComponentInstance<CryptographyProvider>(cryptographyProvider);
+            var portalSecurity = this.CreatePortalSecurity(cryptographyProvider);
+
+            // Act
+            var passphrase = Guid.NewGuid().ToString();
+            var encryptedMessage = portalSecurity.EncryptString("cat", passphrase);
+            var decryptedMessage = portalSecurity.DecryptString(encryptedMessage, passphrase);
+
+            // Assert
+            Assert.That(decryptedMessage, Is.EqualTo("cat"));
+        }
+
+        private PortalSecurity CreatePortalSecurity(ICryptographyProvider cryptographyProvider = null)
+        {
+            return new PortalSecurity(
+                cryptographyProvider ?? this.serviceProvider.GetRequiredService<ICryptographyProvider>(),
+                this.serviceProvider.GetRequiredService<ListController>(),
+                this.serviceProvider.GetRequiredService<IPortalController>(),
+                this.serviceProvider.GetRequiredService<IApplicationStatusInfo>(),
+                this.serviceProvider.GetRequiredService<IPortalGroupController>());
         }
     }
 }
