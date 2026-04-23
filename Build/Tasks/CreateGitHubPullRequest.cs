@@ -12,6 +12,7 @@ namespace DotNetNuke.Build.Tasks
     using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
 
     using Cake.Common;
     using Cake.Common.Build;
@@ -49,14 +50,14 @@ namespace DotNetNuke.Build.Tasks
     ///   <item><c>BUILD_SOURCEBRANCH</c> – The full ref of the source branch (set automatically by Azure Pipelines).</item>
     /// </list>
     /// </remarks>
-    public sealed class CreateGitHubPullRequest : FrostingTask<Context>
+    public sealed class CreateGitHubPullRequest : AsyncFrostingTask<Context>
     {
         private const string TargetBranch = "develop";
         private const string GitUserName = "DNN Platform CI Bot";
         private const string GitUserEmail = "noreply@dnncommunity.org";
 
         /// <inheritdoc/>
-        public override void Run(Context context)
+        public override async Task RunAsync(Context context)
         {
             if (!context.IsRunningInCI)
             {
@@ -104,7 +105,7 @@ namespace DotNetNuke.Build.Tasks
             var repo = parts[1];
 
             // Generate a short-lived installation token from the GitHub App credentials
-            var token = GenerateInstallationToken(context);
+            var token = await GenerateInstallationToken(context);
 
             var client = new GitHubClient(new ProductHeaderValue("DnnPlatformCakeBuild"))
             {
@@ -114,7 +115,7 @@ namespace DotNetNuke.Build.Tasks
             context.Information("Authenticated as GitHub App installation.");
 
             // Update bug-report.yml with version info from GitHub releases
-            UpdateBugReportVersions(context, client, owner, repo, bugReportPath);
+            await UpdateBugReportVersions(context, client, owner, repo, bugReportPath);
 
             // Reset SolutionInfo.cs if only the commit count/SHA changed (not the major.minor.patch)
             // to avoid creating a PR for every single commit.
@@ -163,7 +164,7 @@ namespace DotNetNuke.Build.Tasks
                 Draft = true,
             };
 
-            var pr = client.PullRequest.Create(owner, repo, newPr).GetAwaiter().GetResult();
+            var pr = await client.PullRequest.Create(owner, repo, newPr);
             context.Information("Pull request #{0} created: {1}", pr.Number, pr.HtmlUrl);
         }
 
@@ -179,7 +180,7 @@ namespace DotNetNuke.Build.Tasks
                 || branch.StartsWith("release/", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static string GenerateInstallationToken(Context context)
+        private static async Task<string> GenerateInstallationToken(Context context)
         {
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
             var privateKeyPem = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
@@ -214,9 +215,9 @@ namespace DotNetNuke.Build.Tasks
             httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DnnPlatformCakeBuild", "1.0"));
 
             // Get the installation ID
-            var installationsResponse = httpClient.GetAsync("https://api.github.com/app/installations").GetAwaiter().GetResult();
+            var installationsResponse = await httpClient.GetAsync("https://api.github.com/app/installations");
             installationsResponse.EnsureSuccessStatusCode();
-            var installationsJson = installationsResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var installationsJson = await installationsResponse.Content.ReadAsStringAsync();
             var installations = JsonConvert.DeserializeObject<List<GitHubInstallation>>(installationsJson);
 
             if (installations == null || installations.Count == 0)
@@ -228,11 +229,11 @@ namespace DotNetNuke.Build.Tasks
             context.Information("Found GitHub App installation ID: {0}.", installationId);
 
             // Create an installation access token
-            var tokenResponse = httpClient.PostAsync(
+            var tokenResponse = await httpClient.PostAsync(
                 $"https://api.github.com/app/installations/{installationId}/access_tokens",
-                new StringContent(string.Empty)).GetAwaiter().GetResult();
+                new StringContent(string.Empty));
             tokenResponse.EnsureSuccessStatusCode();
-            var tokenJson = tokenResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
             var accessToken = JsonConvert.DeserializeObject<GitHubAccessToken>(tokenJson);
 
             if (string.IsNullOrEmpty(accessToken?.Token))
@@ -287,10 +288,10 @@ namespace DotNetNuke.Build.Tasks
             return sb.ToString();
         }
 
-        private static void UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo, FilePath bugReportPath)
+        private static async Task UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo, FilePath bugReportPath)
         {
-            context.Information("Fetching GitHub releases to update bug report template...");
-            var releases = client.Repository.Release.GetAll(owner, repo).GetAwaiter().GetResult();
+            context.Information("Fetching GitHub releases to update bug report template…");
+            var releases = await client.Repository.Release.GetAll(owner, repo);
 
             var latestStable = releases
                 .Where(r => !r.Draft && !r.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase))
@@ -356,7 +357,7 @@ namespace DotNetNuke.Build.Tasks
                 optionsNode.Children.Add(new YamlScalarNode(option));
             }
 
-            using var stringWriter = new StringWriter();
+            await using var stringWriter = new StringWriter();
             yaml.Save(stringWriter, false);
 
             // YamlStream.Save wraps output in document markers (--- / ...) that the original file doesn't use
