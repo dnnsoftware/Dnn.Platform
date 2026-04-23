@@ -73,7 +73,7 @@ namespace DotNetNuke.Build.Tasks
                 : context.GitHubActions().IsRunningOnGitHubActions
                     ? context.GitHubActions().Environment.Workflow.Ref
                     : string.Empty;
-            context.Information("CreateGitHubPullRequest: BUILD_SOURCEBRANCH is '{0}'.", sourceBranch);
+            context.Information("CreateGitHubPullRequest: source branch is '{0}'.", sourceBranch);
             if (!IsTargetedBranch(sourceBranch))
             {
                 context.Information("Skipping CreateGitHubPullRequest because branch '{0}' is not develop, main, or release/*.", sourceBranch);
@@ -93,12 +93,12 @@ namespace DotNetNuke.Build.Tasks
                 ? context.AzurePipelines().Environment.Repository.RepoName
                 : context.GitHubActions().IsRunningOnGitHubActions
                     ? context.GitHubActions().Environment.Workflow.Repository
-                    : throw new CakeException("BUILD_REPOSITORY_NAME environment variable is not set.");
+                    : throw new CakeException("Repository name environment variable is not set.");
 
             var parts = repoSlug.Split('/');
             if (parts.Length != 2)
             {
-                throw new CakeException($"BUILD_REPOSITORY_NAME '{repoSlug}' is not in the expected 'owner/repo' format.");
+                throw new CakeException($"Repository name '{repoSlug}' is not in the expected 'owner/repo' format.");
             }
 
             var owner = parts[0];
