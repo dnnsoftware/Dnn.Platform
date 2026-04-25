@@ -10,22 +10,20 @@ const packageJson = requireModule("./package.json");
 
 const isProduction = process.env.npm_lifecycle_event === "build";
 
-const externalizeNodeModules = ({ request }: { request?: string }) => {
-  if (!request) {
-    return undefined;
-  }
-
-  if (request.startsWith(".") || path.isAbsolute(request)) {
-    return undefined;
-  }
-
-  // Keep loader/runtime virtual requests bundled.
-  if (request.includes("!") || request.includes("?")) {
-    return undefined;
-  }
-
-  return request;
-};
+// Modules explicitly provided by Persona Bar runtime globals.
+const runtimeProvidedExternals = new Set([
+  "react",
+  "prop-types",
+  "redux",
+  "react-redux",
+  "react-dom",
+  "redux-immutable-state-invariant",
+  "redux-thunk",
+  "react-collapse",
+  "react-custom-scrollbars",
+  "react-widgets",
+  "es6-promise",
+]);
 
 export default defineConfig({
   source: {
@@ -70,11 +68,18 @@ export default defineConfig({
         globalObject: "this",
       },
       externals: [
-        ({ request }) => {
-          if (request === "react" || request === "prop-types") {
+        ({ request }: { request?: string }) => {
+          if (!request) {
+            return undefined;
+          }
+
+          if (runtimeProvidedExternals.has(request)) {
             return request;
           }
-          return externalizeNodeModules({ request });
+
+          // Bundle everything else in dnn-react-common so runtime-only globals
+          // do not break components (for example react-modal internals).
+          return undefined;
         },
       ],
       resolve: {
