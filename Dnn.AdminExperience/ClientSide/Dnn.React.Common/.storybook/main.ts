@@ -13,9 +13,23 @@ const config : StorybookConfig = {
         "@storybook/addon-onboarding",
         "@storybook/addon-docs",
     ],
-    framework: 'storybook-react-rsbuild',
+    framework: {
+        name: 'storybook-react-rsbuild',
+        options: {
+            builder: {
+                lazyCompilation: false,
+            },
+        },
+    },
     rsbuildFinal: (config) => {
         return mergeRsbuildConfig(config, {
+            tools: {
+                rspack: {
+                    output: {
+                        globalObject: "self",
+                    },
+                },
+            },
             plugins: [
                 pluginReact({
                     swcReactOptions: {
