@@ -627,8 +627,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Packages", "Packages", "{4F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnn.Skins.Aperture", "DNN Platform\Skins\Aperture\Dnn.Skins.Aperture.csproj", "{9F20422E-76EB-4B24-B721-B1CAF17407F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnn.Modules.BulkInstall", "DNN Platform\Modules\BulkInstall\Dnn.Modules.BulkInstall.csproj", "{B15D41DD-2D1A-490C-977F-2F14E56447D5}"
-EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Dnn.ClientSide", "DNN Platform\Dnn.ClientSide\Dnn.ClientSide.esproj", "{549CCB04-6321-4E6B-88C1-06FAC574D061}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetNuke.ContentSecurityPolicy", "DNN Platform\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj", "{33C9571D-E3AF-46FC-DC75-9CA082BBDC3D}"
