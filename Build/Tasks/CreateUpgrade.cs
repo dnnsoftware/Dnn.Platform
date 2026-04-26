@@ -3,10 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-
     using Cake.Common.Diagnostics;
     using Cake.Common.IO;
     using Cake.Frosting;
@@ -26,16 +22,16 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc />
         public override void Run(Context context)
         {
-            context.CreateDirectory(context.ArtifactsFolder);
+            context.CreateDirectory(context.ArtifactsDir);
             var excludes = new string[context.PackagingPatterns.InstallExclude.Length + context.PackagingPatterns.UpgradeExclude.Length];
             context.PackagingPatterns.InstallExclude.CopyTo(excludes, 0);
             context.PackagingPatterns.UpgradeExclude.CopyTo(excludes, context.PackagingPatterns.InstallExclude.Length);
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, IncludeAll, excludes);
-            files.Add(context.GetFilesByPatterns(context.WebsiteFolder, context.PackagingPatterns.UpgradeInclude));
+            var files = context.GetFilesByPatterns(context.WebsiteDir, IncludeAll, excludes);
+            files.Add(context.GetFilesByPatterns(context.WebsiteDir, context.PackagingPatterns.UpgradeInclude));
             context.Information("Zipping {0} files for Upgrade zip", files.Count);
 
-            var packageZip = $"{context.ArtifactsFolder}DNN_Platform_{context.GetBuildNumber()}_Upgrade.zip";
-            context.Zip(context.WebsiteFolder, packageZip, files);
+            var packageZip = context.ArtifactsDir + context.File($"DNN_Platform_{context.GetBuildNumber()}_Upgrade.zip");
+            context.Zip(context.WebsiteDir, packageZip, files);
         }
     }
 }

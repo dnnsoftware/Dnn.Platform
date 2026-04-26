@@ -5,7 +5,6 @@ namespace DotNetNuke.Build
 {
     using System;
     using System.Globalization;
-    using System.IO;
 
     using Cake.Common;
     using Cake.Common.Build;
@@ -15,6 +14,7 @@ namespace DotNetNuke.Build
     using Cake.Common.Tools.GitVersion;
     using Cake.Core;
     using Cake.Core.Diagnostics;
+    using Cake.Core.IO;
     using Cake.Frosting;
     using Cake.Json;
 
@@ -42,26 +42,26 @@ namespace DotNetNuke.Build
                 //////////////////////////////////////////////////////////////////////
 
                 // Define directories.
-                this.TempFolder = "./Temp/";
-                this.TempDir = context.Directory(this.TempFolder);
+                this.RootDir = context.MakeAbsolute(context.Directory("./"));
+                context.Verbose($"RootDir: {this.RootDir}");
+
+                this.TempDir = context.Directory("./Temp/");
                 context.Information($"TempDir: {this.TempDir}");
 
-                this.ArtifactsFolder = "./Artifacts/";
-                this.ArtifactsDir = context.Directory(this.ArtifactsFolder);
+                this.ArtifactsDir = context.Directory("./Artifacts/");
                 context.Information($"ArtifactsDir: {this.ArtifactsDir}");
 
-                this.WebsiteFolder = "./Website/";
-                this.WebsiteDir = context.Directory(this.WebsiteFolder);
+                this.WebsiteDir = context.Directory("./Website/");
                 context.Information($"WebsiteDir: {this.WebsiteDir}");
 
                 // Global information variables
                 this.IsRunningInCI = false;
 
-                this.DnnSolutionPath = "./DNN_Platform.sln";
+                this.DnnSolutionPath = context.File("./DNN_Platform.sln");
 
                 this.SqlDataProviderExists = false;
 
-                const string settingsFile = "./settings.local.json";
+                var settingsFile = context.File("./settings.local.json");
                 this.Settings = LoadSettings(context, settingsFile);
                 this.WriteSettings(context, settingsFile);
 
@@ -94,28 +94,22 @@ namespace DotNetNuke.Build
         public bool SqlDataProviderExists { get; set; }
 
         /// <summary>Gets or sets the path to the DNN solution.</summary>
-        public string DnnSolutionPath { get; set; }
+        public FilePath DnnSolutionPath { get; set; }
 
         /// <summary>Gets or sets a value indicating whether this build is running in a CI environment.</summary>
         public bool IsRunningInCI { get; set; }
 
+        /// <summary>Gets or sets the path to the root of the repository.</summary>
+        public DirectoryPath RootDir { get; set; }
+
         /// <summary>Gets or sets the path to the website directory.</summary>
         public ConvertableDirectoryPath WebsiteDir { get; set; }
-
-        /// <summary>Gets or sets the relative path to the website directory.</summary>
-        public string WebsiteFolder { get; set; }
 
         /// <summary>Gets or sets the path to the artifacts directory.</summary>
         public ConvertableDirectoryPath ArtifactsDir { get; set; }
 
-        /// <summary>Gets or sets the relative path to the artifacts directory.</summary>
-        public string ArtifactsFolder { get; set; }
-
         /// <summary>Gets or sets the path to the temp directory.</summary>
         public ConvertableDirectoryPath TempDir { get; set; }
-
-        /// <summary>Gets or sets the relative path to the temp directory.</summary>
-        public string TempFolder { get; set; }
 
         /// <summary>Gets or sets the build configuration, e.g. Debug or Release.</summary>
         public string BuildConfiguration { get; set; }
@@ -163,22 +157,22 @@ namespace DotNetNuke.Build
             return this.ProductVersion;
         }
 
-        private static LocalSettings LoadSettings(ICakeContext context, string settingsFile)
+        private static LocalSettings LoadSettings(ICakeContext context, FilePath settingsFile)
         {
-            if (File.Exists(settingsFile))
+            if (context.FileExists(settingsFile))
             {
-                context.Information((FormattableLogActionEntry log) => log($"Loading settings from {Path.GetFullPath(settingsFile)}"));
+                context.Information((FormattableLogActionEntry log) => log($"Loading settings from {settingsFile.FullPath}"));
                 return context.DeserializeJsonFromFile<LocalSettings>(settingsFile);
             }
 
-            context.Information((FormattableLogActionEntry log) => log($"Did not find settings file {Path.GetFullPath(settingsFile)}"));
+            context.Information((FormattableLogActionEntry log) => log($"Did not find settings file {settingsFile.FullPath}"));
             return new LocalSettings();
         }
 
-        private void WriteSettings(ICakeContext context, string settingsFile)
+        private void WriteSettings(ICakeContext context, FilePath settingsFile)
         {
             context.SerializeJsonToPrettyFile(settingsFile, this.Settings);
-            context.Information((FormattableLogActionEntry log) => log($"Saved settings to {Path.GetFullPath(settingsFile)}"));
+            context.Information((FormattableLogActionEntry log) => log($"Saved settings to {settingsFile.FullPath}"));
             context.Debug(log => log("{0}", $"Settings: {context.SerializeJson(this.Settings)}"));
         }
     }

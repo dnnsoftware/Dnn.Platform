@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
+    using Cake.Common.IO;
     using Cake.Frosting;
 
     /// <summary>A cake task to compile the platform and create all of the packages.</summary>
@@ -27,11 +28,11 @@ namespace DotNetNuke.Build.Tasks
 
         private static void RevertSqlDataProvider(Context context)
         {
-            var fileName = context.GetTwoDigitsVersionNumber() + ".SqlDataProvider";
-            var filePath = "./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/" + fileName;
-            if (!context.SqlDataProviderExists && System.IO.File.Exists(filePath))
+            var fileName = context.File($"{context.GetTwoDigitsVersionNumber()}.SqlDataProvider");
+            var filePath = context.Directory("./Dnn Platform/Website/Providers/DataProviders/SqlDataProvider/") + fileName;
+            if (!context.SqlDataProviderExists && context.FileExists(filePath))
             {
-                System.IO.File.Delete(filePath);
+                context.DeleteFile(filePath);
             }
         }
     }

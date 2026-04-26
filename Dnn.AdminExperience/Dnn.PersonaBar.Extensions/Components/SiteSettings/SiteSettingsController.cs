@@ -259,8 +259,8 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                     break;
             }
 
-            var providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + providerName + "']") ??
-                                    configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + package.Name + "']");
+            var providerNavigator = configDoc.CreateNavigator()?.SelectSingleNode(XmlUtils.CreateXPathExpression("/configuration/dotnetnuke/*/providers/add[@name=$providerName]", new KeyValuePair<string, object>("providerName", providerName))) ??
+                                    configDoc.CreateNavigator()?.SelectSingleNode(XmlUtils.CreateXPathExpression("/configuration/dotnetnuke/*/providers/add[@name=$packageName]", new KeyValuePair<string, object>("packageName", package.Name)));
 
             if (providerNavigator != null)
             {
@@ -312,7 +312,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
 
         private static void UpdateResourceFileNode(XmlDocument xmlDoc, string key, string text)
         {
-            var node = xmlDoc.SelectSingleNode("//root/data[@name='" + key + "']/value");
+            var node = xmlDoc.CreateNavigator()?.SelectSingleNode(XmlUtils.CreateXPathExpression("//root/data[@name='$key']/value", new KeyValuePair<string, object>("key", key)));
             if (node == null)
             {
                 // missing entry
@@ -321,7 +321,7 @@ namespace Dnn.PersonaBar.SiteSettings.Components
                 attr.Value = key;
                 nodeData.Attributes.Append(attr);
                 xmlDoc.SelectSingleNode("//root").AppendChild(nodeData);
-                node = nodeData.AppendChild(xmlDoc.CreateElement("value"));
+                node = nodeData.AppendChild(xmlDoc.CreateElement("value")).CreateNavigator();
             }
 
             node.InnerXml = HttpUtility.HtmlEncode(text);

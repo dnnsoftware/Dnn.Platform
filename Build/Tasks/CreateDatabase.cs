@@ -12,6 +12,8 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Xml;
     using Cake.Frosting;
 
+    using Dnn.CakeUtils;
+
     using Microsoft.Data.SqlClient;
 
     /// <summary>A cake task to crete a localdb database named <c>Dnn_Platform</c>.</summary>
@@ -59,10 +61,7 @@ namespace DotNetNuke.Build.Tasks
                 // #####################################################################
                 // run initial schema first
                 // #####################################################################
-                var fileContents = System.IO.File.ReadAllText(
-                    "./Website/Providers/DataProviders/SqlDataProvider/"
-                    + schemaScriptName.ToString()
-                    + ".SqlDataProvider");
+                var fileContents = context.ReadFile($"./Website/Providers/DataProviders/SqlDataProvider/{schemaScriptName}.SqlDataProvider");
 
                 var sqlDelimiterRegex = new System.Text.RegularExpressions.Regex(
                     @"(?<=(?:[^\w]+|^))GO(?=(?: |\t)*?(?:\r?\n|$))",
@@ -125,7 +124,7 @@ namespace DotNetNuke.Build.Tasks
                         {
                             context.Information("Updated to v{0}", currentFileToProcess);
 
-                            fileContents = System.IO.File.ReadAllText(file.ToString());
+                            fileContents = context.ReadFile(file);
 
                             sqlStatements = sqlDelimiterRegex.Split(fileContents);
                             foreach (string statement in sqlStatements)

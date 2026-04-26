@@ -222,11 +222,11 @@
 	};
 
 	function unescapeSingleQuote( str ) {
-		return str.replace( /\\'/g, '\'' );
+		return str.replace( /\\'/g, '\'' ).replace(/\\\\/g, '\\');
 	}
 
 	function escapeSingleQuote( str ) {
-		return str.replace( /'/g, '\\$&' );
+		return str.replace( /'/g, '\\$&' ).replace(/\\/g, '\\\\');
 	}
 
 	function protectEmailAddressAsEncodedString( address ) {

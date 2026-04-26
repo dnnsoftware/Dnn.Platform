@@ -11,6 +11,7 @@ namespace Dnn.ExportImport.Components.Common
     using System.Linq;
     using System.Text;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utilities.Internal;
 
     /// <summary>Provides compression utilites.</summary>
@@ -64,6 +65,7 @@ namespace Dnn.ExportImport.Components.Common
                         ((exceptionList != null && !exceptionList.Contains(entry.FullName)) || exceptionList == null) &&
                         !entry.FullName.EndsWith(@"\", StringComparison.Ordinal) && !entry.FullName.EndsWith("/", StringComparison.Ordinal) && entry.Length > 0))
             {
+                entry.CheckZipEntry();
                 var path = Path.GetDirectoryName(Path.Combine(extractFolder, entry.FullName));
                 if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
                 {
@@ -108,14 +110,20 @@ namespace Dnn.ExportImport.Components.Common
             }
 
             var fileEntry = archive.GetEntry(fileName);
+            if (fileEntry is null)
+            {
+                return;
+            }
+
+            fileEntry.CheckZipEntry();
             if (!File.Exists(Path.Combine(extractFolder, fileEntry.FullName)) || overwrite)
             {
-                fileEntry?.ExtractToFile(Path.Combine(extractFolder, fileName), overwrite);
+                fileEntry.ExtractToFile(Path.Combine(extractFolder, fileName), overwrite);
             }
 
             if (deleteFromSoure)
             {
-                fileEntry?.Delete();
+                fileEntry.Delete();
             }
         }
 

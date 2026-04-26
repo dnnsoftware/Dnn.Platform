@@ -46,7 +46,7 @@ namespace Dnn.ExportImport.Components.Controllers
             }
 
             importDto.ExportFileInfo =
-                GetExportFileInfo(Path.Combine(ExportFolder, importDto.PackageId, Constants.ExportManifestName));
+                GetExportFileInfo(Path.Combine(ExportFolder, Path.GetFileName(importDto.PackageId), Constants.ExportManifestName));
             var dataObject = JsonConvert.SerializeObject(importDto);
             var jobId = DataProvider.Instance().AddNewJob(
                 importDto.PortalId, userId, JobType.Import, null, null, importDto.PackageId, dataObject);
@@ -135,7 +135,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private static string GetPackageDbPath(string packageId)
         {
-            var importFolder = Path.Combine(ExportFolder, packageId);
+            var importFolder = Path.Combine(ExportFolder, Path.GetFileName(packageId));
             if (!IsValidImportFolder(importFolder))
             {
                 return null;

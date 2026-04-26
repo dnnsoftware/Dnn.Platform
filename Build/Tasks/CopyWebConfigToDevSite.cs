@@ -34,7 +34,7 @@ namespace DotNetNuke.Build.Tasks
                 .Replace("{DbOwner}", context.Settings.DbOwner)
                 .Replace("{ObjectQualifier}", context.Settings.ObjectQualifier);
             var res = context.XmlTransform(trans, conf);
-            var webConfig = context.File(System.IO.Path.Combine(context.Settings.WebsitePath, "web.config"));
+            var webConfig = context.Settings.WebsitePath + context.File("web.config");
             context.FileWriteText(webConfig, res);
         }
     }

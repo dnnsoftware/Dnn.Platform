@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Installer.Writers
 {
+    using System.Collections.Generic;
     using System.Xml;
     using System.Xml.XPath;
 
@@ -18,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Writers
             : base(package)
         {
             XmlDocument configDoc = Config.Load();
-            XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + package.Name + "']");
+            XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode(XmlUtils.CreateXPathExpression("/configuration/dotnetnuke/*/providers/add[@name=$packageName]", new KeyValuePair<string, object>("packageName", package.Name)));
             string providerPath = Null.NullString;
             if (providerNavigator != null)
             {

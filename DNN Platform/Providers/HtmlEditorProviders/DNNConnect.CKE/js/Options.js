@@ -189,7 +189,7 @@
             a.show();
             input.hide();
 
-            a.html(input.val());
+            a.text(input.val());
 
             $(this).hide();
 
@@ -203,7 +203,7 @@
             a.hide();
             input.show();
 
-            input.val(a.html()).focus();
+            input.val(a.text()).focus();
 
             input.next().css('display', 'inline-block');
         });
@@ -220,8 +220,8 @@
             $(this).parent(".groupItem").children(".groupButtons").children("li").each(function (e) {
                 var $item = $(this);
 
-                if ($item.attr('class').indexOf('separator') == -1 &&
-                    $item.attr('class').indexOf('rowBreak') == -1) {
+                if ($item.attr('class').indexOf('separator') === -1 &&
+                    $item.attr('class').indexOf('rowBreak') === -1) {
 
                     $item.children(".ui-icon").remove();
                     $(".availableButtons").children(".separator").before($item);
@@ -237,8 +237,8 @@
         $(".groupButtons .ui-icon-cancel").click(function () {
             var $item = $(this).parent("li");
 
-            if ($item.attr('class').indexOf('separator') == -1 &&
-               $item.attr('class').indexOf('rowBreak') == -1) {
+            if ($item.attr('class').indexOf('separator') === -1 &&
+               $item.attr('class').indexOf('rowBreak') === -1) {
                 $item.children(".ui-icon").remove();
                 $(".availableButtons").children(".separator").before($item);
             } else {

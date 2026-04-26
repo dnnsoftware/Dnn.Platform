@@ -1,4 +1,4 @@
-﻿name: "Build and Validate"
+name: "Build and Validate"
 
 env:
   CAKE_TARGET: "BuildAll"
@@ -7,11 +7,10 @@ env:
   RUN_TESTS: "true"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-permissions:
-  contents: "read"
+permissions: {}
 
 on:
   push:
@@ -131,7 +130,7 @@ jobs:
 
       - name: "Publish Artifacts"
         id: "publish-artifacts-step"
-        uses: "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f" # v7.0.0
+        uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a" # v7.0.1
         if: ${{ !cancelled() }}
         with:
           path: "Artifacts"

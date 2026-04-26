@@ -169,10 +169,10 @@ namespace DotNetNuke.Services.Localization
                     return false;
                 }
 
-                XmlNode reskeyNode = doc.SelectSingleNode("root/data[@name=\"" + key + "\"]");
+                var reskeyNode = doc.CreateNavigator().SelectSingleNode(XmlUtils.CreateXPathExpression("root/data[@name=$key]", new KeyValuePair<string, object>("key", key)));
                 if (reskeyNode != null)
                 {
-                    reskeyNode.SelectSingleNode("value").InnerText = value;
+                    reskeyNode.SelectSingleNode("value").SetValue(value);
                 }
                 else
                 {

@@ -19,19 +19,19 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc />
         public override void Run(Context context)
         {
-            context.CreateDirectory(context.ArtifactsFolder);
-            var packageZip = $"{context.ArtifactsFolder}DNN_Platform_{context.GetBuildNumber()}_Symbols.zip";
+            context.CreateDirectory(context.ArtifactsDir);
+            var packageZip = context.ArtifactsDir + context.File($"DNN_Platform_{context.GetBuildNumber()}_Symbols.zip");
             context.Zip("./Build/Symbols/", packageZip, context.GetFiles("./Build/Symbols/*"));
 
             // Fix for WebUtility symbols missing from bin folder
             context.CopyFiles(
                 context.GetFiles("./DNN Platform/DotNetNuke.WebUtility/bin/DotNetNuke.WebUtility.*"),
-                context.WebsiteFolder + "bin/");
+                context.WebsiteDir + context.Directory("bin/"));
             var files = context.GetFilesByPatterns(
-                context.WebsiteFolder,
+                context.WebsiteDir,
                 context.PackagingPatterns.SymbolsInclude,
                 context.PackagingPatterns.SymbolsExclude);
-            var resFile = context.ZipToBytes(context.WebsiteFolder.TrimEnd('/'), files);
+            var resFile = context.ZipToBytes(context.WebsiteDir, files);
             context.AddBinaryFileToZip(packageZip, resFile, "Resources.zip", true);
         }
     }
