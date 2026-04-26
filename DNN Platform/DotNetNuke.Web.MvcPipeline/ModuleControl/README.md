@@ -187,22 +187,7 @@ Provides convenient extension methods for all MVC module controls:
 - **Settings Access**: `GetModuleSetting<T>()` with type conversion
 - **State Checking**: `EditMode()`, `IsEditable()`
 
-### 5. Resource Management
-
-#### IResourcable Interface
-Modules can implement this interface to automatically manage CSS and JavaScript resources.
-
-#### ModuleResources System
-- Automatic resource registration
-- Priority-based loading
-- File existence validation
-- Caching for performance
-- Independent of the pipeline
-
-### 6. Utilities
-
-#### MvcModuleControlRenderer<T>
-Provides rendering capabilities for Razor-based module controls outside of the normal MVC pipeline.
+### 5. Utilities
 
 #### MvcViewEngine
 A powerful utility class for rendering MVC views to strings outside of the standard MVC request pipeline. This class is essential for the MVC module control system as it enables view rendering in non-controller contexts.
@@ -252,35 +237,6 @@ public class WrapperModule : PortalModuleBase, IActionable
             
         if (mc is IResourcable resourcable)
             resourcable.RegisterResources(this.Page);
-    }
-}
-```
-
-### DemoModuleControl.cs
-A concrete implementation of `RazorModuleControlBase` showing how to create custom MVC module controls with dynamic view selection.
-
-**Key Features:**
-- **Dynamic View Routing**: Uses query string parameters to determine which view to render
-- **Multiple View Support**: Demonstrates rendering different views based on user input
-- **Custom View Paths**: Shows how to specify custom view file locations
-- **Model Passing**: Illustrates passing data models to views
-
-**Implementation Example:**
-```csharp
-public class DemoModuleControl : RazorModuleControlBase
-{
-    public override IRazorModuleResult Invoke()
-    {
-        // Dynamic view selection based on query parameters
-        switch (Request.QueryString["view"])
-        {
-            case "Terms":
-                return View("~/Views/Default/Terms.cshtml", "Terms content");
-            case "Privacy": 
-                return View("~/admin/Portal/Views/Privacy.cshtml", "Privacy content");
-            default:
-                return View("~/admin/Portal/Views/Terms.cshtml", "Default content");
-        }
     }
 }
 ```
