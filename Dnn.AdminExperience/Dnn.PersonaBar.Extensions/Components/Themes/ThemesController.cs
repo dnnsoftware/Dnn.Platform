@@ -99,9 +99,7 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
         if (Directory.Exists(themePath))
         {
             var fallbackSkin = theme.Type == ThemeType.Skin ? this.IsFallbackSkin(themePath) : this.IsFallbackContainer(themePath);
-
             var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.OrdinalIgnoreCase) != -1 ? "G" : "L";
-
             var canDeleteSkin = SkinController.CanDeleteSkin(this.hostSettings, themePath, portalSettings.HomeDirectoryMapPath);
             var arrFiles = Directory.GetFiles(themePath, "*.ascx");
 
@@ -145,13 +143,14 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
     public ThemeFileInfo GetThemeFile(PortalSettings portalSettings, string filePath, ThemeType type)
     {
         var themeName = SkinController.FormatSkinPath(filePath)
-                        .Substring(filePath.IndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)
-                        .Replace("/", string.Empty);
+            .Substring(filePath.IndexOf("/", StringComparison.OrdinalIgnoreCase) + 1)
+            .Replace("/", string.Empty);
         var themeLevel = GetThemeLevel(filePath);
 
-        var themeInfo = (type == ThemeType.Skin ? this.GetLayouts(portalSettings, ThemeLevel.All)
-                                                : this.GetContainers(portalSettings, ThemeLevel.All))
-                        .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == themeLevel);
+        var themeInfo = (type == ThemeType.Skin
+                ? this.GetLayouts(portalSettings, ThemeLevel.All)
+                : this.GetContainers(portalSettings, ThemeLevel.All))
+            .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == themeLevel);
 
         if (themeInfo != null)
         {
@@ -510,58 +509,11 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
         }
 
         var strUrl = lowercasePath.Substring(filePath.IndexOf($@"\{strRootSkin}\", StringComparison.OrdinalIgnoreCase))
-                    .Replace(".ascx", string.Empty)
-                    .Replace(@"\", "/")
-                    .TrimStart('/');
+            .Replace(".ascx", string.Empty)
+            .Replace(@"\", "/")
+            .TrimStart('/');
 
         return $"[{strSkinType}]{strUrl}";
-    }
-
-    private string GetDefaultThemeFileName(string themePath, ThemeType type)
-    {
-        var themeFiles = new List<string>();
-        var folderPath = Path.Combine(this.appStatus.ApplicationMapPath, themePath);
-        themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
-
-        var defaultFile = themeFiles.FirstOrDefault(i =>
-        {
-            var fileName = Path.GetFileNameWithoutExtension(i);
-            return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
-                : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
-        });
-
-        if (string.IsNullOrEmpty(defaultFile))
-        {
-            defaultFile = themeFiles.FirstOrDefault();
-        }
-
-        return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
-    }
-
-    private List<ThemeInfo> GetThemes(ThemeType type, string strRoot)
-    {
-        if (!Directory.Exists(strRoot))
-        {
-            return [];
-        }
-
-        return (
-            from strFolder in Directory.GetDirectories(strRoot)
-            let strName = strFolder.Substring(strFolder.LastIndexOf(@"\", StringComparison.Ordinal) + 1)
-            where strName != "_default"
-            let themePath = strFolder.Replace(this.appStatus.ApplicationMapPath, string.Empty).TrimStart('\\').ToLowerInvariant()
-            let isFallback = type == ThemeType.Skin ? this.IsFallbackSkin(themePath) : this.IsFallbackContainer(themePath)
-            let canDelete = !isFallback && SkinController.CanDeleteSkin(this.hostSettings, strFolder, PortalSettings.Current.HomeDirectoryMapPath)
-            let defaultThemeFile = this.GetDefaultThemeFileName(themePath, type)
-            select new ThemeInfo
-            {
-                PackageName = strName,
-                Type = type,
-                Path = themePath,
-                DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
-                Thumbnail = this.GetThumbnail(themePath, defaultThemeFile),
-                CanDelete = canDelete,
-            }).ToList();
     }
 
     private static void UpdateManifest(PortalSettings portalSettings, UpdateThemeInfo updateTheme)
@@ -640,6 +592,53 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
         {
             Logger.ComponentsThemesControllerUpdateManifestException(ex);
         }
+    }
+
+    private string GetDefaultThemeFileName(string themePath, ThemeType type)
+    {
+        var themeFiles = new List<string>();
+        var folderPath = Path.Combine(this.appStatus.ApplicationMapPath, themePath);
+        themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
+
+        var defaultFile = themeFiles.FirstOrDefault(i =>
+        {
+            var fileName = Path.GetFileNameWithoutExtension(i);
+            return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
+                : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
+        });
+
+        if (string.IsNullOrEmpty(defaultFile))
+        {
+            defaultFile = themeFiles.FirstOrDefault();
+        }
+
+        return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
+    }
+
+    private List<ThemeInfo> GetThemes(ThemeType type, string strRoot)
+    {
+        if (!Directory.Exists(strRoot))
+        {
+            return [];
+        }
+
+        return (
+            from strFolder in Directory.GetDirectories(strRoot)
+            let strName = strFolder.Substring(strFolder.LastIndexOf(@"\", StringComparison.Ordinal) + 1)
+            where strName != "_default"
+            let themePath = strFolder.Replace(this.appStatus.ApplicationMapPath, string.Empty).TrimStart('\\').ToLowerInvariant()
+            let isFallback = type == ThemeType.Skin ? this.IsFallbackSkin(themePath) : this.IsFallbackContainer(themePath)
+            let canDelete = !isFallback && SkinController.CanDeleteSkin(this.hostSettings, strFolder, PortalSettings.Current.HomeDirectoryMapPath)
+            let defaultThemeFile = this.GetDefaultThemeFileName(themePath, type)
+            select new ThemeInfo
+            {
+                PackageName = strName,
+                Type = type,
+                Path = themePath,
+                DefaultThemeFile = FormatThemePath(PortalSettings.Current, strFolder, defaultThemeFile, type),
+                Thumbnail = this.GetThumbnail(themePath, defaultThemeFile),
+                CanDelete = canDelete,
+            }).ToList();
     }
 
     private string GetThumbnail(string themePath, string themeFileName)

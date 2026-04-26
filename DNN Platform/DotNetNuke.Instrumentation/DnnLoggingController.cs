@@ -13,6 +13,8 @@ namespace DotNetNuke.Instrumentation
     /// <summary>Provides centralized logging functionality for DNN Platform using Serilog.</summary>
     public class DnnLoggingController
     {
+        private static ILoggerFactory loggerFactory;
+
         /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
         /// <typeparam name="T">The type for which to create the logger.</typeparam>
         /// <returns>An <see cref="ILogger{T}"/> instance configured with Serilog.</returns>
@@ -29,7 +31,7 @@ namespace DotNetNuke.Instrumentation
                 SerilogController.AddSerilog(applicationMapPath);
             }
 
-            return new SerilogLoggerFactory(Log.Logger).CreateLogger<T>();
+            return GetSerilogLoggerFactory().CreateLogger<T>();
         }
 
         /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
@@ -48,7 +50,7 @@ namespace DotNetNuke.Instrumentation
                 SerilogController.AddSerilog(applicationMapPath);
             }
 
-            return new SerilogLoggerFactory(Log.Logger).CreateLogger(type);
+            return GetSerilogLoggerFactory().CreateLogger(type);
         }
 
         /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
@@ -67,7 +69,7 @@ namespace DotNetNuke.Instrumentation
                 SerilogController.AddSerilog(applicationMapPath);
             }
 
-            return new SerilogLoggerFactory(Log.Logger).CreateLogger(categoryName);
+            return GetSerilogLoggerFactory().CreateLogger(categoryName);
         }
 
         /// <summary>Adds a property to the Serilog log context.</summary>
@@ -81,6 +83,19 @@ namespace DotNetNuke.Instrumentation
         public static void AddToLogContext(string key, object value)
         {
             Serilog.Context.LogContext.PushProperty(key, value);
+        }
+
+        private static ILoggerFactory GetSerilogLoggerFactory()
+        {
+            if (loggerFactory == null)
+            {
+                // initialize Serilog
+                var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+                SerilogController.AddSerilog(applicationMapPath);
+            }
+
+            loggerFactory = new SerilogLoggerFactory(Log.Logger);
+            return loggerFactory;
         }
     }
 }
