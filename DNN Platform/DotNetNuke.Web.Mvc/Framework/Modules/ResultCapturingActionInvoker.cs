@@ -54,15 +54,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                         FolderPath = moduleInfo.DesktopModule.FolderName,
                     };
 
-                    moduleApplication.ViewEngines.Add(
-                        new ModuleDelegatingViewEngine(
-                            new HostSettings(
-                                new HostController(
-#pragma warning disable CS0618 // Type or member is obsolete
-                                    new EventLogController(),
-#pragma warning restore CS0618 // Type or member is obsolete
-                                    new Lazy<IPortalController>(() => PortalController.Instance)))));
-
                     moduleApplication.Init();
 
                     dnnController.ViewEngineCollectionEx = moduleApplication.ViewEngines;
