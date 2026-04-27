@@ -550,7 +550,6 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-height: "npm:^3.0.2"
     react-hot-loader: "npm:^4.13.1"
-    react-modal: "npm:^3.16.3"
     react-motion: "npm:^0.5.2"
     react-scrollbar: "npm:^0.5.6"
     react-slider: "npm:2.0.6"
@@ -14029,7 +14028,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-modal@npm:3.16.3, react-modal@npm:^3.16.3":
+"react-modal@npm:3.16.3":
   version: 3.16.3
   resolution: "react-modal@npm:3.16.3"
   dependencies:
