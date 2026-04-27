@@ -1,8 +1,5 @@
 import React, { Component } from "react";
-import ReactModal from "react-modal";
 import Modal from "./index";
-
-ReactModal.setAppElement("body");
 
 const storyStyle = {
     overlay: {
