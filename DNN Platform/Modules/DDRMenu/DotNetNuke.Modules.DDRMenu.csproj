@@ -184,17 +184,9 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Module.build" />
-    <Content Include="web.config" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="BuildScripts\" />
-    <Folder Include="Packages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">

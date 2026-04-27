@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" VersionOverride="10.0.1" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride="10.0.1" />
-    <PackageReference Include="Microsoft.Identity.Client" VersionOverride="4.81.0" />
+    <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Identity.Client" />
     <PackageReference Include="Microsoft.AspNet.Mvc" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="Microsoft.Web.Infrastructure" />

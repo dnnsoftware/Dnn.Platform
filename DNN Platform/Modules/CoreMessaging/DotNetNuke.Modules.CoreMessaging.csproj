@@ -105,7 +105,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Module.build" />
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ie-messages.css" />

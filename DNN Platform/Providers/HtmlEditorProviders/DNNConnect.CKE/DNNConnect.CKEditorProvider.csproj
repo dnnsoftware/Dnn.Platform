@@ -73,9 +73,6 @@
     <WarningsNotAsErrors>SA1600</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.ApplicationBlocks.Data">
-      <HintPath>..\..\..\Components\DataAccessBlock\bin\Microsoft.ApplicationBlocks.Data.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.JScript" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -405,16 +402,9 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Tabs.ashx" />
-    <Content Include="web.config" />
     <Content Include="Provider.build">
       <SubType>Designer</SubType>
     </Content>
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">

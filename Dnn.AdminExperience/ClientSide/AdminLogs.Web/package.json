@@ -1,6 +1,6 @@
 {
   "name": "admin-logs",
-  "version": "10.3.1",
+  "version": "10.3.2",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -9,7 +9,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.1",
+    "@dnnsoftware/dnn-react-common": "10.3.2",
     "@rsbuild/core": "^1.7.3",
     "@rsbuild/plugin-less": "^1.6.2",
     "@rsbuild/plugin-react": "^1.4.6",
@@ -19,7 +19,7 @@
     "es6-object-assign": "1.1.0",
     "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^16.5.0",
+    "globals": "^17.4.0",
     "less": "4.6.4",
     "prop-types": "15.8.1",
     "react": "^16.14.0",

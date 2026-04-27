@@ -7,6 +7,8 @@ updates:
     labels:
       - "Type: Build/Release"
       - "Type: Maintenance"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -15,6 +17,8 @@ updates:
     labels:
       - "javascript"
       - "Type: Maintenance"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "dotnet-sdk"
     directory: "/"
@@ -24,6 +28,8 @@ updates:
     labels:
       - ".NET"
       - "Type: Maintenance"
+    cooldown:
+      default-days: 7
 
   - package-ecosystem: "nuget"
     directory: "/"
@@ -65,3 +71,5 @@ updates:
       CodeAnalysis:
         patterns:
           - "Microsoft.CodeAnalysis.*"
+    cooldown:
+      default-days: 7

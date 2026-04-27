@@ -1031,9 +1031,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
 
             List<Toolbar> toolBars;
 
-            using (
-                var textReader =
-                    new StreamReader(new FileStream(oldXmlPath, FileMode.Open, FileAccess.Read, FileShare.Read)))
+            using (var textReader = new StreamReader(new FileStream(oldXmlPath, FileMode.Open, FileAccess.Read, FileShare.Read)))
             {
                 toolBars = (List<Toolbar>)oldSerializer.Deserialize(textReader);
 
@@ -1073,7 +1071,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 listToolbarsSets.Add(toolbarSet);
             }
 
-            // Save update new xml file
+            // Save update new XML file
             var newSerializer = new XmlSerializer(typeof(List<ToolbarSet>));
 
             using (var textWriter = new StreamWriter(Path.Combine(homeDirPath, SettingConstants.ToolbarSetXmlFileName)))
@@ -1083,7 +1081,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
                 textWriter.Close();
             }
 
-            // Delete old xml file
+            // Delete old XML file
             File.Delete(Path.Combine(homeDirPath, SettingConstants.ToolbarXmlFileName));
         }
     }

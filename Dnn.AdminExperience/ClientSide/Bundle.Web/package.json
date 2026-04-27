@@ -1,6 +1,6 @@
 {
   "name": "export-bundle",
-  "version": "10.3.1",
+  "version": "10.3.2",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -17,7 +17,7 @@
     "es6-promise": "4.2.8",
     "eslint": "9.39.4",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^16.5.0",
+    "globals": "^17.4.0",
     "less": "4.6.4",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
@@ -42,6 +42,6 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.1"
+    "@dnnsoftware/dnn-react-common": "10.3.2"
   }
 }

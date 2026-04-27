@@ -87,12 +87,12 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(ICryptographyProvider cryptographyProvider, string value, string encryptionKey)
         {
-            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
-            var toDecrypt = new StringBuilder(value);
-            toDecrypt.Replace('_', '/');
-            toDecrypt.Replace('-', '+');
-            toDecrypt.Replace("%3d", "=");
-            return cryptographyProvider.DecryptParameter(toDecrypt.ToString(), encryptionKey, cryptographyProvider.EncryptParameterAlgorithmName);
+            return DecryptParameter(DecryptWithCryptographyProvider, value, encryptionKey);
+
+            string DecryptWithCryptographyProvider(string message, string passphrase)
+            {
+                return cryptographyProvider.DecryptParameter(message, passphrase, cryptographyProvider.EncryptParameterAlgorithmName);
+            }
         }
 
         /// <summary>Encodes a value (using base64) for placing in a URL.</summary>
@@ -571,6 +571,21 @@ namespace DotNetNuke.Common.Utilities
                 response.Write("404 Not Found");
                 response.End();
             }
+        }
+
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string,string)"/>.</summary>
+        /// <param name="decrypt">A function which takes the encrypted message and passphrase and returns the decrypted message.</param>
+        /// <param name="value">The encrypted value.</param>
+        /// <param name="encryptionKey">The key used to encrypt the value.</param>
+        /// <returns>The decrypted value.</returns>
+        internal static string DecryptParameter(Func<string, string, string> decrypt, string value, string encryptionKey)
+        {
+            // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modified Base64
+            var toDecrypt = new StringBuilder(value);
+            toDecrypt.Replace('_', '/');
+            toDecrypt.Replace('-', '+');
+            toDecrypt.Replace("%3d", "=");
+            return decrypt(toDecrypt.ToString(), encryptionKey);
         }
     }
 }

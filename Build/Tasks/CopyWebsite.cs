@@ -17,7 +17,7 @@ namespace DotNetNuke.Build.Tasks
         /// <inheritdoc />
         public override void Run(Context context)
         {
-            context.CopyFiles(context.GetFiles("./DNN Platform/Website/**/*"), context.WebsiteFolder, true);
+            context.CopyFiles(context.GetFiles("./DNN Platform/Website/**/*"), context.WebsiteDir, true);
         }
     }
 }

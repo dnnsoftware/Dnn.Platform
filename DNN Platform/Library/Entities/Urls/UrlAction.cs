@@ -11,6 +11,7 @@ namespace DotNetNuke.Entities.Urls
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
 
     /// <summary>The UrlAction class keeps state of the current Request throughout the rewriting process.</summary>
@@ -257,13 +258,13 @@ namespace DotNetNuke.Entities.Urls
 
         public void SetRedirectAllowed(string path, FriendlyUrlSettings settings)
         {
-            string regexExpr = settings.DoNotRedirectRegex;
             try
             {
-                if (!string.IsNullOrEmpty(regexExpr))
+                if (!string.IsNullOrEmpty(settings.DoNotRedirectRegex))
                 {
                     // if a regex match, redirect Not allowed
-                    this.RedirectAllowed = !Regex.IsMatch(path, regexExpr, RegexOptions.IgnoreCase);
+                    var doNotRedirectRegex = RegexUtils.GetCachedRegex(settings.DoNotRedirectRegex, RegexOptions.IgnoreCase);
+                    this.RedirectAllowed = !doNotRedirectRegex.IsMatch(path);
                 }
                 else
                 {

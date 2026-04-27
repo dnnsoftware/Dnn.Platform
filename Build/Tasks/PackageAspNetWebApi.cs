@@ -4,11 +4,5 @@
 namespace DotNetNuke.Build.Tasks;
 
 /// <summary>A cake task to generate the ASP.NET Web API package.</summary>
-public sealed class PackageAspNetWebApi : PackageComponentTask
-{
-    /// <summary>Initializes a new instance of the <see cref="PackageAspNetWebApi"/> class.</summary>
-    public PackageAspNetWebApi()
-        : base("AspNetWebApi", "System.Web.Http.dll", "Microsoft.AspNetWebApi")
-    {
-    }
-}
+public sealed class PackageAspNetWebApi()
+    : PackageComponentTaskBase("AspNetWebApi", "System.Web.Http.dll", "Microsoft.AspNetWebApi");

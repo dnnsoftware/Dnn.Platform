@@ -4,8 +4,6 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
-    using System.IO;
-    using System.Linq;
 
     using Cake.Common.Diagnostics;
     using Cake.Core;
@@ -19,7 +17,7 @@ namespace DotNetNuke.Build.Tasks
     {
         private const string ScriptsPath = @".\Build\Tasks\sql\";
 
-        private static readonly string[] GoStatement = { "\r\nGO\r\n", "\nGO\n", "\nGO\r\n", "\r\nGO\n", };
+        private static readonly string[] GoStatement = ["\r\nGO\r\n", "\nGO\n", "\nGO\r\n", "\r\nGO\n",];
 
         /// <inheritdoc />
         public override void Run(Context context)
@@ -50,7 +48,7 @@ namespace DotNetNuke.Build.Tasks
         {
             var dbPath = context.FileSystem.GetDirectory(context.Settings.DatabasePath);
             dbPath.Create();
-            var fullDbPath = Path.GetFullPath(dbPath.Path.FullPath);
+            var fullDbPath = System.IO.Path.GetFullPath(dbPath.Path.FullPath);
 
             return script.Replace("{DBName}", context.Settings.DnnDatabaseName)
                 .Replace("{DBPath}", fullDbPath)

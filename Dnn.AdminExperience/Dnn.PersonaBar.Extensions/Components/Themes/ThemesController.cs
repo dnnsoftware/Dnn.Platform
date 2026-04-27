@@ -618,26 +618,30 @@ namespace Dnn.PersonaBar.Themes.Components
                     xmlDoc.Load(objectsReader);
                 }
 
-                var xmlToken = xmlDoc.DocumentElement.SelectSingleNode($"descendant::Object[Token='[{updateTheme.Token}]']");
+                var xmlToken = xmlDoc.DocumentElement?.CreateNavigator().SelectSingleNode(XmlUtils.CreateXPathExpression("descendant::Object[Token='[$token]']", new KeyValuePair<string, object>("token", updateTheme.Token)));
                 if (xmlToken == null)
                 {
                     // add token
                     string strToken = $"<Token>[{updateTheme.Token}]</Token><Settings></Settings>";
-                    xmlToken = xmlDoc.CreateElement("Object");
+                    xmlToken = xmlDoc.CreateElement("Object").CreateNavigator();
                     xmlToken.InnerXml = strToken;
-                    xmlDoc.SelectSingleNode("Objects").AppendChild(xmlToken);
-                    xmlToken = xmlDoc.DocumentElement.SelectSingleNode($"descendant::Object[Token='[{updateTheme.Token}]']");
+                    xmlDoc.SelectSingleNode("Objects")?.CreateNavigator().AppendChild(xmlToken);
+                    xmlToken = xmlDoc.DocumentElement?.CreateNavigator().SelectSingleNode(XmlUtils.CreateXPathExpression("descendant::Object[Token='[$token]']", new KeyValuePair<string, object>("token", updateTheme.Token)));
                 }
 
                 var strValue = updateTheme.Value;
 
                 var blnUpdate = false;
-                foreach (XmlNode xmlSetting in xmlToken.SelectNodes(".//Settings/Setting"))
+                var settings = xmlToken?.Select(".//Settings/Setting");
+                if (settings is not null)
                 {
-                    if (xmlSetting.SelectSingleNode("Name").InnerText == updateTheme.Setting)
+                    foreach (XmlNode xmlSetting in settings)
                     {
-                        xmlSetting.SelectSingleNode("Value").InnerText = strValue;
-                        blnUpdate = true;
+                        if (xmlSetting.SelectSingleNode("Name")?.InnerText == updateTheme.Setting)
+                        {
+                            xmlSetting.SelectSingleNode("Value")?.InnerText = strValue;
+                            blnUpdate = true;
+                        }
                     }
                 }
 
@@ -646,7 +650,7 @@ namespace Dnn.PersonaBar.Themes.Components
                     var strSetting = $"<Name>{updateTheme.Setting}</Name><Value>{strValue}</Value>";
                     var xmlSetting = xmlDoc.CreateElement("Setting");
                     xmlSetting.InnerXml = strSetting;
-                    xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting);
+                    xmlToken.SelectSingleNode("Settings").AppendChild(xmlSetting.CreateNavigator());
                 }
 
                 try

@@ -136,9 +136,6 @@
     <Content Include="App_LocalResources\Settings.ascx.resx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="web.config" />
-  </ItemGroup>
-  <ItemGroup>
     <AdditionalFiles Include="..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>

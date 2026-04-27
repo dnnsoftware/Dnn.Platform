@@ -3,10 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-
     using Cake.Common.Diagnostics;
     using Cake.Common.IO;
     using Cake.FileHelpers;
@@ -40,7 +36,7 @@ namespace DotNetNuke.Build.Tasks
                 }
 
                 context.Information("Transforming: " + file);
-                var transformFile = context.File(Path.GetTempFileName());
+                var transformFile = context.File(System.IO.Path.GetTempFileName());
                 context.FileAppendText(transformFile, GetXdtTransformation(context));
                 context.XdtTransformConfig(file, transformFile, file);
             }

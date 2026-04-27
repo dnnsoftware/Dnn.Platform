@@ -107,9 +107,9 @@ if (typeof dnn.controls === "undefined" || dnn.controls === null) { dnn.controls
         _buildGridRow: function (table, data, type) {
             var header = table.find('> tr:eq(0)');
             var cols = header.find('>td:not(:first-child)');
-            var row = $('<tr class="dnnItem ' + (table.find('> tr').length % 2 === 0 ? 'dnnGridAltItem' : 'dnnGridItem') + '"></tr>');
-            row.data('key', type == "users" ? data.userId : data.roleId);
-            row.append('<td class="permissionHeader">' + (type == "users" ? data.displayName : data.roleName) + "</td>");
+            var row = $('<tr></tr>', { class: "dnnItem" }).addClass(table.find('> tr').length % 2 === 0 ? 'dnnGridAltItem' : 'dnnGridItem');
+            row.data('key', type === "users" ? data.userId : data.roleId);
+            row.append($('<td></td>', { class: "permissionHeader", text: (type === "users" ? data.displayName : data.roleName) }));
             for (var i = 0; i < cols.length; i++) {
                 var headerCol = cols.eq(i);
                 var permissionId = headerCol.data('permissionId');
