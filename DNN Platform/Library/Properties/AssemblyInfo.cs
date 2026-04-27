@@ -1,4 +1,4 @@
-// Licensed to the .NET Foundation under one or more agreements.
+﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 using System;
@@ -56,3 +56,4 @@ using DotNetNuke.Application;
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Security.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("Dnn.PersonaBar.Users.Tests")] // Once Globals is refactored to Dependency Injection we should be able to remove this
 [assembly: InternalsVisibleTo("DNN.Integration.Test.Framework")]
+[assembly: InternalsVisibleTo("DotNetNuke.Web.MvcPipeline")]
