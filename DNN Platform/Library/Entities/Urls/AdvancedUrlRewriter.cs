@@ -2510,14 +2510,14 @@ namespace DotNetNuke.Entities.Urls
                     // if so, do the rewrite
                     if (result.RewritePath.StartsWith(result.Scheme, StringComparison.OrdinalIgnoreCase) || !result.RewritePath.StartsWith(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                     {
-                        if (!result.RewritePath.Contains(Globals.glbDefaultPage))
+                        if (!result.RewritePath.Contains(Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase))
                         {
                             RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
                         }
                         else
                         {
                             // if there is no TabId and we have the domain
-                            if (!result.RewritePath.Contains("tabId="))
+                            if (!result.RewritePath.Contains("tabId=", StringComparison.OrdinalIgnoreCase))
                             {
                                 RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
                             }
@@ -2829,7 +2829,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // 739 : catch no-extension 404 errors
                         string pathWithNoQs = result.OriginalPath;
-                        if (pathWithNoQs.Contains("?"))
+                        if (pathWithNoQs.Contains("?", StringComparison.Ordinal))
                         {
                             pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                         }
