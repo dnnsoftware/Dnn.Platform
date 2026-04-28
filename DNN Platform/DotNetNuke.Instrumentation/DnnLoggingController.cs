@@ -92,9 +92,9 @@ namespace DotNetNuke.Instrumentation
                 // initialize Serilog
                 var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
                 SerilogController.AddSerilog(applicationMapPath);
+                loggerFactory = new SerilogLoggerFactory(Log.Logger);
             }
 
-            loggerFactory = new SerilogLoggerFactory(Log.Logger);
             return loggerFactory;
         }
     }
