@@ -54,6 +54,6 @@ public partial class LogRequestContext : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    [LoggerMessage(Level = LogLevel.Warning, Message = "Adding property {Key} with value {Value} to log context")]
+    [LoggerMessage(Level = LogLevel.Debug, Message = "Adding property {Key} with value {Value} to log context")]
     private static partial void LogAddingProperty(ILogger logger, string key, object value);
 }
