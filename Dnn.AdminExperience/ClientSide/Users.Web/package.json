@@ -1,6 +1,6 @@
 {
   "name": "users",
-  "version": "10.3.2",
+  "version": "10.3.3",
   "private": true,
   "scripts": {
     "start": "rsbuild dev",
@@ -35,7 +35,7 @@
     "throttle-debounce": "^5.0.2"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.2",
+    "@dnnsoftware/dnn-react-common": "10.3.3",
     "localization": "^1.0.2",
     "react-widgets": "^5.8.6"
   }
