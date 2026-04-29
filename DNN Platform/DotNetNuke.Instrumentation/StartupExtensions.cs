@@ -3,8 +3,6 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Instrumentation;
 
-using System;
-
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
@@ -20,8 +18,8 @@ public static class StartupExtensions
     /// <param name="applicationMapPath">The path to the root of the DotNetNuke website. This is needed to find the correct directory to write the log files to.</param>
     public static void AddSerilog(this IServiceCollection services, string applicationMapPath)
     {
-        Environment.SetEnvironmentVariable("BASEDIR", applicationMapPath);
         SerilogController.AddSerilog(applicationMapPath);
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(null, true));
+        services.AddScoped<LogRequestContext>();
     }
 }

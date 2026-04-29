@@ -4,7 +4,6 @@
 namespace DotNetNuke.HttpModules.UrlRewrite
 {
     using System;
-    using System.Collections.Generic;
     using System.IO;
     using System.Text.RegularExpressions;
     using System.Threading;
@@ -22,6 +21,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
     using DotNetNuke.Services.EventQueue;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Logging;
 
     /// <summary>The basic URL rewriter.</summary>
@@ -256,11 +256,16 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 HttpContext.Current.Server.Transfer(strUrl);
             }
 
+            // Add PortalId to the log context for use in any logging that occurs during the request
+            // DnnLoggingController.AddToLogContext("PortalId", portalId);
+            this.serviceProvider.GetRequiredService<LogRequestContext>().AddToLogContext("PortalId", portalId);
+
             if (portalId != -1)
             {
                 // load the PortalSettings into current context
                 var portalSettings = new PortalSettings(tabId, portalAliasInfo as PortalAliasInfo);
                 app.Context.Items.Add("PortalSettings", portalSettings);
+                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", portalSettings.PortalId);
 
                 // load PortalSettings and HostSettings dictionaries into current context
                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way
