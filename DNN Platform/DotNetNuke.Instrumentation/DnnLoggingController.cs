@@ -7,25 +7,10 @@ namespace DotNetNuke.Instrumentation;
 using System;
 
 using Microsoft.Extensions.Logging;
-using Serilog;
-using Serilog.Extensions.Logging;
 
 /// <summary>Provides centralized logging functionality for DNN Platform using Serilog.</summary>
-public class DnnLoggingController
+public static class DnnLoggingController
 {
-    private static ILoggerFactory loggerFactory;
-
-    /// <summary>Initializes the Serilog logger factory.</summary>
-    /// <remarks>
-    /// This method can be called to explicitly initialize the logging system.
-    /// If not called explicitly, the logger factory will be initialized automatically
-    /// when the first logger is requested.
-    /// </remarks>
-    public static void InitializeLoggerFactory()
-    {
-        GetSerilogLoggerFactory();
-    }
-
     /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
     /// <typeparam name="T">The type for which to create the logger.</typeparam>
     /// <returns>An <see cref="ILogger{T}"/> instance configured with Serilog.</returns>
@@ -35,7 +20,7 @@ public class DnnLoggingController
     /// </remarks>
     public static ILogger<T> GetLogger<T>()
     {
-        return GetSerilogLoggerFactory().CreateLogger<T>();
+        return SimpleLoggerFactory.Instance.CreateLogger<T>();
     }
 
     /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
@@ -45,9 +30,9 @@ public class DnnLoggingController
     /// If Serilog has not been initialized, this method will automatically initialize it
     /// using the application's host path before creating the logger.
     /// </remarks>
-    public static Microsoft.Extensions.Logging.ILogger GetLogger(Type type)
+    public static ILogger GetLogger(Type type)
     {
-        return GetSerilogLoggerFactory().CreateLogger(type);
+        return SimpleLoggerFactory.Instance.CreateLogger(type);
     }
 
     /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
@@ -57,21 +42,28 @@ public class DnnLoggingController
     /// If Serilog has not been initialized, this method will automatically initialize it
     /// using the application's host path before creating the logger.
     /// </remarks>
-    public static Microsoft.Extensions.Logging.ILogger GetLogger(string categoryName)
+    public static ILogger GetLogger(string categoryName)
     {
-        return GetSerilogLoggerFactory().CreateLogger(categoryName);
+        return SimpleLoggerFactory.Instance.CreateLogger(categoryName);
     }
 
-    private static ILoggerFactory GetSerilogLoggerFactory()
+    private sealed class SimpleLoggerFactory : ILoggerFactory
     {
-        if (loggerFactory == null)
+        private SimpleLoggerFactory()
         {
-            // initialize Serilog
-            var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
-            SerilogController.AddSerilog(applicationMapPath);
-            loggerFactory = new SerilogLoggerFactory(Log.Logger);
         }
 
-        return loggerFactory;
+        public static SimpleLoggerFactory Instance { get; } = new();
+
+        public ILogger CreateLogger(string categoryName)
+            => SerilogController.Provider.CreateLogger(categoryName);
+
+        public void AddProvider(ILoggerProvider provider)
+        {
+        }
+
+        public void Dispose()
+        {
+        }
     }
 }

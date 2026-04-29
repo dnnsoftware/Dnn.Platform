@@ -18,20 +18,9 @@ using Serilog.Extensions.Logging;
 internal static class SerilogController
 {
     /// <summary>
-    /// The Serilog logger provider instance.
-    /// </summary>
-    private static SerilogLoggerProvider provider;
-
-    /// <summary>
     /// Gets the Serilog logger provider instance.
     /// </summary>
-    internal static SerilogLoggerProvider Provider
-    {
-        get
-        {
-            return provider;
-        }
-    }
+    internal static ILoggerProvider Provider { get; } = CreateSerilogLoggerProvider();
 
     /// <summary>
     /// Adds DNN Serilog configuration to the logging builder.
@@ -46,17 +35,32 @@ internal static class SerilogController
             throw new ArgumentNullException(nameof(builder));
         }
 
-        builder.AddProvider(provider);
+        builder.AddProvider(Provider);
         builder.AddFilter<SerilogLoggerProvider>(null, LogLevel.Trace);
 
         return builder;
     }
 
     /// <summary>
+    /// Helper method to trigger the static initialization of this class which triggers assignment of the singleton (static property) <see cref="Provider"/> which in turn calls <see cref="InitializeSerilog(string)"/> and initializes the singleton <see cref="Log.Logger"/>.
+    /// </summary>
+    internal static void Initialize()
+    {
+    }
+
+    private static SerilogLoggerProvider CreateSerilogLoggerProvider()
+    {
+        // initialize Serilog
+        var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+        InitializeSerilog(applicationMapPath);
+        return new SerilogLoggerProvider(Log.Logger);
+    }
+
+    /// <summary>
     /// Sets up Serilog using the config file ~/Serilog.config.
     /// </summary>
     /// <param name="applicationMapPath">Path to the root of the DNN installation.</param>
-    internal static void AddSerilog(string applicationMapPath)
+    private static void InitializeSerilog(string applicationMapPath)
     {
         Environment.SetEnvironmentVariable("BASEDIR", applicationMapPath);
         var configFile = Path.Combine(applicationMapPath, "Serilog.config");
@@ -92,6 +96,5 @@ internal static class SerilogController
         }
 
         Log.Logger = config.CreateLogger();
-        provider = new SerilogLoggerProvider(Log.Logger);
     }
 }
