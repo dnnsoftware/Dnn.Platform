@@ -29,6 +29,7 @@ branches:
     increment: Patch
     prevent-increment:
         of-merged-branch: true
+        when-current-commit-tagged: true
     track-merge-target: false
     tracks-release-branches: false
     is-release-branch: true
