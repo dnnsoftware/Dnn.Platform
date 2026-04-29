@@ -37,7 +37,7 @@ namespace DotNetNuke.Instrumentation
             {
                 if (Log.Logger == null)
                 {
-                    // initialize Serilog
+                    // initialize Serilog - under normal circumstances this should have already been done by the application startup code, but we need to ensure it's done before we can use it
                     var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
                     SerilogController.AddSerilog(applicationMapPath);
                 }
