@@ -8,13 +8,50 @@ using System.Globalization;
 using System.IO;
 
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using Serilog.Extensions.Logging;
 
 /// <summary>
 /// Controller for Serilog functions.
 /// </summary>
-internal sealed class SerilogController
+internal static class SerilogController
 {
+    /// <summary>
+    /// The Serilog logger provider instance.
+    /// </summary>
+    private static SerilogLoggerProvider provider;
+
+    /// <summary>
+    /// Gets the Serilog logger provider instance.
+    /// </summary>
+    internal static SerilogLoggerProvider Provider
+    {
+        get
+        {
+            return provider;
+        }
+    }
+
+    /// <summary>
+    /// Adds DNN Serilog configuration to the logging builder.
+    /// </summary>
+    /// <param name="builder">The logging builder to configure.</param>
+    /// <returns>The configured logging builder.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when <paramref name="builder"/> is null.</exception>
+    public static ILoggingBuilder AddDnnSerilog(this ILoggingBuilder builder)
+    {
+        if (builder == null)
+        {
+            throw new ArgumentNullException(nameof(builder));
+        }
+
+        builder.AddProvider(provider);
+        builder.AddFilter<SerilogLoggerProvider>(null, LogLevel.Trace);
+
+        return builder;
+    }
+
     /// <summary>
     /// Sets up Serilog using the config file ~/Serilog.config.
     /// </summary>
@@ -55,5 +92,6 @@ internal sealed class SerilogController
         }
 
         Log.Logger = config.CreateLogger();
+        provider = new SerilogLoggerProvider(Log.Logger);
     }
 }
