@@ -18,7 +18,7 @@ public static class StartupExtensions
     /// <param name="applicationMapPath">The path to the root of the DotNetNuke website. This is needed to find the correct directory to write the log files to.</param>
     public static void AddSerilog(this IServiceCollection services, string applicationMapPath)
     {
-        SerilogController.AddSerilog(applicationMapPath);
+        DnnLoggingController.InitializeLoggerFactory();
         services.AddLogging(loggingBuilder => loggingBuilder.AddSerilog(null, true));
         services.AddScoped<LogRequestContext>();
     }

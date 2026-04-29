@@ -15,6 +15,17 @@ public class DnnLoggingController
 {
     private static ILoggerFactory loggerFactory;
 
+    /// <summary>Initializes the Serilog logger factory.</summary>
+    /// <remarks>
+    /// This method can be called to explicitly initialize the logging system.
+    /// If not called explicitly, the logger factory will be initialized automatically
+    /// when the first logger is requested.
+    /// </remarks>
+    public static void InitializeLoggerFactory()
+    {
+        GetSerilogLoggerFactory();
+    }
+
     /// <summary>Gets a strongly-typed logger instance for the specified type.</summary>
     /// <typeparam name="T">The type for which to create the logger.</typeparam>
     /// <returns>An <see cref="ILogger{T}"/> instance configured with Serilog.</returns>
