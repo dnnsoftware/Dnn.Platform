@@ -195,6 +195,9 @@ namespace DotNetNuke.HttpModules.Membership
                     context.Items.Add("UserInfo", user);
                 }
 
+                // Add user id to log context for better logging
+                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("UserId", user?.UserID ?? Null.NullInteger);
+
                 // Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
                 if (user != null && request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
@@ -205,6 +208,7 @@ namespace DotNetNuke.HttpModules.Membership
             if (context.Items["UserInfo"] == null)
             {
                 context.Items.Add("UserInfo", new UserInfo());
+                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("UserId", Null.NullInteger);
             }
         }
 

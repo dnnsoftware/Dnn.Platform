@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Instrumentation;
 
+using System;
 using System.Globalization;
 using System.IO;
 
@@ -20,6 +21,7 @@ internal sealed class SerilogController
     /// <param name="applicationMapPath">Path to the root of the DNN installation.</param>
     internal static void AddSerilog(string applicationMapPath)
     {
+        Environment.SetEnvironmentVariable("BASEDIR", applicationMapPath);
         var configFile = Path.Combine(applicationMapPath, "Serilog.config");
 
         if (!File.Exists(configFile))
@@ -36,7 +38,6 @@ internal sealed class SerilogController
         {
             config = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .Enrich.With(new DnnEnricher())
                 .ReadFrom.Configuration(new ConfigurationBuilder()
                     .AddJsonFile(configFile, optional: false, reloadOnChange: true)
                     .Build());
@@ -45,7 +46,6 @@ internal sealed class SerilogController
         {
             config = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .Enrich.With(new DnnEnricher())
                 .WriteTo.File(
                     Path.Combine(applicationMapPath, "Portals\\_default\\Logs\\log.resources"),
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
