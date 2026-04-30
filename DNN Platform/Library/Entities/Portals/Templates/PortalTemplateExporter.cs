@@ -232,9 +232,24 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteElementString("pagequota", portal.PageQuota.ToString(CultureInfo.InvariantCulture));
 
             settingsDictionary.TryGetValue("PageHeadText", out setting);
-            if (!string.IsNullOrEmpty(setting))
+            if (!string.IsNullOrEmpty(setting) && !string.Equals(setting, "false", StringComparison.OrdinalIgnoreCase))
             {
                 writer.WriteElementString("pageheadtext", setting);
+            }
+
+            var pageHeaderTags = PageHeaderTagInfo.GetPortalItems(((IPortalInfo)portal).PortalId);
+            if (pageHeaderTags.Count > 0)
+            {
+                writer.WriteStartElement("pageheadertags");
+                foreach (var item in pageHeaderTags)
+                {
+                    writer.WriteStartElement("pageheadertag");
+                    writer.WriteAttributeString("name", item.Name);
+                    writer.WriteCData(item.Content ?? string.Empty);
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
             }
 
             settingsDictionary.TryGetValue("InjectModuleHyperLink", out setting);

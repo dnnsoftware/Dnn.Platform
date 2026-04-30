@@ -969,6 +969,23 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty));
             }
 
+            var pageHeaderTagNodes = nodeSettings.SelectNodes("pageheadertags/pageheadertag");
+            if (pageHeaderTagNodes != null && pageHeaderTagNodes.Count > 0)
+            {
+                var items = new List<PageHeaderTagInfo>();
+                foreach (XmlNode node in pageHeaderTagNodes)
+                {
+                    items.Add(new PageHeaderTagInfo
+                    {
+                        Name = node.Attributes?["name"]?.Value,
+                        Content = node.InnerText,
+                    });
+                }
+
+                PageHeaderTagInfo.SavePortalItems(portalId, items);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", "false");
+            }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty)))
             {
                 PortalController.UpdatePortalSetting(this.portalController, portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty));

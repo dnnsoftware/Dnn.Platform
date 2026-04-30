@@ -394,6 +394,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         RedirectAfterRegistrationTabId = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabID,
                         RedirectAfterRegistrationTabName = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabName,
                         PageHeadText = localizedPortalSettings["PageHeadText"],
+                        PageHeaderTags = PageHeaderTagInfo.GetPortalItems(pid, cultureCode)
+                            .Select(item => new Dnn.PersonaBar.Pages.Services.Dto.PageHeaderTagItem { Name = item.Name, Content = item.Content })
+                            .ToList(),
                     },
                 });
             }
@@ -446,7 +449,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.UpdatePortalSetting(this.portalController, pid, "Redirect_AfterLogin", this.ValidateTabId(request.RedirectAfterLoginTabId, pid).ToString(CultureInfo.InvariantCulture), false, cultureCode);
                 PortalController.UpdatePortalSetting(this.portalController, pid, "Redirect_AfterLogout", this.ValidateTabId(request.RedirectAfterLogoutTabId, pid).ToString(CultureInfo.InvariantCulture), false, cultureCode);
                 PortalController.UpdatePortalSetting(this.portalController, pid, "Redirect_AfterRegistration", this.ValidateTabId(request.RedirectAfterRegistrationTabId, pid).ToString(CultureInfo.InvariantCulture), false, cultureCode);
-                PortalController.UpdatePortalSetting(this.portalController, pid, "PageHeadText", string.IsNullOrEmpty(request.PageHeadText) ? "false" : request.PageHeadText);
+                PageHeaderTagInfo.SavePortalItems(pid, request.PageHeaderTags?.Select(item => new PageHeaderTagInfo { Name = item.Name, Content = item.Content }), cultureCode);
+                PortalController.UpdatePortalSetting(this.portalController, pid, "PageHeadText", "false", false, cultureCode);
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
             }

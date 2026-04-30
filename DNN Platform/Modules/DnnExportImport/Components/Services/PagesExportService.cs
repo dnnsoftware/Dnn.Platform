@@ -262,6 +262,11 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         SetTabData(localTab, otherTab);
+                        if (this.Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id).Any(setting => setting.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal)))
+                        {
+                            localTab.PageHeadText = null;
+                        }
+
                         localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                         var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                         if (parentId == -1 && otherTab.ParentId > 0)
@@ -328,6 +333,11 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab = new TabInfo { PortalID = portalId };
                 SetTabData(localTab, otherTab);
+                if (this.Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id).Any(setting => setting.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal)))
+                {
+                    localTab.PageHeadText = null;
+                }
+
                 localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                 var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                 var checkPartial = false;
