@@ -1,6 +1,6 @@
 {
   "name": "dnn-users-exportables",
-  "version": "10.3.3",
+  "version": "10.3.2",
   "description": "DNN Users Exportables",
   "scripts": {
     "start": "npm run watch",
@@ -11,7 +11,7 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.3",
+    "@dnnsoftware/dnn-react-common": "10.3.2",
     "@rsbuild/core": "^1.7.3",
     "@rsbuild/plugin-less": "^1.6.2",
     "@rsbuild/plugin-react": "^1.4.6",
