@@ -45,7 +45,7 @@ WHERE ISNULL(t.PageHeadText, '') <> ''
 GO
 
 -- Clear legacy PageHeadText column after migration
-UPDATE {databaseOwner}{objectQualifier}Tabs
+UPDATE {databaseOwner}[{objectQualifier}Tabs]
 SET PageHeadText = NULL
 WHERE ISNULL(PageHeadText, '') <> '';
 GO
