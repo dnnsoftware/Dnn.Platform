@@ -24,7 +24,10 @@
     <hostspace>0</hostspace>
     <userquota>0</userquota>
     <pagequota>0</pagequota>
-    <pageheadtext>&lt;meta content="text/html; charset=UTF-8" http-equiv="Content-Type" /&gt;</pageheadtext>
+    <pageheadtext></pageheadtext>
+    <pageheadertags>
+      <pageheadertag name="Default"><![CDATA[<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />]]></pageheadertag>
+    </pageheadertags>
     <injectmodulehyperlink>True</injectmodulehyperlink>
     <addcompatiblehttpheader>IE=edge</addcompatiblehttpheader>
     <sitemapcachedays>1</sitemapcachedays>

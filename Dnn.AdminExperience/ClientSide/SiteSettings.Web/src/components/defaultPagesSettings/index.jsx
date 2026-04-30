@@ -4,10 +4,11 @@ import { connect } from "react-redux";
 import {
     siteBehavior as SiteBehaviorActions
 } from "../../actions";
-import { InputGroup, MultiLineInputWithError, PagePicker, GridSystem, Label, Button } from "@dnnsoftware/dnn-react-common";
+import { InputGroup, PagePicker, GridSystem, Label, Button } from "@dnnsoftware/dnn-react-common";
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.module.less";
+import PageHeaderTags from "../PageHeaderTags/PageHeaderTags";
 
 let isHost = false;
 
@@ -69,8 +70,12 @@ class DefaultPagesSettingsPanelBody extends Component {
                 return;
             }
         }
+        else if (key === "PageHeaderTags") {
+            // PageHeaderTags passes the value directly, not an event
+            defaultPagesSettings[key] = event;
+        }
         else {
-            defaultPagesSettings[key] = typeof (event) === "object" ? event.target.value : event;
+            defaultPagesSettings[key] = typeof (event) === "object" && event.target ? event.target.value : event;
         }
 
         this.setState({
@@ -342,16 +347,13 @@ class DefaultPagesSettingsPanelBody extends Component {
                     {isHost &&
                         <div className="sectionTitle">{resx.get("PageOutputSettings")}</div>}
                     {isHost &&
-                        <InputGroup style={{ paddingTop: "10px" }}>
-                            <Label
-                                tooltipMessage={resx.get("plPageHeadText.Help")}
+                        <div style={{ paddingTop: "10px" }}>
+                            <PageHeaderTags
                                 label={resx.get("plPageHeadText")}
+                                value={state.defaultPagesSettings.PageHeaderTags || []}
+                                onChange={(value) => this.onSettingChange("PageHeaderTags", value)}
                             />
-                            <MultiLineInputWithError
-                                value={state.defaultPagesSettings.PageHeadText}
-                                onChange={this.onSettingChange.bind(this, "PageHeadText")}
-                            />
-                        </InputGroup>
+                        </div>
                     }
 
                     <div className="buttons-box">
