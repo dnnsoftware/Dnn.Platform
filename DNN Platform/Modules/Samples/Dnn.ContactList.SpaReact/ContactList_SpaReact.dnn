@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_SpaReact" type="Module" version="10.03.03">
+    <package name="Dnn.ContactList_SpaReact" type="Module" version="10.03.02">
       <friendlyName>Contact List Spa React</friendlyName>
       <description>DNN Contact List SPA+React module</description>
       <owner>
