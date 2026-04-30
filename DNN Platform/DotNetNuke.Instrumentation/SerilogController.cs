@@ -78,7 +78,6 @@ internal static class SerilogController
         if (File.Exists(configFile))
         {
             config = new LoggerConfiguration()
-                .Enrich.FromLogContext()
                 .ReadFrom.Configuration(new ConfigurationBuilder()
                     .AddJsonFile(configFile, optional: false, reloadOnChange: true)
                     .Build());
@@ -86,7 +85,6 @@ internal static class SerilogController
         else
         {
             config = new LoggerConfiguration()
-                .Enrich.FromLogContext()
                 .WriteTo.File(
                     Path.Combine(applicationMapPath, "Portals\\_default\\Logs\\log.resources"),
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
