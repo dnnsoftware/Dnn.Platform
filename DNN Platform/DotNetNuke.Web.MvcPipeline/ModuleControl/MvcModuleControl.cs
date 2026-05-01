@@ -208,7 +208,8 @@ namespace DotNetNuke.Web.MvcPipeline.ModuleControl
 
             var request = htmlHelper.ViewContext.HttpContext.Request;
             var req = request.Params;
-            var isMyRoute = req["MODULEID"] != null && req["CONTROLLER"] != null && int.TryParse(req["MODULEID"], out var modId) && modId == this.ModuleConfiguration.ModuleID;
+            var routeModuleId = req["MODULEID"] ?? req["MID"];
+            var isMyRoute = !string.IsNullOrEmpty(routeModuleId) && req["CONTROLLER"] != null && int.TryParse(routeModuleId, out var modId) && modId == this.ModuleConfiguration.ModuleID;
 
             var url = isMyRoute
                 ? request.Url.ToString()

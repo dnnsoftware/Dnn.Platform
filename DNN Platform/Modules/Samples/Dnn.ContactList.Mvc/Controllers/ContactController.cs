@@ -82,19 +82,19 @@ namespace Dnn.ContactList.Mvc.Controllers
         /// <returns></returns>
         [HttpPost]
         [DotNetNuke.Web.Mvc.Framework.ActionFilters.ValidateAntiForgeryToken]
-        public ActionResult Edit(Contact contact)
+        public ActionResult Edit(int contactId, Contact contact)
         {
             if (ModelState.IsValid)
             {
                 contact.PortalId = PortalSettings.PortalId;
 
-                if (contact.ContactId == -1)
+                if (contactId == -1)
                 {
                     _repository.AddContact(contact, User.UserID);
                 }
                 else
                 {
-                    var existing = _repository.GetContact(contact.ContactId, PortalSettings.PortalId);
+                    var existing = _repository.GetContact(contactId, PortalSettings.PortalId);
                     existing.FirstName = contact.FirstName;
                     existing.LastName = contact.LastName;
                     existing.Email = contact.Email;
