@@ -18,7 +18,7 @@
     "array.prototype.findindex": "2.2.4",
     "create-react-class": "^15.7.0",
     "es6-object-assign": "1.1.0",
-    "eslint": "9.39.4",
+    "eslint": "10.2.1",
     "eslint-plugin-react": "7.37.5",
     "globals": "^17.4.0",
     "less": "4.6.4",
