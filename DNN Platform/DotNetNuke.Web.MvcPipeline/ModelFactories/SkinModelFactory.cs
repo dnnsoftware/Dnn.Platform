@@ -586,8 +586,9 @@ namespace DotNetNuke.Web.MvcPipeline.ModelFactories
             // try to inject the module into the pane
             try
             {
-                if (currentTab.TabID == portalSettings.UserTabId || currentTab.ParentId == portalSettings.UserTabId)
+                if (portalSettings.UserTabId != Null.NullInteger && (currentTab.TabID == portalSettings.UserTabId || currentTab.ParentId == portalSettings.UserTabId))
                 {
+                    // @todo - we should have a better way to determine whether the module is in profile page, instead of hardcoding the user tab check here, which is not accurate and may cause issue if user tab is changed or removed. We can consider to add a new property in ModuleInfo to indicate whether it's a profile module, and set it when loading modules.
                     /*
                     var profileModule = this.ModuleControlPipeline.LoadModuleControl(this.Page, module) as IProfileModule;
                     if (profileModule == null || profileModule.DisplayModule)
