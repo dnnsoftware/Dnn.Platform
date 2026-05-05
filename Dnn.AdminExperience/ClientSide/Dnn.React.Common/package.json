@@ -1,6 +1,6 @@
 {
   "name": "@dnnsoftware/dnn-react-common",
-  "version": "10.3.1",
+  "version": "10.3.2",
   "description": "DNN React Component Library",
   "main": "dist/dnn-react-common.min.js",
   "repository": {
@@ -35,7 +35,6 @@
     "react-custom-scrollbars": "^4.2.1",
     "react-day-picker": "^7.4.10",
     "react-height": "^3.0.2",
-    "react-modal": "^3.16.3",
     "react-motion": "^0.5.2",
     "react-scrollbar": "^0.5.6",
     "react-slider": "2.0.6",

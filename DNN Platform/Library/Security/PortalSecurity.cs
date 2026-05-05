@@ -36,6 +36,9 @@ namespace DotNetNuke.Security
         /// <summary>A <see cref="PortalSecurity"/> instance.</summary>
         public static readonly PortalSecurity Instance = ActivatorUtilities.GetServiceOrCreateInstance<PortalSecurity>(Globals.DependencyProvider);
 
+        private const string EncryptedStringAlgorithmSeparator = "___|^Algorithm^|___";
+        private const string EncryptedStringInitializationVectorSeparator = "___|^IV^|___";
+
         private const string RoleFriendPrefix = "FRIEND:";
         private const string RoleFollowerPrefix = "FOLLOWER:";
         private const string RoleOwnerPrefix = "OWNER:";
@@ -463,7 +466,23 @@ namespace DotNetNuke.Security
         [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
         public partial string DecryptString(string message, string passphrase)
         {
-            return this.cryptographyProvider.DecryptString(message, passphrase, CryptographyProvider.Instance().EncryptStringAlgorithmName, null);
+            if (!message.Contains(EncryptedStringAlgorithmSeparator, StringComparison.Ordinal))
+            {
+                return this.cryptographyProvider.DecryptString(
+                    message,
+                    passphrase,
+                    CryptographyProvider.Instance().EncryptStringAlgorithmName,
+                    null);
+            }
+
+            var endOfMessage = message.IndexOf(EncryptedStringAlgorithmSeparator, StringComparison.Ordinal);
+            var encryptedMessage = message.Substring(0, endOfMessage);
+            var startOfAlgorithm = endOfMessage + EncryptedStringAlgorithmSeparator.Length;
+            var endOfAlgorithm = message.IndexOf(EncryptedStringInitializationVectorSeparator, startOfAlgorithm, StringComparison.Ordinal);
+            var algorithmName = message.Substring(startOfAlgorithm, endOfAlgorithm - startOfAlgorithm);
+            var startOfInitializationVector = endOfAlgorithm + EncryptedStringInitializationVectorSeparator.Length;
+            var initializationVector = message.Substring(startOfInitializationVector);
+            return this.cryptographyProvider.DecryptString(encryptedMessage, passphrase, algorithmName, initializationVector);
         }
 
         /// <summary>Encrypts the specified key.</summary>
@@ -485,7 +504,8 @@ namespace DotNetNuke.Security
         [DnnDeprecated(10, 2, 2, "Use DotNetNuke.Abstractions.Security.ICryptographyProvider")]
         public partial string EncryptString(string message, string passphrase)
         {
-            return this.cryptographyProvider.EncryptString(message, passphrase).EncryptedMessage;
+            var (encryptedMessage, algorithm, initializationVector) = this.cryptographyProvider.EncryptString(message, passphrase);
+            return $"{encryptedMessage}{EncryptedStringAlgorithmSeparator}{algorithm}{EncryptedStringInitializationVectorSeparator}{initializationVector}";
         }
 
         /// <summary>This function applies security filtering to the UserInput string.</summary>

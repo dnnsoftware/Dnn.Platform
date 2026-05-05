@@ -176,7 +176,7 @@ namespace DotNetNuke.Entities.Urls
                 ////else
                 ////{
                 if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
-                    !Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
+                    !RegexUtils.GetCachedRegex(settings.DoNotRewriteRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant).IsMatch(requestedPath))
                 {
                     retVal = true;
                     result.CanRewrite = StateBoolean.True;

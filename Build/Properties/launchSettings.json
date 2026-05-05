@@ -3,6 +3,17 @@
     "Build": {
       "commandName": "Project"
     },
+    "CreateGitHubPullRequest": {
+      "commandName": "Project",
+      "commandLineArgs": "--target CreateGitHubPullRequest",
+      "environmentVariables": {
+        "GITHUB_ACTIONS": "true",
+        "GITHUB_REPOSITORY": "dnnsoftware/Dnn.Platform",
+        "GITHUB_REF": "develop",
+        "GITHUB_APP_ID": "id",
+        "GITHUB_APP_PRIVATE_KEY": "key"
+      }
+    },
     "UnitTests": {
       "commandName": "Project",
       "commandLineArgs": "--target UnitTests"

@@ -7,6 +7,7 @@ namespace DotNetNuke.Modules.RazorHost
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Web.Hosting;
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Abstractions;
@@ -104,7 +105,7 @@ namespace DotNetNuke.Modules.RazorHost
         private void Create()
         {
             // Create new Folder
-            string folderMapPath = this.Server.MapPath(string.Format("~/DesktopModules/RazorModules/{0}", this.txtFolder.Text));
+            string folderMapPath = HostingEnvironment.MapPath($"~/DesktopModules/RazorModules/{this.txtFolder.Text}");
             if (Directory.Exists(folderMapPath))
             {
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("FolderExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);

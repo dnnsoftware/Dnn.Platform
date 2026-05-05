@@ -12,13 +12,18 @@ namespace DotNetNuke.Build.Tasks
     using System.Security.Cryptography;
     using System.Text;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
 
     using Cake.Common;
     using Cake.Common.Build;
     using Cake.Common.Diagnostics;
+    using Cake.Common.IO;
     using Cake.Core;
     using Cake.Core.IO;
+    using Cake.FileHelpers;
     using Cake.Frosting;
+
+    using Dnn.CakeUtils;
 
     using Microsoft.IdentityModel.JsonWebTokens;
     using Microsoft.IdentityModel.Tokens;
@@ -45,16 +50,14 @@ namespace DotNetNuke.Build.Tasks
     ///   <item><c>BUILD_SOURCEBRANCH</c> – The full ref of the source branch (set automatically by Azure Pipelines).</item>
     /// </list>
     /// </remarks>
-    public sealed class CreateGitHubPullRequest : FrostingTask<Context>
+    public sealed class CreateGitHubPullRequest : AsyncFrostingTask<Context>
     {
         private const string TargetBranch = "develop";
-        private const string BugReportPath = ".github/ISSUE_TEMPLATE/bug-report.yml";
-        private const string SolutionInfoPath = "SolutionInfo.cs";
         private const string GitUserName = "DNN Platform CI Bot";
         private const string GitUserEmail = "noreply@dnncommunity.org";
 
         /// <inheritdoc/>
-        public override void Run(Context context)
+        public override async Task RunAsync(Context context)
         {
             if (!context.IsRunningInCI)
             {
@@ -62,12 +65,15 @@ namespace DotNetNuke.Build.Tasks
                 return;
             }
 
+            var solutionInfoPath = context.File("SolutionInfo.cs");
+            var bugReportPath = context.File(".github/ISSUE_TEMPLATE/bug-report.yml");
+
             var sourceBranch = context.AzurePipelines().IsRunningOnAzurePipelines
                 ? context.AzurePipelines().Environment.Repository.SourceBranch
                 : context.GitHubActions().IsRunningOnGitHubActions
                     ? context.GitHubActions().Environment.Workflow.Ref
                     : string.Empty;
-            context.Information("CreateGitHubPullRequest: BUILD_SOURCEBRANCH is '{0}'.", sourceBranch);
+            context.Information("CreateGitHubPullRequest: source branch is '{0}'.", sourceBranch);
             if (!IsTargetedBranch(sourceBranch))
             {
                 context.Information("Skipping CreateGitHubPullRequest because branch '{0}' is not develop, main, or release/*.", sourceBranch);
@@ -87,19 +93,19 @@ namespace DotNetNuke.Build.Tasks
                 ? context.AzurePipelines().Environment.Repository.RepoName
                 : context.GitHubActions().IsRunningOnGitHubActions
                     ? context.GitHubActions().Environment.Workflow.Repository
-                    : throw new CakeException("BUILD_REPOSITORY_NAME environment variable is not set.");
+                    : throw new CakeException("Repository name environment variable is not set.");
 
             var parts = repoSlug.Split('/');
             if (parts.Length != 2)
             {
-                throw new CakeException($"BUILD_REPOSITORY_NAME '{repoSlug}' is not in the expected 'owner/repo' format.");
+                throw new CakeException($"Repository name '{repoSlug}' is not in the expected 'owner/repo' format.");
             }
 
             var owner = parts[0];
             var repo = parts[1];
 
             // Generate a short-lived installation token from the GitHub App credentials
-            var token = GenerateInstallationToken(context);
+            var token = await GenerateInstallationToken(context);
 
             var client = new GitHubClient(new ProductHeaderValue("DnnPlatformCakeBuild"))
             {
@@ -109,11 +115,11 @@ namespace DotNetNuke.Build.Tasks
             context.Information("Authenticated as GitHub App installation.");
 
             // Update bug-report.yml with version info from GitHub releases
-            UpdateBugReportVersions(context, client, owner, repo);
+            await UpdateBugReportVersions(context, client, owner, repo, bugReportPath);
 
             // Reset SolutionInfo.cs if only the commit count/SHA changed (not the major.minor.patch)
             // to avoid creating a PR for every single commit.
-            ResetSolutionInfoIfVersionUnchanged(context);
+            ResetSolutionInfoIfVersionUnchanged(context, solutionInfoPath);
 
             // Only proceed with the PR if there are actual changes
             if (!HasUncommittedChanges(context))
@@ -147,7 +153,7 @@ namespace DotNetNuke.Build.Tasks
             var encodedToken = Convert.ToBase64String(Encoding.UTF8.GetBytes($"x-access-token:{token}"));
             Git(context, $"-c http.extraHeader=\"Authorization: Basic {encodedToken}\" push origin {headBranch}", redactOutput: true);
 
-            var title = $"[Automated] Merge CI changes into {TargetBranch}";
+            const string title = $"[Automated] Merge CI changes into {TargetBranch}";
             var body = $"Automated pull request created by CI build {context.BuildId}.";
 
             context.Information("Creating GitHub PR: {0} → {1} in {2}/{3}", headBranch, TargetBranch, owner, repo);
@@ -158,7 +164,7 @@ namespace DotNetNuke.Build.Tasks
                 Draft = true,
             };
 
-            var pr = client.PullRequest.Create(owner, repo, newPr).GetAwaiter().GetResult();
+            var pr = await client.PullRequest.Create(owner, repo, newPr);
             context.Information("Pull request #{0} created: {1}", pr.Number, pr.HtmlUrl);
         }
 
@@ -174,7 +180,7 @@ namespace DotNetNuke.Build.Tasks
                 || branch.StartsWith("release/", StringComparison.OrdinalIgnoreCase);
         }
 
-        private static string GenerateInstallationToken(Context context)
+        private static async Task<string> GenerateInstallationToken(Context context)
         {
             var appId = context.EnvironmentVariable("GITHUB_APP_ID");
             var privateKeyPem = context.EnvironmentVariable("GITHUB_APP_PRIVATE_KEY");
@@ -209,9 +215,9 @@ namespace DotNetNuke.Build.Tasks
             httpClient.DefaultRequestHeaders.UserAgent.Add(new ProductInfoHeaderValue("DnnPlatformCakeBuild", "1.0"));
 
             // Get the installation ID
-            var installationsResponse = httpClient.GetAsync("https://api.github.com/app/installations").GetAwaiter().GetResult();
+            var installationsResponse = await httpClient.GetAsync("https://api.github.com/app/installations");
             installationsResponse.EnsureSuccessStatusCode();
-            var installationsJson = installationsResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var installationsJson = await installationsResponse.Content.ReadAsStringAsync();
             var installations = JsonConvert.DeserializeObject<List<GitHubInstallation>>(installationsJson);
 
             if (installations == null || installations.Count == 0)
@@ -223,11 +229,11 @@ namespace DotNetNuke.Build.Tasks
             context.Information("Found GitHub App installation ID: {0}.", installationId);
 
             // Create an installation access token
-            var tokenResponse = httpClient.PostAsync(
+            var tokenResponse = await httpClient.PostAsync(
                 $"https://api.github.com/app/installations/{installationId}/access_tokens",
-                new StringContent(string.Empty)).GetAwaiter().GetResult();
+                new StringContent(string.Empty));
             tokenResponse.EnsureSuccessStatusCode();
-            var tokenJson = tokenResponse.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+            var tokenJson = await tokenResponse.Content.ReadAsStringAsync();
             var accessToken = JsonConvert.DeserializeObject<GitHubAccessToken>(tokenJson);
 
             if (string.IsNullOrEmpty(accessToken?.Token))
@@ -282,24 +288,30 @@ namespace DotNetNuke.Build.Tasks
             return sb.ToString();
         }
 
-        private static void UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo)
+        private static async Task UpdateBugReportVersions(Context context, GitHubClient client, string owner, string repo, FilePath bugReportPath)
         {
-            context.Information("Fetching GitHub releases to update bug report template...");
-            var releases = client.Repository.Release.GetAll(owner, repo).GetAwaiter().GetResult();
+            context.Information("Fetching GitHub releases to update bug report template…");
+            var releases =
+                from release in await client.Repository.Release.GetAll(owner, repo)
+                where !release.Draft
+                let versionWithoutPrefix = release.TagName[1..]
+                let versionWithoutSuffix = versionWithoutPrefix.Contains('-') ? versionWithoutPrefix[..versionWithoutPrefix.IndexOf('-')] : versionWithoutPrefix
+                let version = Version.Parse(versionWithoutSuffix)
+                let isReleaseCandidate = release.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase)
+                orderby version descending
+                select new { release, version, isReleaseCandidate, };
+            releases = releases.ToList();
 
-            var latestStable = releases
-                .Where(r => !r.Draft && !r.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase))
-                .OrderByDescending(r => r.PublishedAt)
-                .FirstOrDefault();
+            var latestStable = releases.FirstOrDefault();
 
             context.Information(
                 "Latest stable release: {0}",
-                latestStable != null ? latestStable.TagName : "(none)");
+                latestStable != null ? latestStable.release.TagName : "(none)");
 
             var currentRcs = releases
-                .Where(r => !r.Draft && r.TagName.Contains("rc", StringComparison.OrdinalIgnoreCase))
-                .Where(r => latestStable == null || r.PublishedAt > latestStable.PublishedAt)
-                .OrderByDescending(r => r.PublishedAt)
+                .Where(r => r.isReleaseCandidate)
+                .Where(r => latestStable == null || r.release.PublishedAt > latestStable.release.PublishedAt)
+                .OrderByDescending(r => r.version)
                 .ToList();
 
             context.Information("Found {0} currently published RC release(s).", currentRcs.Count);
@@ -308,21 +320,15 @@ namespace DotNetNuke.Build.Tasks
             var options = new List<string>();
             if (latestStable != null)
             {
-                var version = latestStable.TagName.TrimStart('v');
-                options.Add($"{version} (latest release)");
+                options.Add($"{latestStable.version} (latest release)");
             }
 
-            foreach (var rc in currentRcs)
-            {
-                var version = rc.TagName.TrimStart('v');
-                options.Add($"{version} (release candidate)");
-            }
-
+            options.AddRange(currentRcs.Select(rc => $"{rc.version} (release candidate)"));
             options.Add("develop build (unreleased)");
 
             // Parse the YAML template and update the affected-versions options
             var yaml = new YamlStream();
-            using (var reader = new StreamReader(BugReportPath))
+            using (var reader = new StreamReader(bugReportPath.FullPath))
             {
                 yaml.Load(reader);
             }
@@ -341,7 +347,7 @@ namespace DotNetNuke.Build.Tasks
 
             if (optionsNode == null)
             {
-                context.Warning("Could not locate affected-versions options in {0}, skipping update.", BugReportPath);
+                context.Warning("Could not locate affected-versions options in {0}, skipping update.", bugReportPath);
                 return;
             }
 
@@ -351,12 +357,12 @@ namespace DotNetNuke.Build.Tasks
                 optionsNode.Children.Add(new YamlScalarNode(option));
             }
 
-            using var stringWriter = new StringWriter();
+            await using var stringWriter = new StringWriter();
             yaml.Save(stringWriter, false);
 
             // YamlStream.Save wraps output in document markers (--- / ...) that the original file doesn't use
-            File.WriteAllText(BugReportPath, StripDocumentMarkers(stringWriter.ToString()));
-            context.Information("Updated {0} with {1} version option(s).", BugReportPath, options.Count);
+            context.FileWriteText(bugReportPath, StripDocumentMarkers(stringWriter.ToString()));
+            context.Information("Updated {0} with {1} version option(s).", bugReportPath, options.Count);
         }
 
         private static string StripDocumentMarkers(string yaml)
@@ -415,25 +421,25 @@ namespace DotNetNuke.Build.Tasks
             return process.GetExitCode() != 0;
         }
 
-        private static void ResetSolutionInfoIfVersionUnchanged(Context context)
+        private static void ResetSolutionInfoIfVersionUnchanged(Context context, FilePath solutionInfoPath)
         {
             var committedProcess = context.StartAndReturnProcess(
                 "git",
                 new ProcessSettings
                 {
-                    Arguments = $"show HEAD:{SolutionInfoPath}",
+                    Arguments = $"show HEAD:{solutionInfoPath}",
                     RedirectStandardOutput = true,
                 });
             committedProcess.WaitForExit();
 
             if (committedProcess.GetExitCode() != 0)
             {
-                context.Information("Could not read committed {0}, skipping reset check.", SolutionInfoPath);
+                context.Information("Could not read committed {0}, skipping reset check.", solutionInfoPath);
                 return;
             }
 
             var committedContent = string.Join("\n", committedProcess.GetStandardOutput());
-            var currentContent = File.ReadAllText(SolutionInfoPath);
+            var currentContent = context.ReadFile(solutionInfoPath);
 
             var committedVersion = ExtractAssemblyVersion(committedContent);
             var currentVersion = ExtractAssemblyVersion(currentContent);
@@ -442,12 +448,12 @@ namespace DotNetNuke.Build.Tasks
 
             if (string.Equals(committedVersion, currentVersion, StringComparison.Ordinal))
             {
-                context.Information("Major.Minor.Patch has not changed. Resetting {0} to avoid a noisy PR.", SolutionInfoPath);
-                Git(context, $"checkout -- {SolutionInfoPath}");
+                context.Information("Major.Minor.Patch has not changed. Resetting {0} to avoid a noisy PR.", solutionInfoPath);
+                Git(context, $"checkout -- {solutionInfoPath}");
             }
             else
             {
-                context.Information("Major.Minor.Patch changed ({0} → {1}). Keeping {2} modifications.", committedVersion, currentVersion, SolutionInfoPath);
+                context.Information("Major.Minor.Patch changed ({0} → {1}). Keeping {2} modifications.", committedVersion, currentVersion, solutionInfoPath);
             }
         }
 

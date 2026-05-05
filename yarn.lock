@@ -511,7 +511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@npm:10.3.1, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@npm:10.3.2, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -550,7 +550,6 @@ __metadata:
     react-dom: "npm:^16.14.0"
     react-height: "npm:^3.0.2"
     react-hot-loader: "npm:^4.13.1"
-    react-modal: "npm:^3.16.3"
     react-motion: "npm:^0.5.2"
     react-scrollbar: "npm:^0.5.6"
     react-slider: "npm:2.0.6"
@@ -607,9 +606,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/aix-ppc64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/aix-ppc64@npm:0.28.0"
+  conditions: os=aix & cpu=ppc64
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-arm64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/android-arm64@npm:0.27.4"
+  conditions: os=android & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/android-arm64@npm:0.28.0"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
@@ -621,9 +634,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/android-arm@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/android-arm@npm:0.28.0"
+  conditions: os=android & cpu=arm
+  languageName: node
+  linkType: hard
+
 "@esbuild/android-x64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/android-x64@npm:0.27.4"
+  conditions: os=android & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/android-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/android-x64@npm:0.28.0"
   conditions: os=android & cpu=x64
   languageName: node
   linkType: hard
@@ -635,9 +662,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/darwin-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/darwin-arm64@npm:0.28.0"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/darwin-x64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/darwin-x64@npm:0.27.4"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/darwin-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/darwin-x64@npm:0.28.0"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
@@ -649,9 +690,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/freebsd-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/freebsd-arm64@npm:0.28.0"
+  conditions: os=freebsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/freebsd-x64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/freebsd-x64@npm:0.27.4"
+  conditions: os=freebsd & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/freebsd-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/freebsd-x64@npm:0.28.0"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
@@ -663,9 +718,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-arm64@npm:0.28.0"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-arm@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/linux-arm@npm:0.27.4"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-arm@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-arm@npm:0.28.0"
   conditions: os=linux & cpu=arm
   languageName: node
   linkType: hard
@@ -677,9 +746,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-ia32@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-ia32@npm:0.28.0"
+  conditions: os=linux & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-loong64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/linux-loong64@npm:0.27.4"
+  conditions: os=linux & cpu=loong64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-loong64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-loong64@npm:0.28.0"
   conditions: os=linux & cpu=loong64
   languageName: node
   linkType: hard
@@ -691,9 +774,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-mips64el@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-mips64el@npm:0.28.0"
+  conditions: os=linux & cpu=mips64el
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-ppc64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/linux-ppc64@npm:0.27.4"
+  conditions: os=linux & cpu=ppc64
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-ppc64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-ppc64@npm:0.28.0"
   conditions: os=linux & cpu=ppc64
   languageName: node
   linkType: hard
@@ -705,9 +802,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-riscv64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-riscv64@npm:0.28.0"
+  conditions: os=linux & cpu=riscv64
+  languageName: node
+  linkType: hard
+
 "@esbuild/linux-s390x@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/linux-s390x@npm:0.27.4"
+  conditions: os=linux & cpu=s390x
+  languageName: node
+  linkType: hard
+
+"@esbuild/linux-s390x@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-s390x@npm:0.28.0"
   conditions: os=linux & cpu=s390x
   languageName: node
   linkType: hard
@@ -719,9 +830,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/linux-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/linux-x64@npm:0.28.0"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@esbuild/netbsd-arm64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/netbsd-arm64@npm:0.27.4"
+  conditions: os=netbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/netbsd-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/netbsd-arm64@npm:0.28.0"
   conditions: os=netbsd & cpu=arm64
   languageName: node
   linkType: hard
@@ -733,9 +858,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/netbsd-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/netbsd-x64@npm:0.28.0"
+  conditions: os=netbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@esbuild/openbsd-arm64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/openbsd-arm64@npm:0.27.4"
+  conditions: os=openbsd & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/openbsd-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/openbsd-arm64@npm:0.28.0"
   conditions: os=openbsd & cpu=arm64
   languageName: node
   linkType: hard
@@ -747,9 +886,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/openbsd-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/openbsd-x64@npm:0.28.0"
+  conditions: os=openbsd & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@esbuild/openharmony-arm64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/openharmony-arm64@npm:0.27.4"
+  conditions: os=openharmony & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/openharmony-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/openharmony-arm64@npm:0.28.0"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
@@ -761,9 +914,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/sunos-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/sunos-x64@npm:0.28.0"
+  conditions: os=sunos & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@esbuild/win32-arm64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/win32-arm64@npm:0.27.4"
+  conditions: os=win32 & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-arm64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/win32-arm64@npm:0.28.0"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
@@ -775,9 +942,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@esbuild/win32-ia32@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/win32-ia32@npm:0.28.0"
+  conditions: os=win32 & cpu=ia32
+  languageName: node
+  linkType: hard
+
 "@esbuild/win32-x64@npm:0.27.4":
   version: 0.27.4
   resolution: "@esbuild/win32-x64@npm:0.27.4"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@esbuild/win32-x64@npm:0.28.0":
+  version: 0.28.0
+  resolution: "@esbuild/win32-x64@npm:0.28.0"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -4459,7 +4640,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -4919,13 +5100,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.12.0":
-  version: 1.13.6
-  resolution: "axios@npm:1.13.6"
+  version: 1.15.0
+  resolution: "axios@npm:1.15.0"
   dependencies:
     follow-redirects: "npm:^1.15.11"
     form-data: "npm:^4.0.5"
-    proxy-from-env: "npm:^1.1.0"
-  checksum: 10/a7ed83c2af3ef21d64609df0f85e76893a915a864c5934df69241001d0578082d6521a0c730bf37518ee458821b5695957cb10db9fc705f2a8996c8686ea7a89
+    proxy-from-env: "npm:^2.1.0"
+  checksum: 10/d39a2c0ebc7ff4739401b282e726cc2673377949d6c46d60eb619458f8d7a2f7eadbcada7097f4dbc7d5c59abb4d3bf6fac33d474412bc3415d3f5aa7ed45530
   languageName: node
   linkType: hard
 
@@ -5041,11 +5222,11 @@ __metadata:
   linkType: hard
 
 "baseline-browser-mapping@npm:^2.9.0":
-  version: 2.10.12
-  resolution: "baseline-browser-mapping@npm:2.10.12"
+  version: 2.10.18
+  resolution: "baseline-browser-mapping@npm:2.10.18"
   bin:
     baseline-browser-mapping: dist/cli.cjs
-  checksum: 10/ec3ecf8885a8aaf0c8294ac7414aa6948d1a0d2bdc68be238f7403b5a8b9bc52bbbb0ba9e230b487128047154565552c98cdf5489d31cc8ae49607b4ff5e1064
+  checksum: 10/b0babff57a53539fc5f8b757dc224a2d1296ec7c91975373da70757041a03d797bc09a13820bfb4e6ce363cc1cf84b6b3649abc7fd912aa9104bc693bc714e50
   languageName: node
   linkType: hard
 
@@ -5436,9 +5617,9 @@ __metadata:
   linkType: hard
 
 "caniuse-lite@npm:^1.0.0, caniuse-lite@npm:^1.0.30001759, caniuse-lite@npm:^1.0.30001774":
-  version: 1.0.30001782
-  resolution: "caniuse-lite@npm:1.0.30001782"
-  checksum: 10/bf75e7813d56e08888858d18aaf401adf1086b9b7bc4223efb246b3db46c8434bb7c39ab026d3735be07f09fb17f780d4ddcfdbc99759b0ee94cb381882e5bd6
+  version: 1.0.30001787
+  resolution: "caniuse-lite@npm:1.0.30001787"
+  checksum: 10/2b3a2400b21d89123f13b7a8a7ad58dbdeb9971b62e33f43712d7209b69656f8bfd8ab67ab760c12e5fa7967b18c108ca67d7f20b7c7ccf039621f7db56baecf
   languageName: node
   linkType: hard
 
@@ -6659,7 +6840,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-sitegroups@workspace:Dnn.AdminExperience/ClientSide/SiteGroups.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -6679,7 +6860,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-sites-list-view@workspace:Dnn.AdminExperience/ClientSide/Sites.Web/src/_exportables"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -6703,7 +6884,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-users-exportables@workspace:Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -6737,7 +6918,7 @@ __metadata:
     autoprefixer: "npm:^10.4.27"
     chokidar: "npm:^4.0.3"
     cssnano: "npm:^7.1.3"
-    esbuild: "npm:^0.27.4"
+    esbuild: "npm:^0.28.0"
     eslint: "npm:^9.39.4"
     modern-normalize: "npm:^3.0.1"
     postcss: "npm:^8.5.8"
@@ -6846,14 +7027,14 @@ __metadata:
   linkType: hard
 
 "dompurify@npm:^3.3.3":
-  version: 3.3.3
-  resolution: "dompurify@npm:3.3.3"
+  version: 3.4.1
+  resolution: "dompurify@npm:3.4.1"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 10/4cc9c539ed7136d46c6577613b8e20871c2b6165db01dfbd2a3c11c75f9e339c496ac6519a1c3190115def8cadae3720bef0417fc43fa28802c7407bab174da9
+  checksum: 10/dcaf945376eff2a61841b205501b163b2c8ae9afe7251e68276b561d9fcf943cefc67e2631fdeae080b52a8b37c96e6beb7e6ae80ad8a83692ff67965dd6b4db
   languageName: node
   linkType: hard
 
@@ -7438,7 +7619,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0, esbuild@npm:^0.27.4, esbuild@npm:~0.27.0":
+"esbuild@npm:^0.18.0 || ^0.19.0 || ^0.20.0 || ^0.21.0 || ^0.22.0 || ^0.23.0 || ^0.24.0 || ^0.25.0 || ^0.26.0 || ^0.27.0, esbuild@npm:~0.27.0":
   version: 0.27.4
   resolution: "esbuild@npm:0.27.4"
   dependencies:
@@ -7524,6 +7705,95 @@ __metadata:
   bin:
     esbuild: bin/esbuild
   checksum: 10/32b46ec22ef78bae6cc141145022a4c0209852c07151f037fbefccc2033ca54e7f33705f8fca198eb7026f400142f64c2dbc9f0d0ce9c0a638ebc472a04abc4a
+  languageName: node
+  linkType: hard
+
+"esbuild@npm:^0.28.0":
+  version: 0.28.0
+  resolution: "esbuild@npm:0.28.0"
+  dependencies:
+    "@esbuild/aix-ppc64": "npm:0.28.0"
+    "@esbuild/android-arm": "npm:0.28.0"
+    "@esbuild/android-arm64": "npm:0.28.0"
+    "@esbuild/android-x64": "npm:0.28.0"
+    "@esbuild/darwin-arm64": "npm:0.28.0"
+    "@esbuild/darwin-x64": "npm:0.28.0"
+    "@esbuild/freebsd-arm64": "npm:0.28.0"
+    "@esbuild/freebsd-x64": "npm:0.28.0"
+    "@esbuild/linux-arm": "npm:0.28.0"
+    "@esbuild/linux-arm64": "npm:0.28.0"
+    "@esbuild/linux-ia32": "npm:0.28.0"
+    "@esbuild/linux-loong64": "npm:0.28.0"
+    "@esbuild/linux-mips64el": "npm:0.28.0"
+    "@esbuild/linux-ppc64": "npm:0.28.0"
+    "@esbuild/linux-riscv64": "npm:0.28.0"
+    "@esbuild/linux-s390x": "npm:0.28.0"
+    "@esbuild/linux-x64": "npm:0.28.0"
+    "@esbuild/netbsd-arm64": "npm:0.28.0"
+    "@esbuild/netbsd-x64": "npm:0.28.0"
+    "@esbuild/openbsd-arm64": "npm:0.28.0"
+    "@esbuild/openbsd-x64": "npm:0.28.0"
+    "@esbuild/openharmony-arm64": "npm:0.28.0"
+    "@esbuild/sunos-x64": "npm:0.28.0"
+    "@esbuild/win32-arm64": "npm:0.28.0"
+    "@esbuild/win32-ia32": "npm:0.28.0"
+    "@esbuild/win32-x64": "npm:0.28.0"
+  dependenciesMeta:
+    "@esbuild/aix-ppc64":
+      optional: true
+    "@esbuild/android-arm":
+      optional: true
+    "@esbuild/android-arm64":
+      optional: true
+    "@esbuild/android-x64":
+      optional: true
+    "@esbuild/darwin-arm64":
+      optional: true
+    "@esbuild/darwin-x64":
+      optional: true
+    "@esbuild/freebsd-arm64":
+      optional: true
+    "@esbuild/freebsd-x64":
+      optional: true
+    "@esbuild/linux-arm":
+      optional: true
+    "@esbuild/linux-arm64":
+      optional: true
+    "@esbuild/linux-ia32":
+      optional: true
+    "@esbuild/linux-loong64":
+      optional: true
+    "@esbuild/linux-mips64el":
+      optional: true
+    "@esbuild/linux-ppc64":
+      optional: true
+    "@esbuild/linux-riscv64":
+      optional: true
+    "@esbuild/linux-s390x":
+      optional: true
+    "@esbuild/linux-x64":
+      optional: true
+    "@esbuild/netbsd-arm64":
+      optional: true
+    "@esbuild/netbsd-x64":
+      optional: true
+    "@esbuild/openbsd-arm64":
+      optional: true
+    "@esbuild/openbsd-x64":
+      optional: true
+    "@esbuild/openharmony-arm64":
+      optional: true
+    "@esbuild/sunos-x64":
+      optional: true
+    "@esbuild/win32-arm64":
+      optional: true
+    "@esbuild/win32-ia32":
+      optional: true
+    "@esbuild/win32-x64":
+      optional: true
+  bin:
+    esbuild: bin/esbuild
+  checksum: 10/49eafc8906cc4a760a1704556bd3b301f808fcdcf2725190383f151741226bf2a2898a03da75a06a896d6217dadc4f3f3168983557ee31bae602e2e37779a83a
   languageName: node
   linkType: hard
 
@@ -7956,7 +8226,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "export-bundle@workspace:Dnn.AdminExperience/ClientSide/Bundle.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -7995,7 +8265,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "extensions@workspace:Dnn.AdminExperience/ClientSide/Extensions.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -8193,12 +8463,12 @@ __metadata:
   linkType: hard
 
 "follow-redirects@npm:^1.0.0, follow-redirects@npm:^1.15.11":
-  version: 1.15.11
-  resolution: "follow-redirects@npm:1.15.11"
+  version: 1.16.0
+  resolution: "follow-redirects@npm:1.16.0"
   peerDependenciesMeta:
     debug:
       optional: true
-  checksum: 10/07372fd74b98c78cf4d417d68d41fdaa0be4dcacafffb9e67b1e3cf090bc4771515e65020651528faab238f10f9b9c0d9707d6c1574a6c0387c5de1042cde9ba
+  checksum: 10/3fbe3d80b3b544c22705d837aa5d4a0d07a740d913534a2620b0a004c610af4148e3b58723536dd099aaa1c9d3a155964bde9665d6e5cb331460809a1fc572fd
   languageName: node
   linkType: hard
 
@@ -10660,7 +10930,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "licensing@workspace:Dnn.AdminExperience/ClientSide/Licensing.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -12415,7 +12685,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pages@workspace:Dnn.AdminExperience/ClientSide/Pages.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -13181,13 +13451,13 @@ __metadata:
   linkType: hard
 
 "postcss@npm:^8.0.0, postcss@npm:^8.2.2, postcss@npm:^8.5.8":
-  version: 8.5.8
-  resolution: "postcss@npm:8.5.8"
+  version: 8.5.10
+  resolution: "postcss@npm:8.5.10"
   dependencies:
     nanoid: "npm:^3.3.11"
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
-  checksum: 10/cbacbfd7f767e2c820d4bf09a3a744834dd7d14f69ff08d1f57b1a7defce9ae5efcf31981890d9697a972a64e9965de677932ef28e4c8ba23a87aad45b82c459
+  checksum: 10/7eac6169e535b63c8412e94d4f6047fc23efa3e9dde804b541940043c831b25f1cd867d83cd2c4371ad2450c8abcb42c208aa25668c1f0f3650d7f72faf711a8
   languageName: node
   linkType: hard
 
@@ -13295,7 +13565,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "prompt@workspace:Dnn.AdminExperience/ClientSide/Prompt.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -13386,10 +13656,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"proxy-from-env@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "proxy-from-env@npm:1.1.0"
-  checksum: 10/f0bb4a87cfd18f77bc2fba23ae49c3b378fb35143af16cc478171c623eebe181678f09439707ad80081d340d1593cd54a33a0113f3ccb3f4bc9451488780ee23
+"proxy-from-env@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "proxy-from-env@npm:2.1.0"
+  checksum: 10/fbbaf4dab2a6231dc9e394903a5f66f20475e36b734335790b46feb9da07c37d6b32e2c02e3e2ea4d4b23774c53d8562e5b7cc73282cb43f4a597b7eacaee2ee
   languageName: node
   linkType: hard
 
@@ -13758,7 +14028,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-modal@npm:3.16.3, react-modal@npm:^3.16.3":
+"react-modal@npm:3.16.3":
   version: 3.16.3
   resolution: "react-modal@npm:3.16.3"
   dependencies:
@@ -14496,7 +14766,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "roles@workspace:Dnn.AdminExperience/ClientSide/Roles.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -14980,7 +15250,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -15086,7 +15356,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seo@workspace:Dnn.AdminExperience/ClientSide/Seo.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -15144,7 +15414,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "servers@workspace:Dnn.AdminExperience/ClientSide/Servers.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -15360,7 +15630,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -15395,7 +15665,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site-settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -15429,7 +15699,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sites@workspace:Dnn.AdminExperience/ClientSide/Sites.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -16203,7 +16473,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -16231,7 +16501,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "taxonomy@workspace:Dnn.AdminExperience/ClientSide/Vocabularies.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -16291,7 +16561,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "themes@workspace:Dnn.AdminExperience/ClientSide/Themes.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"
@@ -17060,7 +17330,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "users@workspace:Dnn.AdminExperience/ClientSide/Users.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.1"
+    "@dnnsoftware/dnn-react-common": "npm:10.3.2"
     "@rsbuild/core": "npm:^1.7.3"
     "@rsbuild/plugin-less": "npm:^1.6.2"
     "@rsbuild/plugin-react": "npm:^1.4.6"

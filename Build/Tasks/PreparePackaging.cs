@@ -30,15 +30,15 @@ namespace DotNetNuke.Build.Tasks
             // Various fixes
             context.CopyFile(
                 "./DNN Platform/Library/bin/PetaPoco.dll",
-                context.WebsiteFolder + "bin/PetaPoco.dll");
+                context.WebsiteDir + context.File("bin/PetaPoco.dll"));
 
             if (context.Settings.CopySampleProjects)
             {
                 context.Information("Copying Sample Projects to Temp Folder");
-                var files = context.GetFilesByPatterns(context.ArtifactsFolder, SampleModuleArtifactsPattern);
+                var files = context.GetFilesByPatterns(context.ArtifactsDir, SampleModuleArtifactsPattern);
                 foreach (var file in files)
                 {
-                    var destination = context.File(System.IO.Path.Combine(context.WebsiteFolder, "Install", "Module", file.GetFilename().ToString()));
+                    var destination = context.WebsiteDir + context.Directory("Install") + context.Directory("Module") + file.GetFilename();
                     context.CopyFile(file, destination);
                     context.Information($"  Copied {file.GetFilename()} to {destination}");
                 }
@@ -59,7 +59,7 @@ namespace DotNetNuke.Build.Tasks
             }
 
             context.PackagingPatterns = context.DeserializeJsonFromFile<PackagingPatterns>("./Build/Tasks/packaging.json");
-            var files = context.GetFilesByPatterns(context.WebsiteFolder, BinFolderInclude, context.PackagingPatterns.InstallExclude);
+            var files = context.GetFilesByPatterns(context.WebsiteDir, BinFolderInclude, context.PackagingPatterns.InstallExclude);
             var parsedAssemblies = files.ParseAssemblies();
             parsedAssemblies.RemoveAll(a => a.PublicKeyToken is null);
             var redirects = parsedAssemblies.ConvertAll(a => a.AssemblyBindingRedirect());
