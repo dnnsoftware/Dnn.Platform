@@ -120,7 +120,7 @@ class PageHeaderTags extends Component {
         return <Collapsible accordion={true} isOpened={isOpened} className="editTag">
             <div className="editTag-body">
                 <GridCell>
-                    <GridCell columnSize={50} className="left-column">
+                    <GridCell columnSize={60}>
                         <SingleLineInputWithError
                             style={{ width: "100%" }}
                             label="Name"
@@ -131,7 +131,7 @@ class PageHeaderTags extends Component {
                             errorMessage={!draft.name ? "Name is required" : duplicateName ? "Name already exists" : "Name must be 30 characters or less"}
                         />
                     </GridCell>
-                    <GridCell columnSize={50} className="right-column">
+                    <GridCell columnSize={95}>
                         <MultiLineInputWithError
                             label="Content"
                             value={draft.content}
