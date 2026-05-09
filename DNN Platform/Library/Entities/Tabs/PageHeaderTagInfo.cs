@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (key.StartsWith(SettingPrefix, StringComparison.Ordinal) && !targetSettingNames.Contains(key))
                 {
-                    PortalController.DeletePortalSetting(portalId, key);
+                    PortalController.DeletePortalSetting(portalId, key, cultureCode ?? Null.NullString);
                 }
             }
 
