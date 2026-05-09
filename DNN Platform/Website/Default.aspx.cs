@@ -609,36 +609,20 @@ namespace DotNetNuke.Framework
                 this.Page.Header.Controls.AddAt(0, new LiteralControl(this.Comment));
             }
 
-            if (this.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
+            var tabHeaderTags = string.Empty;
+            if (!Globals.IsAdminControl())
             {
-                var tabHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetTabItems(this.PortalSettings.ActiveTab.TabID));
-                this.Page.Header.Controls.Add(new LiteralControl(string.IsNullOrEmpty(tabHeaderTags) ? this.PortalSettings.ActiveTab.PageHeadText : tabHeaderTags));
-            }
-            else if (!Globals.IsAdminControl())
-            {
-                var tabHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetTabItems(this.PortalSettings.ActiveTab.TabID));
+                tabHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetTabItems(this.PortalSettings.ActiveTab.TabID));
                 if (!string.IsNullOrEmpty(tabHeaderTags))
                 {
                     this.Page.Header.Controls.Add(new LiteralControl(tabHeaderTags));
                 }
             }
 
-            var portalPageHeadText = string.Equals(this.PortalSettings.PageHeadText, "false", StringComparison.OrdinalIgnoreCase)
-                ? string.Empty
-                : this.PortalSettings.PageHeadText;
-
-            if (!string.IsNullOrEmpty(portalPageHeadText))
+            var portalHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetPortalItems(this.PortalSettings.PortalId, this.PortalSettings.CultureCode));
+            if (!string.IsNullOrEmpty(portalHeaderTags))
             {
-                var portalHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetPortalItems(this.PortalSettings.PortalId, this.PortalSettings.CultureCode));
-                this.metaPanel.Controls.Add(new LiteralControl(string.IsNullOrEmpty(portalHeaderTags) ? portalPageHeadText : portalHeaderTags));
-            }
-            else
-            {
-                var portalHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetPortalItems(this.PortalSettings.PortalId, this.PortalSettings.CultureCode));
-                if (!string.IsNullOrEmpty(portalHeaderTags))
-                {
-                    this.metaPanel.Controls.Add(new LiteralControl(portalHeaderTags));
-                }
+                this.metaPanel.Controls.Add(new LiteralControl(portalHeaderTags));
             }
 
             // set page title
@@ -757,12 +741,10 @@ namespace DotNetNuke.Framework
             // META generator
             this.Generator = string.Empty;
 
-            var tabLegacyPageHeadText = this.PortalSettings.ActiveTab.PageHeadText ?? string.Empty;
-
-            // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
+            // META Robots - hide it inside popups and if header tags already contain a robots meta tag
             if (!UrlUtils.InPopUp() &&
-                !(HeaderTextRegex.IsMatch(PageHeaderTagInfo.Render(PageHeaderTagInfo.GetTabItems(this.PortalSettings.ActiveTab.TabID)) + tabLegacyPageHeadText) ||
-                  HeaderTextRegex.IsMatch(PageHeaderTagInfo.Render(PageHeaderTagInfo.GetPortalItems(this.PortalSettings.PortalId, this.PortalSettings.CultureCode)) + portalPageHeadText)))
+                !(HeaderTextRegex.IsMatch(tabHeaderTags) ||
+                  HeaderTextRegex.IsMatch(portalHeaderTags)))
             {
                 this.MetaRobots.Visible = true;
                 var allowIndex = true;
