@@ -32,20 +32,23 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         private bool initialized;
 
         public ModuleApplication()
-            : this(null, false)
+            : this(null)
         {
         }
 
         public ModuleApplication(bool disableMvcResponseHeader)
-            : this(null, disableMvcResponseHeader)
+            : this(null)
         {
         }
 
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)
+            : this(requestContext)
+        {
+        }
+
+        public ModuleApplication(RequestContext requestContext)
         {
             this.RequestContext = requestContext;
-
-            DisableMvcResponseHeader = disableMvcResponseHeader;
 
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             this.ControllerFactory = Globals.GetCurrentServiceProvider().GetRequiredService<IControllerFactory>();
@@ -69,8 +72,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public string ModuleName { get; set; }
 
         public ViewEngineCollection ViewEngines { get; set; }
-
-        private static bool DisableMvcResponseHeader { get; set; }
 
         public virtual ModuleRequestResult ExecuteRequest(ModuleRequestContext context)
         {
@@ -164,7 +165,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
         protected internal virtual void AddVersionHeader(HttpContextBase httpContext)
         {
-            if (!DisableMvcResponseHeader)
+            if (!DnnMvcHandler.DisableMvcResponseHeader)
             {
                 httpContext.Response.AppendHeader(MvcVersionHeaderName, MvcVersion);
             }
