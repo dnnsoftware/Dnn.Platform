@@ -130,7 +130,7 @@ namespace DotNetNuke.Web.Mvc
             {
                 HttpContext = httpContext,
                 ModuleContext = moduleContext,
-                ModuleApplication = new ModuleApplication(this.RequestContext, DisableMvcResponseHeader)
+                ModuleApplication = new ModuleApplication(this.RequestContext)
                 {
                     ModuleName = desktopModule.ModuleName,
                     FolderPath = desktopModule.FolderName,
