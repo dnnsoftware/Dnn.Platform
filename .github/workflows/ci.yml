@@ -21,6 +21,9 @@ on:
     branches:
       - "develop"
       - "release/*"
+  merge_group:
+    types:
+      - "checks_requested"
   workflow_dispatch:
     inputs:
       CAKE_TARGET:
