@@ -17,6 +17,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +74,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     // Migrate only allowed portal settings.
                     portalSettings =
-                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.OrdinalIgnoreCase))).ToList();
+                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.OrdinalIgnoreCase)) || x.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.OrdinalIgnoreCase)).ToList();
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? portalSettings.Count : this.CheckPoint.TotalItems;
