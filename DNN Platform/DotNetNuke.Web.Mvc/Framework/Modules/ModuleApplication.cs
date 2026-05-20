@@ -6,7 +6,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     using System;
     using System.Globalization;
     using System.Reflection;
-    using System.Runtime.Remoting.Contexts;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Web;
@@ -176,8 +175,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     throw new InvalidOperationException("Could Not Construct Controller");
                 }
 
-                moduleController.IsAsync = true;
-
                 moduleController.ValidateRequest = false;
 
                 moduleController.DnnPage = context.DnnPage;
@@ -199,10 +196,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
                 await Task.Factory.FromAsync(asyncController.BeginExecute, asyncController.EndExecute, this.RequestContext, null);
-                if (moduleController.ModuleActionsAsync != null)
-                {
-                    moduleController.ModuleActions = await moduleController.ModuleActionsAsync;
-                }
 
                 var result = moduleController.ResultOfLastExecute;
 
