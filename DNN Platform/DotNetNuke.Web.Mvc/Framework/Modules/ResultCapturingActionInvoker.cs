@@ -6,12 +6,54 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
     using System.Web.Mvc.Async;
+
+    using DotNetNuke.Web.Mvc.Framework.ActionFilters;
 
     public class ResultCapturingActionInvoker : AsyncControllerActionInvoker
     {
         public ActionResult ResultOfLastInvoke { get; set; }
+
+        /// <inheritdoc />
+        protected override IAsyncResult BeginInvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters, AsyncCallback callback, object state)
+        {
+            var moduleActionsFilter = filters.OfType<ModuleActionItemsAttribute>().ToList();
+            if (moduleActionsFilter.Count == 0)
+            {
+                return base.BeginInvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters, callback, state);
+            }
+
+            var tcs = new TaskCompletionSource<bool>(state);
+            var filterContext = new ActionExecutingContext(controllerContext, actionDescriptor, parameters);
+            var task = Task.CompletedTask;
+            foreach (var filter in moduleActionsFilter)
+            {
+                task = task.ContinueWith(_ => filter.OnActionExecutingAsync(filterContext));
+            }
+
+            task.ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    tcs.TrySetException(t.Exception.InnerExceptions);
+                }
+                else if (t.IsCanceled)
+                {
+                    tcs.TrySetCanceled();
+                }
+                else
+                {
+                    tcs.TrySetResult(true);
+                }
+
+                IAsyncResult BeginDelegate(AsyncCallback innerCallback, object innerState) => base.BeginInvokeActionMethodWithFilters(controllerContext, [.. filters.Where(f => f is not ModuleActionItemsAttribute)], actionDescriptor, parameters, innerCallback, innerState);
+                return Task.Factory.FromAsync(BeginDelegate, ar => callback(ar), state);
+            });
+            return tcs.Task;
+        }
 
         /// <inheritdoc />
         protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
@@ -21,6 +63,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             return context;
         }
 
+        /// <inheritdoc />
         protected override ActionExecutedContext EndInvokeActionMethodWithFilters(IAsyncResult asyncResult)
         {
             var context = base.EndInvokeActionMethodWithFilters(asyncResult);

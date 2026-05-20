@@ -73,12 +73,6 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
         /// <inheritdoc />
         public ModuleActionCollection ModuleActions { get; set; }
 
-        /// <inheritdoc/>
-        public Task<ModuleActionCollection> ModuleActionsAsync { get; set; }
-
-        /// <inheritdoc/>
-        public bool IsAsync { get; set; }
-
         /// <inheritdoc />
         public ModuleInstanceContext ModuleContext { get; set; }
 
