@@ -32,5 +32,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public bool? WorkflowEnabled { get; set; }
 
         public int? DefaultTabWorkflowId { get; set; }
+
+        public string PagePipeline { get; set; }
     }
 }

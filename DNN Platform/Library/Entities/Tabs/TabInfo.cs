@@ -699,6 +699,27 @@ namespace DotNetNuke.Entities.Tabs
         [JsonIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
 
+        /// <summary>Gets a value indicating the pipeline type.</summary>
+        [XmlIgnore]
+        [JsonIgnore]
+        public string PagePipeline
+        {
+            get
+            {
+                string pagePipeline;
+                if (this.TabSettings.ContainsKey("PagePipeline") && !string.IsNullOrEmpty(this.TabSettings["PagePipeline"].ToString()))
+                {
+                    pagePipeline = this.TabSettings["PagePipeline"].ToString();
+                }
+                else
+                {
+                    pagePipeline = string.Empty;
+                }
+
+                return pagePipeline;
+            }
+        }
+
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
@@ -854,6 +875,10 @@ namespace DotNetNuke.Entities.Tabs
                 case "sitemappriority":
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(formatProvider), format);
+                    break;
+                case "pagepipeline":
+                    propertyNotFound = false;
+                    result = PropertyAccess.FormatString(this.PagePipeline, format);
                     break;
             }
 

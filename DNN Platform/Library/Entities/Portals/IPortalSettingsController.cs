@@ -14,6 +14,8 @@ namespace DotNetNuke.Entities.Portals
 
         PortalSettings.PortalAliasMapping GetPortalAliasMappingMode(int portalId);
 
+        string GetPortalPagePipeline(int portalId);
+
         /// <summary>The GetActiveTab method gets the active Tab for the current request.</summary>
         /// <param name="tabId">The current tab's id.</param>
         /// <param name="portalSettings">The current PortalSettings.</param>
