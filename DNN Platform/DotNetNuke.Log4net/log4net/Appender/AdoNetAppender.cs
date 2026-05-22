@@ -90,7 +90,7 @@ namespace log4net.Appender
     /// <code lang="XML" escaped="true">
     /// <appender name="AdoNetAppender_SqlServer" type="log4net.Appender.AdoNetAppender" >
     ///   <connectionType value="System.Data.SqlClient.SqlConnection, System.Data, Version=1.0.3300.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-    ///   <connectionString value="data source=SQLSVR;initial catalog=test_log4net;integrated security=false;persist security info=True;User ID=sa;Password=sa" />
+    ///   <connectionString value="data source=SQLSVR;initial catalog=test_log4net;integrated security=false;persist security info=True;User ID=&lt;your-user&gt;;Password=&lt;your-password&gt;" />
     ///   <commandText value="INSERT INTO Log ([Date],[Thread],[Level],[Logger],[Message]) VALUES (@log_date, @thread, @log_level, @logger, @message)" />
     ///   <parameter>
     ///     <parameterName value="@log_date" />
@@ -165,7 +165,7 @@ namespace log4net.Appender
         /// <code>"Driver={Microsoft Access Driver (*.mdb)};DBQ=C:\Work\cvs_root\log4net-1.2\access.mdb;UID=;PWD=;"</code>
         /// </example>
         /// <example>Connection string for MS Access via OLE DB:
-        /// <code>"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Work\cvs_root\log4net-1.2\access.mdb;User Id=;Password=;"</code>
+        /// <code>"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Work\cvs_root\log4net-1.2\access.mdb;User Id=&lt;your-user&gt;;Password=&lt;your-password&gt;"</code>
         /// </example>
         public string ConnectionString
         {

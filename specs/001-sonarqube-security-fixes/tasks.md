@@ -42,11 +42,11 @@ Existing call sites that get migrated are listed by full path in their tasks.
 the solution, and confirm the empty projects build on both TFMs before any production logic is
 written.
 
-- [ ] T001 Create directory `DNN Platform/DotNetNuke.Security.IO/` and add a new SDK-style csproj `DNN Platform/DotNetNuke.Security.IO/DotNetNuke.Security.IO.csproj` with `<TargetFrameworks>net8.0;net48</TargetFrameworks>`, `LangVersion=latest`, `TreatWarningsAsErrors=true`, no package references (BCL only).
-- [ ] T002 Create directory `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/` and add csproj `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/DotNetNuke.Security.IO.Tests.csproj` with `<TargetFrameworks>net8.0;net48</TargetFrameworks>`, `<IsPackable>false</IsPackable>`, and package references: `xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`, `FluentAssertions`. Add a project reference to `DotNetNuke.Security.IO.csproj`.
-- [ ] T003 [P] Register both new projects in `DNN_Platform.sln` (add solution-folder entries under `DNN Platform` and `DNN Platform/Tests` respectively).
-- [ ] T004 [P] Add stylecop / analyzer config link in the new csproj files to match repo convention (`<AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />` where applicable, mirroring `Build/Build.csproj`).
-- [ ] T005 Run `dotnet build "DNN Platform/DotNetNuke.Security.IO/DotNetNuke.Security.IO.csproj"` and `dotnet build "DNN Platform/Tests/DotNetNuke.Security.IO.Tests/DotNetNuke.Security.IO.Tests.csproj"` — both MUST succeed for `net8.0` and `net48` with zero source files. Establishes baseline.
+- [X] T001 Create directory `DNN Platform/DotNetNuke.Security.IO/` and add a new SDK-style csproj `DNN Platform/DotNetNuke.Security.IO/DotNetNuke.Security.IO.csproj` with `<TargetFrameworks>net8.0;net48</TargetFrameworks>`, `LangVersion=latest`, `TreatWarningsAsErrors=true`, no package references (BCL only).
+- [X] T002 Create directory `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/` and add csproj `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/DotNetNuke.Security.IO.Tests.csproj` with `<TargetFrameworks>net8.0;net48</TargetFrameworks>`, `<IsPackable>false</IsPackable>`, and package references: `xunit`, `xunit.runner.visualstudio`, `Microsoft.NET.Test.Sdk`, `FluentAssertions`. Add a project reference to `DotNetNuke.Security.IO.csproj`. (xunit/FluentAssertions/xunit.runner.visualstudio added to Directory.Packages.props for central package management.)
+- [X] T003 [P] Register both new projects in `DNN_Platform.sln` (added via `dotnet sln add`).
+- [X] T004 [P] Stylecop link included in the library csproj (test projects in DNN historically omit it; matches existing convention).
+- [X] T005 Both projects build clean on `net8.0` and `net48` with zero source files. Baseline established.
 
 **Checkpoint**: Both new projects exist, are wired into the solution, and build empty on both TFMs.
 
@@ -62,16 +62,16 @@ first, then implementation makes them pass.
 
 ### Foundational — tests first (TDD)
 
-- [ ] T006 [P] Create test class `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/SecureTempFileTests.cs` with these xUnit facts (initially all failing — no implementation exists yet): `Create_Produces_File_Inside_TempDirectory`, `Path_Format_Matches_GetRandomFileName_Pattern`, `Create_Returns_Unique_Paths_For_Concurrent_Callers`, `Dispose_Deletes_File_From_Disk`, `Dispose_Is_Idempotent`, `Access_After_Dispose_Throws_ObjectDisposedException`, `Stream_Has_Exclusive_Lock_While_Open`. Each test uses FluentAssertions. The class MUST compile (use stub types referenced from the library — those types come next).
-- [ ] T007 [P] Create test class `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/SecureTempFileFactoryTests.cs` with facts `Factory_Create_Returns_New_Instance_Each_Call` and `Factory_Is_Thread_Safe_Under_Parallel_Create` (use `Parallel.For` to create N=64 files and assert all paths unique).
-- [ ] T008 Run `dotnet test "DNN Platform/Tests/DotNetNuke.Security.IO.Tests/"` — confirm **all** tests fail with compile errors (types missing). This is the expected red state for TDD.
+- [X] T006 [P] Tests written first (8 xUnit facts including bonus `Stream_Is_ReadWritable`). Initial state: red (31 compile errors).
+- [X] T007 [P] Factory tests written first (2 facts). Initial state: red.
+- [X] T008 Red TDD state confirmed: 31 compile errors, all due to missing types.
 
 ### Foundational — implementation
 
-- [ ] T009 Add file `DNN Platform/DotNetNuke.Security.IO/ISecureTempFileFactory.cs` defining the `ISecureTempFileFactory` interface exactly as in [contracts/secure-temp-file.md](contracts/secure-temp-file.md) (single method `SecureTempFile Create();`).
-- [ ] T010 Add file `DNN Platform/DotNetNuke.Security.IO/SecureTempFile.cs` implementing the `SecureTempFile : IDisposable` class with `Path`, `Stream`, `IsDisposed`, and idempotent `Dispose()`. Constructor uses `Path.GetTempPath()` + `Path.GetRandomFileName()` + `new FileStream(path, FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None, 4096, FileOptions.DeleteOnClose)`. Throws `IOException` / `UnauthorizedAccessException` per the exception contract. Public surface MUST match the contract exactly.
-- [ ] T011 Add file `DNN Platform/DotNetNuke.Security.IO/SecureTempFileFactory.cs` implementing `SecureTempFileFactory : ISecureTempFileFactory` whose `Create()` returns `new SecureTempFile()`. Class MUST be stateless and thread-safe.
-- [ ] T012 Run `dotnet test "DNN Platform/Tests/DotNetNuke.Security.IO.Tests/"` — all foundational tests MUST pass on both `net8.0` and `net48`.
+- [X] T009 `ISecureTempFileFactory.cs` added — matches the contract exactly.
+- [X] T010 `SecureTempFile.cs` added — `FileStream(path, CreateNew, ReadWrite, None, 4096, DeleteOnClose)`. Used fully-qualified `System.IO.Path` to avoid shadowing the `Path` property. Constructor doc uses SA1642 standard text.
+- [X] T011 `SecureTempFileFactory.cs` added — stateless, thread-safe.
+- [X] T012 All 10 foundational tests pass on both `net8.0` and `net48` (20/20 total).
 
 **Checkpoint**: Foundation is green. US2 and US3 may now begin. US1 has been runnable since Setup.
 
@@ -91,13 +91,13 @@ done in parallel with all other work.
 
 ### US1 — tests first
 
-- [ ] T013 [P] [US1] Create a repository-scope guard test in `DNN Platform/Tests/DotNetNuke.Security.IO.Tests/RepoSecretsGuardTests.cs` that uses `Directory.EnumerateFiles` over the repo root to assert no tracked `.cs` file contains the regex `Password\s*=\s*sa\b` (case-insensitive), excluding `.specify/`, `specs/`, and `bin/`/`obj/`. Test MUST initially fail because of the current literals in `AdoNetAppender.cs`.
+- [X] T013 [P] [US1] `RepoSecretsGuardTests.cs` added with `Repo_Contains_No_Password_Equals_Sa_Literal`. Used substring-based relative path (no `Path.GetRelativePath` — not available on net48). Initial state: red, correctly identifying `AdoNetAppender.cs` as the offender.
 
 ### US1 — implementation
 
-- [ ] T014 [US1] Edit `DNN Platform/DotNetNuke.Log4net/log4net/Appender/AdoNetAppender.cs` line 93: replace `User ID=sa;Password=sa` inside the `<connectionString value="...">` XML-doc example with `User ID=<your-user>;Password=***`. Preserve all other text in the example exactly.
-- [ ] T015 [US1] Edit `DNN Platform/DotNetNuke.Log4net/log4net/Appender/AdoNetAppender.cs` line 168: replace `User Id=;Password=;` in the OLE-DB example with `User Id=<your-user>;Password=***`. Preserve surrounding XML-doc text.
-- [ ] T016 [US1] Run the guard test from T013 — it MUST now pass on both TFMs.
+- [X] T014 [US1] AdoNetAppender.cs line 93: `User ID=sa;Password=sa` → `User ID=<your-user>;Password=<your-password>` (HTML-encoded as `&lt;…&gt;` since this is inside an XML-doc `value=` attribute). First attempt used `Password=***` but SonarQube IDE still flagged it; angle-bracket placeholder matches SonarSource's recognized placeholder pattern and clears the warning.
+- [X] T015 [US1] AdoNetAppender.cs line 168: `User Id=;Password=;` → `User Id=<your-user>;Password=<your-password>` in the OLE-DB example.
+- [X] T016 [US1] Guard test green on both TFMs. Full suite: 11/11 pass on net8.0 and net48 (22/22 total).
 
 **Checkpoint**: US1 complete; SonarQube S6703 finding cleared; repository-wide grep for
 `Password=sa` returns zero hits.
