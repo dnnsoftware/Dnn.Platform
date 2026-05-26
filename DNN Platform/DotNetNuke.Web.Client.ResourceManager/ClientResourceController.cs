@@ -6,6 +6,7 @@ namespace DotNetNuke.Web.Client.ResourceManager
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
 
@@ -52,7 +53,11 @@ namespace DotNetNuke.Web.Client.ResourceManager
             this.clientResourceSettings = clientResourceSettings;
             this.RegisterPathNameAlias("SharedScripts", "~/Resources/Shared/Scripts/");
             this.controllerId = Guid.NewGuid();
-            if (clientResourceSettings != null)
+            if (hostSettings.DebugMode)
+            {
+                this.crmVersion = int.Parse($"{DateTime.UtcNow:HHmmssfff}", NumberStyles.None, CultureInfo.InvariantCulture);
+            }
+            else if (clientResourceSettings != null)
             {
                 this.crmVersion = clientResourceSettings.OverrideDefaultSettings ? clientResourceSettings.PortalCrmVersion : clientResourceSettings.HostCrmVersion;
             }
