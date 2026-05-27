@@ -634,7 +634,7 @@
     <value>Show Critical Errors on Screen</value>
   </data>
   <data name="plDebugMode.Help" xml:space="preserve">
-    <value>Check this box to run the installation in "debug mode". This causes various parts of the application to write more verbose error logs etc. Note: This may lead to performance degradation.</value>
+    <value>Check this box to run the installation in "debug mode". This causes various parts of the application to write more verbose error logs etc. It also switches the CDV value to a timestamp, meaning the client browser will continuously download new versions of client resources (stylesheets, fonts and javascript files). Note: This may lead to performance degradation.</value>
   </data>
   <data name="plDebugMode.Text" xml:space="preserve">
     <value>Debug Mode</value>
