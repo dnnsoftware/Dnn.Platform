@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -28,6 +28,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
@@ -707,7 +708,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return this.TabSettings.GetPagePipeline(DotNetNuke.Abstractions.Portals.PagePipeline.SettingName);
+                return this.TabSettings.GetPagePipeline(Abstractions.Framework.PagePipeline.SettingName);
             }
         }
 

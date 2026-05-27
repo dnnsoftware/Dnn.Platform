@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;

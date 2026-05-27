@@ -2,12 +2,8 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Abstractions.Portals
+namespace DotNetNuke.Abstractions.Framework
 {
-    using System;
-    using System.Collections;
-    using System.Collections.Generic;
-
     /// <summary>
     /// Represents the page pipeline configuration for rendering pages in the DNN platform.
     /// </summary>
@@ -65,43 +61,6 @@ namespace DotNetNuke.Abstractions.Portals
             /// Specifies that pages should be rendered using the MVC pipeline.
             /// </summary>
             MVC,
-        }
-
-        /// <summary>
-        /// Gets the portal rendering pipeline configuration from the specified dictionary.
-        /// </summary>
-        /// <param name="input">The dictionary containing the portal settings.</param>
-        /// <param name="settingName">The name of the setting to retrieve.</param>
-        /// <returns>The portal rendering pipeline configuration, or WebForms if not found or invalid.</returns>
-        public static PortalRenderingPipeline GetPortalPipeline(this Dictionary<string, string> input, string settingName)
-        {
-            if (input != null && input.TryGetValue(settingName, out var pipeline))
-            {
-                return string.IsNullOrEmpty(pipeline) ?
-                    PortalRenderingPipeline.WebForms :
-                    Enum.TryParse<PortalRenderingPipeline>(pipeline, true, out var result) ? result : PortalRenderingPipeline.WebForms;
-            }
-
-            return PortalRenderingPipeline.WebForms;
-        }
-
-        /// <summary>
-        /// Gets the page rendering pipeline configuration from the specified hashtable.
-        /// </summary>
-        /// <param name="input">The hashtable containing the page settings.</param>
-        /// <param name="settingName">The name of the setting to retrieve.</param>
-        /// <returns>The page rendering pipeline configuration, or Inherited if not found or invalid.</returns>
-        public static PageRenderingPipeline GetPagePipeline(this Hashtable input, string settingName)
-        {
-            if (input != null && input.ContainsKey(settingName))
-            {
-                var pipeline = Convert.ToString(input[settingName], System.Globalization.CultureInfo.InvariantCulture);
-                return string.IsNullOrEmpty(pipeline) ?
-                    PageRenderingPipeline.Inherited :
-                    Enum.TryParse<PageRenderingPipeline>(pipeline, true, out var result) ? result : PageRenderingPipeline.Inherited;
-            }
-
-            return PageRenderingPipeline.Inherited;
         }
     }
 }

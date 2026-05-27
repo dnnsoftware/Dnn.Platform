@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Pages.Services.Dto;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;

@@ -6,6 +6,8 @@ namespace DotNetNuke.Abstractions.Portals
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Abstractions.Framework;
+
     /// <summary>
     /// The PortalSettings class encapsulates all of the settings for the Portal,
     /// as well as the configuration settings required to execute the current tab

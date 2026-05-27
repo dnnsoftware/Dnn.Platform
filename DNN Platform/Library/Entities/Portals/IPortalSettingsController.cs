@@ -5,7 +5,7 @@ namespace DotNetNuke.Entities.Portals
 {
     using System.Collections.Generic;
 
-    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
 

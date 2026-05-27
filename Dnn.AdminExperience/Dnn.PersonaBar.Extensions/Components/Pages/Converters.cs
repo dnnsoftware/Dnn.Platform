@@ -14,7 +14,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Themes.Components;
     using Dnn.PersonaBar.Themes.Components.DTO;
     using DotNetNuke.Abstractions;
-    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
