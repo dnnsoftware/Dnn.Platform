@@ -1329,8 +1329,8 @@ namespace DotNetNuke.Data
                 lastModifiedByUserID);
         }
 
-        [Obsolete("Deprecated in DotNetNuke 10.99.0. Scheduled removal in v12.0.0.")]
-        public virtual int AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int createdByUserID)
+        [DnnDeprecated(10, 99, 0, "Use overload with mvcControlClass")]
+        public virtual partial int AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int createdByUserID)
         {
             return this.AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, null, iconFile, controlType, viewOrder, helpUrl, supportsPartialRendering, supportsPopUps, createdByUserID);
         }
