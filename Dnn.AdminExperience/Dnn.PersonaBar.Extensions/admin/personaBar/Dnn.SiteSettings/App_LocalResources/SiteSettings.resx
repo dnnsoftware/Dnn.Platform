@@ -1561,7 +1561,7 @@
     <value>WebForms</value>
   </data>
   <data name="Mvc.Text" xml:space="preserve">
-    <value>Mvc</value>
+    <value>MVC</value>
   </data>
   <data name="Auto.Text" xml:space="preserve">
     <value>Auto</value>
