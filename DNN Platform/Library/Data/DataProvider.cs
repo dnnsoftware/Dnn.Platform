@@ -1363,6 +1363,10 @@ namespace DotNetNuke.Data
             return this.ExecuteReader("GetModuleControls");
         }
 
+        [DnnDeprecated(10, 99, 0, "Use overload with mvcControlClass")]
+        public virtual partial void UpdateModuleControl(int moduleControlId, int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int lastModifiedByUserID)
+            => this.UpdateModuleControl(moduleControlId, moduleDefId, controlKey, controlTitle, controlSrc, null, iconFile, controlType, viewOrder, helpUrl, supportsPartialRendering, supportsPopUps, lastModifiedByUserID);
+
         public virtual void UpdateModuleControl(int moduleControlId, int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int lastModifiedByUserID)
         {
             this.ExecuteNonQuery(
