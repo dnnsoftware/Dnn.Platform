@@ -1330,7 +1330,9 @@ namespace DotNetNuke.Data
         }
 
         [DnnDeprecated(10, 99, 0, "Use overload with mvcControlClass")]
+#pragma warning disable SA1601 // Partial elements should be documented
         public virtual partial int AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int createdByUserID)
+#pragma warning restore SA1601 // Partial elements should be documented
         {
             return this.AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, null, iconFile, controlType, viewOrder, helpUrl, supportsPartialRendering, supportsPopUps, createdByUserID);
         }
@@ -1364,7 +1366,9 @@ namespace DotNetNuke.Data
         }
 
         [DnnDeprecated(10, 99, 0, "Use overload with mvcControlClass")]
+#pragma warning disable SA1601 // Partial elements should be documented
         public virtual partial void UpdateModuleControl(int moduleControlId, int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int lastModifiedByUserID)
+#pragma warning restore SA1601 // Partial elements should be documented
             => this.UpdateModuleControl(moduleControlId, moduleDefId, controlKey, controlTitle, controlSrc, null, iconFile, controlType, viewOrder, helpUrl, supportsPartialRendering, supportsPopUps, lastModifiedByUserID);
 
         public virtual void UpdateModuleControl(int moduleControlId, int moduleDefId, string controlKey, string controlTitle, string controlSrc, string mvcControlClass, string iconFile, int controlType, int viewOrder, string helpUrl, bool supportsPartialRendering, bool supportsPopUps, int lastModifiedByUserID)

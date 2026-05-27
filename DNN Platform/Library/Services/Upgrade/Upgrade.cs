@@ -238,6 +238,18 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="controlKey">The key for this control in the Definition.</param>
         /// <param name="controlTitle">The title of this control.</param>
         /// <param name="controlSrc">The source of ths control.</param>
+        /// <param name="iconFile">The icon file.</param>
+        /// <param name="controlType">The type of control.</param>
+        /// <param name="viewOrder">The vieworder for this module.</param>
+        [DnnDeprecated(10, 99, 0, "Use overload with mvcControlClass")]
+        public static partial void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder)
+            => AddModuleControl(moduleDefId, controlKey, controlTitle, controlSrc, Null.NullString, iconFile, controlType, viewOrder);
+
+        /// <summary>AddModuleControl adds a new Module Control to the system.</summary>
+        /// <param name="moduleDefId">The Module Definition Id.</param>
+        /// <param name="controlKey">The key for this control in the Definition.</param>
+        /// <param name="controlTitle">The title of this control.</param>
+        /// <param name="controlSrc">The source of ths control.</param>
         /// <param name="mvcControlClass">The MVC control class of this control.</param>
         /// <param name="iconFile">The icon file.</param>
         /// <param name="controlType">The type of control.</param>
