@@ -361,6 +361,6 @@ namespace DotNetNuke.Abstractions.Portals
         bool ShowQuickModuleAddMenu { get; }
 
         /// <summary>Gets the pipeline type for the portal.</summary>
-        string PagePipeline { get; }
+        PagePipeline.PortalRenderingPipeline PagePipeline { get; }
     }
 }

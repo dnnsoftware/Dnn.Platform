@@ -127,14 +127,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc/>
-        public virtual string GetPortalPagePipeline(int portalId)
+        public virtual PagePipeline.PortalRenderingPipeline GetPortalPagePipeline(int portalId)
         {
-            if (PortalController.Instance.GetPortalSettings(portalId).TryGetValue("PagePipeline", out var setting))
-            {
-                return string.IsNullOrEmpty(setting) ? PagePipelineConstants.WebForms : setting;
-            }
-
-            return PagePipelineConstants.WebForms;
+            return PortalController.Instance.GetPortalSettings(portalId).GetPortalPipeline(PagePipeline.SettingName);
         }
 
         /// <inheritdoc/>
@@ -292,7 +287,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
-            portalSettings.PagePipeline = settings.GetValueOrDefault("PagePipeline", "webforms");
+            portalSettings.PagePipeline = settings.GetPortalPipeline(PagePipeline.SettingName);
             setting = settings.GetValueOrDefault("CspHeaderMode", "OFF");
             switch (setting.ToUpperInvariant())
             {

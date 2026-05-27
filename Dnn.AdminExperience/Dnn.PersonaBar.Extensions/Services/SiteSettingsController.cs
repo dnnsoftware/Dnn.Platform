@@ -3160,7 +3160,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         MaxNumberOfVersions = TabVersionSettings.Instance.GetMaxNumberOfVersions(pid),
                         WorkflowEnabled = TabWorkflowSettings.Instance.IsWorkflowEnabled(pid),
                         DefaultTabWorkflowId = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(pid),
-                        PagePipeline = portalSettings.PagePipeline,
+                        PagePipeline = ((int)portalSettings.PagePipeline).ToString(System.Globalization.CultureInfo.InvariantCulture),
                     },
                     Workflows = WorkflowManager.Instance.GetWorkflows(pid).Select(w => new { label = w.WorkflowName, value = w.WorkflowID }).ToList(),
                 });
@@ -3190,7 +3190,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleHeaders", request.AllowJsInModuleHeaders.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
-                PortalController.Instance.UpdatePortalSetting(pid, "PagePipeline", request.PagePipeline, false, null, false);
+                PortalController.Instance.UpdatePortalSetting(pid, PagePipeline.SettingName, request.PagePipeline, false, null, false);
                 if (request.AllowedExtensionsWhitelist == this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString())
                 {
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);

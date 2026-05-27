@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Themes.Components;
     using Dnn.PersonaBar.Themes.Components.DTO;
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
@@ -59,7 +60,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 TabOrder = tab.TabOrder,
                 WorkflowId = WorkflowHelper.GetTabWorkflowId(tab),
                 WorkflowName = WorkflowHelper.GetTabWorkflowName(tab),
-                PagePipeline = tab.PagePipeline,
+                PagePipeline = ((int)tab.PagePipeline).ToString(System.Globalization.CultureInfo.InvariantCulture),
             };
         }
 
@@ -139,7 +140,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ParentId = tab.ParentId,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 PagePermissions = SecurityService.Instance.GetPagePermissions(tab),
-                PagePipeline = (string)tab.TabSettings["PagePipeline"],
+                PagePipeline = (string)tab.TabSettings[PagePipeline.SettingName],
             };
         }
 

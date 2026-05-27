@@ -289,12 +289,12 @@ class MoreSettingsPanelBody extends Component {
 
     getPagePipelineOptions() {
         const options = [];
-        options.push({ value: "webforms", label: resx.get("WebForms") });
-        options.push({ value: "mvc", label: resx.get("Mvc") });
-        options.push({ value: "auto", label: resx.get("Auto") });                
+        options.push({ value: "0", label: resx.get("WebForms") });
+        options.push({ value: "1", label: resx.get("Mvc") });
+        options.push({ value: "2", label: resx.get("Auto") });
         return options;
     }
-    
+
     onDropDownChange(key, option) {
         let { state, props } = this;
         let otherSettings = Object.assign({}, state.otherSettings);
@@ -310,7 +310,7 @@ class MoreSettingsPanelBody extends Component {
         );
     }
 
-     
+
     render() {
         const { props, state } = this;
         let htmlEditor = isHost ? (
@@ -538,7 +538,7 @@ class MoreSettingsPanelBody extends Component {
                                 tooltipMessage={resx.get("PagePipeline_tooltip") }
                                 label={resx.get("PagePipeline") } />
                             <Dropdown options={this.getPagePipelineOptions() }
-                                value={state.otherSettings.PagePipeline}                                    
+                                value={state.otherSettings.PagePipeline}
                                 onSelect={this.onDropDownChange.bind(this, "PagePipeline")}
                                 withBorder={true} />
                         </div>

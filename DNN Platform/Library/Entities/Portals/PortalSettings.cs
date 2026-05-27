@@ -555,7 +555,7 @@ namespace DotNetNuke.Entities.Portals
         public bool ShowQuickModuleAddMenu => PortalController.GetPortalSettingAsBoolean("ShowQuickModuleAddMenu", this.PortalId, false);
 
         /// <inheritdoc/>
-        public string PagePipeline { get; internal set; }
+        public PagePipeline.PortalRenderingPipeline PagePipeline { get; internal set; }
 
         /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
         /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>

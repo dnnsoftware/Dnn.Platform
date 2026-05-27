@@ -865,7 +865,7 @@ namespace Dnn.PersonaBar.Pages.Components
             page.IsWorkflowCompleted = isWorkflowCompleted;
             page.IsWorkflowOnDraft = isWorkflowOnDraft;
             page.PublishStatus = tab.HasBeenPublished && isWorkflowCompleted ? "Published" : "Draft";
-            page.PagePipeline = tab.PagePipeline;
+            page.PagePipeline = ((int)tab.PagePipeline).ToString(System.Globalization.CultureInfo.InvariantCulture);
 
             return page;
         }
@@ -1362,7 +1362,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 tab.IconFileLarge = null;
             }
 
-            tab.TabSettings["PagePipeline"] = pageSettings.PagePipeline;
+            tab.TabSettings[PagePipeline.SettingName] = pageSettings.PagePipeline;
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

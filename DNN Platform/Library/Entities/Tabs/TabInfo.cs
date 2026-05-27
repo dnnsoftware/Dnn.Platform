@@ -18,6 +18,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -702,21 +703,11 @@ namespace DotNetNuke.Entities.Tabs
         /// <summary>Gets a value indicating the pipeline type.</summary>
         [XmlIgnore]
         [JsonIgnore]
-        public string PagePipeline
+        public PagePipeline.PageRenderingPipeline PagePipeline
         {
             get
             {
-                string pagePipeline;
-                if (this.TabSettings.ContainsKey("PagePipeline") && !string.IsNullOrEmpty(this.TabSettings["PagePipeline"].ToString()))
-                {
-                    pagePipeline = this.TabSettings["PagePipeline"].ToString();
-                }
-                else
-                {
-                    pagePipeline = string.Empty;
-                }
-
-                return pagePipeline;
+                return this.TabSettings.GetPagePipeline(DotNetNuke.Abstractions.Portals.PagePipeline.SettingName);
             }
         }
 
@@ -878,7 +869,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case "pagepipeline":
                     propertyNotFound = false;
-                    result = PropertyAccess.FormatString(this.PagePipeline, format);
+                    result = this.PagePipeline.ToString();
                     break;
             }
 

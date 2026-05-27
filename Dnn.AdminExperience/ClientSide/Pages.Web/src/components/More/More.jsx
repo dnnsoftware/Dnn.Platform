@@ -28,9 +28,9 @@ class More extends Component {
 
     getPagePipelineOptions() {
         const options = [];
-        options.push({ value: "", label: Localization.get("Inherited") });
-        options.push({ value: "webforms", label: Localization.get("WebForms") });
-        options.push({ value: "mvc", label: Localization.get("Mvc") });
+        options.push({ value: "0", label: Localization.get("Inherited") });
+        options.push({ value: "1", label: Localization.get("WebForms") });
+        options.push({ value: "2", label: Localization.get("Mvc") });
         return options;
     }
 
@@ -223,13 +223,13 @@ class More extends Component {
                                         options={this.getWorkflowOptions()}
                                         label={page.workflowId ? this.getWorkflowOptions().find(x => x.value === page.workflowId).label : Localization.get("Workflow")}
                                         value={page.workflowId !== "" && page.workflowId}
-                                        onSelect={this.onWorkflowDropDownChange.bind(this)}                               
+                                        onSelect={this.onWorkflowDropDownChange.bind(this)}
                                         withBorder={true} />}
                             </GridCell>
                         }
                     </GridSystem></>
 
-                    
+
                 }
                 <div className="title sectionTitle">
                     {Localization.get("PipelineSettings")}
