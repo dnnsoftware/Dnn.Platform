@@ -468,8 +468,16 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="reader">The XmlReader to use.</param>
         private void ReadSupportedFeatures(XmlReader reader)
         {
-            this.SupportedFeatures = 0;
             reader.ReadStartElement("supportedFeatures");
+
+            // support for empty <supportedFeatures></supportedFeatures>
+            if (reader.NodeType == XmlNodeType.EndElement)
+            {
+                reader.ReadEndElement();
+                return;
+            }
+
+            this.SupportedFeatures = 0;
             do
             {
                 if (reader.HasAttributes)
@@ -523,6 +531,14 @@ namespace DotNetNuke.Entities.Modules
         private void ReadModuleDefinitions(XmlReader reader)
         {
             reader.ReadStartElement("moduleDefinitions");
+
+            // support for empty <moduleDefinitions></moduleDefinitions>
+            if (reader.NodeType == XmlNodeType.EndElement)
+            {
+                reader.ReadEndElement();
+                return;
+            }
+
             do
             {
                 reader.ReadStartElement("moduleDefinition");
