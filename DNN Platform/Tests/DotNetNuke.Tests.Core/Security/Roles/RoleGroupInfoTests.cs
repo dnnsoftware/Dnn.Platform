@@ -129,6 +129,47 @@ public class RoleGroupInfoTests
     }
 
     [Test]
+    public void ReadXml_WithEmptyRoles_ReadsZeroRoles()
+    {
+        var roleGroup = ReadXml(
+            """
+            <rolegroups>
+                <rolegroupname>N</rolegroupname>
+                <description>D</description>
+                <roles></roles>
+            </rolegroups>
+            """);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(roleGroup.RoleGroupName, Is.EqualTo("N"));
+            Assert.That(roleGroup.Description, Is.EqualTo("D"));
+            Assert.That(roleGroup.Roles, Is.Null);
+        }
+    }
+
+    [Test]
+    public void ReadXml_WithEmptyRolesWithWhiteSpace_ReadsZeroRoles()
+    {
+        var roleGroup = ReadXml(
+            """
+            <rolegroups>
+                <rolegroupname>N</rolegroupname>
+                <description>D</description>
+                <roles>
+                </roles>
+            </rolegroups>
+            """);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(roleGroup.RoleGroupName, Is.EqualTo("N"));
+            Assert.That(roleGroup.Description, Is.EqualTo("D"));
+            Assert.That(roleGroup.Roles, Is.Null);
+        }
+    }
+
+    [Test]
     public void ReadXml_WithSelfClosingRoles_ReadsZeroRoles()
     {
         var roleGroup = ReadXml(

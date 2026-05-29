@@ -266,82 +266,81 @@ namespace DotNetNuke.Entities.Modules
                     continue;
                 }
 
-                if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleDefinitions" && !reader.IsEmptyElement)
+                switch (reader)
                 {
-                    this.ReadModuleDefinitions(reader);
-                }
-                else if (reader.NodeType == XmlNodeType.Element && reader.Name == "supportedFeatures" && !reader.IsEmptyElement)
-                {
-                    this.ReadSupportedFeatures(reader);
-                }
-                else if (reader.NodeType == XmlNodeType.Element && reader.Name == "shareable" && !reader.IsEmptyElement)
-                {
-                    this.ReadModuleSharing(reader);
-                }
-                else if (reader.NodeType == XmlNodeType.Element && reader.Name == "page" && !reader.IsEmptyElement)
-                {
-                    this.ReadPageInfo(reader);
-                }
-                else
-                {
-                    switch (reader.Name)
-                    {
-                        case "desktopModule":
-                            break;
-                        case "moduleName":
-                            this.ModuleName = reader.ReadElementContentAsString();
-                            break;
-                        case "friendlyName":
-                            this.FriendlyName = reader.ReadElementContentAsString();
-                            break;
-                        case "description":
-                            this.Description = reader.ReadElementContentAsString();
-                            break;
-                        case "foldername":
-                            this.FolderName = reader.ReadElementContentAsString();
-                            break;
-                        case "businessControllerClass":
-                            this.BusinessControllerClass = reader.ReadElementContentAsString();
-                            break;
-                        case "codeSubDirectory":
-                            this.CodeSubDirectory = reader.ReadElementContentAsString();
-                            break;
-                        case "page":
-                            this.ReadPageInfo(reader);
+                    case { NodeType: XmlNodeType.Element, Name: "moduleDefinitions", IsEmptyElement: false, }:
+                        this.ReadModuleDefinitions(reader);
+                        break;
+                    case { NodeType: XmlNodeType.Element, Name: "supportedFeatures", IsEmptyElement: false, }:
+                        this.ReadSupportedFeatures(reader);
+                        break;
+                    case { NodeType: XmlNodeType.Element, Name: "shareable", IsEmptyElement: false, }:
+                        this.ReadModuleSharing(reader);
+                        break;
+                    case { NodeType: XmlNodeType.Element, Name: "page", IsEmptyElement: false, }:
+                        this.ReadPageInfo(reader);
+                        break;
+                    default:
+                        switch (reader.Name)
+                        {
+                            case "desktopModule":
+                                break;
+                            case "moduleName":
+                                this.ModuleName = reader.ReadElementContentAsString();
+                                break;
+                            case "friendlyName":
+                                this.FriendlyName = reader.ReadElementContentAsString();
+                                break;
+                            case "description":
+                                this.Description = reader.ReadElementContentAsString();
+                                break;
+                            case "foldername":
+                                this.FolderName = reader.ReadElementContentAsString();
+                                break;
+                            case "businessControllerClass":
+                                this.BusinessControllerClass = reader.ReadElementContentAsString();
+                                break;
+                            case "codeSubDirectory":
+                                this.CodeSubDirectory = reader.ReadElementContentAsString();
+                                break;
+                            case "page":
+                                this.ReadPageInfo(reader);
 
-                            if (this.Page.HasAdminPage())
-                            {
-                                this.AdminPage = this.Page.Name;
-                            }
+                                if (this.Page.HasAdminPage())
+                                {
+                                    this.AdminPage = this.Page.Name;
+                                }
 
-                            if (this.Page.HasHostPage())
-                            {
-                                this.HostPage = this.Page.Name;
-                            }
+                                if (this.Page.HasHostPage())
+                                {
+                                    this.HostPage = this.Page.Name;
+                                }
 
-                            break;
-                        case "isAdmin":
-                            if (bool.TryParse(reader.ReadElementContentAsString(), out var isAdmin))
-                            {
-                                this.IsAdmin = isAdmin;
-                            }
+                                break;
+                            case "isAdmin":
+                                if (bool.TryParse(reader.ReadElementContentAsString(), out var isAdmin))
+                                {
+                                    this.IsAdmin = isAdmin;
+                                }
 
-                            break;
-                        case "isPremium":
-                            if (bool.TryParse(reader.ReadElementContentAsString(), out var isPremium))
-                            {
-                                this.IsPremium = isPremium;
-                            }
+                                break;
+                            case "isPremium":
+                                if (bool.TryParse(reader.ReadElementContentAsString(), out var isPremium))
+                                {
+                                    this.IsPremium = isPremium;
+                                }
 
-                            break;
-                        default:
-                            if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
-                            {
-                                reader.ReadElementContentAsString();
-                            }
+                                break;
+                            default:
+                                if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
+                                {
+                                    reader.ReadElementContentAsString();
+                                }
 
-                            break;
-                    }
+                                break;
+                        }
+
+                        break;
                 }
             }
         }
@@ -350,7 +349,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="writer">The XmlWriter to use.</param>
         public void WriteXml(XmlWriter writer)
         {
-            // Write start of main elemenst
+            // Write start of main elements
             writer.WriteStartElement("desktopModule");
 
             // write out properties
@@ -389,10 +388,7 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteEndElement();
 
             // Write admin/host page info.
-            if (this.Page != null)
-            {
-                this.Page.WriteXml(writer);
-            }
+            this.Page?.WriteXml(writer);
 
             // Module sharing
             if (this.Shareable != ModuleSharing.Unknown)
@@ -432,7 +428,7 @@ namespace DotNetNuke.Entities.Modules
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
             // And with the 1's complement of Feature to Clear the Feature flag
-            this.SupportedFeatures = this.SupportedFeatures & ~((int)feature);
+            this.SupportedFeatures &= ~(int)feature;
         }
 
         /// <summary>Gets a Feature from the Features.</summary>
@@ -470,10 +466,8 @@ namespace DotNetNuke.Entities.Modules
         {
             reader.ReadStartElement("supportedFeatures");
 
-            // support for empty <supportedFeatures></supportedFeatures>
-            if (reader.NodeType == XmlNodeType.EndElement)
+            if (XmlUtils.TryReadEndElement(reader))
             {
-                reader.ReadEndElement();
                 return;
             }
 
@@ -532,10 +526,8 @@ namespace DotNetNuke.Entities.Modules
         {
             reader.ReadStartElement("moduleDefinitions");
 
-            // support for empty <moduleDefinitions></moduleDefinitions>
-            if (reader.NodeType == XmlNodeType.EndElement)
+            if (XmlUtils.TryReadEndElement(reader))
             {
-                reader.ReadEndElement();
                 return;
             }
 
@@ -546,7 +538,7 @@ namespace DotNetNuke.Entities.Modules
                 // Create new ModuleDefinition object
                 var moduleDefinition = new ModuleDefinitionInfo();
 
-                // Load it from the Xml
+                // Load it from the XML
                 moduleDefinition.ReadXml(reader);
 
                 // Add to the collection
@@ -559,7 +551,7 @@ namespace DotNetNuke.Entities.Modules
         {
             this.Page = new PageInfo();
 
-            // Load it from the Xml
+            // Load it from the XML
             this.Page.ReadXml(reader.ReadSubtree());
 
             if (this.Page.HasAdminPage())

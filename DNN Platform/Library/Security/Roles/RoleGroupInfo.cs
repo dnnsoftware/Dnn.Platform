@@ -237,10 +237,8 @@ namespace DotNetNuke.Security.Roles
         {
             reader.ReadStartElement("roles");
 
-            // support for empty <roles></roles>
-            if (reader.NodeType == XmlNodeType.EndElement)
+            if (XmlUtils.TryReadEndElement(reader))
             {
-                reader.ReadEndElement();
                 return;
             }
 
