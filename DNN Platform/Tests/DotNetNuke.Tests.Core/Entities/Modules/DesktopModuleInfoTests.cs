@@ -167,6 +167,45 @@ public class DesktopModuleInfoTests
     }
 
     [Test]
+    public void ReadXml_WithEmptySupportedFeatures_DoesNotInitializeFeatures()
+    {
+        var roleGroup = ReadXml(
+            """
+            <desktopModule>
+                <supportedFeatures></supportedFeatures>
+            </desktopModule>
+            """);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(roleGroup.SupportedFeatures, Is.EqualTo(Null.NullInteger));
+            Assert.That(roleGroup.IsUpgradeable, Is.False);
+            Assert.That(roleGroup.IsPortable, Is.False);
+            Assert.That(roleGroup.IsSearchable, Is.False);
+        }
+    }
+
+    [Test]
+    public void ReadXml_WithEmptySupportedFeaturesIncludingWhiteSpace_DoesNotInitializeFeatures()
+    {
+        var roleGroup = ReadXml(
+            """
+            <desktopModule>
+                <supportedFeatures>
+                </supportedFeatures>
+            </desktopModule>
+            """);
+
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(roleGroup.SupportedFeatures, Is.EqualTo(Null.NullInteger));
+            Assert.That(roleGroup.IsUpgradeable, Is.False);
+            Assert.That(roleGroup.IsPortable, Is.False);
+            Assert.That(roleGroup.IsSearchable, Is.False);
+        }
+    }
+
+    [Test]
     public void ReadXml_WithNoSupportedFeatures_DoesNotInitializeFeatures()
     {
         var roleGroup = ReadXml(
