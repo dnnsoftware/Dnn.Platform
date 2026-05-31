@@ -150,7 +150,8 @@ namespace DotNetNuke.Entities.Tabs
                         tab.SiteMapPriority,
                         UserController.Instance.GetCurrentUserInfo().UserID,
                         tab.CultureCode,
-                        tab.IsSystem);
+                        tab.IsSystem,
+                        (int)tab.PagePipeline);
 
                     UpdateTabVersion(tab.TabID);
 
@@ -2124,7 +2125,8 @@ namespace DotNetNuke.Entities.Tabs
                 updatedTab.SiteMapPriority,
                 UserController.Instance.GetCurrentUserInfo().UserID,
                 updatedTab.CultureCode,
-                updatedTab.IsSystem);
+                updatedTab.IsSystem,
+                (int)updatedTab.PagePipeline);
 
             // Update Tags
             List<Term> terms = updatedTab.Terms;

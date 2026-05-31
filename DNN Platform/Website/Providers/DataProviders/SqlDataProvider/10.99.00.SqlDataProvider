@@ -26,7 +26,7 @@ CREATE PROCEDURE {databaseOwner}[{objectQualifier}AddModuleControl]
 	@ControlKey                 nvarchar(50),
 	@ControlTitle               nvarchar(50),
 	@ControlSrc                 nvarchar(256),
-    @MvcControlClass            nvarchar(256) = null,
+  @MvcControlClass            nvarchar(256) = null,
 	@IconFile                   nvarchar(100),
 	@ControlType                int,
 	@ViewOrder                  int,
@@ -103,7 +103,7 @@ AS
 		ControlKey = @ControlKey,
 		ControlTitle = @ControlTitle,
 		ControlSrc = @ControlSrc,
-        MvcControlClass = @MvcControlClass,
+    MvcControlClass = @MvcControlClass,
 		IconFile = @IconFile,
 		ControlType = @ControlType,
 		ViewOrder = ViewOrder,
@@ -127,3 +127,187 @@ UPDATE {databaseOwner}{objectQualifier}ModuleControls
 	SET    
 		MvcControlClass = 'DotNetNuke.Common.Controls.TermsControl, DotNetNuke.Website'
 	WHERE ControlSrc = 'Admin/Portal/Terms.ascx'        
+
+/* Add PagePipeline Column to Tabs Table */
+/*****************************************************/
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.Columns WHERE TABLE_NAME='{objectQualifier}Tabs' AND COLUMN_NAME='PagePipeline')
+	BEGIN
+		-- Add new Column
+		ALTER TABLE {databaseOwner}{objectQualifier}Tabs
+			ADD PagePipeline [int] NULL
+	END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER VIEW {databaseOwner}[{objectQualifier}vw_Tabs]
+AS
+    SELECT
+        T.TabID,
+        T.TabOrder,
+        T.PortalID,
+        T.TabName,
+        T.ParentId,
+        T.[Level],
+        T.TabPath,
+        T.UniqueId,
+        T.VersionGuid,
+        T.DefaultLanguageGuid,
+        T.LocalizedVersionGuid,
+        T.IsVisible,
+		T.HasBeenPublished,
+		 Case when t.IconFile LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(t.IconFile, 8, 10) AS Int))
+			 else Coalesce(t.IconFile,'')
+			 end as IconFile
+		,
+         Case when t.IconFileLarge LIKE 'fileid=%' 
+			then (SELECT IsNull(Folder, '') + [FileName] FROM {databaseOwner}[{objectQualifier}vw_Files]
+			 WHERE fileid = CAST(SUBSTRING(t.IconFileLarge, 8, 10) AS Int))
+			 else Coalesce(t.IconFileLarge,'')
+			 end as IconFileLarge
+		,T.DisableLink,
+        T.Title,
+        T.Description,
+        T.KeyWords,
+        T.IsDeleted,
+        T.SkinSrc,
+        T.ContainerSrc,
+        T.StartDate,
+        T.EndDate,
+        T.Url,
+        CASE WHEN {databaseOwner}{objectQualifier}HasChildTab(T.TabID) = 1 THEN 'true' ELSE 'false' END AS HasChildren,
+        T.RefreshInterval,
+        T.PageHeadText,
+        T.IsSecure,
+        T.PermanentRedirect,
+        T.SiteMapPriority,
+        CI.ContentItemID,
+        CI.[Content],
+        CI.ContentTypeID,
+        CI.ModuleID,
+        CI.ContentKey,
+        CI.Indexed,
+        CI.StateID,
+        T.CultureCode,
+        T.CreatedByUserID,
+        T.CreatedOnDate,
+        T.LastModifiedByUserID,
+        T.LastModifiedOnDate,
+		T.IsSystem,
+    T.PagePipeline
+    FROM       {databaseOwner}[{objectQualifier}Tabs]         AS T
+    LEFT  JOIN {databaseOwner}[{objectQualifier}ContentItems] AS CI ON T.ContentItemID = CI.ContentItemID
+GO
+
+IF EXISTS (SELECT * FROM dbo.sysobjects WHERE id = object_id(N'{databaseOwner}[{objectQualifier}UpdateTab]') AND OBJECTPROPERTY(id, N'IsProcedure') = 1)
+BEGIN
+    DROP PROCEDURE {databaseOwner} [{objectQualifier}UpdateTab]
+END
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}UpdateTab]
+    @TabId                  Int,
+    @ContentItemID          Int,
+    @PortalId               Int,
+    @VersionGuid            UniqueIdentifier,
+    @DefaultLanguageGuid    UniqueIdentifier,
+    @LocalizedVersionGuid   UniqueIdentifier,
+    @TabName                nVarChar(200),
+    @IsVisible              Bit,
+    @DisableLink            Bit,
+    @ParentId               Int,
+    @IconFile               nVarChar(255),
+    @IconFileLarge          nVarChar(255),
+    @Title                  nVarChar(200),
+    @Description            nVarChar(500),
+    @KeyWords               nVarChar(500),
+    @IsDeleted              Bit,
+    @Url                    nVarChar(255),
+    @SkinSrc                nVarChar(200),
+    @ContainerSrc           nVarChar(200),
+    @StartDate              DateTime,
+    @EndDate                DateTime,
+    @RefreshInterval        Int,
+    @PageHeadText           nVarChar(max),
+    @IsSecure               Bit,
+    @PermanentRedirect      Bit,
+    @SiteMapPriority        Float,
+    @LastModifiedByUserID   Int,
+    @CultureCode            nVarChar( 10),
+    @IsSystem               Bit,
+    @PagePipeline           Int
+AS
+BEGIN
+    DECLARE @OldParentId Int
+    SET @OldParentId = (SELECT ParentId FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    DECLARE @TabOrder Int
+    SET @TabOrder = (SELECT TabOrder FROM {databaseOwner}[{objectQualifier}Tabs] WHERE TabID = @TabId)
+
+    -- Get New TabOrder
+    DECLARE @NewTabOrder Int
+    SET @NewTabOrder = (SELECT MAX(TabOrder) FROM {databaseOwner}[{objectQualifier}Tabs] WHERE (ParentId = @ParentId OR (ParentId IS NULL AND @ParentId IS NULL)))
+    IF @NewTabOrder IS NULL
+        SET @NewTabOrder = 1
+    ELSE
+        SET @NewTabOrder = @NewTabOrder + 2
+
+    UPDATE {databaseOwner}[{objectQualifier}Tabs]
+        SET
+            ContentItemID           = @ContentItemID,
+            PortalId                = @PortalId,
+            VersionGuid             = @VersionGuid,
+            DefaultLanguageGuid     = @DefaultLanguageGuid,
+            LocalizedVersionGuid    = @LocalizedVersionGuid,
+            TabName                 = @TabName,
+            IsVisible               = @IsVisible,
+            DisableLink             = @DisableLink,
+            ParentId                = @ParentId,
+            IconFile                = @IconFile,
+            IconFileLarge           = @IconFileLarge,
+            Title                   = @Title,
+            Description             = @Description,
+            KeyWords                = @KeyWords,
+            IsDeleted               = @IsDeleted,
+            Url                     = @Url,
+            SkinSrc                 = @SkinSrc,
+            ContainerSrc            = @ContainerSrc,
+            StartDate               = @StartDate,
+            EndDate                 = @EndDate,
+            RefreshInterval         = @RefreshInterval,
+            PageHeadText            = @PageHeadText,
+            IsSecure                = @IsSecure,
+            PermanentRedirect       = @PermanentRedirect,
+            SiteMapPriority         = @SiteMapPriority,
+            LastModifiedByUserID    = @LastModifiedByUserID,
+            LastModifiedOnDate      = getdate(),
+            CultureCode             = @CultureCode,
+            IsSystem                = @IsSystem,
+            PagePipeline            = @PagePipeline
+    WHERE  TabId = @TabId;
+
+    IF (@OldParentId <> @ParentId) BEGIN
+        -- update TabOrder of Tabs with same original Parent
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = TabOrder - 2
+         WHERE (ParentId = @OldParentId)
+           AND TabOrder > @TabOrder
+
+        -- Update Tab with new TabOrder
+        UPDATE {databaseOwner}[{objectQualifier}Tabs]
+           SET TabOrder = @NewTabOrder
+         WHERE TabID = @TabId
+    END /* IF */
+
+    EXEC {databaseOwner}{objectQualifier}BuildTabLevelAndPath @TabId, 1
+END /* Procedure */
+GO

@@ -527,6 +527,10 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("localizedVersionGuid")]
         public Guid LocalizedVersionGuid { get; set; }
 
+        /// <summary>Gets or sets the rendering pipeline of the page.</summary>
+        [XmlElement("pagepipeline")]
+        public PagePipeline.PageRenderingPipeline PagePipeline { get; set; }
+
         /// <summary>Gets or sets a collection of the modules on this page.</summary>
         /// <value>An <see cref="ArrayList"/> of <see cref="ModuleInfo"/>.</value>
         [XmlIgnore]
@@ -700,17 +704,6 @@ namespace DotNetNuke.Entities.Tabs
         [XmlIgnore]
         [JsonIgnore]
         public bool UseBaseFriendlyUrls { get; set; }
-
-        /// <summary>Gets a value indicating the pipeline type.</summary>
-        [XmlIgnore]
-        [JsonIgnore]
-        public PagePipeline.PageRenderingPipeline PagePipeline
-        {
-            get
-            {
-                return this.TabSettings.GetPagePipeline(Abstractions.Framework.PagePipeline.SettingName);
-            }
-        }
 
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
@@ -1002,6 +995,7 @@ namespace DotNetNuke.Entities.Tabs
             this.BreadCrumbs = null;
             this.Modules = null;
             this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
+            this.PagePipeline = (PagePipeline.PageRenderingPipeline)Null.SetNullInteger(dr["PagePipeline"]);
         }
 
         /// <summary>Gets the URL for the given <paramref name="cultureCode"/>.</summary>

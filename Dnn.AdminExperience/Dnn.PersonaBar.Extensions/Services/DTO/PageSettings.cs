@@ -224,6 +224,6 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         public string PublishStatus { get; set; }
 
         [DataMember(Name = "pagePipeline")]
-        public string PagePipeline { get; set; }
+        public int PagePipeline { get; set; }
     }
 }

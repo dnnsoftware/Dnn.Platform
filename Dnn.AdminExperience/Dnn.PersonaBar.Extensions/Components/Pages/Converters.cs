@@ -140,7 +140,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ParentId = tab.ParentId,
                 IsSpecial = TabController.IsSpecialTab(tab.TabID, PortalSettings.Current),
                 PagePermissions = SecurityService.Instance.GetPagePermissions(tab),
-                PagePipeline = (string)tab.TabSettings[PagePipeline.SettingName],
+                PagePipeline = (int)tab.PagePipeline,
             };
         }
 

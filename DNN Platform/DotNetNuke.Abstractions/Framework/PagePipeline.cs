@@ -50,17 +50,17 @@ namespace DotNetNuke.Abstractions.Framework
             /// <summary>
             /// Specifies that the pipeline type should be taken from the portal.
             /// </summary>
-            Inherited,
+            Inherited = -1,
 
             /// <summary>
             /// Specifies that pages should be rendered using the WebForms pipeline.
             /// </summary>
-            WebForms,
+            WebForms = 0,
 
             /// <summary>
             /// Specifies that pages should be rendered using the MVC pipeline.
             /// </summary>
-            MVC,
+            MVC = 1,
         }
     }
 }

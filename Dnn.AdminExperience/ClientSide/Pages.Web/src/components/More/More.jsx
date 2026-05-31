@@ -28,9 +28,9 @@ class More extends Component {
 
     getPagePipelineOptions() {
         const options = [];
-        options.push({ value: "0", label: Localization.get("Inherited") });
-        options.push({ value: "1", label: Localization.get("WebForms") });
-        options.push({ value: "2", label: Localization.get("Mvc") });
+        options.push({ value: -1, label: Localization.get("Inherited") });
+        options.push({ value: 0, label: Localization.get("WebForms") });
+        options.push({ value: 1, label: Localization.get("Mvc") });
         return options;
     }
 
