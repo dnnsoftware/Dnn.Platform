@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 /// <summary>The <see cref="IInstaller"/> implementation, using <see cref="HttpClient"/>, with retries based on <see cref="DeployInput.InstallationStatusTimeout"/>.</summary>
 public class Installer : IInstaller
@@ -211,6 +212,13 @@ public class Installer : IInstaller
     private class CreateSessionResponse
     {
         public string? SessionGuid { get; set; }
+
+        [JsonPropertyName("Guid")]
+        public string? PolyDeployGuid
+        {
+            get => this.SessionGuid;
+            set => this.SessionGuid = value;
+        }
     }
 
     private class WebResult
