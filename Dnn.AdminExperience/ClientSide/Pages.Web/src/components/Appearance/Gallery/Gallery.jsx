@@ -48,7 +48,7 @@ class Gallery extends Component {
                     autoHeight
                     autoHeightMin={0}
                     autoHeightMax={480}>
-                    <div style={{width}}>
+                    <div style={{width}} className="flex-container">
                         {this.props.children}
                     </div>
                 </Scrollbars>

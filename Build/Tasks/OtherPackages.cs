@@ -28,6 +28,7 @@ namespace DotNetNuke.Build.Tasks
     [IsDependentOn(typeof(PackageBulkInstall))]
     [IsDependentOn(typeof(PackageMicrosoftExtensionsDependencyInjection))]
     [IsDependentOn(typeof(PackageMicrosoftWebInfrastructure))]
+    [IsDependentOn(typeof(PackageMicrosoftCodeDomProvidersDotNetCompilerPlatform))]
     public sealed class OtherPackages : FrostingTask<Context>
     {
         private static readonly string[] IncludeAll = ["**/*",];
@@ -44,21 +45,23 @@ namespace DotNetNuke.Build.Tasks
 
         private static void PackageOtherPackage(Context context, OtherPackage package)
         {
-            var srcFolder = "./" + package.Folder;
+            var srcFolder = context.RootDir + context.Directory(package.Folder);
             var files = package.Excludes.Length == 0
-                            ? context.GetFiles(srcFolder + "**/*")
+                            ? context.GetFiles($"{srcFolder}/**/*")
                             : context.GetFilesByPatterns(srcFolder, IncludeAll, package.Excludes);
             var version = "00.00.00";
-            foreach (var dnn in context.GetFiles(srcFolder + "**/*.dnn"))
+            foreach (var dnn in context.GetFiles($"{srcFolder}/**/*.dnn"))
             {
                 version = context.XmlPeek(dnn, "dotnetnuke/packages/package/@version");
             }
 
             context.CreateDirectory(package.Destination);
 
-            var packageZip = $"{context.WebsiteFolder}{package.Destination}/{package.Name}_{version}_Install.{package.Extension}";
-            context.Information("Packaging {0}", packageZip);
-            context.Zip(srcFolder, packageZip, files);
+            var destination = context.WebsiteDir + context.Directory(package.Destination);
+            var packageZipName = context.File($"{package.Name}_{version}_Install.{package.Extension}");
+            var packageZipPath = destination + packageZipName;
+            context.Information("Packaging {0}", packageZipPath);
+            context.Zip(srcFolder, packageZipPath, files);
         }
 
         private sealed class OtherPackage
@@ -71,7 +74,7 @@ namespace DotNetNuke.Build.Tasks
 
             public string Extension { get; set; } = "zip";
 
-            public string[] Excludes { get; set; } = Array.Empty<string>();
+            public string[] Excludes { get; set; } = [];
         }
     }
 }

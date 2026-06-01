@@ -7,7 +7,7 @@ import * as ReactCustomScrollBars from "react-custom-scrollbars";
 import * as CommonComponents from "./dnn-common-components";
 import ReduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import ReduxThunk from "redux-thunk";
-import ReactWidgets from "react-widgets";
+import * as ReactWidgets from "react-widgets";
 import Promise from "es6-promise";
 import PersonaBarComponents from "./components/persona-bar-components";
 

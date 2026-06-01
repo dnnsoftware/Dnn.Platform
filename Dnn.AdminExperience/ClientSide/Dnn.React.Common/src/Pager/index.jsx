@@ -31,15 +31,8 @@ class Pager extends Component {
     }
     
     formatCommaSeparate(number) {
-        let numbersSeparatorByLocale = this.getNumbersSeparatorByLocale();
-        while (/(\d+)(\d{3})/.test(number.toString())) {
-            number = number.toString().replace(/(\d+)(\d{3})/, "$1" + numbersSeparatorByLocale + "$2");
-        }
-        return number;
-    }
-    getNumbersSeparatorByLocale() {
-        let numberWithSeparator = (1000).toLocaleString(this.props.culture);
-        return numberWithSeparator.indexOf(",") > 0 ? "," : ".";
+        const numberFormat = new Intl.NumberFormat();
+        return numberFormat.format(number);
     }
     calculateTotalPages(props) {
         const { state } = this;

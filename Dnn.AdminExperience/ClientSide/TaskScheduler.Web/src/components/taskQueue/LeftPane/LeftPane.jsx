@@ -13,7 +13,7 @@ class LeftPane extends Component {
         const {props} = this;
         props.onEnter(key, value, props.index);
     }
-     
+
     render() {
         const {props} = this;
         return (

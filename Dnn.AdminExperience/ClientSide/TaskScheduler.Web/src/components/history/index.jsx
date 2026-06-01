@@ -93,7 +93,7 @@ class HistoryPanelBody extends Component {
         );
     }
 
-     
+
     renderedHistoryList() {
         const {props} = this;
         if (props.taskHistoryList) {
@@ -116,7 +116,7 @@ class HistoryPanelBody extends Component {
         }
     }
 
-     
+
     render() {
         const {props} = this;
         return (

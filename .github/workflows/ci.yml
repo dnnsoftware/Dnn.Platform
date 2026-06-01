@@ -1,4 +1,4 @@
-﻿name: "Build and Validate"
+name: "Build and Validate"
 
 env:
   CAKE_TARGET: "BuildAll"
@@ -7,8 +7,10 @@ env:
   RUN_TESTS: "true"
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
+
+permissions: {}
 
 on:
   push:
@@ -19,6 +21,9 @@ on:
     branches:
       - "develop"
       - "release/*"
+  merge_group:
+    types:
+      - "checks_requested"
   workflow_dispatch:
     inputs:
       CAKE_TARGET:
@@ -54,8 +59,8 @@ jobs:
     name: "Build and Validate"
     runs-on: "windows-2025-vs2026"
     permissions:
-      checks: write
-      pull-requests: write
+      checks: "write"
+      pull-requests: "write"
     defaults:
       run:
         shell: "pwsh"
@@ -72,21 +77,14 @@ jobs:
         with:
           fetch-depth: 0 # include all history for GitVersion
 
-      # Built-in caching is broken for Yarn, using setup-node twice
-      # See https://github.com/actions/setup-node/issues/531#issuecomment-3335630863
       - name: "Setup Node.js"
-        uses: "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f" # v6.3.0
+        uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
         with:
           node-version-file: ".node-version"
           package-manager-cache: false
 
       - name: "Enable Corepack"
         run: "corepack enable"
-
-      - name: "Setup Yarn cache"
-        uses: "actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f" # v6.3.0
-        with:
-          cache: "yarn"
 
       - name: "Setup .NET SDK"
         uses: "actions/setup-dotnet@c2fa09f4bde5ebb9d1777cf28262a3eb3db3ced7" # v5.2.0
@@ -128,7 +126,7 @@ jobs:
 
       - name: "Publish Artifacts"
         id: "publish-artifacts-step"
-        uses: "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f" # v7.0.0
+        uses: "actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a" # v7.0.1
         if: ${{ !cancelled() }}
         with:
           path: "Artifacts"
@@ -145,6 +143,29 @@ jobs:
 
     outputs:
       artifact-id: ${{ steps.publish-artifacts-step.outputs.artifact-id }}
+
+  attest-artifacts:
+    name: "Attest Artifacts"
+    needs: ["build-and-validate"]
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: "ubuntu-latest"
+    permissions:
+      id-token: "write"
+      contents: "read"
+      attestations: "write"
+    steps:
+      - name: "Download Artifacts"
+        uses: "actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c" # v8.0.1
+        with:
+          artifact-ids: ${{ needs.build-and-validate.outputs.artifact-id }}
+
+      - name: "Generate artifact attestations"
+        uses: "actions/attest@59d89421af93a897026c735860bf21b6eb4f7b26" # v4.1.0
+        with:
+          subject-path: |
+            *.nupkg
+            *.snupkg
+            *.zip
 
   deploy-to-nuget:
     name: "Deploy to NuGet"
@@ -164,7 +185,7 @@ jobs:
           artifact-ids: ${{ needs.build-and-validate.outputs.artifact-id }}
 
       - name: "NuGet login (OIDC → temp API key)"
-        uses: "NuGet/login@d22cc5f58ff5b88bf9bd452535b4335137e24544" # v1
+        uses: "NuGet/login@8d196754b4036150537f80ac539e15c2f1028841" # v1.2.0
         id: "nuget-login"
         with:
           user: ${{ secrets.NUGET_USER }}

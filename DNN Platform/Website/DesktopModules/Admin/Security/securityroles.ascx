@@ -41,11 +41,11 @@
                 </td>
                 <td width="30"></td>
                 <td valign="top" width="100" nowrap="nowrap">
-                    <dnn:DnnDatePicker ID="effectiveDatePicker" runat="server"/>
+                    <asp:TextBox ID="effectiveDatePicker" runat="server" TextMode="Date" />
                 </td>
                 <td width="30"></td>
                 <td valign="top" width="100" nowrap="nowrap">
-                    <dnn:DnnDatePicker ID="expiryDatePicker" runat="server"/>
+                    <asp:TextBox ID="expiryDatePicker" runat="server" TextMode="Date" />
                 </td>
                 <asp:PlaceHolder runat="server" ID="placeIsOwner" Visible="false">
                     <td width="30"></td>

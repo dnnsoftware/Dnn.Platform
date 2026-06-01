@@ -4,6 +4,7 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
 
     using Cake.Common.Build;
@@ -15,6 +16,9 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Frosting;
     using Cake.Issues;
     using Cake.Issues.MsBuild;
+    using Cake.Issues.PullRequests;
+    using Cake.Issues.PullRequests.GitHubActions;
+
     using DotNetNuke.Build;
 
     /// <summary>A cake task to compile the platform.</summary>
@@ -41,10 +45,7 @@ namespace DotNetNuke.Build.Tasks
             }
             finally
             {
-                if (context.AzurePipelines().IsRunningOnAzurePipelines)
-                {
-                    ReportIssuesToAzurePipelines(context, cleanLog, buildLog);
-                }
+                ReportIssuesToCI(context, cleanLog, buildLog);
             }
         }
 
@@ -56,13 +57,26 @@ namespace DotNetNuke.Build.Tasks
                 .SetNoConsoleLogger(context.IsRunningInCI);
         }
 
-        private static void ReportIssuesToAzurePipelines(Context context, FilePath cleanLog, FilePath buildLog)
+        private static void ReportIssuesToCI(Context context, FilePath cleanLog, FilePath buildLog)
         {
             var issueProviders =
                 from logFilePath in new[] { cleanLog, buildLog, }
                 where context.FileExists(logFilePath)
                 let settings = new MsBuildIssuesSettings(logFilePath, context.MsBuildBinaryLogFileFormat())
                 select new MsBuildIssuesProvider(context.Log, settings);
+
+            if (context.AzurePipelines().IsRunningOnAzurePipelines)
+            {
+                ReportIssuesToAzurePipelines(context, issueProviders);
+            }
+            else if (context.GitHubActions().IsRunningOnGitHubActions)
+            {
+                ReportIssuesToGitHubActions(context, issueProviders);
+            }
+        }
+
+        private static void ReportIssuesToAzurePipelines(Context context, IEnumerable<MsBuildIssuesProvider> issueProviders)
+        {
             var issues = context.ReadIssues(issueProviders, context.Directory("."));
             foreach (var issue in issues)
             {
@@ -80,6 +94,17 @@ namespace DotNetNuke.Build.Tasks
                 {
                     context.AzurePipelines().Commands.WriteWarning(issue.MessageText, messageData);
                 }
+            }
+        }
+
+        private static void ReportIssuesToGitHubActions(Context context, IEnumerable<MsBuildIssuesProvider> issueProviders)
+        {
+            foreach (var issueProvider in issueProviders)
+            {
+                context.ReportIssuesToPullRequest(
+                    issueProvider,
+                    context.GitHubActionsBuilds(),
+                    context.RootDir);
             }
         }
     }

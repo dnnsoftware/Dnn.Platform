@@ -42,11 +42,11 @@ function Flag({ culture = "", onClick, title }) {
 
     useEffect(() => {
         try {
-            setFlagUrl(require(`./img/flags/${culture}.png`).default);
+            setFlagUrl(require(`./img/flags/${culture}.png`));
             setIsFallback(false);
         } catch {
             try {
-                setFlagUrl(require("./img/flags/none.png").default);
+                setFlagUrl(require("./img/flags/none.png"));
                 setIsFallback(true);
             } catch {
                 setFlagUrl(undefined);

@@ -136,8 +136,8 @@ class IpFiltersPanelBody extends Component {
                     <div className="ip-filter-items-grid">
                         {this.renderHeader()}
                         <IpFilterRow
-                            ipFilterId={"-"}
-                            ruleType={"-"}
+                            ipFilterId={-1}
+                            ruleType={0}
                             ipFilter={"-"}
                             index={"add"}
                             key={"ipFilter-add"}

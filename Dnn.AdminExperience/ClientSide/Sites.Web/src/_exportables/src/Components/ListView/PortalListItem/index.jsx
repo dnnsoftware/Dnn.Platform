@@ -19,8 +19,9 @@ const PortalListItem = ({portal, portalStatisticInfo, portalButtons}) => (
             </GridCell>
             <GridCell className="portal-statistics-info" columnSize={65}>
                 {
-                    portalStatisticInfo.map(statistic => {
-                        return <Statistic key={"stat-" + statistic.label} label={statistic.label} value={statistic.value}/>;
+                    portalStatisticInfo.map((statistic, index) => {
+                        const statKey = statistic.label || index;
+                        return <Statistic key={"stat-" + statKey + "-" + index} label={statistic.label} value={statistic.value}/>;
                     })
                 }
             </GridCell>

@@ -349,7 +349,7 @@ Dropdown.propTypes = {
     autoHide: PropTypes.bool,
     value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     closeOnClick: PropTypes.bool,
-    prependWith: PropTypes.object,
+    prependWith: PropTypes.string,
     labelIsMultiLine: PropTypes.bool,
     title: PropTypes.string,
     onScrollUpdate: PropTypes.func,

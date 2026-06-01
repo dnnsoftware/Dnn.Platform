@@ -46,7 +46,6 @@ const config = [
         ignores: [
             "dist/",
             "node_modules/",
-            "webpack.config.js",
             "**/lib/",
         ],
     },
@@ -59,12 +58,6 @@ const config = [
                 navigator: "readonly",
                 setTimeout: "readonly",
             }
-        }
-    },
-    {
-        files: ["webpack.config.js"],
-        languageOptions: {
-            sourceType: "commonjs",
         }
     },
     {

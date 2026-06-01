@@ -59,7 +59,7 @@ class SchedulerRow extends Component {
         }
     }
 
-     
+
     getEnabledDisplay() {
         if (this.props.id !== "add") {
             if (this.props.enabled) {
@@ -70,7 +70,7 @@ class SchedulerRow extends Component {
         else return <span>-</span>;
     }
 
-     
+
     render() {
         const { props } = this;
         let opened = (this.props.openId !== "" && this.props.id === this.props.openId);

@@ -127,6 +127,7 @@ namespace DotNetNuke.Entities.Users
         public string FullName => $"{this.FirstName} {this.LastName}";
 
         /// <summary>Gets a value indicating whether a property has been changed.</summary>
+        [XmlIgnore]
         public bool IsDirty { get; private set; }
 
         /// <summary>Gets a URL for the profile picture - if the path contains invalid url characters it will return a fileticket.</summary>

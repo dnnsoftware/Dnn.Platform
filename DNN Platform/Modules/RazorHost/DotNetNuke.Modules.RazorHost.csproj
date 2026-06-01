@@ -182,7 +182,6 @@
     <None Include="Scripts\_TabInfo.cshtml" />
     <Content Include="Scripts\Shared\_Header.cshtml" />
     <Content Include="Scripts\_3c_UsingSections.cshtml" />
-    <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">

@@ -21,12 +21,12 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     [TestFixture]
     public class NullableSettingsTests : BaseSettingsTests
     {
-        public static readonly object[] NullableCases =
-        {
-            new object[] { null, null, null, null, },
-            new object[] { string.Empty, -1, DateTime.UtcNow, TimeSpan.FromMilliseconds(3215648), },
-            new object[] { "lorem ipsum", 456, DateTime.Now, DateTime.Today - DateTime.Now, },
-        };
+        public static readonly TestCaseData<string, int?, DateTime?, TimeSpan?>[] NullableCases =
+        [
+            new(null, null, null, null),
+            new(string.Empty, -1, new DateTime(2026, 5, 4, 3, 2, 1, DateTimeKind.Utc), TimeSpan.FromMilliseconds(3215648)),
+            new("lorem ipsum", 456, new DateTime(2025, 12, 24, 1, 2, 3, DateTimeKind.Local), DateTime.Today - new DateTime(2025, 12, 24, 1, 2, 3, DateTimeKind.Local))
+        ];
 
         protected override void SetupServiceProvider(IServiceCollection services)
         {

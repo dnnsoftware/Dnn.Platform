@@ -204,7 +204,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 });
             }
 
-            summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, packageId, Constants.ExportManifestName));
+            summary.ExportFileInfo = GetExportFileInfo(Path.Combine(ExportFolder, Path.GetFileName(packageId), Constants.ExportManifestName));
             summary.FromDate = exportDto.FromDateUtc;
             summary.ToDate = exportDto.ToDateUtc;
             summary.SummaryItems = summaryItems;

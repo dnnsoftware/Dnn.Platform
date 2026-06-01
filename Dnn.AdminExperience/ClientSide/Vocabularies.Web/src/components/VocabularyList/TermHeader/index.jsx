@@ -73,7 +73,7 @@ class TermHeader extends Component {
         const {props} = this;
         props.onDelete(props.term, props.index, () => { this.collapse(); });
     }
-     
+
     render() {
         const {props, state} = this;
         const TypeIcon = props.type === 1 ? SimpleTypeIcon : HierarchyTypeIcon;

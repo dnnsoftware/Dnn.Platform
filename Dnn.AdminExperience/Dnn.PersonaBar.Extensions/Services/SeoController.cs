@@ -574,10 +574,7 @@ namespace Dnn.PersonaBar.Seo.Services
         {
             try
             {
-                if (Regex.IsMatch(string.Empty, regexPattern))
-                {
-                }
-
+                _ = RegexUtils.GetCachedRegex(regexPattern).IsMatch(string.Empty);
                 return true;
             }
             catch
@@ -590,18 +587,18 @@ namespace Dnn.PersonaBar.Seo.Services
 
         private void UpdateRegexSettingsInternal(UpdateRegexSettingsRequest request)
         {
-            var settings = new Dictionary<string, string>()
+            var settings = new Dictionary<string, string>
             {
-                        { FriendlyUrlSettings.IgnoreRegexSetting, request.IgnoreRegex },
-                        { FriendlyUrlSettings.DoNotRewriteRegExSetting, request.DoNotRewriteRegex },
-                        { FriendlyUrlSettings.SiteUrlsOnlyRegexSetting, request.UseSiteUrlsRegex },
-                        { FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, request.DoNotRedirectRegex },
-                        { FriendlyUrlSettings.DoNotRedirectHttpsUrlRegexSetting, request.DoNotRedirectSecureRegex },
-                        { FriendlyUrlSettings.PreventLowerCaseUrlRegexSetting, request.ForceLowerCaseRegex },
-                        { FriendlyUrlSettings.DoNotUseFriendlyUrlRegexSetting, request.NoFriendlyUrlRegex },
-                        { FriendlyUrlSettings.KeepInQueryStringRegexSetting, request.DoNotIncludeInPathRegex },
-                        { FriendlyUrlSettings.UrlsWithNoExtensionRegexSetting, request.ValidExtensionlessUrlsRegex },
-                        { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch },
+                { FriendlyUrlSettings.IgnoreRegexSetting, request.IgnoreRegex },
+                { FriendlyUrlSettings.DoNotRewriteRegExSetting, request.DoNotRewriteRegex },
+                { FriendlyUrlSettings.SiteUrlsOnlyRegexSetting, request.UseSiteUrlsRegex },
+                { FriendlyUrlSettings.DoNotRedirectUrlRegexSetting, request.DoNotRedirectRegex },
+                { FriendlyUrlSettings.DoNotRedirectHttpsUrlRegexSetting, request.DoNotRedirectSecureRegex },
+                { FriendlyUrlSettings.PreventLowerCaseUrlRegexSetting, request.ForceLowerCaseRegex },
+                { FriendlyUrlSettings.DoNotUseFriendlyUrlRegexSetting, request.NoFriendlyUrlRegex },
+                { FriendlyUrlSettings.KeepInQueryStringRegexSetting, request.DoNotIncludeInPathRegex },
+                { FriendlyUrlSettings.UrlsWithNoExtensionRegexSetting, request.ValidExtensionlessUrlsRegex },
+                { FriendlyUrlSettings.ValidFriendlyUrlRegexSetting, request.RegexMatch },
             };
 
             settings.ToList().ForEach((value) =>

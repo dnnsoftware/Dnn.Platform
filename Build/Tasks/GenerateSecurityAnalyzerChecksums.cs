@@ -4,11 +4,12 @@
 namespace DotNetNuke.Build.Tasks
 {
     using System;
-    using System.IO;
-    using System.Linq;
-    using System.Security.Cryptography;
 
     using Cake.Common.Diagnostics;
+    using Cake.Common.IO;
+    using Cake.Common.Security;
+    using Cake.Core.IO;
+    using Cake.FileHelpers;
     using Cake.Frosting;
 
     /// <summary>A cake task to generate the <c>Default.aspx</c> checksum for the Security Analyzer.</summary>
@@ -19,23 +20,21 @@ namespace DotNetNuke.Build.Tasks
         public override void Run(Context context)
         {
             context.Information("Generating default.aspx checksum…");
-            const string sourceFile = "./Dnn Platform/Website/Default.aspx";
-            const string destFile = "./Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/Resources/sums.resources";
-            var hash = CalculateSha(sourceFile);
+            var sourceFile = context.File("./Dnn Platform/Website/Default.aspx");
+            var destFile = context.File("./Dnn.AdminExperience/Dnn.PersonaBar.Extensions/Components/Security/Resources/sums.resources");
+            var hash = CalculateSha(context, sourceFile);
             var content = $"""
                            <checksums>
                              <sum name="Default.aspx" version="{context.Version.MajorMinorPatch}" type="Platform" sum="{hash}" />
                            </checksums>
                            """;
-            File.WriteAllText(destFile, content);
+            context.FileWriteText(destFile, content);
         }
 
-        private static string CalculateSha(string filename)
+        private static string CalculateSha(Context context, FilePath file)
         {
-            using var sha = SHA256.Create();
-            using var stream = File.OpenRead(filename);
-            var hash = sha.ComputeHash(stream);
-            return Convert.ToHexStringLower(hash);
+            var hash = context.CalculateFileHash(file, HashAlgorithm.SHA256);
+            return Convert.ToHexStringLower(hash.ComputedHash);
         }
     }
 }

@@ -1,6 +1,6 @@
 {
   "name": "aperture",
-  "version": "10.2.4",
+  "version": "10.3.3",
   "description": "Default theme for DNN 10.",
   "main": "src/scripts/main.ts",
   "author": "DNN Community",
@@ -19,16 +19,16 @@
     "@types/postcss-import": "^14.0.3",
     "browser-sync": "^3.0.4",
     "chokidar": "^4.0.3",
-    "cssnano": "^7.1.1",
-    "glob": "^13.0.0",
-    "postcss": "^8.5.6",
+    "cssnano": "^7.1.3",
+    "glob": "^13.0.6",
+    "postcss": "^8.5.8",
     "postcss-banner": "^4.0.1",
     "postcss-cli": "^11.0.1",
     "postcss-import": "^16.1.1",
-    "sass": "^1.93.2",
-    "tsx": "^4.20.6",
+    "sass-embedded": "^1.98.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
-    "zip-lib": "^1.1.2"
+    "zip-lib": "^1.3.1"
   },
   "browserslist": [
     "last 2 versions",

@@ -481,13 +481,22 @@ function pluginInit() {
             } else {
                 data.itemData = '';
             }
-            if ((data.text == '' && data.itemData == '') || data.text == '%3Cbr%3E') {
+            if ((!data.text && !data.itemData) || data.text === '%3Cbr%3E') {
                 return false;
             }
             //Check for a value
             var tmpValue = $content.val();
-            tmpValue = tmpValue.replace(/<(?:.|\n)*?>/gm, '').replace(/\s+/g, '').replace(/&nbsp;/g,'');
-            if (tmpValue == '' && data.itemData == '') {
+            while (/<(?:.|\n)*?>/gm.test(tmpValue)) {
+                tmpValue = tmpValue.replace(/<(?:.|\n)*?>/gm, '');
+            }
+            while (/\s+/g.test(tmpValue)) {
+                tmpValue = tmpValue.replace(/\s+/g, '');
+            }
+            while (/&nbsp;/g.test(tmpValue)) {
+                tmpValue = tmpValue.replace(/&nbsp;/g, '');
+            }
+
+            if (tmpValue === '' && data.itemData === '') {
                 return false;
             }
             data.mentions = $content.data("mentions");

@@ -10,6 +10,8 @@ namespace DotNetNuke.Services.Search.Internals
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Framework;
 
     /// <summary>Class responsible to parse the Search Query String parameter.</summary>
@@ -21,7 +23,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private static readonly Regex DateRegex = new Regex(@"after:(\w+)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        private static readonly Regex TypeRegex = new Regex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static readonly Regex TypeRegex = RegexUtils.GetCachedRegex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <summary>Gets the list of tags parsing the search keywords.</summary>
         /// <param name="keywords">search keywords.</param>

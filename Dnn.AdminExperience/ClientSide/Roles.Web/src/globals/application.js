@@ -1,10 +1,6 @@
 import utilities from "../utils";
 const boilerPlate = {
     init() {
-        // This setting is required and define the public path 
-        // to allow the web application to download assets on demand 
-         
-        // __webpack_public_path__ = options.publicPath;        
         let options = window.dnn.initRoles();
 
         utilities.init(options.utility);

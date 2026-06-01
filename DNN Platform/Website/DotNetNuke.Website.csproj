@@ -534,7 +534,6 @@
     <Content Include="Licenses\NTestDataBuilder %28MIT%29.txt.resources" />
     <Content Include="Licenses\NUnit %28MIT%29.txt.resources" />
     <Content Include="Licenses\PetaPoco %28Apache%29.txt.resources" />
-    <Content Include="Licenses\Pikaday %28MIT%29.txt.resources" />
     <Content Include="Licenses\QuickIO.NET %28Ms-PL%29.txt.resources" />
     <AdditionalFiles Include="..\..\stylecop.json">
       <Link>stylecop.json</Link>
@@ -768,10 +767,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.04.SqlDataProvider" />
-    <Content Include="Resources\Shared\components\DatePicker\moment.min.js" />
-    <Content Include="Resources\Shared\components\DatePicker\pikaday.css" />
-    <Content Include="Resources\Shared\components\DatePicker\pikaday.jquery.js" />
-    <Content Include="Resources\Shared\components\DatePicker\pikaday.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
@@ -1196,7 +1191,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.27.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.26.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\08.00.00.28.SqlDataProvider" />
-    <Content Include="web.config" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.11.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\09.12.01.SqlDataProvider" />
@@ -1218,12 +1212,6 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.01.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.01.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.03.SqlDataProvider" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="403-3.gif" />
@@ -3378,6 +3366,9 @@
     <Content Include="Portals\_default\Blank Website.template.en-US.resx" />
     <Content Include="Portals\_default\Default Website.template.en-US.resx" />
     <Content Include="Portals\_default\Default Website.template.resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
