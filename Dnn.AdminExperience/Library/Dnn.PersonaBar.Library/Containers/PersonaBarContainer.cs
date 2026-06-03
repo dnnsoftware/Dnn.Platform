@@ -114,7 +114,7 @@ namespace Dnn.PersonaBar.Library.Containers
             var menuStructure = this.personaBarController.GetMenu(portalSettings, user);
 
             settings.Add("applicationPath", Globals.ApplicationPath);
-            settings.Add("buildNumber", this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture));
+            settings.Add("buildNumber", this.hostSettings.DebugMode ? DateTimeOffset.UtcNow.ToUnixTimeSeconds() : this.hostSettings.CrmVersion.ToString(CultureInfo.InvariantCulture));
             settings.Add("userId", user.UserID);
             settings.Add("avatarUrl", Globals.ResolveUrl(Utilities.GetProfileAvatar(user)));
             settings.Add("culture", Thread.CurrentThread.CurrentUICulture.Name);
