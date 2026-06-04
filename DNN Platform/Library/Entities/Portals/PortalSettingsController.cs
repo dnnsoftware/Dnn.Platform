@@ -128,12 +128,6 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <inheritdoc/>
-        public virtual PagePipeline.PortalRenderingPipeline GetPortalPagePipeline(int portalId)
-        {
-            return PortalController.Instance.GetPortalSettings(portalId).GetPortalPipeline(PagePipeline.SettingName);
-        }
-
-        /// <inheritdoc/>
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
         {
             return portalSettings.ActiveTab.Modules.Cast<ModuleInfo>().Select(m => m).ToList();
