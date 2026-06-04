@@ -102,7 +102,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>Gets the current portal settings.</summary>
         /// <returns>portal settings.</returns>
-        IPortalSettings GetCurrentSettings();
+        IPortalSettingsV2 GetCurrentSettings();
 
         /// <summary>Gets information of a portal.</summary>
         /// <param name="portalId">ID of the portal.</param>

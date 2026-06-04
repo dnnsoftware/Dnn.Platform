@@ -25,7 +25,7 @@ namespace DotNetNuke.Abstractions.Prompt
         /// <param name="portalSettings">PortalSettings for the portal we're operating under or if PortalId is specified, that portal.</param>
         /// <param name="userInfo">Current user.</param>
         /// <param name="activeTabId">Current page/tab.</param>
-        void Initialize(string[] args, Portals.IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId);
+        void Initialize(string[] args, Portals.IPortalSettingsV2 portalSettings, IUserInfo userInfo, int activeTabId);
 
         /// <summary>The main method of the command which executes it.</summary>
         /// <returns>A class used by the client to display results.</returns>

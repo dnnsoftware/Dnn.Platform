@@ -573,7 +573,7 @@ namespace DotNetNuke.Services.Localization
         [DnnDeprecated(9, 8, 0, "Use overload taking IPortalSettings instead")]
         public static partial CultureInfo GetPageLocale(PortalSettings portalSettings)
         {
-            return GetPageLocale((IPortalSettings)portalSettings);
+            return GetPageLocale((IPortalSettingsV2)portalSettings);
         }
 
         /// <summary>
@@ -591,7 +591,7 @@ namespace DotNetNuke.Services.Localization
         /// </summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo.</returns>
-        public static CultureInfo GetPageLocale(IPortalSettings portalSettings)
+        public static CultureInfo GetPageLocale(IPortalSettingsV2 portalSettings)
         {
             CultureInfo pageCulture = null;
 
@@ -1577,7 +1577,7 @@ namespace DotNetNuke.Services.Localization
         [DnnDeprecated(9, 8, 0, "Use overload taking IPortalSettings instead")]
         public static partial void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
         {
-            SetThreadCultures(cultureInfo, (IPortalSettings)portalSettings);
+            SetThreadCultures(cultureInfo, (IPortalSettingsV2)portalSettings);
         }
 
         /// <summary>Sets the culture codes on the current Thread.</summary>
@@ -1587,7 +1587,7 @@ namespace DotNetNuke.Services.Localization
         ///   This method will configure the Thread culture codes.  Any page which does not derive from <see cref="PageBase" /> should
         ///   be sure to call this method in <see cref="Control.OnInit" /> to ensure localization works correctly.
         /// </remarks>
-        public static void SetThreadCultures(CultureInfo cultureInfo, IPortalSettings portalSettings)
+        public static void SetThreadCultures(CultureInfo cultureInfo, IPortalSettingsV2 portalSettings)
         {
             if (cultureInfo == null)
             {
@@ -1888,7 +1888,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Tries to get a valid language from the querystring.</summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromQs(IPortalSettings portalSettings)
+        private static CultureInfo GetCultureFromQs(IPortalSettingsV2 portalSettings)
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
             {
@@ -1903,7 +1903,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Tries to get a valid language from the cookie.</summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromCookie(IPortalSettings portalSettings)
+        private static CultureInfo GetCultureFromCookie(IPortalSettingsV2 portalSettings)
         {
             CultureInfo culture;
             if (HttpContext.Current == null || HttpContext.Current.Request.Cookies["language"] == null)
@@ -1919,7 +1919,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Tries to get a valid language from the user profile.</summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromProfile(IPortalSettings portalSettings)
+        private static CultureInfo GetCultureFromProfile(IPortalSettingsV2 portalSettings)
         {
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
@@ -1936,7 +1936,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Tries to get a valid language from the browser preferences if the portal has the setting to use browser languages enabled.</summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromBrowser(IPortalSettings portalSettings)
+        private static CultureInfo GetCultureFromBrowser(IPortalSettingsV2 portalSettings)
         {
             if (!portalSettings.EnableBrowserLanguage)
             {
@@ -1951,7 +1951,7 @@ namespace DotNetNuke.Services.Localization
         /// <summary>Tries to get a valid language from the portal default preferences.</summary>
         /// <param name="portalSettings">Current PortalSettings.</param>
         /// <returns>A valid CultureInfo if any is found.</returns>
-        private static CultureInfo GetCultureFromPortal(IPortalSettings portalSettings)
+        private static CultureInfo GetCultureFromPortal(IPortalSettingsV2 portalSettings)
         {
             CultureInfo culture = null;
             if (!string.IsNullOrEmpty(portalSettings.DefaultLanguage))
@@ -1994,7 +1994,7 @@ namespace DotNetNuke.Services.Localization
         /// <param name="currentCulture">Current culture.</param>
         /// <param name="portalSettings">Portal settings for the current request.</param>
         /// <returns>A <see cref="CultureInfo"/> instance representing the user's UI culture.</returns>
-        private static CultureInfo GetUserUICulture(CultureInfo currentCulture, IPortalSettings portalSettings)
+        private static CultureInfo GetUserUICulture(CultureInfo currentCulture, IPortalSettingsV2 portalSettings)
         {
             CultureInfo uiCulture = currentCulture;
             try

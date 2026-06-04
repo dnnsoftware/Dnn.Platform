@@ -525,61 +525,61 @@ namespace DotNetNuke.Services.Log.EventLog
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 7, 0, "It has been replaced by the overload taking IPortalSettings")]
         public partial void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, EventLogType logType) =>
-            this.AddLog(propertyName, propertyValue, (IPortalSettings)portalSettings, userID, logType);
+            this.AddLog(propertyName, propertyValue, (IPortalSettingsV2)portalSettings, userID, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-        public partial void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, EventLogType logType) =>
+        public partial void AddLog(string propertyName, string propertyValue, IPortalSettingsV2 portalSettings, int userID, EventLogType logType) =>
             this.EventLogger.AddLog(propertyName, propertyValue, portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 7, 0, "It has been replaced by the overload taking IPortalSettings")]
         public partial void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType) =>
-            this.AddLog(propertyName, propertyValue, (IPortalSettings)portalSettings, userID, logType);
+            this.AddLog(propertyName, propertyValue, (IPortalSettingsV2)portalSettings, userID, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-        public partial void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, string logType) =>
+        public partial void AddLog(string propertyName, string propertyValue, IPortalSettingsV2 portalSettings, int userID, string logType) =>
             this.EventLogger.AddLog(propertyName, propertyValue, portalSettings, userID, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 7, 0, "It has been replaced by the overload taking IPortalSettings")]
         public partial void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering) =>
-            this.AddLog(properties, (IPortalSettings)portalSettings, userID, logTypeKey, bypassBuffering);
+            this.AddLog(properties, (IPortalSettingsV2)portalSettings, userID, logTypeKey, bypassBuffering);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-        public partial void AddLog(LogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering) =>
+        public partial void AddLog(LogProperties properties, IPortalSettingsV2 portalSettings, int userID, string logTypeKey, bool bypassBuffering) =>
             this.EventLogger.AddLog(properties, portalSettings, userID, logTypeKey, bypassBuffering);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 7, 0, "It has been replaced by the overload taking IPortalSettings")]
         public partial void AddLog(PortalSettings portalSettings, int userID, EventLogType logType) =>
-            this.AddLog((IPortalSettings)portalSettings, userID, logType);
+            this.AddLog((IPortalSettingsV2)portalSettings, userID, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-        public partial void AddLog(IPortalSettings portalSettings, int userID, EventLogType logType) =>
+        public partial void AddLog(IPortalSettingsV2 portalSettings, int userID, EventLogType logType) =>
             this.EventLogger.AddLog(portalSettings, userID, (Abstractions.Logging.EventLogType)logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 7, 0, "It has been replaced by the overload taking IPortalSettings")]
         public partial void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, EventLogType logType) =>
-            this.AddLog(businessObject, (IPortalSettings)portalSettings, userID, userName, logType);
+            this.AddLog(businessObject, (IPortalSettingsV2)portalSettings, userID, userName, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-        public partial void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, EventLogType logType) =>
+        public partial void AddLog(object businessObject, IPortalSettingsV2 portalSettings, int userID, string userName, EventLogType logType) =>
             this.EventLogger.AddLog(businessObject, portalSettings, userID, userName, (Abstractions.Logging.EventLogType)logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 7, 0, "It has been replaced by the overload taking IPortalSettings")]
         public partial void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType) =>
-            this.AddLog(businessObject, (IPortalSettings)portalSettings, userID, userName, logType);
+            this.AddLog(businessObject, (IPortalSettingsV2)portalSettings, userID, userName, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>
         [DnnDeprecated(9, 8, 0, "Use Dependency Injection to resolve 'DotNetNuke.Abstractions.Logging.IEventLogger' instead")]
-        public partial void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType) =>
+        public partial void AddLog(object businessObject, IPortalSettingsV2 portalSettings, int userID, string userName, string logType) =>
             this.EventLogger.AddLog(businessObject, portalSettings, userID, userName, logType);
 
         /// <inheritdoc cref="IEventLogger.AddLog(string,string,DotNetNuke.Abstractions.Logging.EventLogType)"/>

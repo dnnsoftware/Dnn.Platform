@@ -7,7 +7,7 @@ namespace DotNetNuke.Entities.Portals.Extensions
     using DotNetNuke.Abstractions.Portals;
 
     /// <summary>
-    /// Extends the <see cref="IPortalSettings"/> interface.
+    /// Extends the <see cref="IPortalSettingsV2"/> interface.
     /// </summary>
     public static class IPortalSettingsExtensions
     {
@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Portals.Extensions
         /// </summary>
         /// <param name="portalSettings">The portal settings to the the styles from.</param>
         /// <returns><see cref="IPortalStyles"/>.</returns>
-        public static IPortalStyles GetStyles(this IPortalSettings portalSettings)
+        public static IPortalStyles GetStyles(this IPortalSettingsV2 portalSettings)
         {
             var repo = new PortalStylesRepository();
             return repo.GetSettings(portalSettings.PortalId);

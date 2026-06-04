@@ -178,7 +178,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             {
                 if (!string.IsNullOrEmpty(culture))
                 {
-                    Localization.SetThreadCultures(new CultureInfo(culture), (IPortalSettings)this.PortalSettings);
+                    Localization.SetThreadCultures(new CultureInfo(culture), (IPortalSettingsV2)this.PortalSettings);
                 }
 
                 var dictionary = new Dictionary<string, string>();

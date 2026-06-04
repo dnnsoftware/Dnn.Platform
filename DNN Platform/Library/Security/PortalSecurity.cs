@@ -298,14 +298,14 @@ namespace DotNetNuke.Security
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns><see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.</returns>
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
-            => IsDenied(objUserInfo, (IPortalSettings)settings, roles);
+            => IsDenied(objUserInfo, (IPortalSettingsV2)settings, roles);
 
         /// <summary>Determines whether the specified user is denied for the given roles.</summary>
         /// <param name="objUserInfo">The user information.</param>
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns><see langword="true"/> if the specified user is denied; otherwise, <see langword="false"/>.</returns>
-        public static bool IsDenied(UserInfo objUserInfo, IPortalSettings settings, string roles)
+        public static bool IsDenied(UserInfo objUserInfo, IPortalSettingsV2 settings, string roles)
         {
             // superuser always has full access
             if (objUserInfo.IsSuperUser)
@@ -373,14 +373,14 @@ namespace DotNetNuke.Security
         /// <returns><see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.</returns>
         [DnnDeprecated(10, 0, 2, "Use overload taking IPortalSettings")]
         public static partial bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
-            => IsInRoles(objUserInfo, (IPortalSettings)settings, roles);
+            => IsInRoles(objUserInfo, (IPortalSettingsV2)settings, roles);
 
         /// <summary>Determines whether the provided user belongs to the specified roles.</summary>
         /// <param name="objUserInfo">The user information.</param>
         /// <param name="settings">The settings.</param>
         /// <param name="roles">The semicolon separated list of roles.</param>
         /// <returns><see langword="true"/> if the provided user belongs to the specific roles; otherwise, <see langword="false"/>.</returns>
-        public static bool IsInRoles(UserInfo objUserInfo, IPortalSettings settings, string roles)
+        public static bool IsInRoles(UserInfo objUserInfo, IPortalSettingsV2 settings, string roles)
         {
             if (objUserInfo.IsSuperUser)
             {
@@ -592,7 +592,7 @@ namespace DotNetNuke.Security
                     const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
                     const string listName = "ProfanityFilter";
 
-                    IPortalSettings settings;
+                    IPortalSettingsV2 settings;
 
                     IEnumerable<ListEntryInfo> listEntryHostInfos;
                     IEnumerable<ListEntryInfo> listEntryPortalInfos;
@@ -649,7 +649,7 @@ namespace DotNetNuke.Security
                     const RegexOptions options = RegexOptions.IgnoreCase | RegexOptions.Singleline;
                     const string listName = "ProfanityFilter";
 
-                    IPortalSettings settings;
+                    IPortalSettingsV2 settings;
 
                     IEnumerable<ListEntryInfo> listEntryHostInfos;
                     IEnumerable<ListEntryInfo> listEntryPortalInfos;
@@ -907,7 +907,7 @@ namespace DotNetNuke.Security
             }
         }
 
-        private static void ProcessRole(UserInfo user, IPortalSettings settings, string roleName, out bool? roleAllowed)
+        private static void ProcessRole(UserInfo user, IPortalSettingsV2 settings, string roleName, out bool? roleAllowed)
         {
             var roleType = GetRoleType(roleName);
             switch (roleType)
@@ -971,7 +971,7 @@ namespace DotNetNuke.Security
             return Null.NullInteger;
         }
 
-        private static void ProcessSecurityRole(UserInfo user, IPortalSettings settings, string roleName, out bool? roleAllowed)
+        private static void ProcessSecurityRole(UserInfo user, IPortalSettingsV2 settings, string roleName, out bool? roleAllowed)
         {
             roleAllowed = null;
 

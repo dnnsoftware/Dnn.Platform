@@ -56,18 +56,22 @@ namespace DotNetNuke.Common.Utilities
             return Encoding.UTF8.GetString(arrBytes);
         }
 
-        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettingsV2.GUID"/>.</summary>
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
         [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         public static partial string DecryptParameter(string value)
             => DecryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value);
 
-        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string)"/>. Decrypted using the current portal's <see cref="IPortalSettingsV2.GUID"/>.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(ICryptographyProvider cryptographyProvider, string value)
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
             => DecryptParameter(cryptographyProvider, value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
 
         /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string,string)"/>.</summary>
@@ -108,18 +112,22 @@ namespace DotNetNuke.Common.Utilities
             return toEncode.ToString();
         }
 
-        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettingsV2.GUID"/>.</summary>
         /// <param name="value">The value to encrypt.</param>
         /// <returns>The encrypted value.</returns>
         [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         public static partial string EncryptParameter(string value)
             => EncryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value);
 
-        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
+#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
+        /// <summary>Encrypt a parameter for placing in a URL. Encrypted using the current portal's <see cref="IPortalSettingsV2.GUID"/>.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
         /// <param name="value">The value to encrypt.</param>
         /// <returns>The encrypted value.</returns>
         public static string EncryptParameter(ICryptographyProvider cryptographyProvider, string value)
+#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
             => EncryptParameter(cryptographyProvider, value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
 
         /// <summary>Encrypt a parameter for placing in a URL.</summary>
@@ -556,7 +564,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>Redirect current response to 404 error page or output 404 content if error page not defined.</summary>
         /// <param name="response">The response.</param>
         /// <param name="portalSetting">The portal settings.</param>
-        public static void Handle404Exception(HttpResponseBase response, IPortalSettings portalSetting)
+        public static void Handle404Exception(HttpResponseBase response, IPortalSettingsV2 portalSetting)
         {
             if (portalSetting?.ErrorPage404 > Null.NullInteger)
             {

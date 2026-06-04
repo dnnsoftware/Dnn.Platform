@@ -73,13 +73,13 @@ namespace DotNetNuke.Services.Localization.Internal
         /// <inheritdoc />
         public CultureInfo GetPageLocale(PortalSettings portalSettings)
         {
-            return Localization.GetPageLocale((IPortalSettings)portalSettings);
+            return Localization.GetPageLocale((IPortalSettingsV2)portalSettings);
         }
 
         /// <inheritdoc />
         public void SetThreadCultures(CultureInfo cultureInfo, PortalSettings portalSettings)
         {
-            Localization.SetThreadCultures(cultureInfo, (IPortalSettings)portalSettings);
+            Localization.SetThreadCultures(cultureInfo, (IPortalSettingsV2)portalSettings);
         }
     }
 }

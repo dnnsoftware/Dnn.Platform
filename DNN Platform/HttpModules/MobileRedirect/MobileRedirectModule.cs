@@ -114,7 +114,7 @@ namespace DotNetNuke.HttpModules
             app.Response.Redirect(redirectUrl);
         }
 
-        private bool IsRedirectAllowed(string url, HttpApplication app, IPortalSettings portalSettings)
+        private bool IsRedirectAllowed(string url, HttpApplication app, IPortalSettingsV2 portalSettings)
         {
             var urlAction = new UrlAction(app.Request);
             urlAction.SetRedirectAllowed(url, new FriendlyUrlSettings(this.portalController, this.hostSettings, this.hostSettingsService, portalSettings.PortalId));

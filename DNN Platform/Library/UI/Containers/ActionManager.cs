@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.Containers
     /// <summary>ActionManager is a helper class that provides common Action Behaviors that can be used by any <see cref="IActionControl"/> implementation.</summary>
     public class ActionManager
     {
-        private readonly IPortalSettings portalSettings = PortalController.Instance.GetCurrentSettings();
+        private readonly IPortalSettingsV2 portalSettings = PortalController.Instance.GetCurrentSettings();
         private readonly HttpRequest request = HttpContext.Current.Request;
         private readonly HttpResponse response = HttpContext.Current.Response;
         private readonly IEventLogger eventLogger;

@@ -285,7 +285,7 @@ namespace Dnn.PersonaBar.Pages.Components
             return valid;
         }
 
-        private int CreateTabFromParent(IPortalSettings portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
+        private int CreateTabFromParent(IPortalSettingsV2 portalSettings, TabInfo objRoot, TabInfo oTab, int parentId, bool validateOnly, out string errorMessage)
         {
             var tab = new TabInfo
             {

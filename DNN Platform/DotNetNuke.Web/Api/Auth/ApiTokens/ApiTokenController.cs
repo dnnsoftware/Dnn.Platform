@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
         /// <inheritdoc />
         public string SchemeType => "ApiToken";
 
-        private static Abstractions.Portals.IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static Abstractions.Portals.IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc />
         public (ApiToken Token, UserInfo User) ValidateToken(HttpRequestMessage request)

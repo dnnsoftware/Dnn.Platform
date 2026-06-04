@@ -212,7 +212,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <inheritdoc />
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings)
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettingsV2 portalSettings)
         {
             if (portalSettings == null)
             {

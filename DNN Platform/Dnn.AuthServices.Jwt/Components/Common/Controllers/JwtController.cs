@@ -164,7 +164,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
 
             var obsoletePortalSettings = PortalSettings.Current;
-            IPortalSettings portalSettings = obsoletePortalSettings;
+            IPortalSettingsV2 portalSettings = obsoletePortalSettings;
             if (portalSettings == null)
             {
                 Logger.Trace("portalSettings = null");
@@ -533,7 +533,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             persistedToken.TokenExpiry = expiry;
 
             var obsoletePortalSettings = PortalSettings.Current;
-            IPortalSettings portalSettings = obsoletePortalSettings;
+            IPortalSettingsV2 portalSettings = obsoletePortalSettings;
             IPortalAliasInfo portalAlias = obsoletePortalSettings.PortalAlias;
             var secret = ObtainSecret(persistedToken.TokenId, portalSettings.GUID, userInfo.Membership.LastPasswordChangeDate);
             var accessToken = CreateJwtToken(secret, portalAlias.HttpAlias, persistedToken, userInfo.Roles);

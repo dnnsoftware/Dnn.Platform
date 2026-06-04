@@ -395,7 +395,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <returns>The tab ID for the Message Center OR the user profile page tab ID.</returns>
         private static object GetMessageTabCallback(CacheItemArgs cacheItemArgs)
         {
-            var portalSettings = (IPortalSettings)cacheItemArgs.Params[0];
+            var portalSettings = (IPortalSettingsV2)cacheItemArgs.Params[0];
 
             var profileTab = TabController.Instance.GetTab(portalSettings.UserTabId, portalSettings.PortalId, false);
             if (profileTab != null)

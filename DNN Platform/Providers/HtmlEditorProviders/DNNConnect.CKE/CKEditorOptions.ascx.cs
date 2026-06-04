@@ -79,7 +79,7 @@ namespace DNNConnect.CKEditorProvider
         private readonly HttpRequest request = HttpContext.Current.Request;
 
         /// <summary>  The _portal settings.</summary>
-        private IPortalSettings portalSettings;
+        private IPortalSettingsV2 portalSettings;
 
         /// <summary>Override Default Config Folder from Web.config.</summary>
         private string configFolder = string.Empty;
@@ -1234,7 +1234,7 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Gets the portal settings.</summary>
         /// <returns>Returns the Current Portal Settings.</returns>
-        private IPortalSettings GetPortalSettings()
+        private IPortalSettingsV2 GetPortalSettings()
         {
             try
             {
@@ -1267,7 +1267,7 @@ namespace DNNConnect.CKEditorProvider
             }
             catch (Exception)
             {
-                return (IPortalSettings)HttpContext.Current.Items["PortalSettings"];
+                return (IPortalSettingsV2)HttpContext.Current.Items["PortalSettings"];
             }
         }
 

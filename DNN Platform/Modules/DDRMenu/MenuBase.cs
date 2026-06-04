@@ -75,7 +75,7 @@ namespace DotNetNuke.Web.DDRMenu
         public TemplateDefinition TemplateDef { get; set; }
 
         /// <summary>Gets the portal settings for the current portal.</summary>
-        // TODO: In v11 we should replace this by IPortalSettings and make it private or instantiate PortalSettings in the constructor.
+        // TODO: In v11 we should replace this by IPortalSettingsV2 and make it private or instantiate PortalSettings in the constructor.
         [Obsolete("Deprecated in DotNetNuke 9.8.1. This should not have been public. Scheduled removal in v11.0.0.")]
         internal PortalSettings HostPortalSettings => this.hostPortalSettings ??= PortalSettings.Current;
 
@@ -158,7 +158,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
 #pragma warning disable CS0618 // Type or member is obsolete
 
-                // TODO: In Dnn v11, replace this to use IPortalSettings private field instantiate in constructor
+                // TODO: In Dnn v11, replace this to use IPortalSettingsV2 private field instantiate in constructor
                 this.localiser.LocaliseNode(this.RootNode, this.HostPortalSettings.PortalId);
 #pragma warning restore CS0618 // Type or member is obsolete
             }
@@ -440,7 +440,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private void ApplyNodeManipulator()
         {
-            // TODO: In Dnn v11, replace this.HostPortalSettings to use IPortalSettings private field instantiate in constructor
+            // TODO: In Dnn v11, replace this.HostPortalSettings to use IPortalSettingsV2 private field instantiate in constructor
 #pragma warning disable CS0618 // Type or member is obsolete
             this.RootNode =
                 new MenuNode(

@@ -88,7 +88,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             }
 
             int portalId = portalSettings.PortalId;
-            string locale = Localization.GetPageLocale((IPortalSettings)portalSettings).Name;
+            string locale = Localization.GetPageLocale((IPortalSettingsV2)portalSettings).Name;
 
             IncludeExcludeType includeExclude = IncludeExcludeType.ExcludeByDefault;
             if (tabSettings["CacheIncludeExclude"] != null && !string.IsNullOrEmpty(tabSettings["CacheIncludeExclude"].ToString()))

@@ -28,7 +28,7 @@ namespace DotNetNuke.Prompt
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
 
         /// <summary>Gets the portal settings.</summary>
-        protected IPortalSettings PortalSettings { get; private set; }
+        protected IPortalSettingsV2 PortalSettings { get; private set; }
 
         /// <summary>Gets the current user.</summary>
         protected IUserInfo User { get; private set; }
@@ -49,7 +49,7 @@ namespace DotNetNuke.Prompt
             Common.Globals.GetCurrentServiceProvider().GetRequiredService<ISerializationManager>();
 
         /// <inheritdoc />
-        public virtual void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
+        public virtual void Initialize(string[] args, IPortalSettingsV2 portalSettings, IUserInfo userInfo, int activeTabId)
         {
             this.Args = args;
             this.PortalSettings = portalSettings;

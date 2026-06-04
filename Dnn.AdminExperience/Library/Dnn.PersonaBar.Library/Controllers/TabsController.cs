@@ -43,7 +43,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         private static string AllUsersIcon => Globals.ResolveUrl("~/DesktopModules/Admin/Tabs/images/Icon_Everyone.png");
 
-        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public TabDto GetPortalTabs(UserInfo userInfo, int portalId, string cultureCode, bool isMultiLanguage, bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
         {

@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.FileSystem
             get
             {
                 string physicalPath = Null.NullString;
-                IPortalSettings portalSettings = null;
+                IPortalSettingsV2 portalSettings = null;
                 if (HttpContext.Current != null)
                 {
                     portalSettings = PortalController.Instance.GetCurrentSettings();

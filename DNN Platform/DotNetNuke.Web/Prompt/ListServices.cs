@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Prompt
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
 
         /// <inheritdoc />
-        public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
+        public override void Initialize(string[] args, IPortalSettingsV2 portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
             if (!userInfo.IsSuperUser)

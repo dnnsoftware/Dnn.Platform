@@ -135,7 +135,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="jsname">the library name.</param>
-        public static void RequestRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, string jsname)
+        public static void RequestRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string jsname)
         {
             appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             eventLogger ??= Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
@@ -165,7 +165,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="jsname">the library name.</param>
         /// <param name="version">the library's version.</param>
-        public static void RequestRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, string jsname, Version version)
+        public static void RequestRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string jsname, Version version)
         {
             appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             eventLogger ??= Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
@@ -200,7 +200,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// When <see cref="SpecificVersion.LatestMinor"/> is passed, match the major and minor versions.
         /// When <see cref="SpecificVersion.Exact"/> is passed, match all parts of the version.
         /// </param>
-        public static void RequestRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, string jsname, Version version, SpecificVersion specific)
+        public static void RequestRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string jsname, Version version, SpecificVersion specific)
         {
             appStatus ??= Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
             eventLogger ??= Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
@@ -241,7 +241,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="eventLogger">The event logger.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="page">reference to the current page.</param>
-        public static void Register(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, Page page)
+        public static void Register(IHostSettings hostSettings, IHostSettingsService hostSettingsService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettingsV2 portalSettings, Page page)
         {
             hostSettings ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             hostSettingsService ??= Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
@@ -397,7 +397,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static bool RequestLooseVersionLibraryRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, string jsname, Version version, SpecificVersion specific)
+        private static bool RequestLooseVersionLibraryRegistration(IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string jsname, Version version, SpecificVersion specific)
         {
             Func<JavaScriptLibrary, bool> isValidLibrary = specific == SpecificVersion.LatestMajor
                 ? l => l.Version.Major == version.Major && l.Version.Minor >= version.Minor
@@ -423,7 +423,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return false;
         }
 
-        private static void RequestSpecificVersionLibraryRegistration(IEventLogger eventLogger, IPortalSettings portalSettings, string jsname, Version version)
+        private static void RequestSpecificVersionLibraryRegistration(IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string jsname, Version version)
         {
             var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase) && l.Version == version);
             if (library != null)
@@ -465,7 +465,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             HttpContextSource.Current.Items[LegacyPrefix + jsl] = true;
         }
 
-        private static List<JavaScriptLibrary> ResolveVersionConflicts(IEventLogger eventLogger, IPortalSettings portalSettings, IEnumerable<string> scripts)
+        private static List<JavaScriptLibrary> ResolveVersionConflicts(IEventLogger eventLogger, IPortalSettingsV2 portalSettings, IEnumerable<string> scripts)
         {
             var finalScripts = new List<JavaScriptLibrary>();
             foreach (var libraryId in scripts)
@@ -615,7 +615,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
         }
 
-        private static void LogCollision(IEventLogger eventLogger, IPortalSettings portalSettings, string collisionText)
+        private static void LogCollision(IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string collisionText)
         {
             // need to log an event
             eventLogger.AddLog(

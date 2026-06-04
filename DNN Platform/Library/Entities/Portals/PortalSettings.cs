@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Portals
     /// view within the portal.
     /// </summary>
     [Serializable]
-    public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettings
+    public partial class PortalSettings : BaseEntityInfo, IPropertyAccess, IPortalSettingsV2
     {
         /// <summary>Initializes a new instance of the <see cref="PortalSettings"/> class.</summary>
         public PortalSettings()
@@ -558,44 +558,44 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc/>
         public PagePipeline.PortalRenderingPipeline PagePipeline { get; internal set; }
 
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create()
+        /// <summary>Create an <see cref="IPortalSettingsV2"/> instance.</summary>
+        /// <returns>A new <see cref="IPortalSettingsV2"/> instance.</returns>
+        public static IPortalSettingsV2 Create()
             => new PortalSettings();
 
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <summary>Create an <see cref="IPortalSettingsV2"/> instance.</summary>
         /// <param name="portalController">A portal controller.</param>
         /// <param name="portalId">The portal ID.</param>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create(IPortalController portalController, int portalId)
+        /// <returns>A new <see cref="IPortalSettingsV2"/> instance.</returns>
+        public static IPortalSettingsV2 Create(IPortalController portalController, int portalId)
             => new PortalSettings(Null.NullInteger, portalController.GetPortal(portalId));
 
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <summary>Create an <see cref="IPortalSettingsV2"/> instance.</summary>
         /// <param name="portalController">A portal controller.</param>
         /// <param name="tabId">The active tab ID.</param>
         /// <param name="portalId">The portal ID.</param>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create(IPortalController portalController, int tabId, int portalId)
+        /// <returns>A new <see cref="IPortalSettingsV2"/> instance.</returns>
+        public static IPortalSettingsV2 Create(IPortalController portalController, int tabId, int portalId)
             => new PortalSettings(tabId, portalController.GetPortal(portalId));
 
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <summary>Create an <see cref="IPortalSettingsV2"/> instance.</summary>
         /// <param name="tabId">The active tab ID.</param>
         /// <param name="portalAlias">The portal alias.</param>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create(int tabId, IPortalAliasInfo portalAlias)
+        /// <returns>A new <see cref="IPortalSettingsV2"/> instance.</returns>
+        public static IPortalSettingsV2 Create(int tabId, IPortalAliasInfo portalAlias)
             => portalAlias is PortalAliasInfo alias ? new PortalSettings(tabId, alias) : new PortalSettings(tabId, portalAlias.PortalId);
 
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <summary>Create an <see cref="IPortalSettingsV2"/> instance.</summary>
         /// <param name="portal">The portal info.</param>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create(IPortalInfo portal)
+        /// <returns>A new <see cref="IPortalSettingsV2"/> instance.</returns>
+        public static IPortalSettingsV2 Create(IPortalInfo portal)
             => portal is PortalInfo portalInfo ? new PortalSettings(portalInfo) : new PortalSettings(Null.NullInteger, portal.PortalId);
 
-        /// <summary>Create an <see cref="IPortalSettings"/> instance.</summary>
+        /// <summary>Create an <see cref="IPortalSettingsV2"/> instance.</summary>
         /// <param name="tabId">The tab ID.</param>
         /// <param name="portal">The portal info.</param>
-        /// <returns>A new <see cref="IPortalSettings"/> instance.</returns>
-        public static IPortalSettings Create(int tabId, IPortalInfo portal)
+        /// <returns>A new <see cref="IPortalSettingsV2"/> instance.</returns>
+        public static IPortalSettingsV2 Create(int tabId, IPortalInfo portal)
             => portal is PortalInfo portalInfo ? new PortalSettings(tabId, portalInfo) : new PortalSettings(tabId, portal.PortalId);
 
         /// <inheritdoc />

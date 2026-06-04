@@ -135,9 +135,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         public static TabInfo GetTab(int tabId, bool addStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
-            => GetTab(tabId, addStdUrls, (IPortalSettings)portalSettings, settings);
+            => GetTab(tabId, addStdUrls, (IPortalSettingsV2)portalSettings, settings);
 
-        public static TabInfo GetTab(int tabId, bool addStdUrls, IPortalSettings portalSettings, FriendlyUrlSettings settings)
+        public static TabInfo GetTab(int tabId, bool addStdUrls, IPortalSettingsV2 portalSettings, FriendlyUrlSettings settings)
         {
             TabInfo tab = TabController.Instance.GetTab(tabId, portalSettings.PortalId, false);
             if (addStdUrls)

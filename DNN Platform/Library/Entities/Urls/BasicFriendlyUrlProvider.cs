@@ -65,7 +65,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <inheritdoc />
-        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
+        internal override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettingsV2 settings)
         {
             IPortalAliasInfo portalAliasInfo = ((PortalSettings)settings)?.PortalAlias;
             return this.FriendlyUrl(tab, path, pageName, portalAliasInfo?.HttpAlias, settings);
@@ -306,7 +306,7 @@ namespace DotNetNuke.Entities.Urls
             return AddPage(friendlyPath, pageName);
         }
 
-        private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, IPortalSettings portalSettings)
+        private string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias, IPortalSettingsV2 portalSettings)
         {
             string friendlyPath = path;
             bool isPagePath = tab != null;

@@ -42,7 +42,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         private readonly ITabController tabController;
         private readonly IPagesController pagesController;
-        private readonly Lazy<IPortalSettings> portalSettings;
+        private readonly Lazy<IPortalSettingsV2> portalSettings;
 
         /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
@@ -75,7 +75,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
                 throw new ArgumentNullException(nameof(portalController));
             }
 
-            this.portalSettings = new Lazy<IPortalSettings>(portalController.GetCurrentSettings);
+            this.portalSettings = new Lazy<IPortalSettingsV2>(portalController.GetCurrentSettings);
         }
 
         private int PortalId => this.portalSettings.Value.PortalId;
