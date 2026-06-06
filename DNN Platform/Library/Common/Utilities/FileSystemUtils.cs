@@ -9,6 +9,7 @@ namespace DotNetNuke.Common.Utilities
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
+    using System.Security.Cryptography;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -25,6 +26,9 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>File System utilities.</summary>
     public partial class FileSystemUtils
     {
+        /// <summary>Maximum file size (in bytes) for performing content comparison during extraction. Files larger than this will always be extracted without comparison. Default is 10MB.</summary>
+        private const long MaxFileSizeForComparison = 10 * 1024 * 1024; // 10 MB
+
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
 
         /// <summary>Adds a File to a Zip File.</summary>
@@ -254,6 +258,141 @@ namespace DotNetNuke.Common.Utilities
             return await reader.ReadToEndAsync();
         }
 
+        /// <summary>Compares a file on disk with a stream in memory to determine if they have identical content using SHA256 hash comparison.</summary>
+        /// <param name="filePath">The path to the file on disk.</param>
+        /// <param name="stream">The stream to compare with the file. The stream position will be reset to its original position after comparison.</param>
+        /// <returns>True if the file exists and has identical content to the stream; otherwise false.</returns>
+        public static bool IsSameFile(string filePath, MemoryStream stream)
+        {
+            filePath = FixPath(filePath);
+
+            // If file doesn't exist, they can't be the same
+            if (!File.Exists(filePath))
+            {
+                return false;
+            }
+
+            try
+            {
+                // Quick check: if file size differs from stream length, they're definitely different
+                var fileInfo = new SchwabenCode.QuickIO.QuickIOFileInfo(filePath);
+
+                if (fileInfo.Length != (ulong)stream.Length)
+                {
+                    return false;
+                }
+
+                // Compute SHA256 hash for both the file and the stream
+                using var fileHasher = CryptographyUtils.CreateSHA256();
+                using var streamHasher = CryptographyUtils.CreateSHA256();
+
+                byte[] fileHash;
+                byte[] streamHash;
+
+                using (var fileStream = File.OpenRead(filePath))
+                {
+                    fileHash = fileHasher.ComputeHash(fileStream);
+                }
+
+                stream.Position = 0;
+                streamHash = streamHasher.ComputeHash(stream);
+
+                // Compare the hashes
+                if (fileHash.Length != streamHash.Length)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < fileHash.Length; i++)
+                {
+                    if (fileHash[i] != streamHash[i])
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error comparing file '{filePath}' with stream", ex);
+                return false;
+            }
+            finally
+            {
+                // Reset stream position
+                stream.Position = 0;
+            }
+        }
+
+        /// <summary>Compares a file on disk with a stream in memory to determine if they have identical content using SHA256 hash comparison.</summary>
+        /// <param name="filePath">The path to the file on disk.</param>
+        /// <param name="stream">The stream to compare with the file. The stream position will be reset to its original position after comparison.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
+        /// <returns>True if the file exists and has identical content to the stream; otherwise false.</returns>
+        public static async Task<bool> IsSameFileAsync(string filePath, MemoryStream stream, CancellationToken cancellationToken = default)
+        {
+            filePath = FixPath(filePath);
+
+            // If file doesn't exist, they can't be the same
+            if (!await File.ExistsAsync(filePath))
+            {
+                return false;
+            }
+
+            try
+            {
+                // Quick check: if file size differs from stream length, they're definitely different
+                var fileInfo = new SchwabenCode.QuickIO.QuickIOFileInfo(filePath);
+
+                if (fileInfo.Length != (ulong)stream.Length)
+                {
+                    return false;
+                }
+
+                // Compute SHA256 hash for both the file and the stream
+                using var fileHasher = CryptographyUtils.CreateSHA256();
+                using var streamHasher = CryptographyUtils.CreateSHA256();
+
+                byte[] fileHash;
+                byte[] streamHash;
+
+                using (var fileStream = File.OpenRead(filePath))
+                {
+                    fileHash = fileHasher.ComputeHash(fileStream);
+                }
+
+                stream.Position = 0;
+                streamHash = streamHasher.ComputeHash(stream);
+
+                // Compare the hashes
+                if (fileHash.Length != streamHash.Length)
+                {
+                    return false;
+                }
+
+                for (int i = 0; i < fileHash.Length; i++)
+                {
+                    if (fileHash[i] != streamHash[i])
+                    {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Error comparing file '{filePath}' with stream", ex);
+                return false;
+            }
+            finally
+            {
+                // Reset stream position
+                stream.Position = 0;
+            }
+        }
+
         /// <summary>Unzips a resources zip file.</summary>
         /// <param name="zipStream">The zip archive stream.</param>
         /// <param name="destPath">The destination path to extract to.</param>
@@ -296,14 +435,65 @@ namespace DotNetNuke.Common.Utilities
                 var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
                 try
                 {
-                    if (File.Exists(fileNamePath))
-                    {
-                        File.SetAttributes(fileNamePath, FileAttributes.Normal);
-                        File.Delete(fileNamePath);
-                    }
+                    MemoryStream memoryStream = null;
+                    bool shouldWriteFile = true;
 
-                    using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
-                    zipEntry.Open().CopyToStream(fileStream, 25000);
+                    try
+                    {
+                        if (File.Exists(fileNamePath))
+                        {
+                            // Check file size - skip comparison for large files
+                            var existingFileInfo = new SchwabenCode.QuickIO.QuickIOFileInfo(fileNamePath);
+
+                            if (existingFileInfo.Length > MaxFileSizeForComparison)
+                            {
+                                Logger.Info($"Skipping comparison for large file '{localFileName}' ({existingFileInfo.Length:N0} bytes) - exceeds {MaxFileSizeForComparison:N0} byte limit");
+                            }
+                            else
+                            {
+                                // Load zip entry into MemoryStream once for comparison and potential writing
+                                memoryStream = new MemoryStream();
+                                using (var zipEntryStream = zipEntry.Open())
+                                {
+                                    zipEntryStream.CopyToStream(memoryStream, 25000);
+                                }
+
+                                // Compare the existing file with the in-memory stream
+                                if (IsSameFile(fileNamePath, memoryStream))
+                                {
+                                    Logger.Info($"Skipping file '{localFileName}' - identical to existing file");
+                                    shouldWriteFile = false;
+                                }
+                            }
+
+                            if (shouldWriteFile)
+                            {
+                                // Files are different or comparison was skipped, proceed with replacement
+                                File.SetAttributes(fileNamePath, FileAttributes.Normal);
+                                File.Delete(fileNamePath);
+                            }
+                        }
+
+                        if (shouldWriteFile)
+                        {
+                            if (memoryStream != null)
+                            {
+                                // Write from MemoryStream (already loaded for comparison)
+                                using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
+                                memoryStream.CopyTo(fileStream);
+                            }
+                            else
+                            {
+                                // Write directly from zip entry (file didn't exist or was too large)
+                                using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
+                                zipEntry.Open().CopyToStream(fileStream, 25000);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        memoryStream?.Dispose();
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -360,14 +550,65 @@ namespace DotNetNuke.Common.Utilities
                 var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
                 try
                 {
-                    if (await File.ExistsAsync(fileNamePath))
-                    {
-                        await File.SetAttributesAsync(fileNamePath, FileAttributes.Normal);
-                        await File.DeleteAsync(fileNamePath);
-                    }
+                    MemoryStream memoryStream = null;
+                    bool shouldWriteFile = true;
 
-                    using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
-                    await zipEntry.Open().CopyToAsync(fileStream, 25000, cancellationToken);
+                    try
+                    {
+                        if (await File.ExistsAsync(fileNamePath))
+                        {
+                            // Check file size - skip comparison for large files
+                            var existingFileInfo = new SchwabenCode.QuickIO.QuickIOFileInfo(fileNamePath);
+
+                            if (existingFileInfo.Length > MaxFileSizeForComparison)
+                            {
+                                Logger.Info($"Skipping comparison for large file '{localFileName}' ({existingFileInfo.Length:N0} bytes) - exceeds {MaxFileSizeForComparison:N0} byte limit");
+                            }
+                            else
+                            {
+                                // Load zip entry into MemoryStream once for comparison and potential writing
+                                memoryStream = new MemoryStream();
+                                using (var zipEntryStream = zipEntry.Open())
+                                {
+                                    await zipEntryStream.CopyToAsync(memoryStream, 25000, cancellationToken);
+                                }
+
+                                // Compare the existing file with the in-memory stream
+                                if (await IsSameFileAsync(fileNamePath, memoryStream, cancellationToken))
+                                {
+                                    Logger.Info($"Skipping file '{localFileName}' - identical to existing file");
+                                    shouldWriteFile = false;
+                                }
+                            }
+
+                            if (shouldWriteFile)
+                            {
+                                // Files are different or comparison was skipped, proceed with replacement
+                                await File.SetAttributesAsync(fileNamePath, FileAttributes.Normal);
+                                await File.DeleteAsync(fileNamePath);
+                            }
+                        }
+
+                        if (shouldWriteFile)
+                        {
+                            if (memoryStream != null)
+                            {
+                                // Write from MemoryStream (already loaded for comparison)
+                                using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
+                                await memoryStream.CopyToAsync(fileStream, 81920, cancellationToken);
+                            }
+                            else
+                            {
+                                // Write directly from zip entry (file didn't exist or was too large)
+                                using var fileStream = File.Open(fileNamePath, FileMode.CreateNew);
+                                await zipEntry.Open().CopyToAsync(fileStream, 25000, cancellationToken);
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        memoryStream?.Dispose();
+                    }
                 }
                 catch (Exception ex)
                 {

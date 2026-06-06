@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
+    using ICSharpCode.SharpZipLib.Zip;
 
     /// <summary>The ResourceFileInstaller installs Resource File Components (zips) to a DotNetNuke site.</summary>
     public class ResourceFileInstaller : FileInstaller
@@ -121,8 +122,16 @@ namespace DotNetNuke.Services.Installer.Installers
                             // Write name
                             writer.WriteElementString("name", fileName);
 
+                            // Load zip entry into MemoryStream once for comparison and potential writing
+                            var memoryStream = new MemoryStream();
+                            using (var zipEntryStream = entry.Open())
+                            {
+                                zipEntryStream.CopyToStream(memoryStream, 25000);
+                            }
+
                             var physicalPath = Path.Combine(this.PhysicalBasePath, entry.FullName);
-                            if (File.Exists(physicalPath))
+                            var isSameFile = FileSystemUtils.IsSameFile(physicalPath, memoryStream);
+                            if (File.Exists(physicalPath) && !isSameFile)
                             {
                                 Util.BackupFile(
                                     new InstallFile(entry.FullName, this.Package.InstallerInfo),
@@ -130,7 +139,12 @@ namespace DotNetNuke.Services.Installer.Installers
                                     this.Log);
                             }
 
-                            Util.WriteStream(entry.Open(), physicalPath);
+                            if (!isSameFile)
+                            {
+                                Util.WriteStream(memoryStream, physicalPath);
+                            }
+
+                            memoryStream.Dispose();
 
                             // Close files Element
                             writer.WriteEndElement();
