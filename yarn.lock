@@ -535,7 +535,7 @@ __metadata:
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     enzyme-to-json: "npm:^3.6.2"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.1"
     eslint-import-resolver-node: "npm:^0.4.0"
     eslint-plugin-filenames: "npm:^1.3.2"
     eslint-plugin-import: "npm:^2.32.0"
@@ -1060,12 +1060,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/config-helpers@npm:^0.5.5":
-  version: 0.5.5
-  resolution: "@eslint/config-helpers@npm:0.5.5"
+"@eslint/config-helpers@npm:^0.6.0":
+  version: 0.6.0
+  resolution: "@eslint/config-helpers@npm:0.6.0"
   dependencies:
     "@eslint/core": "npm:^1.2.1"
-  checksum: 10/19072449502b928a716df87b2d9b13c7befb21974b0f93fdbea705ddba098792142808105170ef2183c28ce13ac9fa1713ef0599749f8469434ac2b914fc8f4d
+  checksum: 10/2daa66b0c3821313a6239beed2236ad7f3a45540050b5ce69527206ba7e58e9c17aff2f68be6d3f0f95d6294a911da86aa50863a1aeadd607faa943c11677a46
   languageName: node
   linkType: hard
 
@@ -1092,13 +1092,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/plugin-kit@npm:^0.7.1":
-  version: 0.7.1
-  resolution: "@eslint/plugin-kit@npm:0.7.1"
+"@eslint/plugin-kit@npm:^0.7.2":
+  version: 0.7.2
+  resolution: "@eslint/plugin-kit@npm:0.7.2"
   dependencies:
     "@eslint/core": "npm:^1.2.1"
     levn: "npm:^0.4.1"
-  checksum: 10/8f923f4cdadadd215e0c2028e6a53101bb148a7780cdb4dc8cd69b0c77fc88496742e87e0605b12905ff715e2c7ad6cbd2d92c5653cdbf91cca1e229b5022c1f
+  checksum: 10/ef9fc6f8ca28e132d4c81cfbaa92274800d1d73bb9d6ef2124613dd39b7f09e3592deb64bad10b183bff78db5465d4b100f522d994c8550424526b9ac4a072b0
   languageName: node
   linkType: hard
 
@@ -4995,7 +4995,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
     es6-object-assign: "npm:1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -7191,7 +7191,7 @@ __metadata:
     "@stencil/store": "npm:^2.2.2"
     "@types/node": "npm:^25.9.2"
     "@typescript-eslint/utils": "npm:^8.60.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.1"
     jiti: "npm:^2.6.1"
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.60.1"
@@ -7207,7 +7207,7 @@ __metadata:
     "@rsbuild/plugin-less": "npm:^1.6.4"
     "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -7228,7 +7228,7 @@ __metadata:
     "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.21"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-filenames: "npm:^1.3.2"
     eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-react: "npm:7.37.5"
@@ -7252,7 +7252,7 @@ __metadata:
     "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.21"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-filenames: "npm:^1.3.2"
     eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-react: "npm:7.37.5"
@@ -7281,7 +7281,7 @@ __metadata:
     chokidar: "npm:^5.0.0"
     cssnano: "npm:^8.0.1"
     esbuild: "npm:^0.28.0"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.1"
     modern-normalize: "npm:^3.0.1"
     postcss: "npm:^8.5.8"
     postcss-banner: "npm:^4.0.1"
@@ -8396,16 +8396,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint@npm:10.2.1, eslint@npm:^10.2.1":
-  version: 10.2.1
-  resolution: "eslint@npm:10.2.1"
+"eslint@npm:10.4.1, eslint@npm:^10.4.1":
+  version: 10.4.1
+  resolution: "eslint@npm:10.4.1"
   dependencies:
     "@eslint-community/eslint-utils": "npm:^4.8.0"
     "@eslint-community/regexpp": "npm:^4.12.2"
     "@eslint/config-array": "npm:^0.23.5"
-    "@eslint/config-helpers": "npm:^0.5.5"
+    "@eslint/config-helpers": "npm:^0.6.0"
     "@eslint/core": "npm:^1.2.1"
-    "@eslint/plugin-kit": "npm:^0.7.1"
+    "@eslint/plugin-kit": "npm:^0.7.2"
     "@humanfs/node": "npm:^0.16.6"
     "@humanwhocodes/module-importer": "npm:^1.0.1"
     "@humanwhocodes/retry": "npm:^0.4.2"
@@ -8437,7 +8437,7 @@ __metadata:
       optional: true
   bin:
     eslint: bin/eslint.js
-  checksum: 10/954658c846696dc501a2b8e5fb268713e231dd81375dc25d76cd2fb4a1c73094ea73c64197634ece6fca8a54536e89eb44548a11be672544522e7a50eb8aae95
+  checksum: 10/5722bd0ec1a87f49ee4511c7549dcfa69df0076927b0290b0a3b145425fd357906ffe6dc1307214a0bd344131bf53795fa2cdebfd36ee9146c01d98147044679
   languageName: node
   linkType: hard
 
@@ -8604,7 +8604,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.21"
     es6-promise: "npm:4.2.8"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -8643,7 +8643,7 @@ __metadata:
     "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -11331,7 +11331,7 @@ __metadata:
     array.prototype.find: "npm:2.2.3"
     array.prototype.findindex: "npm:2.2.4"
     es6-object-assign: "npm:1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -13249,7 +13249,7 @@ __metadata:
     dompurify: "npm:^3.4.8"
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -14135,7 +14135,7 @@ __metadata:
     enzyme: "npm:^3.11.0"
     enzyme-adapter-react-16: "npm:^1.15.8"
     es6-object-assign: "npm:1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -15400,7 +15400,7 @@ __metadata:
     array.prototype.findindex: "npm:^2.2.4"
     create-react-class: "npm:^15.7.0"
     es6-object-assign: "npm:^1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -15882,7 +15882,7 @@ __metadata:
     "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -15989,7 +15989,7 @@ __metadata:
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
     es6-object-assign: "npm:1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -16050,7 +16050,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     dayjs: "npm:^1.11.21"
     dompurify: "npm:^3.4.8"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -16262,7 +16262,7 @@ __metadata:
     "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -16299,7 +16299,7 @@ __metadata:
     array.prototype.findindex: "npm:2.2.4"
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-jest: "npm:^29.15.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
@@ -16329,7 +16329,7 @@ __metadata:
     "@rsbuild/plugin-less": "npm:^1.6.4"
     "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -16966,7 +16966,7 @@ __metadata:
     "@types/node": "npm:^25.9.2"
     "@typescript-eslint/eslint-plugin": "npm:^8.60.1"
     "@typescript-eslint/parser": "npm:^8.60.1"
-    eslint: "npm:^10.2.1"
+    eslint: "npm:^10.4.1"
     jiti: "npm:^2.6.1"
     typescript-eslint: "npm:^8.60.1"
   languageName: unknown
@@ -17117,7 +17117,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
     es6-object-assign: "npm:1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -17145,7 +17145,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
     es6-object-assign: "npm:1.1.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
@@ -17201,7 +17201,7 @@ __metadata:
     "@rsbuild/plugin-react": "npm:^1.4.6"
     "@rsbuild/plugin-svgr": "npm:^1.3.1"
     create-react-class: "npm:^15.7.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     less: "npm:4.6.4"
@@ -17986,7 +17986,7 @@ __metadata:
     "@rsbuild/plugin-less": "npm:^1.6.4"
     "@rsbuild/plugin-react": "npm:^1.4.6"
     create-react-class: "npm:^15.7.0"
-    eslint: "npm:10.2.1"
+    eslint: "npm:10.4.1"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     jest: "npm:^30.3.0"

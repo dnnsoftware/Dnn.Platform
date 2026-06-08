@@ -23,7 +23,7 @@
     "chokidar": "^5.0.0",
     "cssnano": "^8.0.1",
     "esbuild": "^0.28.0",
-    "eslint": "^10.2.1",
+    "eslint": "^10.4.1",
     "modern-normalize": "^3.0.1",
     "postcss": "^8.5.8",
     "postcss-banner": "^4.0.1",
