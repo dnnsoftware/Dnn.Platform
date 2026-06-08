@@ -5171,7 +5171,7 @@ __metadata:
     cssnano: "npm:^8.0.1"
     glob: "npm:^13.0.6"
     normalize.css: "npm:^8.0.1"
-    postcss: "npm:^8.5.8"
+    postcss: "npm:^8.5.15"
     postcss-banner: "npm:^4.0.1"
     postcss-cli: "npm:^11.0.1"
     postcss-import: "npm:^16.1.1"
@@ -7305,7 +7305,7 @@ __metadata:
     esbuild: "npm:^0.28.0"
     eslint: "npm:^10.4.1"
     modern-normalize: "npm:^3.0.1"
-    postcss: "npm:^8.5.8"
+    postcss: "npm:^8.5.15"
     postcss-banner: "npm:^4.0.1"
     postcss-cli: "npm:^11.0.1"
     postcss-import: "npm:^16.1.1"
@@ -14098,7 +14098,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.0.0, postcss@npm:^8.2.2, postcss@npm:^8.5.8":
+"postcss@npm:^8.0.0, postcss@npm:^8.2.2":
   version: 8.5.10
   resolution: "postcss@npm:8.5.10"
   dependencies:
