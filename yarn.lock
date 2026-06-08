@@ -568,7 +568,7 @@ __metadata:
     react-slider: "npm:2.0.6"
     react-tabs: "npm:3.2.3"
     react-test-renderer: "npm:^17.0.2"
-    react-tooltip: "npm:^4.5.1"
+    react-tooltip: "npm:5"
     react-widgets: "npm:^5.8.6"
     redux-undo: "npm:^1.0.0-beta9"
     scroll: "npm:^3.0.1"
@@ -1094,6 +1094,32 @@ __metadata:
     "@noble/hashes":
       optional: true
   checksum: 10/d18519341c354356b65b9ac64b8166880972d122feff4038a92c0e2d2c8579794429117a2bc636bca584e7bf2fdad6d27f0874b2647d4a866c125843497ef193
+  languageName: node
+  linkType: hard
+
+"@floating-ui/core@npm:^1.7.5":
+  version: 1.7.5
+  resolution: "@floating-ui/core@npm:1.7.5"
+  dependencies:
+    "@floating-ui/utils": "npm:^0.2.11"
+  checksum: 10/fecdc9b3ce93f02bf78a6114b93730a4cb9fa8234c62f9a949016186297a039c9f9cd3c5c81ff74b93ebddf0b32048c4af7a528afe7904b75423ed2e7491b888
+  languageName: node
+  linkType: hard
+
+"@floating-ui/dom@npm:^1.6.1":
+  version: 1.7.6
+  resolution: "@floating-ui/dom@npm:1.7.6"
+  dependencies:
+    "@floating-ui/core": "npm:^1.7.5"
+    "@floating-ui/utils": "npm:^0.2.11"
+  checksum: 10/84dff2ffdf85c8b92d7edafc543c55869abbeaeb3007fa983159467e050153b507a0f5fe8e84f88c3f28c35a82de9df9c20a6eef5560cbba3afae19141444ff2
+  languageName: node
+  linkType: hard
+
+"@floating-ui/utils@npm:^0.2.11":
+  version: 0.2.11
+  resolution: "@floating-ui/utils@npm:0.2.11"
+  checksum: 10/72150138ba1c274d757a1da85233202fa9fdfd2272ec1fb0883eb0ffdf138863af81573049ed2c20b98adb4b7ae2236065541ce14037fe328955089831a678d5
   languageName: node
   linkType: hard
 
@@ -5979,7 +6005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:*, classnames@npm:^2.2.6, classnames@npm:^2.3.1":
+"classnames@npm:*, classnames@npm:^2.2.6, classnames@npm:^2.3.0, classnames@npm:^2.3.1":
   version: 2.5.1
   resolution: "classnames@npm:2.5.1"
   checksum: 10/58eb394e8817021b153bb6e7d782cfb667e4ab390cb2e9dac2fc7c6b979d1cc2b2a733093955fc5c94aa79ef5c8c89f11ab77780894509be6afbb91dddd79d15
@@ -8484,7 +8510,7 @@ __metadata:
     react-motion: "npm:0.5.2"
     react-redux: "npm:8.1.3"
     react-tabs: "npm:3.2.3"
-    react-tooltip: "npm:4.5.1"
+    react-tooltip: "npm:5"
     react-widgets: "npm:^5.8.6"
     redux: "npm:4.2.1"
     redux-devtools: "npm:3.7.0"
@@ -14572,16 +14598,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:4.5.1, react-tooltip@npm:^4.5.1":
-  version: 4.5.1
-  resolution: "react-tooltip@npm:4.5.1"
+"react-tooltip@npm:5":
+  version: 5.30.1
+  resolution: "react-tooltip@npm:5.30.1"
   dependencies:
-    prop-types: "npm:^15.8.1"
-    uuid: "npm:^7.0.3"
+    "@floating-ui/dom": "npm:^1.6.1"
+    classnames: "npm:^2.3.0"
   peerDependencies:
-    react: ">=16.0.0"
-    react-dom: ">=16.0.0"
-  checksum: 10/a2031d6a9903f18046bb3374a1a23f739fb5ebd272c049772dec9108d5da141f4cf98354970e824d70a83f06aed48cf7e96ab69616ecc0d4e6e8c73cef4b6823
+    react: ">=16.14.0"
+    react-dom: ">=16.14.0"
+  checksum: 10/99cc5243fbdfae5a8b0bba9d2ab56063f90c350f73a749bcad5442f548173c30df01bd3de0d1cd31c1f4a4ba4a24d00fd2984cf2026e771e764cb9580a80144e
   languageName: node
   linkType: hard
 
@@ -17759,15 +17785,6 @@ __metadata:
   version: 1.0.1
   resolution: "utils-merge@npm:1.0.1"
   checksum: 10/5d6949693d58cb2e636a84f3ee1c6e7b2f9c16cb1d42d0ecb386d8c025c69e327205aa1c69e2868cc06a01e5e20681fbba55a4e0ed0cce913d60334024eae798
-  languageName: node
-  linkType: hard
-
-"uuid@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "uuid@npm:7.0.3"
-  bin:
-    uuid: dist/bin/uuid
-  checksum: 10/b2a4d30ecd6581015175487426558aafd7f7b4013a2e30802c128cc28cad9abe46ecd36c02f7fbcde7908fd4672334818d56a441c0871963d6bd89d911bef2ea
   languageName: node
   linkType: hard
 
