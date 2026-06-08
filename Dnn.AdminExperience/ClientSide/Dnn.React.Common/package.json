@@ -46,7 +46,7 @@
     "throttle-debounce": "^5.0.2"
   },
   "devDependencies": {
-    "@eslint/compat": "^2.0.3",
+    "@eslint/compat": "^2.1.0",
     "@rsbuild/core": "^1.7.5",
     "@rsbuild/plugin-less": "^1.6.4",
     "@rsbuild/plugin-react": "^1.4.6",
