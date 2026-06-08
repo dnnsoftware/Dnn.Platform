@@ -9,8 +9,8 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.7.3",
-    "@rsbuild/plugin-less": "^1.6.2",
+    "@rsbuild/core": "^1.7.5",
+    "@rsbuild/plugin-less": "^1.6.4",
     "@rsbuild/plugin-react": "^1.4.6",
     "create-react-class": "^15.7.0",
     "dayjs": "^1.11.20",
