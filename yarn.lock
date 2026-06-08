@@ -7214,7 +7214,7 @@ __metadata:
     "@types/node": "npm:^25.9.2"
     "@typescript-eslint/utils": "npm:^8.60.1"
     eslint: "npm:^10.4.1"
-    jiti: "npm:^2.6.1"
+    jiti: "npm:^2.7.0"
     typescript: "npm:^5.9.3"
     typescript-eslint: "npm:^8.60.1"
   languageName: unknown
@@ -10987,6 +10987,15 @@ __metadata:
   bin:
     jiti: lib/jiti-cli.mjs
   checksum: 10/8cd72c5fd03a0502564c3f46c49761090f6dadead21fa191b73535724f095ad86c2fa89ee6fe4bc3515337e8d406cc8fb2d37b73fa0c99a34584bac35cd4a4de
+  languageName: node
+  linkType: hard
+
+"jiti@npm:^2.7.0":
+  version: 2.7.0
+  resolution: "jiti@npm:2.7.0"
+  bin:
+    jiti: lib/jiti-cli.mjs
+  checksum: 10/6d75a8dbd61dbee031aa0937fabb748ff8ddf370b971958cc704f5cf26b4c5bdc9dcd0563059b2627a2bd41d946fa0bc64f912fdc8981ca7945a9d63c74ad0f9
   languageName: node
   linkType: hard
 
@@ -17078,7 +17087,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^8.60.1"
     "@typescript-eslint/parser": "npm:^8.60.1"
     eslint: "npm:^10.4.1"
-    jiti: "npm:^2.6.1"
+    jiti: "npm:^2.7.0"
     typescript-eslint: "npm:^8.60.1"
   languageName: unknown
   linkType: soft
