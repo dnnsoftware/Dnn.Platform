@@ -21,7 +21,7 @@
     "chokidar": "^5.0.0",
     "cssnano": "^8.0.1",
     "glob": "^13.0.6",
-    "postcss": "^8.5.8",
+    "postcss": "^8.5.15",
     "postcss-banner": "^4.0.1",
     "postcss-cli": "^11.0.1",
     "postcss-import": "^16.1.1",
