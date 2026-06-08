@@ -26,7 +26,7 @@
   },
   "dependencies": {
     "dayjs": "^1.11.21",
-    "dompurify": "^3.3.3",
+    "dompurify": "^3.4.8",
     "html-react-parser": "^5.2.17",
     "interact.js": "^1.2.8",
     "raw-loader": "4.0.2",
