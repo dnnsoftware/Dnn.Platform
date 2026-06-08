@@ -18,7 +18,7 @@
     "@types/react-dom": "^19.2.3",
     "@types/redux": "^3.6.31",
     "create-react-class": "^15.7.0",
-    "dayjs": "^1.11.20",
+    "dayjs": "^1.11.21",
     "eslint": "10.2.1",
     "eslint-plugin-react": "7.37.5",
     "globals": "^17.4.0",
