@@ -5150,7 +5150,7 @@ __metadata:
     sass-embedded: "npm:^1.98.0"
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
-    zip-lib: "npm:^1.3.1"
+    zip-lib: "npm:^1.3.4"
   languageName: unknown
   linkType: soft
 
@@ -5781,13 +5781,6 @@ __metadata:
   version: 1.0.0
   resolution: "buffer-crc32@npm:1.0.0"
   checksum: 10/ef3b7c07622435085c04300c9a51e850ec34a27b2445f758eef69b859c7827848c2282f3840ca6c1eef3829145a1580ce540cab03ccf4433827a2b95d3b09ca7
-  languageName: node
-  linkType: hard
-
-"buffer-crc32@npm:~0.2.3":
-  version: 0.2.13
-  resolution: "buffer-crc32@npm:0.2.13"
-  checksum: 10/06252347ae6daca3453b94e4b2f1d3754a3b146a111d81c68924c22d91889a40623264e95e67955b1cb4a68cbedf317abeabb5140a9766ed248973096db5ce1c
   languageName: node
   linkType: hard
 
@@ -18434,13 +18427,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yauzl@npm:^3.2.1":
-  version: 3.2.1
-  resolution: "yauzl@npm:3.2.1"
+"yauzl@npm:^3.3.1":
+  version: 3.4.0
+  resolution: "yauzl@npm:3.4.0"
   dependencies:
-    buffer-crc32: "npm:~0.2.3"
     pend: "npm:~1.2.0"
-  checksum: 10/15dfae75fbfe59c6a1b7a2cb27a995cda0ee70549d32d6b19937e84897436170f169f6bbefc34b9e9beb9c9114a1b8a8a40e7687a907909a19681ebcbf35a1f3
+  checksum: 10/76c1ca208478135dcd0b9f8baaa2e40a761652e0ec793c5a6bdeb973118f9720adc487f388e8394b4cfb73ae1976083ff58be4ea0ec60e060ffc9cf232db2c0a
   languageName: node
   linkType: hard
 
@@ -18467,12 +18459,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zip-lib@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "zip-lib@npm:1.3.1"
+"zip-lib@npm:^1.3.4":
+  version: 1.3.4
+  resolution: "zip-lib@npm:1.3.4"
   dependencies:
-    yauzl: "npm:^3.2.1"
+    yauzl: "npm:^3.3.1"
     yazl: "npm:^3.3.1"
-  checksum: 10/5f9a3988fc02545f3b3c19ab10cab9726bb91e625bff409fbcc001605356bb233b488a76673449386676acd649fe940aee813e3da3584d945c0b43c51d8c028d
+  checksum: 10/fd6c6b052f06131ea4efb843414d2538b1f5764b19054d5e43bbdae797110fdfdcdb958e6062e42d97dcc99e2c8ed6e7f55f8f50dee7cb1c6ac82f6271aebf26
   languageName: node
   linkType: hard
