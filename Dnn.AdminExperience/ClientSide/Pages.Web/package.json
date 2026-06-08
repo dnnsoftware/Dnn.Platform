@@ -30,7 +30,7 @@
     "enzyme-adapter-react-16": "^1.15.8",
     "eslint": "^10.4.1",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^17.4.0",
+    "globals": "^17.6.0",
     "jest": "^30.3.0",
     "less": "4.6.4",
     "lodash": "4.18.1",
