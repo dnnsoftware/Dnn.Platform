@@ -568,7 +568,7 @@ __metadata:
     react-slider: "npm:2.0.6"
     react-tabs: "npm:3.2.3"
     react-test-renderer: "npm:^17.0.2"
-    react-tooltip: "npm:5"
+    react-tooltip: "npm:^6.0.7"
     react-widgets: "npm:^5.8.6"
     redux-undo: "npm:^1.0.0-beta9"
     scroll: "npm:^3.0.1"
@@ -1106,7 +1106,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@floating-ui/dom@npm:^1.6.1":
+"@floating-ui/dom@npm:1.7.6":
   version: 1.7.6
   resolution: "@floating-ui/dom@npm:1.7.6"
   dependencies:
@@ -6005,7 +6005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:*, classnames@npm:^2.2.6, classnames@npm:^2.3.0, classnames@npm:^2.3.1":
+"classnames@npm:*, classnames@npm:^2.2.6, classnames@npm:^2.3.1":
   version: 2.5.1
   resolution: "classnames@npm:2.5.1"
   checksum: 10/58eb394e8817021b153bb6e7d782cfb667e4ab390cb2e9dac2fc7c6b979d1cc2b2a733093955fc5c94aa79ef5c8c89f11ab77780894509be6afbb91dddd79d15
@@ -6084,6 +6084,13 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 10/d06418b7335897209e77bdd430d04f882189582e67bd1f75a04565f3f07f5b3f119a9d670c943b6697d0afb100f03b866b3b8a1f91d4d02d72c4ecf2bb64b5dd
+  languageName: node
+  linkType: hard
+
+"clsx@npm:2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: 10/cdfb57fa6c7649bbff98d9028c2f0de2f91c86f551179541cf784b1cfdc1562dcb951955f46d54d930a3879931a980e32a46b598acaea274728dbe068deca919
   languageName: node
   linkType: hard
 
@@ -8510,7 +8517,7 @@ __metadata:
     react-motion: "npm:0.5.2"
     react-redux: "npm:8.1.3"
     react-tabs: "npm:3.2.3"
-    react-tooltip: "npm:5"
+    react-tooltip: "npm:^6.0.7"
     react-widgets: "npm:^5.8.6"
     redux: "npm:4.2.1"
     redux-devtools: "npm:3.7.0"
@@ -14598,16 +14605,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-tooltip@npm:5":
-  version: 5.30.1
-  resolution: "react-tooltip@npm:5.30.1"
+"react-tooltip@npm:^6.0.7":
+  version: 6.0.7
+  resolution: "react-tooltip@npm:6.0.7"
   dependencies:
-    "@floating-ui/dom": "npm:^1.6.1"
-    classnames: "npm:^2.3.0"
+    "@floating-ui/dom": "npm:1.7.6"
+    clsx: "npm:2.1.1"
   peerDependencies:
     react: ">=16.14.0"
     react-dom: ">=16.14.0"
-  checksum: 10/99cc5243fbdfae5a8b0bba9d2ab56063f90c350f73a749bcad5442f548173c30df01bd3de0d1cd31c1f4a4ba4a24d00fd2984cf2026e771e764cb9580a80144e
+  checksum: 10/fc1a75e5ca99f23772d4f13a6d03d28baeb7f2ee09565da877b53d894ea1675e7d52b2ed9d4c1bd73537c9604dd9800c71c2333251f04968ea8ec48a498f287d
   languageName: node
   linkType: hard
 

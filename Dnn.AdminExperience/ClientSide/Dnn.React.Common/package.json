@@ -39,7 +39,7 @@
     "react-scrollbar": "^0.5.6",
     "react-slider": "2.0.6",
     "react-tabs": "3.2.3",
-    "react-tooltip": "5",
+    "react-tooltip": "^6.0.7",
     "react-widgets": "^5.8.6",
     "redux-undo": "^1.0.0-beta9",
     "scroll": "^3.0.1",
