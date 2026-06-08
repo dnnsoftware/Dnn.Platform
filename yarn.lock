@@ -539,7 +539,7 @@ __metadata:
     eslint-import-resolver-node: "npm:^0.4.0"
     eslint-plugin-filenames: "npm:^1.3.2"
     eslint-plugin-import: "npm:^2.32.0"
-    eslint-plugin-jest: "npm:^29.15.0"
+    eslint-plugin-jest: "npm:^29.15.2"
     eslint-plugin-react: "npm:7.37.5"
     eslint-plugin-storybook: "npm:10.3.3"
     html-react-parser: "npm:^5.2.17"
@@ -8283,16 +8283,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-jest@npm:^29.15.0":
-  version: 29.15.0
-  resolution: "eslint-plugin-jest@npm:29.15.0"
+"eslint-plugin-jest@npm:^29.15.2":
+  version: 29.15.2
+  resolution: "eslint-plugin-jest@npm:29.15.2"
   dependencies:
     "@typescript-eslint/utils": "npm:^8.0.0"
   peerDependencies:
     "@typescript-eslint/eslint-plugin": ^8.0.0
     eslint: ^8.57.0 || ^9.0.0 || ^10.0.0
     jest: "*"
-    typescript: ">=4.8.4 <6.0.0"
+    typescript: ">=4.8.4 <7.0.0"
   peerDependenciesMeta:
     "@typescript-eslint/eslint-plugin":
       optional: true
@@ -8300,7 +8300,7 @@ __metadata:
       optional: true
     typescript:
       optional: true
-  checksum: 10/552361326c55564fe09092adeb34bf4aae179fdd39b4de6aa561511cebedee370b4ed53f98683af6c695a30891589f54e6fa9ed03ae87957fbe16a506732d0ab
+  checksum: 10/c7bc4dc705e5613e51a1d19bb924a439db9897c67e694f091e29dbacaa218b758040aacbb8d3f9136f2af0171ad69c1c49736b5e3f30098bdf44d4c1e93c6381
   languageName: node
   linkType: hard
 
@@ -16305,7 +16305,7 @@ __metadata:
     create-react-class: "npm:^15.7.0"
     dompurify: "npm:^3.4.8"
     eslint: "npm:10.4.1"
-    eslint-plugin-jest: "npm:^29.15.0"
+    eslint-plugin-jest: "npm:^29.15.2"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.4.0"
     html-react-parser: "npm:^5.2.17"
