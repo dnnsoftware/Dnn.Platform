@@ -68,7 +68,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
         public static string DecryptParameter(ICryptographyProvider cryptographyProvider, string value)
-#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
             => DecryptParameter(cryptographyProvider, value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
 
         /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string,string)"/>.</summary>
