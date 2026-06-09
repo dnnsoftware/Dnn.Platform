@@ -63,8 +63,7 @@ namespace DotNetNuke.Common.Utilities
         public static partial string DecryptParameter(string value)
             => DecryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value);
 
-#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
-        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string)"/>. Decrypted using the current portal's <see cref="IPortalSettingsV2.GUID"/>.</summary>
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(ICryptographyProvider,string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
         /// <param name="cryptographyProvider">The cryptography provider.</param>
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
