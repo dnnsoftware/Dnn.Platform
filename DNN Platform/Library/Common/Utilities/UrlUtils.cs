@@ -60,7 +60,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
         [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
-#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
         public static partial string DecryptParameter(string value)
             => DecryptParameter(Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>(), value);
 
