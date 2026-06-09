@@ -562,7 +562,7 @@ namespace DotNetNuke.Common.Utilities
 
                             if (existingFileInfo.Length > MaxFileSizeForComparison)
                             {
-                                Logger.Info($"Skipping comparison for large file '{localFileName}' ({existingFileInfo.Length:N0} bytes) - exceeds {MaxFileSizeForComparison:N0} byte limit");
+                                Logger.Debug($"Skipping comparison for large file '{localFileName}' ({existingFileInfo.Length:N0} bytes) - exceeds {MaxFileSizeForComparison:N0} byte limit");
                             }
                             else
                             {
