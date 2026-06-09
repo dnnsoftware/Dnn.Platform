@@ -121,7 +121,6 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="value">The value to encrypt.</param>
         /// <returns>The encrypted value.</returns>
         public static string EncryptParameter(ICryptographyProvider cryptographyProvider, string value)
-#pragma warning restore CS1574 // XML comment has cref attribute that could not be resolved
             => EncryptParameter(cryptographyProvider, value, PortalController.Instance.GetCurrentSettings().GUID.ToString());
 
         /// <summary>Encrypt a parameter for placing in a URL.</summary>
