@@ -56,8 +56,7 @@ namespace DotNetNuke.Common.Utilities
             return Encoding.UTF8.GetString(arrBytes);
         }
 
-#pragma warning disable CS1574 // XML comment has cref attribute that could not be resolved
-        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettingsV2.GUID"/>.</summary>
+        /// <summary>Decrypts an encrypted value generated via <see cref="EncryptParameter(string)"/>. Decrypted using the current portal's <see cref="IPortalSettings.GUID"/>.</summary>
         /// <param name="value">The encrypted value.</param>
         /// <returns>The decrypted value.</returns>
         [DnnDeprecated(10, 2, 2, "Use overload taking ICryptographyProvider")]
