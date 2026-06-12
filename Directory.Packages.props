@@ -59,6 +59,7 @@
     <PackageVersion Include="NUnit3TestAdapter" Version="6.1.0" />
     <PackageVersion Include="Octokit" Version="14.0.0" />
     <PackageVersion Include="PetaPoco.Compiled" Version="6.0.683" />
+    <PackageVersion Include="System.Net.Http" Version="4.3.4" />
     <PackageVersion Include="YamlDotNet" Version="17.0.1" />
     <PackageVersion Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageVersion Include="QuickIO.NET" Version="2.6.2" />
