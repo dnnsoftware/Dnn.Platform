@@ -36,13 +36,10 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 var friendsRelationship = RelationshipController.Instance.GetFriendsRelationshipByPortal(this.userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == friendsRelationship.RelationshipId
-                                                                &&
-                                                                ((ur.UserId == this.userInfo.UserID &&
-                                                                 ur.RelatedUserId == currentUser.UserID)
-                                                                 ||
-                                                                 (ur.UserId == currentUser.UserID &&
-                                                                  ur.RelatedUserId == this.userInfo.UserID))));
+                return this.UserRelationships.SingleOrDefault(ur =>
+                    ur.RelationshipId == friendsRelationship.RelationshipId &&
+                    ((ur.UserId == this.userInfo.UserID && ur.RelatedUserId == currentUser.UserID) ||
+                     (ur.UserId == currentUser.UserID && ur.RelatedUserId == this.userInfo.UserID)));
             }
         }
 
@@ -53,10 +50,10 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 var followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(this.userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == followerRelationship.RelationshipId
-                                                                &&
-                                                                (ur.UserId == this.userInfo.UserID &&
-                                                                 ur.RelatedUserId == currentUser.UserID)));
+                return this.UserRelationships.SingleOrDefault(ur =>
+                    ur.RelationshipId == followerRelationship.RelationshipId &&
+                    ur.UserId == this.userInfo.UserID &&
+                    ur.RelatedUserId == currentUser.UserID);
             }
         }
 
@@ -67,18 +64,16 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 var followerRelationship = RelationshipController.Instance.GetFollowersRelationshipByPortal(this.userInfo.PortalID);
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
-                return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == followerRelationship.RelationshipId
-                                                                &&
-                                                                (ur.UserId == currentUser.UserID &&
-                                                                 ur.RelatedUserId == this.userInfo.UserID)));
+                return this.UserRelationships.SingleOrDefault(ur =>
+                    ur.RelationshipId == followerRelationship.RelationshipId &&
+                    ur.UserId == currentUser.UserID &&
+                    ur.RelatedUserId == this.userInfo.UserID);
             }
         }
 
         /// <summary>Gets a collection of all the relationships the user is a member of.</summary>
-        public IList<UserRelationship> UserRelationships
-        {
-            get { return this.userRelationships ?? (this.userRelationships = RelationshipController.Instance.GetUserRelationships(this.userInfo)); }
-        }
+        public IList<UserRelationship> UserRelationships =>
+            this.userRelationships ??= RelationshipController.Instance.GetUserRelationships(this.userInfo);
 
         /// <summary>Gets list of Relationships for the User.</summary>
         [XmlAttribute]
@@ -86,14 +81,15 @@ namespace DotNetNuke.Entities.Users.Social
         {
             get
             {
-                if (this.relationships == null)
+                if (this.relationships != null)
                 {
-                    this.relationships = RelationshipController.Instance.GetRelationshipsByPortalId(this.userInfo.PortalID);
+                    return this.relationships;
+                }
 
-                    foreach (var r in RelationshipController.Instance.GetRelationshipsByUserId(this.userInfo.UserID))
-                    {
-                        this.relationships.Add(r);
-                    }
+                this.relationships = RelationshipController.Instance.GetRelationshipsByPortalId(this.userInfo.PortalID);
+                foreach (var r in RelationshipController.Instance.GetRelationshipsByUserId(this.userInfo.UserID))
+                {
+                    this.relationships.Add(r);
                 }
 
                 return this.relationships;

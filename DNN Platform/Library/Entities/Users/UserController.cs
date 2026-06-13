@@ -67,6 +67,8 @@ namespace DotNetNuke.Entities.Users
     /// <seealso cref="DotNetNuke.Security.Membership.MembershipProvider"/>
     public partial class UserController : ServiceLocator<IUserController, UserController>, IUserController
     {
+        private const string CurrentUserInfoKey = "UserInfo";
+
         /// <summary>Gets or sets the display name format with support for replacing some tokens.</summary>
         /// <remarks>Valid tokens are: [USERID], [FIRSTNAME], [LASTNAME] and [USERNAME].</remarks>
         public string DisplayFormat { get; set; }
@@ -1845,6 +1847,26 @@ namespace DotNetNuke.Entities.Users
             return GetUserById(portalId, userId);
         }
 
+        /// <summary>
+        /// Updates the user returned by <see cref="IUserController.GetCurrentUserInfo"/>.
+        /// Assumes that <see cref="DataCache.ClearUserCache"/> has already been called.
+        /// </summary>
+        internal static void RefreshCurrentUser()
+        {
+            if (HttpContextSource.Current?.Items[CurrentUserInfoKey] is not UserInfo currentUser)
+            {
+                return;
+            }
+
+            if (Null.IsNull(currentUser.UserID))
+            {
+                return;
+            }
+
+            HttpContextSource.Current.Items[CurrentUserInfoKey] =
+                MembershipProvider.Instance().GetUser(currentUser.PortalID, currentUser.UserID);
+        }
+
         /// <summary>Gets a list of user related portal settings.</summary>
         /// <param name="portalId">The site (portal) id from which to get the settings from.</param>
         /// <param name="settings">The list of settings to filter from.</param>
@@ -2268,7 +2290,7 @@ namespace DotNetNuke.Entities.Users
                 return new UserInfo();
             }
 
-            user = (UserInfo)HttpContext.Current.Items["UserInfo"];
+            user = (UserInfo)HttpContext.Current.Items[CurrentUserInfoKey];
             return user ?? new UserInfo();
         }
 

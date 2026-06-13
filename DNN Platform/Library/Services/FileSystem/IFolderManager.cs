@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// <summary>
         /// Creates a new folder in the given portal using the provided folder path.
-        /// The same mapping than the parent folder will be used to create this folder. So this method have to be used only to create subfolders.
+        /// The same mapping as the parent folder will be used to create this folder. So this method have to be used only to create subfolders.
         /// </summary>
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="folderPath">The path of the new folder.</param>
