@@ -28,6 +28,8 @@ using Microsoft.Extensions.DependencyInjection;
 /// <summary>Display the group create view.</summary>
 public partial class Create : GroupsModuleBase
 {
+    private static readonly HashSet<string> DefaultFolderPermissions = new HashSet<string>(["READ", "WRITE", "BROWSE",], StringComparer.OrdinalIgnoreCase);
+
     private readonly INavigationManager navigationManager;
     private readonly IFileManager fileManager;
     private readonly IFolderManager folderManager;
@@ -37,11 +39,12 @@ public partial class Create : GroupsModuleBase
     private readonly IEventLogger eventLogger;
     private readonly DataProvider dataProvider;
     private readonly IHostSettings hostSettings;
+    private readonly IPermissionDefinitionService permissionDefinitionService;
 
     /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
     [Obsolete("Deprecated in DotNetNuke 10.1.1. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
     public Create()
-        : this(null, null, null, null, null, null, null, null)
+        : this(null, null, null, null, null, null, null, null, null)
     {
     }
 
@@ -56,7 +59,7 @@ public partial class Create : GroupsModuleBase
     /// <param name="dataProvider">The data provider.</param>
     [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public Create(INavigationManager navigationManager, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IRoleController roleController, IApplicationStatusInfo applicationStatusInfo, IEventLogger eventLogger, DataProvider dataProvider)
-        : this(navigationManager, fileManager, folderManager, fileContentTypeManager, roleController, applicationStatusInfo, eventLogger, dataProvider, null)
+        : this(navigationManager, fileManager, folderManager, fileContentTypeManager, roleController, applicationStatusInfo, eventLogger, dataProvider, null, null)
     {
     }
 
@@ -70,7 +73,24 @@ public partial class Create : GroupsModuleBase
     /// <param name="eventLogger">The event logger.</param>
     /// <param name="dataProvider">The data provider.</param>
     /// <param name="hostSettings">The host settings.</param>
+    [Obsolete("Deprecated in DotNetNuke 10.3.3. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
     public Create(INavigationManager navigationManager, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IRoleController roleController, IApplicationStatusInfo applicationStatusInfo, IEventLogger eventLogger, DataProvider dataProvider, IHostSettings hostSettings)
+        : this(navigationManager, fileManager, folderManager, fileContentTypeManager, roleController, applicationStatusInfo, eventLogger, dataProvider, hostSettings, null)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
+    /// <param name="navigationManager">The navigation manager.</param>
+    /// <param name="fileManager">The file manager.</param>
+    /// <param name="folderManager">The folder manager.</param>
+    /// <param name="fileContentTypeManager">The file content type manager.</param>
+    /// <param name="roleController">The role controller.</param>
+    /// <param name="applicationStatusInfo">The application status info.</param>
+    /// <param name="eventLogger">The event logger.</param>
+    /// <param name="dataProvider">The data provider.</param>
+    /// <param name="hostSettings">The host settings.</param>
+    /// <param name="permissionDefinitionService">The permission definition service.</param>
+    public Create(INavigationManager navigationManager, IFileManager fileManager, IFolderManager folderManager, IFileContentTypeManager fileContentTypeManager, IRoleController roleController, IApplicationStatusInfo applicationStatusInfo, IEventLogger eventLogger, DataProvider dataProvider, IHostSettings hostSettings, IPermissionDefinitionService permissionDefinitionService)
     {
         this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
         this.fileManager = fileManager ?? this.DependencyProvider.GetRequiredService<IFileManager>();
@@ -81,6 +101,7 @@ public partial class Create : GroupsModuleBase
         this.eventLogger = eventLogger ?? this.DependencyProvider.GetRequiredService<IEventLogger>();
         this.dataProvider = dataProvider ?? this.DependencyProvider.GetRequiredService<DataProvider>();
         this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+        this.permissionDefinitionService = permissionDefinitionService ?? this.DependencyProvider.GetRequiredService<IPermissionDefinitionService>();
     }
 
     /// <inheritdoc />
@@ -188,23 +209,33 @@ public partial class Create : GroupsModuleBase
         roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
 
         this.roleController.UpdateRoleSettings(roleInfo, true);
+        this.roleController.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
         if (this.inpFile.PostedFile is { ContentLength: > 0 })
         {
-            var groupFolder = this.folderManager.GetFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}") ??
-                              this.folderManager.AddFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}");
-
-            if (groupFolder != null)
+            var groupFolder = this.folderManager.GetFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}");
+            if (groupFolder is null)
             {
-                var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
-                var fileInfo = this.fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true, true, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
-                roleInfo.IconFile = $"FileID={fileInfo.FileId}";
-                this.roleController.UpdateRole(roleInfo);
+                groupFolder = this.folderManager.AddFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}");
+                foreach (var permission in this.permissionDefinitionService.GetDefinitionsByFolder())
+                {
+                    if (DefaultFolderPermissions.Contains(permission.PermissionKey))
+                    {
+                        this.folderManager.SetFolderPermission(groupFolder, permission.PermissionId, roleInfo.RoleID);
+                    }
+                }
+
+                // reload groupFolder so that it has the new permissions in the AddFile call below
+                groupFolder = this.folderManager.GetFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}");
             }
+
+            var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
+            var fileInfo = this.fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true, true, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
+            roleInfo.IconFile = $"FileID={fileInfo.FileId}";
+            this.roleController.UpdateRole(roleInfo);
         }
 
         var notifications = new Notifications(this.hostSettings);
 
-        this.roleController.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
         if (roleInfo.Status == RoleStatus.Pending)
         {
             // Send notification to Group Moderators to approve/reject group.

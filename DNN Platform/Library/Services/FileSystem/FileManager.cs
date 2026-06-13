@@ -1870,7 +1870,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         private void CheckFileAddingRestrictions(IFolderInfo folder, string fileName, bool checkPermissions, bool ignoreWhiteList)
-          {
+        {
             if (checkPermissions && !this.folderPermissionController.CanAddFolder(folder))
             {
                 throw new PermissionsNotMetException(Localization.GetExceptionMessage(
