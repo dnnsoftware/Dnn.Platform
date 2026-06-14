@@ -42,6 +42,10 @@
     "lint": "lerna run lint",
     "test": "lerna run test"
   },
+  "//resolutions-comments": {
+    "@types/ws": "Workaround for https://stackoverflow.com/questions/76436147/types-ws-type-server-is-not-generic/76570993#76570993",
+    "esbuild": "Workaround for https://github.com/storybookjs/storybook/pull/35157 we can remove this when they release a version with the update."
+  },
   "resolutions": {
     "@types/ws": "8.5.4",
     "esbuild": "0.28.1"
