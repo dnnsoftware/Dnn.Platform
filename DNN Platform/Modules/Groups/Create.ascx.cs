@@ -102,7 +102,8 @@ public partial class Create : GroupsModuleBase
 
     private void Cancel_Click(object sender, EventArgs e)
     {
-        this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
+        var groupListingUrl = this.navigationManager.NavigateURL(this.TabId);
+        this.Response.Redirect(groupListingUrl);
     }
 
     private void Create_Click(object sender, EventArgs e)
@@ -215,6 +216,7 @@ public partial class Create : GroupsModuleBase
             GroupUtilities.CreateJournalEntry(roleInfo, this.UserInfo);
         }
 
-        this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
+        var groupListingUrl = this.navigationManager.NavigateURL(this.TabId);
+        this.Response.Redirect(groupListingUrl);
     }
 }
