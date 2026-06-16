@@ -76,6 +76,7 @@ jobs:
         uses: "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6.0.3
         with:
           fetch-depth: 0 # include all history for GitVersion
+          persist-credentials: false
 
       - name: "Setup Node.js"
         uses: "actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e" # v6.4.0
@@ -192,3 +193,4 @@ jobs:
 
       - name: "NuGet Push"
         run: "dotnet nuget push *.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json"
+
