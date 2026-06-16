@@ -67,10 +67,15 @@ jobs:
     steps:
       - name: "Setup Environment Variables"
         run: |
-          "CAKE_TARGET=${{ inputs.CAKE_TARGET || env.CAKE_TARGET }}" >> $env:GITHUB_ENV;
-          "CAKE_VERBOSITY=${{ inputs.CAKE_VERBOSITY || env.CAKE_VERBOSITY }}" >> $env:GITHUB_ENV;
-          "RELEASE_MODE=${{ inputs.RELEASE_MODE || env.RELEASE_MODE }}" >> $env:GITHUB_ENV;
-          "RUN_TESTS=${{ inputs.RUN_TESTS || env.RUN_TESTS }}" >> $env:GITHUB_ENV;
+          "CAKE_TARGET=$env:CAKE_TARGET" >> $env:GITHUB_ENV;
+          "CAKE_VERBOSITY=$env:CAKE_VERBOSITY" >> $env:GITHUB_ENV;
+          "RELEASE_MODE=$env:RELEASE_MODE" >> $env:GITHUB_ENV;
+          "RUN_TESTS=$env:RUN_TESTS" >> $env:GITHUB_ENV;
+        env:
+          CAKE_TARGET: ${{ inputs.CAKE_TARGET || env.CAKE_TARGET }}
+          CAKE_VERBOSITY: ${{ inputs.CAKE_VERBOSITY || env.CAKE_VERBOSITY }}
+          RELEASE_MODE: ${{ inputs.RELEASE_MODE || env.RELEASE_MODE }}
+          RUN_TESTS: ${{ inputs.RUN_TESTS || env.RUN_TESTS }}
 
       - name: "Checkout"
         uses: "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6.0.3
@@ -104,18 +109,18 @@ jobs:
           (Get-Content $path) | ForEach-Object {
             if ($_ -match $pattern3) {
             # We have found the matching line
-            '[assembly: AssemblyStatus(ReleaseMode.{0})]' -f '${{ env.RELEASE_MODE }}'
+            '[assembly: AssemblyStatus(ReleaseMode.{0})]' -f $env:RELEASE_MODE
           } else {
             $_
           }
           } | Set-Content $path
 
       - name: "Run DNN Build via Cake"
-        run: "./build.ps1 --target=${{ env.CAKE_TARGET }} --verbosity=${{ env.CAKE_VERBOSITY }}"
+        run: "./build.ps1 --target=$env:CAKE_TARGET --verbosity=$env:CAKE_VERBOSITY"
 
       - name: "Run Unit Tests via Cake"
         if: ${{ env.RUN_TESTS == 'true' }}
-        run: "./build.ps1 --target=UnitTests --verbosity=${{ env.CAKE_VERBOSITY }}"
+        run: "./build.ps1 --target=UnitTests --verbosity=$env:CAKE_VERBOSITY"
         continue-on-error: true
 
       - name: "Publish Test Results"
@@ -137,7 +142,7 @@ jobs:
 
       - name: "Create GitHub Pull Request"
         if: ${{ success() && !contains('pull_request', github.event_name) && (contains(fromJSON('["develop", "main"]'), github.ref_name) || startsWith('release/', github.ref_name)) }}
-        run: "./build.ps1 --target=CreateGitHubPullRequest --verbosity=${{ env.CAKE_VERBOSITY }}"
+        run: "./build.ps1 --target=CreateGitHubPullRequest --verbosity=$env:CAKE_VERBOSITY"
         env:
           GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
           GITHUB_APP_PRIVATE_KEY: ${{ secrets.GITHUB_APP_PRIVATE_KEY }}
@@ -192,5 +197,7 @@ jobs:
           user: ${{ secrets.NUGET_USER }}
 
       - name: "NuGet Push"
-        run: "dotnet nuget push *.nupkg --api-key ${{ steps.nuget-login.outputs.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json"
+        run: "dotnet nuget push *.nupkg --api-key $env:NUGET_API_KEY --source https://api.nuget.org/v3/index.json"
+        env:
+          NUGET_API_KEY: ${{ steps.nuget-login.outputs.NUGET_API_KEY }}
 
