@@ -1,9 +1,9 @@
 name: "Dependency Review"
 
-on: 
+on:
   pull_request:
   merge_group:
-      types:
+    types:
       - "checks_requested"
 
 concurrency:
@@ -20,5 +20,10 @@ jobs:
     steps:
       - name: "Checkout Repository"
         uses: "actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10" # v6.0.3
+        with:
+          persist-credentials: false
+
       - name: "Dependency Review"
         uses: "actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294" # v5.0.0
+
+
