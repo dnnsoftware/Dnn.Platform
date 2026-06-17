@@ -35,10 +35,10 @@
     "@stencil/sass": "^3.2.3",
     "@stencil/store": "^2.2.2",
     "@types/node": "^25.9.2",
-    "@typescript-eslint/utils": "^8.60.1",
+    "@typescript-eslint/utils": "^8.61.1",
     "eslint": "^10.4.1",
     "jiti": "^2.7.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.1"
   }
 }
