@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             writer.WriteElementString("name", fileName);
 
                             var physicalPath = Path.Combine(this.PhysicalBasePath, entry.FullName);
-                            if (File.Exists(physicalPath))
+                            if (File.Exists(physicalPath) && this.BackupFiles)
                             {
                                 Util.BackupFile(
                                     new InstallFile(entry.FullName, this.Package.InstallerInfo),
