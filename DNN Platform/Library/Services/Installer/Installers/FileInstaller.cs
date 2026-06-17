@@ -32,6 +32,9 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>Gets the name of the Item Node (<c>file</c>).</summary>
         protected virtual string ItemNodeName => "file";
 
+        /// <summary>Gets or sets a value indicating whether any existing files should be backed up during installation.</summary>
+        protected bool BackupFiles { get; set; } = true;
+
         /// <summary>Gets the PhysicalBasePath for the files.</summary>
         protected virtual string PhysicalBasePath
         {
@@ -177,7 +180,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (this.Package.InstallerInfo.IgnoreWhiteList || Util.IsFileValid(insFile, this.Package.InstallerInfo.AllowableFiles))
                 {
                     // Install File
-                    if (File.Exists(this.PhysicalBasePath + insFile.FullName))
+                    if (File.Exists(this.PhysicalBasePath + insFile.FullName) && this.BackupFiles)
                     {
                         Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                     }
