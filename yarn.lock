@@ -4984,7 +4984,7 @@ __metadata:
     sass-embedded: "npm:^1.100.0"
     tsx: "npm:^4.22.4"
     typescript: "npm:^5.9.3"
-    zip-lib: "npm:^1.3.4"
+    zip-lib: "npm:^1.4.0"
   languageName: unknown
   linkType: soft
 
@@ -18159,7 +18159,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yauzl@npm:^3.3.1":
+"yauzl@npm:^3.4.0":
   version: 3.4.0
   resolution: "yauzl@npm:3.4.0"
   dependencies:
@@ -18191,12 +18191,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zip-lib@npm:^1.3.4":
-  version: 1.3.4
-  resolution: "zip-lib@npm:1.3.4"
+"zip-lib@npm:^1.4.0":
+  version: 1.4.0
+  resolution: "zip-lib@npm:1.4.0"
   dependencies:
-    yauzl: "npm:^3.3.1"
+    yauzl: "npm:^3.4.0"
     yazl: "npm:^3.3.1"
-  checksum: 10/fd6c6b052f06131ea4efb843414d2538b1f5764b19054d5e43bbdae797110fdfdcdb958e6062e42d97dcc99e2c8ed6e7f55f8f50dee7cb1c6ac82f6271aebf26
+  checksum: 10/ca8c308dc637699a727ded116c21a2fbc94a5356ba8d76ac3e9f3b44c3eaef1d6558a60e9c05a986e63830458fce15bef7033b5b58d3d77df71fe3bbf5715deb
   languageName: node
   linkType: hard
