@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Site Offline - Upgrade in Progress</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+
+    body {
+      font-family: Ubuntu, Helvetica, sans-serif;
+      color: rgb(71, 42, 43);
+      background: rgb(240, 240, 240);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .eyebrow-bar {
+      background: rgb(14, 41, 54);
+      min-height: 40px;
+    }
+
+    .logo-menu-bar {
+      background: rgb(60, 122, 154);
+      min-height: 120px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-menu-bar .container {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo svg {
+      display: block;
+      width: 155px;
+      height: auto;
+    }
+
+    main {
+      flex: 1;
+      background: rgb(240, 240, 240);
+      padding: 64px 0 80px;
+    }
+
+    .hero {
+      max-width: 760px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 0 24px;
+    }
+
+    h1 {
+      margin: 0 0 16px;
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      line-height: 1.2;
+      color: rgb(71, 42, 43);
+    }
+
+    .tagline {
+      margin: 0 0 24px;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgb(71, 42, 43);
+    }
+
+    .message {
+      margin: 0 auto;
+      max-width: 640px;
+      font-size: 1.125rem;
+      line-height: 1.7;
+      color: rgb(71, 42, 43);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 48px auto 0;
+      max-width: 760px;
+      position: relative;
+    }
+
+    .divider::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 4px;
+      transform: translateY(-50%);
+      background: linear-gradient(
+        to right,
+        rgb(237, 61, 70) 0%,
+        rgb(237, 61, 70) 50%,
+        rgb(0, 165, 224) 50%,
+        rgb(0, 165, 224) 100%
+      );
+    }
+
+    .divider-arrow {
+      position: relative;
+      width: 0;
+      height: 0;
+      border-left: 14px solid transparent;
+      border-right: 14px solid transparent;
+      border-top: 16px solid rgb(0, 165, 224);
+    }
+
+    footer {
+      background: rgb(14, 41, 54);
+      color: rgba(255, 255, 255, 0.85);
+      padding: 24px 0;
+      font-size: 0.95rem;
+      text-align: center;
+    }
+
+    footer p {
+      margin: 0;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 600px) {
+      .logo-menu-bar {
+        min-height: 96px;
+      }
+
+      main {
+        padding: 48px 0 64px;
+      }
+
+      .message {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow-bar" aria-hidden="true"></div>
+    <div class="logo-menu-bar">
+      <div class="container">
+        <div class="logo">
+          <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="155" height="62" viewBox="-42.52 77.519 155 62" role="img" aria-label="DNN">
+            <path fill="#FFFFFF" d="M43.598,115.273h-4.551v-9.107h4.551c2.516,0,4.559,2.04,4.559,4.553 C48.157,113.234,46.114,115.273,43.598,115.273 M43.598,98.332H30.994v24.777h12.604c6.848,0,12.393-5.547,12.393-12.393 C55.99,103.88,50.446,98.332,43.598,98.332"/>
+            <path fill="#FFFFFF" d="M83.959,110.603c-0.063-6.786-5.582-12.271-12.385-12.271H59.189v24.777h8.053v-16.725h4.332 c2.397,0,4.339,1.941,4.339,4.336v12.39h8.05v-12.507H83.959z"/>
+            <path fill="#FFFFFF" d="M112.473,110.603c-0.064-6.786-5.578-12.271-12.379-12.271H87.701v24.777h8.055v-16.725h4.338 c2.395,0,4.336,1.941,4.336,4.336v12.39h8.051v-12.507H112.473z"/>
+            <path fill="#FFFFFF" d="M-3.951,79.015c-2.551-0.689-5.236-1.061-8.004-1.061H-42.52v38.571h20.376V98.333h18.191L-3.951,79.015z M-1.766,79.697v18.635h18.637C13.798,89.651,6.916,82.763-1.766,79.697 M17.549,100.519H-1.766v8.013c-0.009,5.623-4.567,10.177-10.188,10.177h-8.004v20.375h8.004c16.88,0,30.562-13.683,30.562-30.564 C18.606,105.751,18.239,103.068,17.549,100.519 M-42.52,139.083h20.375v-20.377H-42.52V139.083z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>We'll be right back</h1>
+      <p class="tagline">The site is currently being upgraded</p>
+      <p class="message">
+        Our application is temporarily offline while we perform an upgrade.
+        Thank you for your patience — the site will be back online again soon.
+      </p>
+      <div class="divider" aria-hidden="true">
+        <div class="divider-arrow"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>This page is shown automatically while the site is offline for maintenance.</p>
+    </div>
+  </footer>
+</body>
+</html>
