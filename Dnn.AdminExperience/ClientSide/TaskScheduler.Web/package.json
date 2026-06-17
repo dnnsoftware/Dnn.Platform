@@ -30,7 +30,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "dompurify": "^3.4.8",
+    "dompurify": "^3.4.10",
     "html-react-parser": "^6.1.3"
   }
 }
