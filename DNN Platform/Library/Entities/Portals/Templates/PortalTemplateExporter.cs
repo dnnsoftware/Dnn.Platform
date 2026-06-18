@@ -231,12 +231,6 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteElementString("userquota", portal.UserQuota.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("pagequota", portal.PageQuota.ToString(CultureInfo.InvariantCulture));
 
-            settingsDictionary.TryGetValue("PageHeadText", out setting);
-            if (!string.IsNullOrEmpty(setting) && !string.Equals(setting, "false", StringComparison.OrdinalIgnoreCase))
-            {
-                writer.WriteElementString("pageheadtext", setting);
-            }
-
             var pageHeaderTags = PageHeaderTagInfo.GetPortalItems(((IPortalInfo)portal).PortalId);
             if (pageHeaderTags.Count > 0)
             {

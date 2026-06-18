@@ -964,11 +964,6 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.UpdatePortalSetting(this.portalController, portalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
 
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty)))
-            {
-                PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty));
-            }
-
             var pageHeaderTagNodes = nodeSettings.SelectNodes("pageheadertags/pageheadertag");
             if (pageHeaderTagNodes != null && pageHeaderTagNodes.Count > 0)
             {
