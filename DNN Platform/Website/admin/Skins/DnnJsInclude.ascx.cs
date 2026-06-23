@@ -10,73 +10,118 @@ namespace DotNetNuke.UI.Skins.Controls
     /// <summary>A control which causes JavaScript to be included on the page.</summary>
     public partial class DnnJsInclude : SkinObjectBase
     {
-        public string FilePath { get; set; }
+        public string FilePath
+        {
+            get => this.ctlInclude.FilePath;
+            set => this.ctlInclude.FilePath = value;
+        }
 
-        public string PathNameAlias { get; set; }
+        public string PathNameAlias
+        {
+            get => this.ctlInclude.PathNameAlias;
+            set => this.ctlInclude.PathNameAlias = value;
+        }
 
-        public int Priority { get; set; }
+        public int Priority
+        {
+            get => this.ctlInclude.Priority;
+            set => this.ctlInclude.Priority = value;
+        }
 
-        public bool AddTag { get; set; }
+        public bool AddTag
+        {
+            get => this.ctlInclude.AddTag;
+            set => this.ctlInclude.AddTag = value;
+        }
 
-        public string Name { get; set; }
+        public string Name
+        {
+            get => this.ctlInclude.Name;
+            set => this.ctlInclude.Name = value;
+        }
 
-        public string Version { get; set; }
+        public string Version
+        {
+            get => this.ctlInclude.Version;
+            set => this.ctlInclude.Version = value;
+        }
 
-        public bool ForceVersion { get; set; }
+        public bool ForceVersion
+        {
+            get => this.ctlInclude.ForceVersion;
+            set => this.ctlInclude.ForceVersion = value;
+        }
 
-        public string ForceProvider { get; set; }
+        public string ForceProvider
+        {
+            get => this.ctlInclude.ForceProvider;
+            set => this.ctlInclude.ForceProvider = value;
+        }
 
         [Obsolete("Deprecated in DotNetNuke 10.2.0. Bundling is no longer supported, there is no replacement within DNN for this functionality. Scheduled removal in v12.0.0.")]
         public bool ForceBundle { get; set; }
 
         /// <summary>Gets or sets the CDN URL of the resource.</summary>
-        public string CdnUrl { get; set; }
+        public string CdnUrl
+        {
+            get => this.ctlInclude.CdnUrl;
+            set => this.ctlInclude.CdnUrl = value;
+        }
 
         /// <summary>Gets or sets a value indicating whether to render the <c>blocking</c> attribute.</summary>
-        public bool Blocking { get; set; }
+        public bool Blocking
+        {
+            get => this.ctlInclude.Blocking;
+            set => this.ctlInclude.Blocking = value;
+        }
 
         /// <summary>Gets or sets the integrity hash of the resource.</summary>
-        public string Integrity { get; set; }
+        public string Integrity
+        {
+            get => this.ctlInclude.Integrity;
+            set => this.ctlInclude.Integrity = value;
+        }
 
         /// <summary>Gets or sets the value of the <c>crossorigin</c> attribute.</summary>
-        public CrossOrigin CrossOrigin { get; set; }
+        public CrossOrigin CrossOrigin
+        {
+            get => this.ctlInclude.CrossOrigin;
+            set => this.ctlInclude.CrossOrigin = value;
+        }
 
         /// <summary>Gets or sets the value of the <c>fetchpriority</c> attribute.</summary>
-        public FetchPriority FetchPriority { get; set; }
+        public FetchPriority FetchPriority
+        {
+            get => this.ctlInclude.FetchPriority;
+            set => this.ctlInclude.FetchPriority = value;
+        }
 
         /// <summary>Gets or sets the value of the <c>referrerpolicy</c> attribute.</summary>
-        public ReferrerPolicy ReferrerPolicy { get; set; }
+        public ReferrerPolicy ReferrerPolicy
+        {
+            get => this.ctlInclude.ReferrerPolicy;
+            set => this.ctlInclude.ReferrerPolicy = value;
+        }
 
         /// <inheritdoc cref="IScriptResource.Async" />
-        public bool Async { get; set; }
+        public bool Async
+        {
+            get => this.ctlInclude.Async;
+            set => this.ctlInclude.Async = value;
+        }
 
         /// <inheritdoc cref="IScriptResource.Defer" />
-        public bool Defer { get; set; }
+        public bool Defer
+        {
+            get => this.ctlInclude.Defer;
+            set => this.ctlInclude.Defer = value;
+        }
 
         /// <inheritdoc cref="IScriptResource.NoModule" />
-        public bool NoModule { get; set; }
-
-        /// <inheritdoc />
-        protected override void OnInit(EventArgs e)
+        public bool NoModule
         {
-            base.OnInit(e);
-            this.ctlInclude.AddTag = this.AddTag;
-            this.ctlInclude.FilePath = this.FilePath;
-            this.ctlInclude.ForceProvider = this.ForceProvider;
-            this.ctlInclude.ForceVersion = this.ForceVersion;
-            this.ctlInclude.Name = this.Name;
-            this.ctlInclude.PathNameAlias = this.PathNameAlias;
-            this.ctlInclude.Priority = this.Priority;
-            this.ctlInclude.Version = this.Version;
-            this.ctlInclude.CdnUrl = this.CdnUrl;
-            this.ctlInclude.Blocking = this.Blocking;
-            this.ctlInclude.Integrity = this.Integrity;
-            this.ctlInclude.CrossOrigin = this.CrossOrigin;
-            this.ctlInclude.FetchPriority = this.FetchPriority;
-            this.ctlInclude.ReferrerPolicy = this.ReferrerPolicy;
-            this.ctlInclude.Async = this.Async;
-            this.ctlInclude.Defer = this.Defer;
-            this.ctlInclude.NoModule = this.NoModule;
+            get => this.ctlInclude.NoModule;
+            set => this.ctlInclude.NoModule = value;
         }
     }
 }
