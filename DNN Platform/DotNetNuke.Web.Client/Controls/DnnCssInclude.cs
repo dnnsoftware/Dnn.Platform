@@ -31,6 +31,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.ForceProvider = ClientResourceProviders.DefaultCssProvider;
             this.DependencyType = ClientDependencyType.Css;
+            this.Priority = (int)FileOrder.Css.DefaultPriority;
         }
 
         /// <inheritdoc cref="ILinkResource.Media" />
