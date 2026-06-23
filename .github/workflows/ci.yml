@@ -141,7 +141,7 @@ jobs:
           overwrite: true
 
       - name: "Create GitHub Pull Request"
-        if: ${{ success() && !contains('pull_request', github.event_name) && (contains(fromJSON('["develop", "main"]'), github.ref_name) || startsWith('release/', github.ref_name)) }}
+        if: ${{ success() && github.event_name == 'push' && (github.ref_name == 'develop' || startsWith('release/', github.ref_name)) }}
         run: "./build.ps1 --target=CreateGitHubPullRequest --verbosity=$env:CAKE_VERBOSITY"
         env:
           GITHUB_APP_ID: ${{ secrets.GITHUB_APP_ID }}
