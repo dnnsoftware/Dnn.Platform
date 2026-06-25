@@ -101,7 +101,7 @@ namespace DotNetNuke.Security.Roles
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="roleGroupInfo">The RoleGroup to Add.</param>
         /// <returns>The ID of the new role.</returns>
-        public static int AddRoleGroup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalSettingsV2 portalSettings, RoleGroupInfo roleGroupInfo)
+        public static int AddRoleGroup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalSettings portalSettings, RoleGroupInfo roleGroupInfo)
         {
             var id = roleProvider.CreateRoleGroup(roleGroupInfo);
             eventLogger.AddLog(
@@ -238,7 +238,7 @@ namespace DotNetNuke.Security.Roles
         /// <param name="portalId">The portal ID of the role group.</param>
         /// <param name="roleGroupId">The role group ID.</param>
         [Obsolete("Deprecated in DotNetNuke 10.0.2. Please use overload with RoleProvider. Scheduled removal in v12.0.0.")]
-        public static void DeleteRoleGroup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalSettingsV2 portalSettings, int portalId, int roleGroupId)
+        public static void DeleteRoleGroup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalSettings portalSettings, int portalId, int roleGroupId)
             => DeleteRoleGroup(roleProvider, eventLogger, userController, portalSettings, GetRoleGroup(portalId, roleGroupId));
 
         /// <summary>Deletes a Role Group.</summary>
@@ -258,7 +258,7 @@ namespace DotNetNuke.Security.Roles
         /// <param name="userController">The user controller.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="roleGroupInfo">The RoleGroup to Delete.</param>
-        public static void DeleteRoleGroup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalSettingsV2 portalSettings, RoleGroupInfo roleGroupInfo)
+        public static void DeleteRoleGroup(RoleProvider roleProvider, IEventLogger eventLogger, IUserController userController, IPortalSettings portalSettings, RoleGroupInfo roleGroupInfo)
         {
             roleProvider.DeleteRoleGroup(roleGroupInfo);
             eventLogger.AddLog(
@@ -418,7 +418,7 @@ namespace DotNetNuke.Security.Roles
         /// <param name="userController">The user controller.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="roleGroup">The RoleGroup to Update.</param>
-        public static void UpdateRoleGroup(RoleProvider roleProvider, IRoleController roleController, IEventLogger eventLogger, IUserController userController, IPortalSettingsV2 portalSettings, RoleGroupInfo roleGroup)
+        public static void UpdateRoleGroup(RoleProvider roleProvider, IRoleController roleController, IEventLogger eventLogger, IUserController userController, IPortalSettings portalSettings, RoleGroupInfo roleGroup)
         {
             UpdateRoleGroup(roleProvider, roleController, eventLogger, userController, portalSettings, roleGroup, false);
         }
@@ -433,7 +433,7 @@ namespace DotNetNuke.Security.Roles
                 roleGroup,
                 includeRoles);
 
-        public static void UpdateRoleGroup(RoleProvider roleProvider, IRoleController roleController, IEventLogger eventLogger, IUserController userController, IPortalSettingsV2 portalSettings, RoleGroupInfo roleGroup, bool includeRoles)
+        public static void UpdateRoleGroup(RoleProvider roleProvider, IRoleController roleController, IEventLogger eventLogger, IUserController userController, IPortalSettings portalSettings, RoleGroupInfo roleGroup, bool includeRoles)
         {
             roleProvider.UpdateRoleGroup(roleGroup);
             eventLogger.AddLog(roleGroup, portalSettings, userController.GetCurrentUserInfo().UserID, string.Empty, EventLogType.USER_ROLE_UPDATED);

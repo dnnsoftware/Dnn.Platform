@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         [DnnDeprecated(9, 4, 3, "Use the IPortalSettings overload")]
         public virtual partial string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return this.FriendlyUrl(tab, path, pageName, (IPortalSettingsV2)settings);
+            return this.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
         /// <summary>Generate a friendly URL.</summary>
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         /// <param name="pageName">The page name.</param>
         /// <param name="settings">The portal settings.</param>
         /// <returns>The friendly URL.</returns>
-        public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettingsV2 settings);
+        public abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings);
 
         /// <summary>Generate a friendly URL.</summary>
         /// <param name="tab">The page.</param>

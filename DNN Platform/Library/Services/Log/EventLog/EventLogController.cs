@@ -33,13 +33,13 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLogger.AddLog(string name, string value, IPortalSettingsV2 portalSettings, int userID, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(string name, string value, IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
         {
             this.EventLogger.AddLog(name, value, portalSettings, userID, logType.ToString());
         }
 
         /// <inheritdoc />
-        void IEventLogger.AddLog(string name, string value, IPortalSettingsV2 portalSettings, int userID, string logType)
+        void IEventLogger.AddLog(string name, string value, IPortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
             var logDetailInfo = new LogDetailInfo { PropertyName = name, PropertyValue = value };
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLogger.AddLog(ILogProperties properties, IPortalSettingsV2 portalSettings, int userID, string logTypeKey, bool bypassBuffering)
+        void IEventLogger.AddLog(ILogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
         {
             // supports adding a custom string for LogType
             var log = new LogInfo
@@ -69,19 +69,19 @@ namespace DotNetNuke.Services.Log.EventLog
         }
 
         /// <inheritdoc />
-        void IEventLogger.AddLog(IPortalSettingsV2 portalSettings, int userID, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(IPortalSettings portalSettings, int userID, Abstractions.Logging.EventLogType logType)
         {
             this.EventLogger.AddLog(new LogProperties(), portalSettings, userID, logType.ToString(), false);
         }
 
         /// <inheritdoc />
-        void IEventLogger.AddLog(object businessObject, IPortalSettingsV2 portalSettings, int userID, string userName, Abstractions.Logging.EventLogType logType)
+        void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, Abstractions.Logging.EventLogType logType)
         {
             this.AddLog(businessObject, portalSettings, userID, userName, logType.ToString());
         }
 
         /// <inheritdoc />
-        void IEventLogger.AddLog(object businessObject, IPortalSettingsV2 portalSettings, int userID, string userName, string logType)
+        void IEventLogger.AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType)
         {
             var log = new LogInfo { LogUserID = userID, LogTypeKey = logType };
             if (portalSettings != null)

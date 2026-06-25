@@ -219,7 +219,7 @@ namespace DotNetNuke.Services.Localization
         {
             var resourceFile = (string)cacheItemArgs.Params[0];
             var locale = (string)cacheItemArgs.Params[1];
-            var portalSettings = (IPortalSettingsV2)cacheItemArgs.Params[2];
+            var portalSettings = (IPortalSettings)cacheItemArgs.Params[2];
             var hostSettings = (IHostSettings)cacheItemArgs.Params[3];
             string systemLanguage = Localization.SystemLocale;
             string defaultLanguage = portalSettings.DefaultLanguage;

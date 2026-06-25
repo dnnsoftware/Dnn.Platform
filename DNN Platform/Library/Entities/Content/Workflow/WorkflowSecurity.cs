@@ -41,10 +41,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// <inheritdoc />
         [SuppressMessage("Microsoft.Naming", "CA1725:ParameterNamesShouldMatchBaseDeclaration", Justification = "Breaking change")]
         public bool HasStateReviewerPermission(PortalSettings settings, UserInfo user, int stateId)
-            => this.HasStateReviewerPermission((IPortalSettingsV2)settings, user, stateId);
+            => this.HasStateReviewerPermission((IPortalSettings)settings, user, stateId);
 
         /// <inheritdoc cref="IWorkflowSecurity.HasStateReviewerPermission(PortalSettings,UserInfo,int)" />
-        public bool HasStateReviewerPermission(IPortalSettingsV2 settings, UserInfo user, int stateId)
+        public bool HasStateReviewerPermission(IPortalSettings settings, UserInfo user, int stateId)
         {
             var permissions = this.statePermissionsRepository.GetWorkflowStatePermissionByState(stateId);
 

@@ -245,7 +245,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns if the user has write access to the folder.
         /// </returns>
-        public static bool CheckIfUserHasFolderWriteAccess(int folderId, IPortalSettingsV2 portalSettings)
+        public static bool CheckIfUserHasFolderWriteAccess(int folderId, IPortalSettings portalSettings)
         {
             return CheckIfUserHasFolderAccess(folderId, portalSettings, "WRITE");
         }
@@ -256,7 +256,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns if the user has write access to the folder.
         /// </returns>
-        public static bool CheckIfUserHasFolderReadAccess(int folderId, IPortalSettingsV2 portalSettings)
+        public static bool CheckIfUserHasFolderReadAccess(int folderId, IPortalSettings portalSettings)
         {
             return CheckIfUserHasFolderAccess(folderId, portalSettings, "READ");
         }
@@ -267,7 +267,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the Folder Info.
         /// </returns>
-        public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettingsV2 portalSettings)
+        public static IFolderInfo ConvertFilePathToFolderInfo(string folderPath, IPortalSettings portalSettings)
         {
             if (!string.IsNullOrEmpty(portalSettings.HomeDirectoryMapPath) && folderPath.Length >= portalSettings.HomeDirectoryMapPath.Length)
             {
@@ -348,7 +348,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         ///   <see langword="true"/> if [is in roles] [the specified roles]; otherwise, <see langword="false"/>.
         /// </returns>
-        public static bool IsInRoles(string roles, IPortalSettingsV2 settings)
+        public static bool IsInRoles(string roles, IPortalSettings settings)
         {
             var objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
@@ -510,7 +510,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
             return null;
         }
 
-        private static bool CheckIfUserHasFolderAccess(int folderId, IPortalSettingsV2 portalSettings, string permissionKey)
+        private static bool CheckIfUserHasFolderAccess(int folderId, IPortalSettings portalSettings, string permissionKey)
         {
             try
             {

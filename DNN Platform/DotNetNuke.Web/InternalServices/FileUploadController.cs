@@ -170,7 +170,7 @@ namespace DotNetNuke.Web.InternalServices
             var provider = new MultipartMemoryStreamProvider();
 
             // local references for use in closure
-            IPortalSettingsV2 portalSettings = this.PortalSettings;
+            IPortalSettings portalSettings = this.PortalSettings;
             var currentSynchronizationContext = SynchronizationContext.Current;
             var userInfo = this.UserInfo;
             var task = request.Content.ReadAsMultipartAsync(provider)
@@ -435,7 +435,7 @@ namespace DotNetNuke.Web.InternalServices
             IApplicationStatusInfo appStatus,
             IPortalGroupController portalGroupController,
             IHostSettings hostSettings,
-            IPortalSettingsV2 portalSettings,
+            IPortalSettings portalSettings,
             UserInfo userInfo,
             string folder,
             string filter,

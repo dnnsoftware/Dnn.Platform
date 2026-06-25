@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Search.Controllers
         /// <inheritdoc />
         public override string LocalizedSearchTypeName => Localization.GetString("Crawler_user", LocalizedResxFile);
 
-        private static IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         /// <inheritdoc />
         public override bool HasViewPermission(SearchResult searchResult)

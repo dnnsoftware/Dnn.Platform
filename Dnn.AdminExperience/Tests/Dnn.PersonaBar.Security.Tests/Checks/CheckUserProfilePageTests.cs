@@ -298,9 +298,9 @@
             return permissionsData;
         }
 
-        private static Mock<IPortalSettingsV2> SetupPortalSettingsMock(int portalId, int userTabId)
+        private static Mock<IPortalSettings> SetupPortalSettingsMock(int portalId, int userTabId)
         {
-            var mock = new Mock<IPortalSettingsV2>();
+            var mock = new Mock<IPortalSettings>();
             mock.SetupGet(x => x.PortalId).Returns(portalId);
             mock.SetupGet(x => x.UserTabId).Returns(userTabId);
             return mock;

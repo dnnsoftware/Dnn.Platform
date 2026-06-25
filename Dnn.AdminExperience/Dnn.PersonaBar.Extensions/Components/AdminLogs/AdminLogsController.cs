@@ -48,7 +48,7 @@ namespace Dnn.PersonaBar.AdminLogs.Components
 
         protected Dictionary<string, LogTypeInfo> LogTypeDictionary => this.logTypeDictionary = LogController.Instance.GetLogTypeInfoDictionary();
 
-        private static IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public LogTypeInfo GetMyLogType(string logTypeKey)
         {

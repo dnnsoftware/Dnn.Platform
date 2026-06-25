@@ -37,7 +37,7 @@ namespace DNNConnect.CKEditorProvider
         private readonly HttpRequest request = HttpContext.Current.Request;
 
         /// <summary>The portal settings.</summary>
-        private IPortalSettingsV2 curPortalSettings;
+        private IPortalSettings curPortalSettings;
 
         /// <summary>Initializes a new instance of the <see cref="Options"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IUserController. Scheduled removal in v12.0.0.")]
@@ -183,11 +183,11 @@ namespace DNNConnect.CKEditorProvider
 
         /// <summary>Gets the portal settings.</summary>
         /// <returns>The Portal Settings.</returns>
-        private IPortalSettingsV2 GetPortalSettings()
+        private IPortalSettings GetPortalSettings()
         {
             int iTabId = 0, iPortalId = 0;
 
-            IPortalSettingsV2 portalSettings;
+            IPortalSettings portalSettings;
 
             try
             {
@@ -210,7 +210,7 @@ namespace DNNConnect.CKEditorProvider
             }
             catch (Exception)
             {
-                portalSettings = (IPortalSettingsV2)HttpContext.Current.Items["PortalSettings"];
+                portalSettings = (IPortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
 
             return portalSettings;

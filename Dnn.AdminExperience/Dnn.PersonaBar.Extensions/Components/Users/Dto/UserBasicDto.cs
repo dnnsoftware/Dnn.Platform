@@ -82,7 +82,7 @@ namespace Dnn.PersonaBar.Users.Components.Dto
         [DataMember(Name = "isAdmin")]
         public bool IsAdmin { get; set; }
 
-        private static IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         public static UserBasicDto FromUserInfo(UserInfo user)
         {

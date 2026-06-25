@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Installer.Packages
         /// <param name="package">The package.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <returns><see langword="true"/> if the package can be deleted, otherwise <see langword="false"/>.</returns>
-        public static bool CanDeletePackage(IHostSettings hostSettings, IApplicationStatusInfo appStatus, PackageInfo package, IPortalSettingsV2 portalSettings)
+        public static bool CanDeletePackage(IHostSettings hostSettings, IApplicationStatusInfo appStatus, PackageInfo package, IPortalSettings portalSettings)
         {
             bool bCanDelete = true;
 

@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
         public string ModuleTitle { get; set; } // title for the new module. defaults to friendly name
 
         /// <inheritdoc />
-        public override void Initialize(string[] args, IPortalSettingsV2 portalSettings, IUserInfo userInfo, int activeTabId)
+        public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
             this.ParseParameters(this);

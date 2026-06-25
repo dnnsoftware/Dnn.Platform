@@ -94,7 +94,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// Returns the Filled Settings.
         /// </returns>
         internal static EditorProviderSettings LoadEditorSettingsByKey(
-            IPortalSettingsV2 portalSettings,
+            IPortalSettings portalSettings,
             EditorProviderSettings currentSettings,
             List<EditorHostSetting> editorHostSettings,
             string key,
@@ -1001,7 +1001,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <returns>
         /// Returns the filled Module Settings.
         /// </returns>
-        internal static EditorProviderSettings LoadModuleSettings(IPortalSettingsV2 portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
+        internal static EditorProviderSettings LoadModuleSettings(IPortalSettings portalSettings, EditorProviderSettings currentSettings, string key, int moduleId, IList<RoleInfo> portalRoles)
         {
             Hashtable hshModSet = null;
             var module = ModuleController.Instance.GetModule(moduleId, Null.NullInteger, false);
@@ -1516,7 +1516,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="alternateSubFolder">The alternate Sub Folder.</param>
         /// <param name="portalRoles">The portal roles.</param>
         /// <returns>Returns the Default Provider Settings.</returns>
-        internal static EditorProviderSettings GetDefaultSettings(IPortalSettingsV2 portalSettings, IHostSettings hostSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
+        internal static EditorProviderSettings GetDefaultSettings(IPortalSettings portalSettings, IHostSettings hostSettings, string homeDirPath, string alternateSubFolder, IList<RoleInfo> portalRoles)
         {
             var roles = new ArrayList();
 
@@ -1850,7 +1850,7 @@ namespace DNNConnect.CKEditorProvider.Utilities
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="httpRequest">The HTTP request.</param>
         /// <returns>Returns the MAX. upload file size for the current user.</returns>
-        internal static int GetCurrentUserUploadSize(EditorProviderSettings settings, IPortalSettingsV2 portalSettings, HttpRequest httpRequest)
+        internal static int GetCurrentUserUploadSize(EditorProviderSettings settings, IPortalSettings portalSettings, HttpRequest httpRequest)
         {
             var uploadFileLimitForPortal = Convert.ToInt32(Utility.GetMaxUploadSize());
 

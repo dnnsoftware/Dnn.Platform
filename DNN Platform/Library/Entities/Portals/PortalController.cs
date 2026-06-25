@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Portals
 
     using Microsoft.Extensions.DependencyInjection;
 
-    using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettingsV2;
+    using IAbPortalSettings = DotNetNuke.Abstractions.Portals.IPortalSettings;
     using ICryptographyProvider = DotNetNuke.Abstractions.Security.ICryptographyProvider;
 
     /// <summary>PortalController provides business layer of portal.</summary>

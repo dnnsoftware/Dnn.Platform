@@ -29,7 +29,7 @@ namespace Dnn.PersonaBar.Security.Components
 
     public class SecurityController
     {
-        private static IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public IEnumerable<string> GetAuthenticationProviders()

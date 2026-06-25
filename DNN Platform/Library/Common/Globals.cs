@@ -2344,7 +2344,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(9, 4, 3, "Use the IPortalSettings overload")]
         public static partial string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
-            return FriendlyUrl(tab, path, (IPortalSettingsV2)settings);
+            return FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
 
         /// <summary>Generates the correctly formatted friendly URL.</summary>
@@ -2355,7 +2355,7 @@ namespace DotNetNuke.Common
         /// <param name="path">The path to format.</param>
         /// <param name="settings">The portal settings.</param>
         /// <returns>The formatted (friendly) URL.</returns>
-        public static string FriendlyUrl(TabInfo tab, string path, IPortalSettingsV2 settings)
+        public static string FriendlyUrl(TabInfo tab, string path, IPortalSettings settings)
         {
             return FriendlyUrl(tab, path, glbDefaultPage, settings);
         }
@@ -2373,7 +2373,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(9, 4, 3, "Use the IPortalSettings overload")]
         public static partial string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return FriendlyUrl(tab, path, pageName, (IPortalSettingsV2)settings);
+            return FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
         /// <summary>Generates the correctly formatted friendly URL.</summary>
@@ -2386,7 +2386,7 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page to include in the URL.</param>
         /// <param name="settings">The portal settings.</param>
         /// <returns>The formatted (friendly) url.</returns>
-        public static string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettingsV2 settings)
+        public static string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings)
         {
             return FriendlyUrlProvider.Instance().FriendlyUrl(tab, path, pageName, settings);
         }
@@ -2553,7 +2553,7 @@ namespace DotNetNuke.Common
         [DnnDeprecated(9, 8, 1, "Use the overload that takes IPortalSettings instead")]
         public static partial string LoginURL(string returnUrl, bool overrideSetting, PortalSettings portalSettings)
         {
-            return LoginURL(returnUrl, overrideSetting, (IPortalSettingsV2)portalSettings);
+            return LoginURL(returnUrl, overrideSetting, (IPortalSettings)portalSettings);
         }
 
         /// <summary>Gets the login URL.</summary>
@@ -2561,7 +2561,7 @@ namespace DotNetNuke.Common
         /// <param name="overrideSetting">if set to <see langword="true"/>, show the login control on the current page, even if there is a login page defined for the site.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <returns>Formatted URL.</returns>
-        public static string LoginURL(string returnUrl, bool overrideSetting, IPortalSettingsV2 portalSettings)
+        public static string LoginURL(string returnUrl, bool overrideSetting, IPortalSettings portalSettings)
         {
             string loginUrl;
             var currentTabId = TabController.CurrentPage.TabID;
@@ -3573,7 +3573,7 @@ namespace DotNetNuke.Common
         /// <param name="isSuperTab">if set to <see langword="true"/> [is super tab].</param>
         /// <param name="settings">The settings.</param>
         /// <returns>return the tab's culture code, if ths tab doesn't exist, it will return current culture name.</returns>
-        internal static string GetCultureCode(int tabId, bool isSuperTab, IPortalSettingsV2 settings)
+        internal static string GetCultureCode(int tabId, bool isSuperTab, IPortalSettings settings)
         {
             string cultureCode = Null.NullString;
             if (settings != null)

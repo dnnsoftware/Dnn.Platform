@@ -130,7 +130,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.RegisterStartupScript();
         }
 
-        private static void RegisterClientScript(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettingsV2 portalSettings, string skin)
+        private static void RegisterClientScript(IClientResourceController clientResourceController, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IPortalSettings portalSettings, string skin)
         {
             DnnDropDownList.RegisterClientScript(clientResourceController, skin);
 

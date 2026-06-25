@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
         public bool? Deleted { get; set; }
 
         /// <inheritdoc />
-        public override void Initialize(string[] args, IPortalSettingsV2 portalSettings, IUserInfo userInfo, int activeTabId)
+        public override void Initialize(string[] args, IPortalSettings portalSettings, IUserInfo userInfo, int activeTabId)
         {
             base.Initialize(args, portalSettings, userInfo, activeTabId);
             this.ParseParameters(this);

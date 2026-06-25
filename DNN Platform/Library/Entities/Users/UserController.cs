@@ -2089,7 +2089,7 @@ namespace DotNetNuke.Entities.Users
             if (loggedAction)
             {
                 // if the HttpContext is null, then get portal settings by portal id.
-                IPortalSettingsV2 portalSettings = null;
+                IPortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
                     portalSettings = PortalController.Instance.GetCurrentSettings();

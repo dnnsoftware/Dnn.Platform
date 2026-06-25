@@ -111,7 +111,7 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        public string NavigateURL(int tabID, IPortalSettingsV2 settings, string controlKey, params string[] additionalParameters)
+        public string NavigateURL(int tabID, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             var isSuperTab = Globals.IsHostTab(tabID);
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, additionalParameters);
@@ -124,7 +124,7 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        public string NavigateURL(int tabID, bool isSuperTab, IPortalSettingsV2 settings, string controlKey, params string[] additionalParameters)
+        public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, params string[] additionalParameters)
         {
             var cultureCode = Globals.GetCultureCode(tabID, isSuperTab, settings);
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, cultureCode, additionalParameters);
@@ -138,7 +138,7 @@ namespace DotNetNuke.Common
         /// <param name="language">The language code.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        public string NavigateURL(int tabID, bool isSuperTab, IPortalSettingsV2 settings, string controlKey, string language, params string[] additionalParameters)
+        public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, params string[] additionalParameters)
         {
             return this.NavigateURL(tabID, isSuperTab, settings, controlKey, language, Globals.glbDefaultPage, additionalParameters);
         }
@@ -152,7 +152,7 @@ namespace DotNetNuke.Common
         /// <param name="pageName">The page name to pass to <see cref="Globals.FriendlyUrl(DotNetNuke.Entities.Tabs.TabInfo,string,string)"/>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted url.</returns>
-        public string NavigateURL(int tabID, bool isSuperTab, IPortalSettingsV2 settings, string controlKey, string language, string pageName, params string[] additionalParameters)
+        public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             var url = tabID == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabID);
             if (!string.IsNullOrEmpty(controlKey))

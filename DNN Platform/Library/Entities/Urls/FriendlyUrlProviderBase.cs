@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName);
 
-        internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettingsV2 portalSettings);
+        internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings portalSettings);
 
         internal abstract string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias);
     }

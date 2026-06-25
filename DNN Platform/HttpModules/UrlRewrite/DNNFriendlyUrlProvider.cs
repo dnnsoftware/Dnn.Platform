@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
         public override string FriendlyUrl(TabInfo tab, string path, string pageName) => this.providerInstance.FriendlyUrl(tab, path, pageName);
 
         /// <inheritdoc />
-        public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettingsV2 settings) => this.providerInstance.FriendlyUrl(tab, path, pageName, settings);
+        public override string FriendlyUrl(TabInfo tab, string path, string pageName, IPortalSettings settings) => this.providerInstance.FriendlyUrl(tab, path, pageName, settings);
 
         /// <inheritdoc />
         public override string FriendlyUrl(TabInfo tab, string path, string pageName, string portalAlias) => this.providerInstance.FriendlyUrl(tab, path, pageName, portalAlias);

@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Sitemap
             var currentLanguage = ps.CultureCode;
             if (string.IsNullOrEmpty(currentLanguage))
             {
-                currentLanguage = Localization.GetPageLocale((IPortalSettingsV2)ps).Name;
+                currentLanguage = Localization.GetPageLocale((IPortalSettings)ps).Name;
             }
 
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;

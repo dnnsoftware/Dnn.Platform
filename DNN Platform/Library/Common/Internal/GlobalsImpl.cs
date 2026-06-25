@@ -282,13 +282,13 @@ namespace DotNetNuke.Common.Internal
         /// <inheritdoc />
         public string FriendlyUrl(TabInfo tab, string path, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, (IPortalSettingsV2)settings);
+            return Globals.FriendlyUrl(tab, path, (IPortalSettings)settings);
         }
 
         /// <inheritdoc />
         public string FriendlyUrl(TabInfo tab, string path, string pageName, PortalSettings settings)
         {
-            return Globals.FriendlyUrl(tab, path, pageName, (IPortalSettingsV2)settings);
+            return Globals.FriendlyUrl(tab, path, pageName, (IPortalSettings)settings);
         }
 
         /// <inheritdoc />

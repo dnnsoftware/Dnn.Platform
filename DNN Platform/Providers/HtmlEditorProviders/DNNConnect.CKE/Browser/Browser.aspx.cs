@@ -94,7 +94,7 @@ public partial class Browser : PageBase
     private EditorProviderSettings allPortalsSettings = new EditorProviderSettings();
 
     /// <summary>The portal settings.</summary>
-    private IPortalSettingsV2 portalSettings;
+    private IPortalSettings portalSettings;
 
     /// <summary>The extension white list.</summary>
     private IFileExtensionAllowList extensionWhiteList;
@@ -1520,7 +1520,7 @@ public partial class Browser : PageBase
 
     /// <summary>The get portal settings.</summary>
     /// <returns>Current Portal Settings.</returns>
-    private IPortalSettingsV2 GetPortalSettings()
+    private IPortalSettings GetPortalSettings()
     {
         int iTabId = 0, iPortalId = 0;
 
@@ -1545,7 +1545,7 @@ public partial class Browser : PageBase
         }
         catch (Exception)
         {
-            return (IPortalSettingsV2)HttpContext.Current.Items["PortalSettings"];
+            return (IPortalSettings)HttpContext.Current.Items["PortalSettings"];
         }
     }
 

@@ -383,7 +383,7 @@ namespace DotNetNuke.Tests.Core.Common
             var expected = string.Format(DefaultURLPattern, tabId) +
                 string.Format(ControlKeyPattern, controlKey);
 
-            var actual = this.navigationManager.NavigateURL(tabId, default(IPortalSettingsV2), controlKey, null);
+            var actual = this.navigationManager.NavigateURL(tabId, default(IPortalSettings), controlKey, null);
 
             Assert.That(actual, Is.Not.Null);
             Assert.That(actual, Is.EqualTo(expected));
@@ -402,7 +402,7 @@ namespace DotNetNuke.Tests.Core.Common
         [TestCase(10, "My-Control-Key-10")]
         public void NavigateUrl_TabId_Settings_ControlKey(int tabId, string controlKey)
         {
-            var mockSettings = new Mock<IPortalSettingsV2>();
+            var mockSettings = new Mock<IPortalSettings>();
             mockSettings
                 .Setup(x => x.ContentLocalizationEnabled)
                 .Returns(true);

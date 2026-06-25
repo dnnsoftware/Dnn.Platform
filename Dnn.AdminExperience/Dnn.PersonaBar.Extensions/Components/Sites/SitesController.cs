@@ -50,7 +50,7 @@ namespace Dnn.PersonaBar.Sites.Components
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.Sites/App_LocalResources/Sites.resx");
 
-        private static IPortalSettingsV2 PortalSettings => PortalController.Instance.GetCurrentSettings();
+        private static IPortalSettings PortalSettings => PortalController.Instance.GetCurrentSettings();
 
         private CultureDropDownTypes DisplayType { get; set; }
 

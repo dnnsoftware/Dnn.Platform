@@ -960,7 +960,7 @@ namespace DotNetNuke.Entities.Urls
                 PortalInfo portal = CacheController.GetPortal(result.PortalId, false);
 
                 // DNN-3789 - culture is defined by GetPageLocale
-                IPortalSettingsV2 portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
+                IPortalSettings portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
                 string currentLocale = Localization.GetPageLocale(portalSettings).Name;
                 if (portal != null && !string.IsNullOrEmpty(currentLocale))
                 {
@@ -1816,7 +1816,7 @@ namespace DotNetNuke.Entities.Urls
                     var currentLocale = result.CultureCode;
                     if (string.IsNullOrEmpty(currentLocale))
                     {
-                        IPortalSettingsV2 portalSettings = new PortalSettings(result.PortalId);
+                        IPortalSettings portalSettings = new PortalSettings(result.PortalId);
                         currentLocale = Localization.GetPageLocale(portalSettings).Name;
                     }
 

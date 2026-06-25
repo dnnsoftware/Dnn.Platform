@@ -25,9 +25,9 @@ namespace DotNetNuke.Services.Log.EventLog
         [Obsolete("Deprecated in DotNetNuke 9.7.0. It has been replaced by the overload taking IPortalSettings. Scheduled for removal in v11.0.0.")]
         void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType);
 
-        void AddLog(string propertyName, string propertyValue, IPortalSettingsV2 portalSettings, int userID, EventLogController.EventLogType logType);
+        void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, EventLogController.EventLogType logType);
 
-        void AddLog(string propertyName, string propertyValue, IPortalSettingsV2 portalSettings, int userID, string logType);
+        void AddLog(string propertyName, string propertyValue, IPortalSettings portalSettings, int userID, string logType);
 
         void AddLog(PortalSettings portalSettings, int userID, EventLogController.EventLogType logType);
 
@@ -40,11 +40,11 @@ namespace DotNetNuke.Services.Log.EventLog
         [Obsolete("Deprecated in DotNetNuke 9.7.0. It has been replaced by the overload taking IPortalSettings. Scheduled for removal in v11.0.0.")]
         void AddLog(object businessObject, PortalSettings portalSettings, int userID, string userName, string logType);
 
-        void AddLog(LogProperties properties, IPortalSettingsV2 portalSettings, int userID, string logTypeKey, bool bypassBuffering);
+        void AddLog(LogProperties properties, IPortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering);
 
-        void AddLog(object businessObject, IPortalSettingsV2 portalSettings, int userID, string userName, EventLogController.EventLogType logType);
+        void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, EventLogController.EventLogType logType);
 
-        void AddLog(object businessObject, IPortalSettingsV2 portalSettings, int userID, string userName, string logType);
+        void AddLog(object businessObject, IPortalSettings portalSettings, int userID, string userName, string logType);
 #pragma warning restore SA1600 // Elements should be documented
     }
 }

@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Mail
         private UserInfo replyToUser;
         private bool smtpEnableSSL;
         private TokenReplace tokenReplace;
-        private IPortalSettingsV2 portalSettings;
+        private IPortalSettings portalSettings;
         private UserInfo sendingUser;
         private string body = string.Empty;
         private string confirmBodyHTML;
