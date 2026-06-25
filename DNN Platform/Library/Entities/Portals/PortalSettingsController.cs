@@ -282,7 +282,6 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
-            portalSettings.PagePipeline = settings.GetPortalPipeline(PagePipeline.SettingName);
             setting = settings.GetValueOrDefault("CspHeaderMode", "OFF");
             switch (setting.ToUpperInvariant())
             {

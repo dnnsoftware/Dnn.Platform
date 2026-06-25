@@ -19,7 +19,7 @@ namespace DotNetNuke.Abstractions.Framework
         public const string QueryStringMvc = "mvc";
 
         /// <summary>Setting name for the page pipeline configuration.</summary>
-        public const string SettingName = "PagePipeline";
+        public const string SettingName = "DefaultPagePipeline";
 
         /// <summary>
         /// Defines the pipeline types for rendering pages in a portal.
