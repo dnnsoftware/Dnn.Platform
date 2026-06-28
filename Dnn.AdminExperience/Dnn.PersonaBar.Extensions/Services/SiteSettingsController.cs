@@ -3194,7 +3194,6 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleHeaders", request.AllowJsInModuleHeaders.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
-                PortalController.Instance.UpdatePortalSetting(pid, PagePipeline.SettingName, request.PagePipeline, false, null, false);
                 var pagePipeline = (PagePipeline.PortalRenderingPipeline)Enum.Parse(typeof(PagePipeline.PortalRenderingPipeline), request.PagePipeline, true);
                 this.mvcPipelineSettings.DefaultPagePipeline = pagePipeline;
                 this.mvcPipelineSettingsRepository.SaveSettings(this.mvcPipelineSettings);
