@@ -18,6 +18,7 @@ namespace DotNetNuke.Data
     using System.Web.Hosting;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.ComponentModel;
@@ -887,6 +888,14 @@ namespace DotNetNuke.Data
         public virtual int SaveTabVersionDetail(int tabVersionDetailId, int tabVersionId, int moduleId, int moduleVersion, string paneName, int moduleOrder, int action, int createdByUserID, int modifiedByUserID)
         {
             return this.ExecuteScalar<int>("SaveTabVersionDetail", tabVersionDetailId, tabVersionId, moduleId, moduleVersion, paneName, moduleOrder, action, createdByUserID, modifiedByUserID);
+        }
+
+        [DnnDeprecated(11, 0, 0, "Use UpdateTab with pagePipeline parameter instead.")]
+#pragma warning disable SA1601 // Partial elements should be documented
+        public virtual partial void UpdateTab(int tabId, int contentItemId, int portalId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string tabName, bool isVisible, bool disableLink, int parentId, string iconFile, string iconFileLarge, string title, string description, string keyWords, bool isDeleted, string url, string skinSrc, string containerSrc, DateTime startDate, DateTime endDate, int refreshInterval, string pageHeadText, bool isSecure, bool permanentRedirect, float siteMapPriority, int lastModifiedByuserID, string cultureCode, bool isSystem)
+#pragma warning restore SA1601 // Partial elements should be documented
+        {
+            this.UpdateTab(tabId, contentItemId, portalId, versionGuid, defaultLanguageGuid, localizedVersionGuid, tabName, isVisible, disableLink, parentId, iconFile, iconFileLarge, title, description, keyWords, isDeleted, url, skinSrc, containerSrc, startDate, endDate, refreshInterval, pageHeadText, isSecure, permanentRedirect, siteMapPriority, lastModifiedByuserID, cultureCode, isSystem, (int)PagePipeline.PageRenderingPipeline.Inherited);
         }
 
         public virtual void UpdateTab(int tabId, int contentItemId, int portalId, Guid versionGuid, Guid defaultLanguageGuid, Guid localizedVersionGuid, string tabName, bool isVisible, bool disableLink, int parentId, string iconFile, string iconFileLarge, string title, string description, string keyWords, bool isDeleted, string url, string skinSrc, string containerSrc, DateTime startDate, DateTime endDate, int refreshInterval, string pageHeadText, bool isSecure, bool permanentRedirect, float siteMapPriority, int lastModifiedByuserID, string cultureCode, bool isSystem, int pagePipeline)
