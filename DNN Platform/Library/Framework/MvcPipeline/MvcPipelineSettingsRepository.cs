@@ -29,5 +29,10 @@ namespace DotNetNuke.Framework.MvcPipeline
         {
             return this.GetSettings(this.portalSettings.PortalId);
         }
+
+        public void SaveSettings(MvcPipelineSettings settings)
+        {
+            this.SaveSettings(this.portalSettings.PortalId, settings);
+        }
     }
 }

@@ -109,6 +109,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
         private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
         private readonly ITabController tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+        private readonly MvcPipelineSettingsRepository mvcPipelineSettingsRepository = Globals.GetCurrentServiceProvider().GetRequiredService<MvcPipelineSettingsRepository>();
         private readonly MvcPipelineSettings mvcPipelineSettings = Globals.GetCurrentServiceProvider().GetRequiredService<MvcPipelineSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
@@ -3194,6 +3195,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, PagePipeline.SettingName, request.PagePipeline, false, null, false);
+                var pagePipeline = (PagePipeline.PortalRenderingPipeline)Enum.Parse(typeof(PagePipeline.PortalRenderingPipeline), request.PagePipeline, true);
+                this.mvcPipelineSettings.DefaultPagePipeline = pagePipeline;
+                this.mvcPipelineSettingsRepository.SaveSettings(this.mvcPipelineSettings);
                 if (request.AllowedExtensionsWhitelist == this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString())
                 {
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);
