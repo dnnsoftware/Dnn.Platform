@@ -10,15 +10,15 @@
   },
   "devDependencies": {
     "@dnnsoftware/dnn-react-common": "10.3.3",
-    "@rsbuild/core": "^1.7.3",
-    "@rsbuild/plugin-less": "^1.6.2",
+    "@rsbuild/core": "^1.7.5",
+    "@rsbuild/plugin-less": "^1.6.4",
     "@rsbuild/plugin-react": "^1.4.6",
     "@rsbuild/plugin-svgr": "^1.3.1",
     "create-react-class": "^15.7.0",
-    "eslint": "10.2.1",
+    "eslint": "10.5.0",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^17.4.0",
-    "less": "4.6.4",
+    "globals": "^17.6.0",
+    "less": "4.6.6",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -30,7 +30,7 @@
     "redux-thunk": "^2.4.2"
   },
   "dependencies": {
-    "dompurify": "^3.3.3",
-    "html-react-parser": "^5.2.17"
+    "dompurify": "^3.4.10",
+    "html-react-parser": "^6.1.3"
   }
 }

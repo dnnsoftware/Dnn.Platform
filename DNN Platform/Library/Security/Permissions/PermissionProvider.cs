@@ -425,7 +425,7 @@ namespace DotNetNuke.Security.Permissions
             bool isAuthorized = false;
             UserInfo userInfo = UserController.Instance.GetCurrentUserInfo();
             TabInfo tab = TabController.Instance.GetTab(moduleConfiguration.TabID, moduleConfiguration.PortalID, false);
-            if (userInfo != null && userInfo.IsSuperUser)
+            if (userInfo is { IsSuperUser: true, })
             {
                 isAuthorized = true;
             }
@@ -447,7 +447,7 @@ namespace DotNetNuke.Security.Permissions
                         isAuthorized = TabPermissionController.CanAddContentToPage(tab);
                         break;
                     case SecurityAccessLevel.Edit:
-                        if (!((moduleConfiguration.IsShared && moduleConfiguration.IsShareableViewOnly) && TabPermissionController.CanAddContentToPage(tab)))
+                        if (!(moduleConfiguration.IsShared && moduleConfiguration.IsShareableViewOnly && TabPermissionController.CanAddContentToPage(tab)))
                         {
                             if (string.IsNullOrEmpty(permissionKey))
                             {
@@ -457,14 +457,7 @@ namespace DotNetNuke.Security.Permissions
                             if (TabPermissionController.CanAddContentToPage(tab))
                             {
                                 // Need to check for Deny Edit at the Module Level
-                                if (permissionKey == "CONTENT")
-                                {
-                                    isAuthorized = !this.IsDeniedModulePermission(moduleConfiguration, permissionKey);
-                                }
-                                else
-                                {
-                                    isAuthorized = true;
-                                }
+                                isAuthorized = !this.IsDeniedModulePermission(moduleConfiguration, permissionKey);
                             }
                             else
                             {

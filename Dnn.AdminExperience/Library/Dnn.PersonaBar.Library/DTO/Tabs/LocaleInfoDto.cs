@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Library.Dto.Tabs
                 : $"/images/Flags/{cultureCode}.gif";
         }
 
-        public string CultureCode { get; }
+        public string CultureCode { get; set; }
 
         public string Icon { get; }
     }

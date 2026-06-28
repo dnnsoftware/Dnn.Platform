@@ -32,6 +32,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             this.clientResourceController = clientResourceController ?? DependencyInjection.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             this.ForceProvider = ClientResourceProviders.DefaultJsProvider;
             this.DependencyType = ClientDependencyType.Javascript;
+            this.Priority = (int)FileOrder.Js.DefaultPriority;
         }
 
         /// <inheritdoc cref="IScriptResource.Async" />
