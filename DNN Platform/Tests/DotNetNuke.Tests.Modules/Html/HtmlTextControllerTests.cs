@@ -3,12 +3,34 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Modules.Html
 {
+    using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.Entities.Content.Workflow;
+    using DotNetNuke.Entities.Content.Workflow.Entities;
+    using DotNetNuke.Entities.Modules;
+    using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Modules.Html;
+    using DotNetNuke.Modules.Html.Components;
+
+    using Moq;
     using NUnit.Framework;
 
     [TestFixture]
     public class HtmlTextControllerTests
     {
+        [TearDown]
+        public void TearDown()
+        {
+            TabController.ClearInstance();
+            TabVersionSettings.ClearInstance();
+            TabWorkflowSettings.ClearInstance();
+            SystemWorkflowManager.ClearInstance();
+            WorkflowManager.ClearInstance();
+        }
+
         [Test]
         public void ManageRelativePaths_DoesNotChangePlainHtml()
         {
@@ -129,6 +151,53 @@ namespace DotNetNuke.Tests.Modules.Html
 <img alt=""another absolute path"" src=""https://dnncommunity.org/DesktopModules/ActiveForums/images/feedicon.gif"" />
 ";
             Assert.That(actual, Is.EqualTo(Expected));
+        }
+
+        [Test]
+        public void GetWorkflow_UsesDirectPublish_WhenTabHasStateButWorkflowIsDisabled()
+        {
+            const int PortalId = 1;
+            const int TabId = 2;
+            const int DirectPublishWorkflowId = 3;
+            var tab = new TabInfo { PortalID = PortalId, TabID = TabId, StateID = 6 };
+            var workflow = new Workflow { WorkflowID = DirectPublishWorkflowId, WorkflowName = "Direct Publish" };
+
+            var tabController = new Mock<ITabController>();
+            tabController.Setup(c => c.GetTab(TabId, PortalId)).Returns(tab);
+            TabController.SetTestableInstance(tabController.Object);
+
+            var tabVersionSettings = new Mock<ITabVersionSettings>();
+            tabVersionSettings.Setup(s => s.IsVersioningEnabled(PortalId, TabId)).Returns(false);
+            TabVersionSettings.SetTestableInstance(tabVersionSettings.Object);
+
+            var systemWorkflowManager = new Mock<ISystemWorkflowManager>();
+            systemWorkflowManager.Setup(m => m.GetDirectPublishWorkflow(PortalId)).Returns(workflow);
+            SystemWorkflowManager.SetTestableInstance(systemWorkflowManager.Object);
+
+            var workflowManager = new Mock<IWorkflowManager>();
+            workflowManager.Setup(m => m.GetWorkflow(DirectPublishWorkflowId)).Returns(workflow);
+            WorkflowManager.SetTestableInstance(workflowManager.Object);
+
+            var result = CreateHtmlTextController().GetWorkflow(1, TabId, PortalId);
+
+            Assert.That(result.Value, Is.EqualTo(DirectPublishWorkflowId));
+        }
+
+        private static HtmlTextController CreateHtmlTextController()
+        {
+            var hostSettings = Mock.Of<IHostSettings>();
+            var portalController = Mock.Of<IPortalController>();
+            return new HtmlTextController(
+                Mock.Of<INavigationManager>(),
+                Mock.Of<IPortalAliasService>(),
+                portalController,
+                Mock.Of<IApplicationStatusInfo>(),
+                hostSettings,
+                new HtmlModuleSettingsRepository(
+                    Mock.Of<IModuleController>(),
+                    hostSettings,
+                    Mock.Of<IHostSettingsService>(),
+                    portalController));
         }
     }
 }

@@ -26,6 +26,7 @@ namespace DotNetNuke.Modules.Html
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Modules.Html.Components;
@@ -306,9 +307,14 @@ namespace DotNetNuke.Modules.Html
         {
             var tab = TabController.Instance.GetTab(tabId, portalId);
 
-            var workFlowId = tab.StateID == Null.NullInteger
-                ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId)
-                : WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).WorkflowID;
+            var isWorkflowEnabled = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId)
+                                    && TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId);
+            var workFlowId = isWorkflowEnabled && tab.StateID != Null.NullInteger
+                ? WorkflowStateManager.Instance.GetWorkflowState(tab.StateID).WorkflowID
+                : isWorkflowEnabled
+                    ? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId)
+                    : SystemWorkflowManager.Instance.GetDirectPublishWorkflow(portalId)?.WorkflowID
+                        ?? TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(portalId);
 
             var workFlowType = WorkflowManager.Instance.GetWorkflow(workFlowId).WorkflowName;
 
