@@ -3,9 +3,12 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Tests.Modules.Html
 {
+    using System.Collections.Generic;
+
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Portals;
+    using DotNetNuke.ComponentModel;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Content.Workflow.Entities;
     using DotNetNuke.Entities.Modules;
@@ -14,6 +17,8 @@ namespace DotNetNuke.Tests.Modules.Html
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Modules.Html;
     using DotNetNuke.Modules.Html.Components;
+    using DotNetNuke.Services.Cache;
+    using DotNetNuke.Tests.Utilities.Fakes;
 
     using Moq;
     using NUnit.Framework;
@@ -21,6 +26,12 @@ namespace DotNetNuke.Tests.Modules.Html
     [TestFixture]
     public class HtmlTextControllerTests
     {
+        [SetUp]
+        public void SetUp()
+        {
+            ComponentFactory.RegisterComponentInstance<CachingProvider>(new FakeCachingProvider(new Dictionary<string, object>()));
+        }
+
         [TearDown]
         public void TearDown()
         {
