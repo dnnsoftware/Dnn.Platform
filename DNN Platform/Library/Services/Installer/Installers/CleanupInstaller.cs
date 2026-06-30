@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Backup File
-                if (File.Exists(this.PhysicalBasePath + insFile.FullName) && this.BackupFiles)
+                if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                 {
                     Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                 }
