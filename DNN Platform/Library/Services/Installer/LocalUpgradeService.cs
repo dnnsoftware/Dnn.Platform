@@ -278,7 +278,6 @@ public class LocalUpgradeService : ILocalUpgradeService
         {
             this.Package = new PackageInfo();
             this.Package.AttachInstallerInfo(installerInfo);
-            this.BackupFiles = false;
         }
 
         public async Task AddFiles(IEnumerable<ZipArchiveEntry> assemblyEntries, CancellationToken cancellationToken)
