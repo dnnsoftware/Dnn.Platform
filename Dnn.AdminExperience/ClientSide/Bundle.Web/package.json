@@ -9,7 +9,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.7.5",
+    "@rsbuild/core": "^2.0.15",
     "@rsbuild/plugin-less": "^1.6.4",
     "@rsbuild/plugin-react": "^1.4.6",
     "create-react-class": "^15.7.0",
