@@ -21,7 +21,9 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Web.Api;
@@ -85,6 +87,19 @@ public class MessagingServiceController : DnnApiController
             var userIdsList = string.IsNullOrEmpty(postData.UserIds) ? null : postData.UserIds.FromJson<IList<int>>();
             var fileIdsList = string.IsNullOrEmpty(postData.FileIds) ? null : postData.FileIds.FromJson<IList<int>>();
 
+            if (fileIdsList != null)
+            {
+                foreach (var fileId in fileIdsList)
+                {
+                    var file = FileManager.Instance.GetFile(fileId);
+                    var folder = file != null ? FolderManager.Instance.GetFolder(file.FolderId) : null;
+                    if (folder == null || !FolderPermissionController.CanViewFolder((FolderInfo)folder))
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Access to the specified file is not permitted.");
+                    }
+                }
+            }
+
             var roles = roleIdsList is { Count: > 0, }
                 ? roleIdsList.Select(id => RoleController.Instance.GetRole(portalId, r => r.RoleID == id)).Where(role => role != null).ToList()
                 : null;
@@ -140,17 +155,17 @@ public class MessagingServiceController : DnnApiController
             // Roles should be visible to Administrators or User in the Role.
             var roles = RoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
             results.AddRange(from roleInfo in roles
-                where
-                    isAdmin ||
-                    this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
-                select new
-                {
-                    id = "role-" + roleInfo.RoleID,
-                    name = roleInfo.RoleName,
-                    iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
-                        ? "~/images/no_avatar.gif"
-                        : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
-                });
+                             where
+                                 isAdmin ||
+                                 this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
+                             select new
+                             {
+                                 id = "role-" + roleInfo.RoleID,
+                                 name = roleInfo.RoleName,
+                                 iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
+                                             ? "~/images/no_avatar.gif"
+                                             : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
+                             });
 
             return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
         }
