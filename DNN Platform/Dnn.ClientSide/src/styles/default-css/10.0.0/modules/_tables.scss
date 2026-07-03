@@ -56,8 +56,8 @@
     tr:hover td {
         background: rgba(
             var(--dnn-color-info-r, 2),
-            139,
-            255,
+            var(--dnn-color-info-g, 139),
+            var(--dnn-color-info-b, 255),
             0.15);
     }
     tfoot tr:hover td {
