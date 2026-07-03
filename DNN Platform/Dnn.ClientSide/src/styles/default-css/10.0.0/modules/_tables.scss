@@ -53,7 +53,7 @@
             var(--dnn-color-foreground-b, 0),
             0.04);
     }
-    .dnnTableDisplay tr:hover td {
+    tr:hover td {
         background: rgba(
             var(--dnn-color-info-r, 2),
             139,
@@ -68,9 +68,9 @@
 .dnnTableFilter {
     margin-bottom: 18px;
     background: rgba(
-        var(--dnn-color-foreground, 0),
-        var(--dnn-color-foreground, 0),
-        var(--dnn-color-foreground, 0),
+        var(--dnn-color-foreground-r, 0),
+        var(--dnn-color-foreground-g, 0),
+        var(--dnn-color-foreground-b, 0),
         0.04);
         .dnnTableDisplay {
             margin-bottom: 0;
