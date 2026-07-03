@@ -53,7 +53,7 @@
             var(--dnn-color-foreground-b, 0),
             0.04);
     }
-    .dnnTableDisplay tr:hover td {
+    tr:hover td {
         background: rgba(
             var(--dnn-color-info-r, 2),
             139,
