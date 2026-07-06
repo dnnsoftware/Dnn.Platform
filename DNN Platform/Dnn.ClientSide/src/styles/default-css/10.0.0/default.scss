@@ -11,15 +11,20 @@ h2.dnnFormSectionHead {
     font-size: 2rem;
     line-height: 2.25rem;
     letter-spacing: 0.001875rem;
-    a {
+
+    // The span is coming from forms.scss and is here because not all heading have a link, some only span
+    > a, > span {
         display: block;
-        padding-left: 3px;
-        background: url(../../../../../images/down-icn.png) no-repeat right 50%;
-        text-decoration: none;
+        font-size: 1.125rem;
         color: var(--dnn-color-foreground, #333);
-        font-size: inherit;
+        text-decoration: none;
         letter-spacing: normal;
         font-weight: normal;
+    }
+    a {
+        
+        background: url(../../../../../images/down-icn.png) no-repeat right 50%;
+
         &:hover{
             color: #222;
             background: rgba(
