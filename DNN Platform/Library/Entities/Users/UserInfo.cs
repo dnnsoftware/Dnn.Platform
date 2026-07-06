@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Users
 {
     using System;
     using System.Collections.Concurrent;
+    using System.Collections.Generic;
     using System.ComponentModel;
     using System.Diagnostics.CodeAnalysis;
     using System.Globalization;
@@ -70,19 +71,15 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this.social.GetOrAdd(this.PortalID, i => new UserSocial(this));
+                return this.social.GetOrAdd(this.PortalID, CreateSocial, this);
+
+                static UserSocial CreateSocial(int portalId, UserInfo @this) => new UserSocial(@this);
             }
         }
 
         /// <inheritdoc />
         [Browsable(false)]
-        public CacheLevel Cacheability
-        {
-            get
-            {
-                return CacheLevel.notCacheable;
-            }
-        }
+        public CacheLevel Cacheability => CacheLevel.notCacheable;
 
         /// <summary>Gets or sets the AffiliateId for this user.</summary>
         [Browsable(false)]
@@ -106,8 +103,8 @@ namespace DotNetNuke.Entities.Users
         [MaxLength(50)]
         public string FirstName
         {
-            get { return this.Profile.FirstName; }
-            set { this.Profile.FirstName = value; }
+            get => this.Profile.FirstName;
+            set => this.Profile.FirstName = value;
         }
 
         /// <summary>Gets or sets a value indicating whether the User is deleted.</summary>
@@ -127,8 +124,8 @@ namespace DotNetNuke.Entities.Users
         [MaxLength(50)]
         public string LastName
         {
-            get { return this.Profile.LastName; }
-            set { this.Profile.LastName = value; }
+            get => this.Profile.LastName;
+            set => this.Profile.LastName = value;
         }
 
         /// <summary>Gets or sets the Membership object.</summary>
@@ -137,13 +134,15 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                if (this.membership == null)
+                if (this.membership != null)
                 {
-                    this.membership = new UserMembership(this);
-                    if ((this.Username != null) && (!string.IsNullOrEmpty(this.Username)))
-                    {
-                        UserController.GetUserMembership(this);
-                    }
+                    return this.membership;
+                }
+
+                this.membership = new UserMembership(this);
+                if ((this.Username != null) && (!string.IsNullOrEmpty(this.Username)))
+                {
+                    UserController.GetUserMembership(this);
                 }
 
                 return this.membership;
@@ -207,24 +206,23 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                return this.roles.GetOrAdd(this.PortalID, i =>
+                return this.roles.GetOrAdd(this.PortalID, CreateRoles, this.Social.Roles);
+
+                static string[] CreateRoles(int portalId, IList<UserRoleInfo> socialRoles)
                 {
-                    var socialRoles = this.Social.Roles;
                     if (socialRoles.Count == 0)
                     {
                         return [];
                     }
-                    else
-                    {
-                        return (from r in this.Social.Roles
-                                      where
-                                          r.Status == RoleStatus.Approved &&
-                                          (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
-                                          (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
-                                      select r.RoleName)
-                            .ToArray();
-                    }
-                });
+
+                    return (
+                        from r in socialRoles
+                        where r.Status == RoleStatus.Approved &&
+                              (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
+                              (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
+                        select r.RoleName)
+                        .ToArray();
+                }
             }
 
             set

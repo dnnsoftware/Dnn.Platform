@@ -173,7 +173,7 @@ div.dnnFormGroup {
 .dnnTertiaryAction,
 .dnnLogin .LoginTabGroup span {
     display: inline-block;
-    padding: 0.5625rem;
+    padding: 0.375rem;
     margin-bottom: 0.5625rem;
     cursor: pointer;
     min-width: 4.6875rem;
@@ -186,14 +186,7 @@ div.dnnFormGroup {
     text-decoration: none;
     text-align: center;
 }
-.dnnFormItem button, .dnnFormItem input[type="button"],
-.dnnFormItem input[type="reset"],
-.dnnFormItem input[type="submit"],
-.dnnPrimaryAction,
-.dnnSecondaryAction,
-.dnnTertiaryAction {
-    padding: 0.375rem;
-}
+
 
 .dnnFormMessage{
     display: block;
@@ -589,7 +582,7 @@ a.pinHelp:hover {
     background-position: -150px 0px;
 }
 .dnnCheckbox-focus {
-    outline: 2px solid var(--dnn-color-forground, black);
+    outline: 2px solid var(--dnn-color-foreground, black);
     outline-offset: 2px;
 }
 .dnnBoxLabel{ display: inline-block;}
