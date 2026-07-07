@@ -17,7 +17,7 @@ h2.dnnFormSectionHead {
         background: url(../../../../../images/down-icn.png) no-repeat right 50%;
         text-decoration: none;
         color: var(--dnn-color-foreground, #333);
-        font-size: 7.375rem;;
+        font-size: inherit;
         letter-spacing: normal;
         font-weight: normal;
         &:hover{

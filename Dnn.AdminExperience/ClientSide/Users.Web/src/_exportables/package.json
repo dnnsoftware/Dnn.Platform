@@ -12,9 +12,9 @@
   "license": "UNLICENSED",
   "devDependencies": {
     "@dnnsoftware/dnn-react-common": "10.3.3",
-    "@rsbuild/core": "^1.7.5",
-    "@rsbuild/plugin-less": "^1.6.4",
-    "@rsbuild/plugin-react": "^1.4.6",
+    "@rsbuild/core": "^2.1.2",
+    "@rsbuild/plugin-less": "^2.0.0",
+    "@rsbuild/plugin-react": "^2.1.0",
     "create-react-class": "^15.7.0",
     "dayjs": "^1.11.21",
     "eslint": "10.5.0",

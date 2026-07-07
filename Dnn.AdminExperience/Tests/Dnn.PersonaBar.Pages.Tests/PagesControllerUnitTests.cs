@@ -10,10 +10,14 @@ namespace Dnn.PersonaBar.Pages.Tests
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.Modules;
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
+    using DotNetNuke.Abstractions.Security.Permissions;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Services.Personalization;
     using DotNetNuke.Tests.Utilities.Fakes;
@@ -89,6 +93,8 @@ namespace Dnn.PersonaBar.Pages.Tests
             DefaultPortalThemeController.ClearInstance();
             CloneModuleExecutionContext.ClearInstance();
             PortalController.ClearInstance();
+            TabVersionSettings.ClearInstance();
+            TabWorkflowSettings.ClearInstance();
         }
 
         [TestCase("http://www.websitename.com/home/", "/home")]
@@ -154,9 +160,29 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.contentVerifierMock.Verify(c => c.IsContentExistsForRequestedPortal(portalId, portalSettings, false));
         }
 
+        [Test]
+        public void UpdateTabWorkflowFromPageSettings_ClearsState_WhenWorkflowPostedButPortalWorkflowDisabled()
+        {
+            var tab = new TabInfo { PortalID = 1, TabID = 2, StateID = 6 };
+            var pageSettings = new PageSettings { EnabledVersioning = true, WorkflowEnabled = true, WorkflowId = 9 };
+            var tabVersionSettings = new Mock<ITabVersionSettings>();
+            var tabWorkflowSettings = new Mock<ITabWorkflowSettings>();
+            tabVersionSettings.Setup(s => s.IsVersioningEnabled(tab.PortalID)).Returns(false);
+            tabWorkflowSettings.Setup(s => s.IsWorkflowEnabled(tab.PortalID)).Returns(false);
+            TabVersionSettings.SetTestableInstance(tabVersionSettings.Object);
+            TabWorkflowSettings.SetTestableInstance(tabWorkflowSettings.Object);
+
+            this.InitializePageController();
+            ((TestablePagesControllerImpl)this.pagesController).UpdateTabWorkflowFromPageSettingsForTest(tab, pageSettings);
+
+            Assert.That(tab.StateID, Is.EqualTo(Null.NullInteger));
+            tabVersionSettings.Verify(s => s.SetEnabledVersioningForTab(It.IsAny<int>(), It.IsAny<bool>()), Times.Never);
+            tabWorkflowSettings.Verify(s => s.SetWorkflowEnabled(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<bool>()), Times.Never);
+        }
+
         private void InitializePageController()
         {
-            this.pagesController = new PagesControllerImpl(
+            this.pagesController = new TestablePagesControllerImpl(
                 this.businessControllerProviderMock.Object,
                 this.tabControllerMock.Object,
                 this.moduleControllerMock.Object,
@@ -169,6 +195,47 @@ namespace Dnn.PersonaBar.Pages.Tests
                 this.contentVerifierMock.Object,
                 this.portalControllerMock.Object,
                 this.personalizationControllerMock.Object);
+        }
+
+        private sealed class TestablePagesControllerImpl : PagesControllerImpl
+        {
+            public TestablePagesControllerImpl(
+                IBusinessControllerProvider businessControllerProvider,
+                ITabController tabController,
+                IModuleController moduleController,
+                IPageUrlsController pageUrlsController,
+                ITemplateController templateController,
+                IDefaultPortalThemeController defaultPortalThemeController,
+                ICloneModuleExecutionContext cloneModuleExecutionContext,
+                IUrlRewriterUtilsWrapper urlRewriterUtilsWrapper,
+                IFriendlyUrlWrapper friendlyUrlWrapper,
+                IContentVerifier contentVerifier,
+                IPortalController portalController,
+                PersonalizationController personalizationController)
+                : base(
+                    businessControllerProvider,
+                    tabController,
+                    moduleController,
+                    pageUrlsController,
+                    templateController,
+                    defaultPortalThemeController,
+                    cloneModuleExecutionContext,
+                    urlRewriterUtilsWrapper,
+                    friendlyUrlWrapper,
+                    contentVerifier,
+                    portalController,
+                    personalizationController,
+                    Mock.Of<IPermissionDefinitionService>(),
+                    Mock.Of<IPortalAliasService>(),
+                    Mock.Of<IHostSettings>(),
+                    Mock.Of<IHostSettingsService>())
+            {
+            }
+
+            public void UpdateTabWorkflowFromPageSettingsForTest(TabInfo tab, PageSettings pageSettings)
+            {
+                this.UpdateTabWorkflowFromPageSettings(tab, pageSettings);
+            }
         }
     }
 }

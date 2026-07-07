@@ -1382,7 +1382,15 @@ namespace Dnn.PersonaBar.Pages.Components
                 tabWorkflowSettings.SetWorkflowEnabled(tab.PortalID, tab.TabID, pageSettings.WorkflowEnabled.Value);
             }
 
-            ChangeContentWorkflow(tab, pageSettings);
+            if (tabVersionSettings.IsVersioningEnabled(tab.PortalID, tab.TabID)
+                && tabWorkflowSettings.IsWorkflowEnabled(tab.PortalID, tab.TabID))
+            {
+                ChangeContentWorkflow(tab, pageSettings);
+            }
+            else
+            {
+                tab.StateID = Null.NullInteger;
+            }
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

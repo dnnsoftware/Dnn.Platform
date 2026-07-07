@@ -19,7 +19,7 @@ tr.dnnGridHeader th{
         padding: 0.375rem;
         border-right: 1px solid var(--dnn-color-foreground-light, #c9c9c9);
         input{
-            margin-bottom: none;
+            margin-bottom: 0;
         }
     }
     &:hover {
