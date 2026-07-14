@@ -250,10 +250,10 @@ public class LocalUpgradeService : ILocalUpgradeService
 
     private void SetAppOffline()
     {
-        var appOfflineFile = Path.Combine(Globals.HostMapPath, "AppOffline", "App_Offline.htm");
+        var appOfflineFile = Path.Combine(Globals.HostMapPath, "AppOffline", "App_Offline.htm.resources");
         if (!File.Exists(appOfflineFile))
         {
-            appOfflineFile = Path.Combine(this.appStatus.ApplicationMapPath, "Resources", "AppOffline", "App_Offline.htm");
+            appOfflineFile = Path.Combine(this.appStatus.ApplicationMapPath, "Resources", "AppOffline", "App_Offline.htm.resources");
         }
 
         var targetFile = Path.Combine(this.appStatus.ApplicationMapPath, "App_Offline.htm");

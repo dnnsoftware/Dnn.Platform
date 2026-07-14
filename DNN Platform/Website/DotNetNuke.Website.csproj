@@ -767,7 +767,7 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.02.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.04.SqlDataProvider" />
-    <Content Include="Resources\AppOffline\App_Offline.htm" />
+    <EmbeddedResource Include="Resources\AppOffline\App_Offline.htm.resources" />
     <Content Include="Resources\Shared\components\SimpleMDE\codemirror.css" />
     <Content Include="Resources\Shared\components\SimpleMDE\marked.js" />
     <Content Include="Resources\Shared\components\SimpleMDE\simplemde.css" />
