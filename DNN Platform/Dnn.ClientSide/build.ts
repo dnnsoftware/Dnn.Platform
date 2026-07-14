@@ -57,7 +57,6 @@ async function buildScss(input: string, output: string): Promise<void> {
         {
           sourceMap: true,
           sourceMapIncludeSources: true,
-          importers: [new sass.NodePackageImporter()],
         }
     );
 
