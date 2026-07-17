@@ -8,7 +8,7 @@
 .divCurrentVersion{min-height:61px;}
 .ehActions {height:60px;}
 .ehccContent fieldset:last-child {margin-bottom:0;}
-.ehCurrentContent {overflow: scroll;}
+.ehCurrentContent {overflow: auto;}
 .dnnTextEditor {margin-bottom:0;}
 .dnnTextPanelView-basic {padding-right: 0 !important;border: 0 !important;}
 .ehActions .dnnFormItem select {width:auto;margin:0;}
@@ -25,4 +25,16 @@
     border-radius: 3px;
     font-weight: normal;
     text-align: center;
+}
+
+.dnnFormItem button, 
+.dnnFormItem input[type=button], 
+.dnnFormItem input[type=reset], 
+.dnnFormItem input[type=submit], 
+.dnnLogin .LoginTabGroup span, 
+.dnnPrimaryAction, 
+.dnnSecondaryAction, 
+.dnnTertiaryAction {
+    font-size: var(--dnn-base-font-size, 16px);
+    line-height: 24px;
 }

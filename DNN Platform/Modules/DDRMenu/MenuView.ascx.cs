@@ -7,13 +7,14 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.UI;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
     using DotNetNuke.Web.DDRMenu.Localisation;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A module view to display a menu.</summary>
@@ -22,12 +23,14 @@ namespace DotNetNuke.Web.DDRMenu
         private readonly ILocaliser localiser;
         private readonly IHostSettings hostSettings;
         private readonly ITabController tabController;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private MenuBase menu;
 
         /// <summary>Initializes a new instance of the <see cref="MenuView"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public MenuView()
-            : this(null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -35,7 +38,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public MenuView(ILocaliser localiser)
-            : this(localiser, null, null)
+            : this(localiser, null, null, null, null)
         {
         }
 
@@ -43,11 +46,15 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="tabController">The tab controller.</param>
-        public MenuView(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
+        public MenuView(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         /// <inheritdoc />
@@ -96,7 +103,7 @@ namespace DotNetNuke.Web.DDRMenu
                                         DNNAbstract.GetNavNodeOptions(true))));
                     }
 
-                    this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.tabController, menuStyle);
+                    this.menu = MenuBase.Instantiate(this.localiser, this.hostSettings, this.tabController, this.clientResourceController, this.pageService, menuStyle);
                     this.menu.RootNode = rootNode;
                     this.menu.ApplySettings(menuSettings);
 

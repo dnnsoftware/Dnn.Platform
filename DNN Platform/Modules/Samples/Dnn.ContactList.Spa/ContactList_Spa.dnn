@@ -18,7 +18,7 @@
       <components>
         <component type="Script">
           <scripts>
-            <basePath>DesktopModules\MVC\Dnn\ContactList\</basePath>
+            <basePath>DesktopModules\Dnn\ContactList\</basePath>
             <script type="Install">
               <path>Providers\DataProviders\SqlDataProvider</path>
               <name>01.00.00.SqlDataProvider</name>

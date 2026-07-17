@@ -10,6 +10,7 @@ namespace DotNetNuke.UI.Modules.Html5
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -17,9 +18,8 @@ namespace DotNetNuke.UI.Modules.Html5
     using DotNetNuke.Entities.Modules.Actions;
     using DotNetNuke.Framework;
     using DotNetNuke.Services.Cache;
-    using DotNetNuke.Web.Client;
+    using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Web.Client.ClientResourceManagement;
-
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>A WebForms control which outputs the content for a control using the HTML module pattern.</summary>
@@ -30,10 +30,13 @@ namespace DotNetNuke.UI.Modules.Html5
     public class Html5HostControl(string html5File, IBusinessControllerProvider businessControllerProvider, IServicesFramework servicesFramework, IHostSettings hostSettings)
         : ModuleControlBase, IActionable
     {
+        private readonly Lazy<ServiceScopeContainer> serviceScopeContainer = new Lazy<ServiceScopeContainer>(ServiceScopeContainer.GetRequestOrCreateScope);
+
         private readonly string html5File = html5File;
         private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         private readonly IServicesFramework servicesFramework = servicesFramework ?? Globals.GetCurrentServiceProvider().GetRequiredService<IServicesFramework>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+
         private string fileContent;
 
         /// <summary>Initializes a new instance of the <see cref="Html5HostControl"/> class.</summary>
@@ -67,31 +70,36 @@ namespace DotNetNuke.UI.Modules.Html5
         /// <inheritdoc />
         public ModuleActionCollection ModuleActions { get; private set; }
 
-        /// <inheritdoc />
+        /// <summary>Gets the dependency injection service provider.</summary>
+        protected IServiceProvider DependencyProvider => this.serviceScopeContainer.Value.ServiceScope.ServiceProvider;
+
+        /// <inheritdoc/>
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
 
             if (!string.IsNullOrEmpty(this.html5File))
             {
+                var clientResourceController = this.DependencyProvider.GetRequiredService<IClientResourceController>();
+
                 // Check if css file exists
                 var cssFile = Path.ChangeExtension(this.html5File, ".css");
                 if (this.FileExists(cssFile))
                 {
-                    ClientResourceManager.RegisterStyleSheet(this.Page, cssFile, FileOrder.Css.DefaultPriority);
+                    clientResourceController.RegisterStylesheet(cssFile, FileOrder.Css.DefaultPriority);
                 }
 
                 // Check if js file exists
                 var jsFile = Path.ChangeExtension(this.html5File, ".js");
                 if (this.FileExists(jsFile))
                 {
-                    ClientResourceManager.RegisterScript(this.Page, jsFile, FileOrder.Js.DefaultPriority);
+                    clientResourceController.RegisterScript(jsFile, FileOrder.Js.DefaultPriority);
                 }
 
                 this.fileContent = this.GetFileContent(this.html5File);
 
                 this.ModuleActions = new ModuleActionCollection();
-                var tokenReplace = new Html5ModuleTokenReplace(this.Page, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
+                var tokenReplace = new Html5ModuleTokenReplace(this.Page, new HttpRequestWrapper(this.Page.Request), clientResourceController, this.businessControllerProvider, this.html5File, this.ModuleContext, this.ModuleActions);
                 this.fileContent = tokenReplace.ReplaceEnvironmentTokens(this.fileContent);
             }
 

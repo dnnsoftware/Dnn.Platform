@@ -1,0 +1,29 @@
+﻿@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using Dnn.ContactList.Razor.Models
+@using DotNetNuke.Web.MvcPipeline.Modules
+
+@model ContactsModel
+<div class="contactList-container">
+    <div class="contactList-grid">
+    @foreach (var contact in Model.Contacts)
+    {
+        @Html.ModulePartial("_ContactPartial", contact);
+    }
+    </div>
+    @if (Model.IsEditable)
+    {
+        <div class="buttons">
+            <a class="dnnPrimaryAction" href="@Model.EditUrl">@Html.LocalizeString("AddContact")</a>
+        </div>
+    }
+</div>
+
+@*
+<div>
+    <div class="buttons">
+        <a class="dnnPrimaryAction" href="@DotNetNuke.Common.Globals.NavigateURL("", "view=view1")">View 1</a>
+        <a class="dnnPrimaryAction" href="@DotNetNuke.Common.Globals.NavigateURL("", "view=view2")">View 2</a>
+    </div>
+</div>
+*@

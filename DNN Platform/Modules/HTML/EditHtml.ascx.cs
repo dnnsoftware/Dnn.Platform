@@ -11,6 +11,7 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
@@ -36,6 +37,7 @@ namespace DotNetNuke.Modules.Html
         private readonly HtmlTextController htmlTextController;
         private readonly IPortalAliasService portalAliasService;
         private readonly IHostSettings hostSettings;
+        private readonly IClientResourceController clientResourceController;
 
         /// <summary>Initializes a new instance of the <see cref="EditHtml"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
@@ -50,7 +52,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name="portalAliasService">The portal alias service.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public EditHtml(INavigationManager navigationManager, HtmlTextController htmlTextController, IPortalAliasService portalAliasService)
-            : this(null, navigationManager, htmlTextController, portalAliasService, null)
+            : this(null, navigationManager, htmlTextController, portalAliasService, null, null)
         {
         }
 
@@ -60,13 +62,15 @@ namespace DotNetNuke.Modules.Html
         /// <param name="htmlTextController">The HTML/Text controller.</param>
         /// <param name="portalAliasService">The portal alias service.</param>
         /// <param name="hostSettings">The host settings.</param>
-        public EditHtml(HtmlModuleSettingsRepository settingsRepository, INavigationManager navigationManager, HtmlTextController htmlTextController, IPortalAliasService portalAliasService, IHostSettings hostSettings)
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public EditHtml(HtmlModuleSettingsRepository settingsRepository, INavigationManager navigationManager, HtmlTextController htmlTextController, IPortalAliasService portalAliasService, IHostSettings hostSettings, IClientResourceController clientResourceController)
             : base(settingsRepository)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = htmlTextController ?? this.DependencyProvider.GetRequiredService<HtmlTextController>();
             this.portalAliasService = portalAliasService ?? this.DependencyProvider.GetRequiredService<IPortalAliasService>();
             this.hostSettings = hostSettings ?? this.DependencyProvider.GetRequiredService<IHostSettings>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         private enum WorkflowType
@@ -521,7 +525,7 @@ namespace DotNetNuke.Modules.Html
                 var masterContent = this.htmlTextController.GetTopHtmlText(objModule.DefaultLanguageModule.ModuleID, false, this.WorkflowID);
                 if (masterContent != null)
                 {
-                    this.placeMasterContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(objModule.DefaultLanguageModule.ModuleID, this.FormatContent(masterContent.Content), this.Settings, this.PortalSettings, this.Page)));
+                    this.placeMasterContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(objModule.DefaultLanguageModule.ModuleID, this.FormatContent(masterContent.Content), this.Settings, this.PortalSettings, this.clientResourceController)));
                 }
             }
         }
@@ -567,7 +571,7 @@ namespace DotNetNuke.Modules.Html
             this.lblPreviewVersion.Text = htmlContent.Version.ToString();
             this.lblPreviewWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
             this.lblPreviewWorkflowState.Text = this.GetLocalizedString(htmlContent.StateName);
-            this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent.Content, this.Settings, this.PortalSettings, this.Page);
+            this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent.Content, this.Settings, this.PortalSettings, this.clientResourceController);
             this.phEdit.Visible = false;
             this.phPreview.Visible = true;
             this.phHistory.Visible = false;
@@ -583,7 +587,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name="htmlContent">Content of the HTML.</param>
         private void DisplayPreview(string htmlContent)
         {
-            this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent, this.Settings, this.PortalSettings, this.Page);
+            this.litPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent, this.Settings, this.PortalSettings, this.clientResourceController);
             this.divPreviewVersion.Visible = false;
             this.divPreviewWorlflow.Visible = false;
 
@@ -627,7 +631,7 @@ namespace DotNetNuke.Modules.Html
             this.lblCurrentWorkflowInUse.Text = this.GetLocalizedString(htmlContent.WorkflowName);
             this.lblCurrentWorkflowState.Text = this.GetLocalizedString(htmlContent.StateName);
 
-            this.litCurrentContentPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent.Content, this.Settings, this.PortalSettings, this.Page);
+            this.litCurrentContentPreview.Text = HtmlTextController.FormatHtmlText(this.ModuleId, htmlContent.Content, this.Settings, this.PortalSettings, this.clientResourceController);
             this.lblCurrentVersion.Text = htmlContent.Version.ToString();
             this.DisplayVersions();
 

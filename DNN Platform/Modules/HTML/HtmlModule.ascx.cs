@@ -8,6 +8,7 @@ namespace DotNetNuke.Modules.Html
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Content.Workflow;
     using DotNetNuke.Entities.Modules;
@@ -28,6 +29,7 @@ namespace DotNetNuke.Modules.Html
         private readonly IWorkflowManager workflowManager = WorkflowManager.Instance;
         private readonly INavigationManager navigationManager;
         private readonly HtmlTextController htmlTextController;
+        private readonly IClientResourceController clientResourceController;
         private bool editorEnabled;
         private int workflowId;
 
@@ -43,7 +45,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name="htmlTextController">The HTML/Text controller.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.4. Please use overload with HtmlModuleSettingsRepository. Scheduled removal in v12.0.0.")]
         public HtmlModule(INavigationManager navigationManager, HtmlTextController htmlTextController)
-            : this(null, navigationManager, htmlTextController)
+            : this(null, navigationManager, htmlTextController, null)
         {
         }
 
@@ -51,11 +53,13 @@ namespace DotNetNuke.Modules.Html
         /// <param name="settingsRepository">The settings repository.</param>
         /// <param name="navigationManager">The navigation manager.</param>
         /// <param name="htmlTextController">The HTML/Text controller.</param>
-        public HtmlModule(HtmlModuleSettingsRepository settingsRepository, INavigationManager navigationManager, HtmlTextController htmlTextController)
+        /// <param name="clientResourceController">The client resource controller.</param>
+        public HtmlModule(HtmlModuleSettingsRepository settingsRepository, INavigationManager navigationManager, HtmlTextController htmlTextController, IClientResourceController clientResourceController)
             : base(settingsRepository)
         {
             this.navigationManager = navigationManager ?? this.DependencyProvider.GetRequiredService<INavigationManager>();
             this.htmlTextController = htmlTextController ?? this.DependencyProvider.GetRequiredService<HtmlTextController>();
+            this.clientResourceController = clientResourceController ?? this.DependencyProvider.GetRequiredService<IClientResourceController>();
         }
 
         /// <summary>Gets moduleActions is an interface property that returns the module actions collection for the module.</summary>
@@ -176,7 +180,7 @@ namespace DotNetNuke.Modules.Html
                 this.lblContent.EditEnabled = this.editorEnabled;
 
                 // add content to module
-                this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.Page)));
+                this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.clientResourceController)));
 
                 // set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
                 if (!this.Settings.UseDecorate)

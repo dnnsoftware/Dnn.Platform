@@ -91,6 +91,21 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Web.Mvc, Version=5.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.5.3.0\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.3.3.0\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
@@ -111,6 +126,10 @@
     <Compile Include="Components\HtmlTextLogInfo.cs" />
     <Compile Include="Components\HtmlTextUserController.cs" />
     <Compile Include="Components\HtmlTextUserInfo.cs" />
+    <Compile Include="Controllers\HTMLController.cs" />
+    <Compile Include="Models\HtmlTextUserModel.cs" />
+    <Compile Include="Models\MyWorkModel.cs" />
+    <Compile Include="Models\WorkflowType.cs" />
     <Compile Include="Components\LocalizationHelper.cs" />
     <Compile Include="Components\MigrateHelper.cs" />
     <Compile Include="EditHtml.ascx.cs">
@@ -127,6 +146,12 @@
     <Compile Include="HtmlModule.ascx.designer.cs">
       <DependentUpon>HtmlModule.ascx</DependentUpon>
     </Compile>
+    <Compile Include="Models\EditHtmlViewModel.cs" />
+    <Compile Include="Models\HtmlModuleModel.cs" />
+    <Compile Include="Controls\EditHTMLControl.cs" />
+    <Compile Include="Controls\HtmlModuleControl.cs" />
+    <Compile Include="Controls\MyWorkControl.cs" />
+    <Compile Include="Mvc\RouteConfig.cs" />
     <Compile Include="MyWork.ascx.cs">
       <DependentUpon>MyWork.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -163,6 +188,7 @@
     <Content Include="EditHtml.ascx" />
     <Content Include="HtmlModule.ascx" />
     <Content Include="Images\html.png" />
+    <Content Include="js\edit.js" />
     <Content Include="license.txt" />
     <Content Include="edit.css" />
     <Content Include="MyWork.ascx" />
@@ -192,6 +218,13 @@
     <None Include="Providers\DataProviders\SqlDataProvider\10.00.00.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\10.00.02.SqlDataProvider" />
     <None Include="Providers\DataProviders\SqlDataProvider\Uninstall.SqlDataProvider" />
+    <Content Include="web.config" />
+    <Content Include="Views\EditHTML.cshtml" />
+    <Content Include="Views\HtmlModule.cshtml" />
+    <Content Include="Views\MyWork.cshtml" />
+    <Content Include="Views\web.config" />
+    <Content Include="Views\_Edit.cshtml" />
+    <Content Include="Views\_History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer">
@@ -202,6 +235,10 @@
       <Project>{6928A9B1-F88A-4581-A132-D3EB38669BB0}</Project>
       <Name>DotNetNuke.Abstractions</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj">
+      <Project>{33c9571d-e3af-46fc-dc75-9ca082bbdc3d}</Project>
+      <Name>DotNetNuke.ContentSecurityPolicy</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj">
       <Project>{0fca217a-5f9a-4f5b-a31b-86d64ae65198}</Project>
       <Name>DotNetNuke.DependencyInjection</Name>
@@ -209,6 +246,10 @@
     <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj">
       <Project>{03e3afa5-ddc9-48fb-a839-ad4282ce237e}</Project>
       <Name>DotNetNuke.Web.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj">
+      <Project>{0d777a63-4f7b-379f-e937-d5f28f4aa6ef}</Project>
+      <Name>DotNetNuke.Web.MvcPipeline</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
       <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
@@ -219,6 +260,10 @@
       <Name>DotNetNuke.Library</Name>
       <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Providers\HtmlEditorProviders\DNNConnect.CKE\DNNConnect.CKEditorProvider.csproj">
+      <Project>{ae7e021e-7c7b-4003-9bd6-5a04c781c277}</Project>
+      <Name>DNNConnect.CKEditorProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ProjectExtensions>

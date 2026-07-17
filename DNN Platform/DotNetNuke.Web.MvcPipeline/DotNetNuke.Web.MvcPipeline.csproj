@@ -1,0 +1,73 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\</SolutionDir>
+    <OutputPath>bin</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <TargetFramework>net48</TargetFramework>
+    <Deterministic>true</Deterministic>
+    <LangVersion>latest</LangVersion>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisMode>Recommended</AnalysisMode>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors>CS0618,SA1600,CA1822,CA1859, CA1305, CA1310, CA1304, CA1854, CA1852</WarningsNotAsErrors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Commons\**" />
+    <Compile Remove="Routing\**" />
+    <Compile Remove="Tokens\**" />
+    <EmbeddedResource Remove="Commons\**" />
+    <EmbeddedResource Remove="Routing\**" />
+    <EmbeddedResource Remove="Tokens\**" />
+    <None Remove="Commons\**" />
+    <None Remove="Routing\**" />
+    <None Remove="Tokens\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.Mvc" />
+    <PackageReference Include="Microsoft.AspNet.Razor" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Client" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" />
+    <PackageReference Include="Microsoft.AspNet.WebApi.WebHost" />
+    <PackageReference Include="Microsoft.AspNet.WebHelpers" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" />
+    <PackageReference Include="Microsoft.AspNet.WebPages.Data" />
+    <PackageReference Include="Microsoft.AspNet.WebPages.WebData" />
+    <PackageReference Include="Microsoft.Web.Infrastructure" />
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj" />
+    <ProjectReference Include="..\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj" />
+    <ProjectReference Include="..\HttpModules\DotNetNuke.HttpModules.csproj" />
+    <ProjectReference Include="..\Library\DotNetNuke.Library.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+    <Compile Include="Routing\DnnMvcPageHandler.cs" />
+    <Compile Include="Routing\DnnMvcPageRouteHandler.cs" />
+    <Compile Include="Routing\IMapRoute.cs" />
+    <Compile Include="Routing\IMvcRouteMapper.cs" />
+    <Compile Include="Routing\IPortalAliasMvcRouteManager.cs" />
+    <Compile Include="Routing\MvcRoutingManager.cs" />
+    <Compile Include="Routing\PortalAliasMvcRouteManager.cs" />
+  </ItemGroup>
+
+  <Import Project="..\..\DNN_Platform.build" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)bin\DotNetNuke.Web.MvcPipeline*&quot; &quot;$(WebsitePath)\bin&quot; /S /Y /I" />
+  </Target>
+  
+</Project>

@@ -11,6 +11,7 @@ namespace DotNetNuke.UI.UserControls
     using System.Web.UI.WebControls;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.ContentSecurityPolicy;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Modules.Actions;
@@ -18,6 +19,7 @@ namespace DotNetNuke.UI.UserControls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
+    using Microsoft.Extensions.DependencyInjection;
 
     public abstract class Help : PortalModuleBase
     {
@@ -45,6 +47,7 @@ namespace DotNetNuke.UI.UserControls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
+            var csp = this.DependencyProvider.GetService<IContentSecurityPolicy>();
             this.cmdCancel.Click += this.cmdCancel_Click;
             int moduleControlId = Null.NullInteger;
 
@@ -54,6 +57,7 @@ namespace DotNetNuke.UI.UserControls
             }
             else if (Host.EnableModuleOnLineHelp)
             {
+                csp.FrameSource.AddUrlOrigin(Host.HelpURL);
                 this.helpFrame.Text = $"<iframe src='{Host.HelpURL}' id='helpFrame' width='100%' height='500'></iframe>";
             }
 
@@ -62,6 +66,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 if (!string.IsNullOrEmpty(objModuleControl.HelpURL) && Host.EnableModuleOnLineHelp)
                 {
+                    csp.FrameSource.AddUrlOrigin(objModuleControl.HelpURL);
                     this.helpFrame.Text = $"<iframe src='{objModuleControl.HelpURL}' id='helpFrame' width='100%' height='500'></iframe>";
                 }
                 else

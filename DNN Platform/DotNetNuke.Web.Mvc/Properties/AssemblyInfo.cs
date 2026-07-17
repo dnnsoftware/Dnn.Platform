@@ -23,3 +23,4 @@ using System.Runtime.InteropServices;
 [assembly: Guid("b1e2ff0c-06b0-4e4d-a828-a7cab3817220")]
 
 [assembly: InternalsVisibleTo("DotNetNuke.Tests.Web.Mvc")]
+[assembly: InternalsVisibleTo("DotNetNuke.Web.MvcPipeline")]

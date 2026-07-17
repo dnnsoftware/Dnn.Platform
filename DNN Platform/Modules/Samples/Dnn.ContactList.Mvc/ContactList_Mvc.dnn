@@ -45,6 +45,7 @@
                   <moduleControl>
                     <controlKey/>
                     <controlSrc>Dnn.ContactList.Mvc.Controllers/Contact/Index.mvc</controlSrc>
+                    <mvcControlClass>Dnn.ContactList.Mvc.Controls.ViewControl, Dnn.ContactList.Mvc</mvcControlClass>
                     <supportsPartialRendering>False</supportsPartialRendering>
                     <controlTitle/>
                     <controlType>View</controlType>
@@ -56,6 +57,7 @@
                   <moduleControl>
                     <controlKey>Edit</controlKey>
                     <controlSrc>Dnn.ContactList.Mvc.Controllers/Contact/Edit.mvc</controlSrc>
+                    <mvcControlClass>DotNetNuke.Web.MvcPipeline.ModuleControl.MvcModuleControl, DotNetNuke.Web.MvcPipeline</mvcControlClass>
                     <supportsPartialRendering>True</supportsPartialRendering>
                     <controlTitle>Add/Update Contact</controlTitle>
                     <controlType>View</controlType>

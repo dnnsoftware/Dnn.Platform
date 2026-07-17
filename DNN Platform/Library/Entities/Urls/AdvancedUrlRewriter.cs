@@ -2212,6 +2212,74 @@ namespace DotNetNuke.Entities.Urls
             }
         }
 
+        private static bool IsMvc(UrlAction result, NameValueCollection queryStringCol, HttpContext context, int tabId, int portalId)
+        {
+            bool mvcCtl = false;
+            bool auto = false;
+            if (tabId > 0 && portalId > -1)
+            {
+                TabInfo tab = null;
+                tab = TabController.Instance.GetTab(tabId, portalId, false);
+                if (tab != null)
+                {
+                    var tabPipeline = tab.PagePipeline;
+                    if (!string.IsNullOrEmpty(tabPipeline))
+                    {
+                        mvcCtl = tabPipeline == PagePipelineConstants.Mvc;
+                    }
+                    else
+                    {
+                        var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                        mvcCtl = portalPipeline == PagePipelineConstants.Mvc ||
+                                 portalPipeline == PagePipelineConstants.Auto;
+                        auto = portalPipeline == PagePipelineConstants.Auto;
+                    }
+
+                    if (mvcCtl && result.RewritePath.Contains("&ctl="))
+                    {
+                        var query = HttpUtility.ParseQueryString(result.RewritePath.Split('?')[1]);
+                        var mid = query["mid"];
+                        var ctl = query["ctl"];
+                        if (int.TryParse(mid, out int moduleId))
+                        {
+                            var module = Modules.ModuleController.Instance.GetModule(moduleId, tabId, false);
+                            if (module != null)
+                            {
+                                var modCtl = Modules.ModuleControlController.GetModuleControlByControlKey(ctl, module.ModuleDefID);
+                                mvcCtl = module != null && !string.IsNullOrEmpty(modCtl.MvcControlClass);
+                            }
+                        }
+                        else
+                        {
+                            mvcCtl = false;
+                        }
+                    }
+                    else if (mvcCtl && auto)
+                    {
+                        mvcCtl = !tab.Modules.Cast<Modules.ModuleInfo>()
+                            .Select(m => m.ModuleControl)
+                            .Any(mc => string.IsNullOrEmpty(mc.MvcControlClass));
+                    }
+                }
+            }
+            else if (result.RewritePath.Contains("&ctl="))
+            {
+                var portalPipeline = PortalSettingsController.Instance().GetPortalPagePipeline(portalId);
+                if (portalPipeline == PagePipelineConstants.Mvc)
+                {
+                    var mvcCtls = new[] { "Terms", "Privacy" };
+                    foreach (var item in mvcCtls)
+                    {
+                        mvcCtl = mvcCtl || result.RewritePath.Contains("&ctl=" + item);
+                    }
+                }
+            }
+
+            mvcCtl = mvcCtl && !result.RewritePath.Contains($"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringWebForms}") && queryStringCol[PagePipelineConstants.QueryStringKey] != PagePipelineConstants.QueryStringWebForms;
+            mvcCtl = mvcCtl || result.RewritePath.Contains($"{PagePipelineConstants.QueryStringKey}={PagePipelineConstants.QueryStringMvc}") || queryStringCol[PagePipelineConstants.QueryStringKey] == PagePipelineConstants.QueryStringMvc;
+            return mvcCtl;
+        }
+
         private void ProcessRequest(
             HttpContext context,
             Uri requestUri,
@@ -2461,7 +2529,14 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        if (IsMvc(result, queryStringCol, context, result.TabId, result.PortalId))
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath.Replace(Globals.glbDefaultPage, "DesktopModules/MvcPipeline/Default/Page/" + result.TabId + "/" + result.CultureCode));
+                        }
+                        else
+                        {
+                            RewriterUtils.RewriteUrl(context, "~/" + result.RewritePath);
+                        }
                     }
                 }
 

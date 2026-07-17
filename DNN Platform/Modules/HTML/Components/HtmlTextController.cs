@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
@@ -96,9 +97,23 @@ namespace DotNetNuke.Modules.Html
         /// <param name="content">The HtmlText Content.</param>
         /// <param name="settings">Module Settings.</param>
         /// <param name="portalSettings">The Portal Settings.</param>
-        /// <param name="page">The Page Instance.</param>
+        /// <param name="page">The page.</param>
         /// <returns>The formatted HTML content.</returns>
+        [Obsolete("Use overload with IClientResourceController")]
         public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
+        {
+           var clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+           return FormatHtmlText(moduleId, content, settings, portalSettings, clientResourceController);
+        }
+
+        /// <summary>FormatHtmlText formats HtmlText content for display in the browser.</summary>
+        /// <param name="moduleId">The ModuleID.</param>
+        /// <param name="content">The HtmlText Content.</param>
+        /// <param name="settings">Module Settings.</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <param name="clientResourceController">ClientResourceController.</param>
+        /// <returns>The formatted HTML content.</returns>
+        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, IClientResourceController clientResourceController)
         {
             // Html decode content
             content = HttpUtility.HtmlDecode(content);
@@ -106,7 +121,7 @@ namespace DotNetNuke.Modules.Html
             // token replace
             if (settings.ReplaceTokens)
             {
-                var tr = new HtmlTokenReplace(page)
+                var tr = new HtmlTokenReplace(clientResourceController)
                 {
                     AccessingUser = UserController.Instance.GetCurrentUserInfo(),
                     DebugMessages = Personalization.GetUserMode() != PortalSettings.Mode.View,

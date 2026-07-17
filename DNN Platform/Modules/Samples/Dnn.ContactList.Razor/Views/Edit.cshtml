@@ -1,0 +1,92 @@
+﻿@using DotNetNuke.Services.Localization
+@using DotNetNuke.Web.Mvc.Helpers
+
+@using System.Web.Mvc
+@using System.Web.Mvc.Html
+@using Dnn.ContactList.Razor.Models
+@using DotNetNuke.Web.MvcPipeline.Modules
+
+@model ContactModel
+@{
+    var moduleId = (int)ViewData["ModuleId"];
+}
+
+<div class="contactEdit-container" data-moduleid="@moduleId" data-returnurl="@Model.ReturnUrl">
+    <div class="contactEdit-header">
+        <div class="contactEdit-logo">
+            <svg viewBox="0 0 100 60" xmlns="http://www.w3.org/2000/svg">
+                <polyline points="5,55 20,15 35,55" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="30,55 50,5 70,55" fill="none" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="65,55 80,15 95,55" fill="none" stroke="white" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
+        <div class="contactEdit-title">
+            <h2>@(Model.ContactId > 0 ? Html.LocalizeString("Edit") : Html.LocalizeString("AddContact"))</h2>
+            <p>@Html.LocalizeString("EditDescription")</p>
+        </div>
+    </div>
+
+    <div class="contactEdit-form">
+        @Html.HiddenFor(m => m.ContactId)
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="FirstName">
+                    <i class="fa fa-user"></i>
+                    @Html.LocalizeString("FirstName") <span class="required">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-input", placeholder = "Enter first name" })
+                @Html.ValidationMessageFor(m => m.FirstName, @Html.LocalizeString("FirstNameRequired").ToHtmlString())
+            </div>
+
+            <div class="form-group">
+                <label for="LastName">
+                    <i class="fa fa-user"></i>
+                    @Html.LocalizeString("LastName") <span class="required">*</span>
+                </label>
+                @Html.TextBoxFor(m => m.LastName, new { @class = "form-input", placeholder = "Enter last name" })
+                @Html.ValidationMessageFor(m => m.LastName, @Html.LocalizeString("LastNameRequired").ToHtmlString())
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="Email">
+                <i class="fa fa-envelope"></i>
+                @Html.LocalizeString("Email") <span class="required">*</span>
+            </label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-input", placeholder = "email@example.com", type = "email" })
+            @Html.ValidationMessageFor(m => m.Email, @Html.LocalizeString("EmailRequired").ToHtmlString())
+        </div>
+
+        <div class="form-group">
+            <label for="Phone">
+                <i class="fa fa-phone"></i>
+                @Html.LocalizeString("Phone") <span class="required">*</span>
+            </label>
+            @Html.TextBoxFor(m => m.Phone, new { @class = "form-input", placeholder = "+1 555-123-4567", type = "tel" })
+            @Html.ValidationMessageFor(m => m.Phone, @Html.LocalizeString("PhoneRequired").ToHtmlString())
+        </div>
+
+        <div class="form-group">
+            <label for="Social">
+                <i class="fa fa-twitter"></i>
+                @Html.LocalizeString("Social")
+            </label>
+            @Html.TextBoxFor(m => m.Social, new { @class = "form-input", placeholder = "@username or profile URL" })
+            @Html.ValidationMessageFor(m => m.Social, @Html.LocalizeString("SocialRequired").ToHtmlString())
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" id="btnSave" class="btn-primary">
+                <i class="fa fa-save"></i>
+                @Html.LocalizeString("Save")
+            </button>
+            <a href="@Model.ReturnUrl" class="btn-secondary">
+                <i class="fa fa-times"></i>
+                @Html.LocalizeString("Cancel")
+            </a>
+
+
+        </div>
+    </div>
+</div>

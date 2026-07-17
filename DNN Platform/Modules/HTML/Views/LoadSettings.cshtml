@@ -1,0 +1,40 @@
+@using DotNetNuke.Modules.Html.Models
+@using DotNetNuke.Services.Localization
+@using DotNetNuke.Entities.Modules
+@using DotNetNuke.Web.MvcPipeline.Modules
+@model HtmlModuleSettingsModel
+@{
+    var LocalResourceFile = "~/DesktopModules/HTML/" + Localization.LocalResourceDirectory + "/Settings.ascx";
+
+}
+
+<div class="dnnForm dnnHTMLSettings dnnClear">
+
+    <div class="dnnFormItem">
+        @Html.DnnLabelFor(m => m.ReplaceTokens, LocalResourceFile)
+        @Html.CheckBoxFor(m => m.ReplaceTokens)
+    </div>
+    <div class="dnnFormItem">
+        @Html.DnnLabelFor(m => m.UseDecorate, LocalResourceFile)
+        @Html.CheckBoxFor(m => m.UseDecorate)
+    </div>
+    <div class="dnnFormItem">
+        @Html.DnnLabelFor(m => m.SearchDescLength, LocalResourceFile)
+        @Html.TextBoxFor(m => m.SearchDescLength)
+        @Html.ValidationMessageFor(m => m.SearchDescLength)
+    </div>
+    <div class="dnnFormItem">
+        @Html.DnnLabelFor(m => m.SelectedWorkflow, LocalResourceFile)
+        @Html.DropDownListFor(m => m.SelectedWorkflow, new SelectList(Model.Workflows, "WorkflowID", "WorkflowName"))
+    </div>
+    <div class="dnnFormItem">
+        @Html.DnnLabelFor(m => m.ApplyTo, LocalResourceFile)
+        @Html.RadioButtonFor(m => m.ApplyTo, "Module") Module
+        @Html.RadioButtonFor(m => m.ApplyTo, "Page") Page
+        @Html.RadioButtonFor(m => m.ApplyTo, "Site") Site
+        <div>
+            @Html.DnnLabelFor(m => m.Replace, LocalResourceFile)
+            @Html.CheckBoxFor(m => m.Replace, new { @class = "inline" })
+        </div>
+    </div>
+</div>

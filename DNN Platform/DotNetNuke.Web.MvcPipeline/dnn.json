@@ -1,0 +1,16 @@
+{
+  "projectType": "library",
+  "name": "Dnn_DotNetNukeWebMvcPipeline",
+  "friendlyName": "Dnn DotNetNukeWebMvcPipeline",
+  "description": "Dnn DotNetNukeWebMvcPipeline Library",
+  "packageName": "Dnn_DotNetNukeWebMvcPipeline",
+  "folder": "Dnn/DotNetNukeWebMvcPipeline",
+  "library": {},
+  "pathsAndFiles": {
+    "pathToAssemblies": "./bin",
+    "pathToScripts": "./Server/SqlScripts",
+    "assemblies": ["DotNetNuke.Web.MvcPipeline.dll"],
+    "releaseFiles": [],
+    "zipName": "Dnn.DotNetNukeWebMvcPipeline"
+  }
+}

@@ -15,6 +15,8 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
@@ -39,6 +41,8 @@ namespace DotNetNuke.Web.DDRMenu
         };
 
         private readonly ILocaliser localiser;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private readonly IHostSettings hostSettings;
         private readonly ITabController tabController;
         private Settings menuSettings;
@@ -48,7 +52,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <summary>Initializes a new instance of the <see cref="MenuBase"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public MenuBase()
-            : this(null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -56,19 +60,23 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public MenuBase(ILocaliser localiser)
-            : this(localiser, null, null)
+            : this(localiser, null, null, null, null)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="MenuBase"/> class.</summary>
         /// <param name="localiser">The tab localizer.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="tabController">The tab controller.</param>
-        public MenuBase(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
+        public MenuBase(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         /// <summary>Gets or sets the template definition.</summary>
@@ -100,20 +108,33 @@ namespace DotNetNuke.Web.DDRMenu
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
         [DnnDeprecated(10, 2, 2, "Please use overload with IHostSettings")]
         public static partial MenuBase Instantiate(ILocaliser localiser, string menuStyle)
-            => Instantiate(localiser, Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(), Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>(), menuStyle);
+            => Instantiate(
+                localiser,
+                Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>(),
+                menuStyle);
 
         /// <summary>Instantiates the MenuBase.</summary>
         /// <param name="localiser">The tab localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="tabController">The tab controller.</param>
+        /// <param name="clientResourceController">The clientResourceController.</param>
+        /// <param name="pageService">The pageService.</param>
         /// <param name="menuStyle">The menu style to use.</param>
         /// <returns>A new instance of <see cref="MenuBase"/> using the provided menu style.</returns>
-        public static MenuBase Instantiate(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, string menuStyle)
+        public static MenuBase Instantiate(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService, string menuStyle)
         {
             try
             {
                 var templateDef = TemplateDefinition.FromName(hostSettings, menuStyle, "*menudef.xml");
-                return new MenuBase(localiser, hostSettings, tabController) { TemplateDef = templateDef, };
+                return new MenuBase(
+                    localiser,
+                    hostSettings,
+                    tabController,
+                    clientResourceController,
+                    pageService) { TemplateDef = templateDef };
             }
             catch (Exception exc)
             {
@@ -178,7 +199,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.RootNode.ApplyContext(
                 imagePathOption == null ? DNNContext.Current.PortalSettings.HomeDirectory : imagePathOption.Value);
 
-            this.TemplateDef.PreRender();
+            this.TemplateDef.PreRender(this.clientResourceController, this.pageService);
         }
 
         /// <summary>Renders the menu.</summary>

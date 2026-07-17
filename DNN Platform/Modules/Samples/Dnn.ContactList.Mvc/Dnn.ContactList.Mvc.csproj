@@ -27,6 +27,7 @@
     <PackageReference Include="Newtonsoft.Json" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web.MvcPipeline\DotNetNuke.Web.MvcPipeline.csproj" />
     <ProjectReference Include="..\..\..\DotNetNuke.Web.Mvc\DotNetNuke.Web.Mvc.csproj" />
     <ProjectReference Include="..\Dnn.ContactList.Api\Dnn.ContactList.Api.csproj" />
   </ItemGroup>

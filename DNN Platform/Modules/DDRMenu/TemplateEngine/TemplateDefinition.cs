@@ -17,12 +17,14 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Web.DDRMenu.DNNCommon;
-
+    using DotNetNuke.Web.DDRMenu.Localisation;
+    using DotNetNuke.Web.MvcPipeline.UI.Utilities;
     using Microsoft.Extensions.DependencyInjection;
 
     public class TemplateDefinition(IApplicationStatusInfo appStatus, IEventLogger eventLogger)
@@ -314,9 +316,9 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return result;
         }
 
-        internal void PreRender()
+        internal void PreRender(IClientResourceController clientResourceController, IPageService pageService)
         {
-            var page = DNNContext.Current.Page;
+            var page = DNNContext.Current?.Page;
 
             var clientResourcesController = GetClientResourcesController();
             foreach (var stylesheet in this.StyleSheets)
@@ -349,16 +351,23 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             foreach (var scriptKey in this.ScriptKeys)
             {
-                var clientScript = page.ClientScript;
-                if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                if (page == null)
                 {
-                    clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                    MvcClientAPI.RegisterScript(scriptKey, this.Scripts[scriptKey]);
+                }
+                else
+                {
+                    var clientScript = page.ClientScript;
+                    if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                    {
+                        clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                    }
                 }
             }
 
             var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
             var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
-            page.Header.Controls.Add(new LiteralControl(expandedHead));
+            pageService.AddToHead(new PageTag(expandedHead, PagePriority.Module));
         }
 
         internal void Render(object source, HtmlTextWriter htmlWriter)

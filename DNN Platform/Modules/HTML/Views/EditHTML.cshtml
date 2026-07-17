@@ -1,0 +1,92 @@
+@using DotNetNuke.Modules.Html.Models
+@using DotNetNuke.Web.MvcPipeline
+@using DotNetNuke.Services.Localization
+@model EditHtmlViewModel
+
+<div class="dnnForm dnnEditHtml dnnClear" id="dnnEditHtml" data-returnurl="@Model.RedirectUrl" data-portalid="@Model.PortalId" data-tabid="@Model.TabId" data-moduleid="@Model.ModuleId">
+    @using (Html.BeginForm("Save", "HTML", new { area = "HTML" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.TabId)
+        @Html.HiddenFor(x => x.PortalId)
+        @Html.HiddenFor(x => x.ModuleId)
+        @Html.HiddenFor(x => x.CurrentWorkflowType)
+
+        <div class="ehCurrentContent dnnClear" id="ehCurrentContent">
+            <div class="ehccContent dnnClear @Model.CurrentView">
+                @if (Model.ShowEditView)
+                {
+                    @Html.Partial("~/DeskTopModules/Html/Views/_Edit.cshtml", Model)
+                }
+                else
+                {
+                    @Html.HiddenFor(x => x.EditorContent)
+                }
+                @if (Model.ShowPreviewView)
+                {
+
+                    <fieldset>
+                        @if (Model.ShowPreviewVersion)
+                        {
+                            <div class="dnnFormItem" id="divPreviewVersion">
+                                <label>@Localization.GetString("PreviewVersion", Model.LocalResourceFile)</label>
+                                <span>Model.PreviewVersion</span>
+                            </div>
+                            <div class="dnnFormItem" id="divPreviewWorkflow">
+                                <label>@Localization.GetString("PreviewWorkflowInUse", Model.LocalResourceFile)</label>
+                                <span>Model.PreviewWorkflowInUse</span>
+                            </div>
+                            <div class="dnnFormItem" id="divPreviewWorkflowState">
+                                <label>@Localization.GetString("PreviewWorkflowState", Model.LocalResourceFile)</label>
+                                <span>Model.PreviewWorkflowState</span>
+                            </div>
+                        }
+                        <div id="divPreview" class="html_preview">
+                            @Html.Raw(Model.PreviewContent)
+                        </div>
+                    </fieldset>
+                }
+                @if (Model.ShowHistoryView)
+                {
+                    @Html.Partial("~/DesktopModules/HTML/Views/_History.cshtml", Model)
+                }
+            </div>
+        </div>
+        <div class="ehActions">
+            <ul class="dnnActions dnnClear">
+                <li>
+                    <button type="submit" class="dnnPrimaryAction" id="cmdSave">@Localization.GetString("cmdSave", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <a href="@Model.RedirectUrl" class="dnnSecondaryAction">@Localization.GetString("cmdCancel", Model.LocalResourceFile)</a>
+                </li>
+                <li>
+                    <button type="button" data-action="@Url.Action("ShowEdit", "HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowEditView ? "aspNetDisabled" : "" )" id="cmdEdit" @(Model.ShowEditView ? "disabled" : "" )>@Localization.GetString("cmdEdit", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <button type="button" data-action="@Url.Action("ShowPreview", "HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowPreviewView ? "aspNetDisabled" : "" )" id="cmdPreview" @(Model.ShowPreviewView ? "disabled" : "" )>@Localization.GetString("cmdPreview", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <button type="button" data-action="@Url.Action("ShowHistory", "HTML", new {area= "HTML"})" class="dnnSecondaryAction @(Model.ShowHistoryView ? "aspNetDisabled" : "" )" id="cmdHistory" @(Model.ShowHistoryView ? "disabled" : "" )>@Localization.GetString("cmdHistory", Model.LocalResourceFile)</button>
+                </li>
+                <li>
+                    <span class="separator"></span>
+                </li>
+                @*<li>
+                        <div class="dnnFormItem">
+                            @Html.DropDownListFor(m => m.SelectedRenderOption, Model.RenderOptions, new { @class = "dnnSecondaryAction", id = "ddlRender" })
+                        </div>
+                    </li>*@
+                @if (Model.ShowMasterContentButton)
+                {
+                    <li>
+                        <span class="separator"></span>
+                    </li>
+                    <li>
+                        <button type="button" class="dnnSecondaryAction" id="cmdMasterContent">Model.MasterContentButtonText</button>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+</div>
