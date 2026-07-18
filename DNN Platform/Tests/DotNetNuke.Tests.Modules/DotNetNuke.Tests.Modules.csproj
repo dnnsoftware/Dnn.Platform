@@ -27,9 +27,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="ExportImport\TestData\legacy_v3_large.dnndb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ExportImport\TestData\legacy_v3_small.dnndb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj" />
     <ProjectReference Include="..\..\Modules\HTML\DotNetNuke.Modules.Html.csproj" />
+    <ProjectReference Include="..\..\Modules\DnnExportImportLibrary\DnnExportImportLibrary.csproj" />
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj" />
   </ItemGroup>
 
