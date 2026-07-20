@@ -4,8 +4,8 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="AngleSharp" Version="1.4.0" />
-    <PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.159" />
+    <PackageVersion Include="AngleSharp" Version="1.5.2" />
+    <PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.224" />
     <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageVersion Include="Cake.BuildSystems.Module" Version="9.0.0" />
     <PackageVersion Include="Cake.FileHelpers" Version="7.0.0" />
