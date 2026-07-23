@@ -1,6 +1,6 @@
 ﻿<dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="Dnn.ContactList_Mvc" type="Module" version="10.03.03">
+    <package name="Dnn.ContactList_Mvc" type="Module" version="10.03.04">
       <friendlyName>Contact List Mvc</friendlyName>
       <description>DNN Contact List using MVC</description>
       <owner>
