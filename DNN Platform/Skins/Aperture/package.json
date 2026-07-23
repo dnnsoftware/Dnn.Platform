@@ -1,6 +1,6 @@
 {
   "name": "aperture",
-  "version": "10.3.3",
+  "version": "10.3.4",
   "description": "Default theme for DNN 10.",
   "main": "src/scripts/main.ts",
   "author": "DNN Community",
