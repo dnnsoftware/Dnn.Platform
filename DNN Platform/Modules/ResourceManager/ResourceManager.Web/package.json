@@ -1,6 +1,6 @@
 {
   "name": "dnn-resource-manager",
-  "version": "10.3.3",
+  "version": "10.3.4",
   "description": "Resource Manager",
   "private": true,
   "main": "dist/index.cjs.js",
