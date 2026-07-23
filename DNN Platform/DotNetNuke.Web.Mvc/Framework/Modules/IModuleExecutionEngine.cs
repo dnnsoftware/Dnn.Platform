@@ -5,10 +5,14 @@
 namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     public interface IModuleExecutionEngine
     {
         ModuleRequestResult ExecuteModule(ModuleRequestContext moduleRequestContext);
+
+        Task<ModuleRequestResult> ExecuteModuleAsync(ModuleRequestContext moduleRequestContext, CancellationToken cancellationToken);
 
         void ExecuteModuleResult(ModuleRequestResult moduleResult, TextWriter writer);
     }

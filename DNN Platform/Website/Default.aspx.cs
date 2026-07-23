@@ -630,9 +630,9 @@ namespace DotNetNuke.Framework
                     switch (extension)
                     {
                         case ".mvc":
-                            var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
+                            var segments = slaveModule.ModuleControl.ControlSrc.Split('/');
                             control.LocalResourceFile =
-                                $"~/DesktopModules/MVC/{slaveModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
+                                $"~/DesktopModules/MVC/{slaveModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{(segments.Length == 2 ? segments[0] : segments[1])}.resx";
                             break;
                         default:
                             var controlFileName = Path.GetFileName(slaveModule.ModuleControl.ControlSrc);

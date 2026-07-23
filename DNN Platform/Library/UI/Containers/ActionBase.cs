@@ -5,6 +5,8 @@ namespace DotNetNuke.UI.Containers
 {
     using System;
     using System.Diagnostics.CodeAnalysis;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Logging;
@@ -109,6 +111,25 @@ namespace DotNetNuke.UI.Containers
         /// <param name="actionID">The id of the action.</param>
         protected void ProcessAction(string actionID)
         {
+            if (this.ModuleControl is IAsyncModuleControl)
+            {
+                // We need to defer accesing this.Actions as it could only be accesible after the WebForms async point.
+                this.Page.RegisterAsyncTask(new PageAsyncTask(ct => this.ProcessActionInternalAsync(actionID, ct)));
+            }
+            else
+            {
+                this.ProcessActionInternal(actionID);
+            }
+        }
+
+        protected Task ProcessActionInternalAsync(string actionID, CancellationToken cancellationToken)
+        {
+            this.ProcessActionInternal(actionID);
+            return Task.CompletedTask;
+        }
+
+        protected void ProcessActionInternal(string actionID)
+        {
             if (int.TryParse(actionID, out var output))
             {
                 ModuleAction action = this.Actions.GetActionByID(output);
@@ -126,21 +147,35 @@ namespace DotNetNuke.UI.Containers
         /// <param name="e">The event arguments.</param>
         protected override void OnLoad(EventArgs e)
         {
+            if (this.ModuleControl is IAsyncModuleControl)
+            {
+                // We need to defer accesing this.Actions as it could only be accesible after the WebForms async point.
+                this.Page.RegisterAsyncTask(new PageAsyncTask(this.LoadActionsAsync));
+            }
+            else
+            {
+                this.LoadActions();
+            }
+
+            base.OnLoad(e);
+        }
+
+        private Task LoadActionsAsync(CancellationToken cancellationToken)
+        {
+            this.LoadActions();
+            return Task.CompletedTask;
+        }
+
+        private void LoadActions()
+        {
             try
             {
-                if (this.ModuleControl == null)
-                {
-                    return;
-                }
-
                 this.ActionRoot.Actions.AddRange(this.Actions);
             }
             catch (Exception exc)
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
-
-            base.OnLoad(e);
         }
     }
 }

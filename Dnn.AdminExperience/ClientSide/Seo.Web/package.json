@@ -1,6 +1,6 @@
 {
   "name": "seo",
-  "version": "10.3.3",
+  "version": "10.3.4",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -9,7 +9,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.3",
+    "@dnnsoftware/dnn-react-common": "10.3.4",
     "@rsbuild/core": "^2.1.2",
     "@rsbuild/plugin-less": "^2.0.0",
     "@rsbuild/plugin-react": "^2.1.0",
