@@ -118,8 +118,9 @@ namespace DotNetNuke.Services.FileSystem
                 if (FolderProvider.Instance(parentFolderMapping.FolderProviderType).SupportsMappedPaths)
                 {
                     folderMapping = parentFolderMapping;
-                    mappedPath = string.IsNullOrEmpty(parentFolder.FolderPath) ? PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath)
-                                                                            : PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath.Replace(parentFolder.FolderPath, string.Empty));
+                    mappedPath = string.IsNullOrEmpty(parentFolder.FolderPath)
+                        ? PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath)
+                        : PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath.Replace(parentFolder.FolderPath, string.Empty));
                 }
                 else if (!FolderProvider.Instance(folderMapping.FolderProviderType).SupportsMappedPaths)
                 {
@@ -128,7 +129,7 @@ namespace DotNetNuke.Services.FileSystem
                 else
                 {
                     // Parent foldermapping DOESN'T support mapped path
-                    // abd current foldermapping YES support mapped path
+                    // and current foldermapping YES support mapped path
                     mappedPath = PathUtils.Instance.FormatFolderPath(GetDefaultMappedPath(folderMapping) + mappedPath);
                 }
             }

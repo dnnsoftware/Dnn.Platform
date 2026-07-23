@@ -366,6 +366,22 @@ class MoreSettingsPanelBody extends Component {
                             <InputGroup>
                                 <Label
                                     labelType="inline"
+                                    tooltipMessage={resx.get("plAllowJsInHtmlModule.Help")}
+                                    label={resx.get("plAllowJsInHtmlModule")}
+                                />
+                                <Switch
+                                    onText={resx.get("SwitchOn")}
+                                    offText={resx.get("SwitchOff")}
+                                    value={state.otherSettings.AllowJsInHtmlModule}
+                                    onChange={this.onSettingChange.bind(
+                                        this,
+                                        "AllowJsInHtmlModule"
+                                    )}
+                                />
+                            </InputGroup>
+                            <InputGroup>
+                                <Label
+                                    labelType="inline"
                                     tooltipMessage={resx.get("plAllowJsInModuleHeaders.Help")}
                                     label={resx.get("plAllowJsInModuleHeaders")}
                                 />

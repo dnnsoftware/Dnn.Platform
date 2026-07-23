@@ -173,7 +173,7 @@ div.dnnFormGroup {
 .dnnTertiaryAction,
 .dnnLogin .LoginTabGroup span {
     display: inline-block;
-    padding: 0.5625rem;
+    padding: 0.375rem;
     margin-bottom: 0.5625rem;
     cursor: pointer;
     min-width: 4.6875rem;
@@ -186,14 +186,7 @@ div.dnnFormGroup {
     text-decoration: none;
     text-align: center;
 }
-.dnnFormItem button, .dnnFormItem input[type="button"],
-.dnnFormItem input[type="reset"],
-.dnnFormItem input[type="submit"],
-.dnnPrimaryAction,
-.dnnSecondaryAction,
-.dnnTertiaryAction {
-    padding: 0.375rem;
-}
+
 
 .dnnFormMessage{
     display: block;
@@ -214,7 +207,7 @@ div.dnnFormGroup {
         border-color: var(--dnn-color-danger-dark, rgba(255,0,0,0.2));
         color: var(--dnn-color-danger-contrast, black);
         a {
-            color: var(--dnn-color-danger-contrast, black);;
+            color: var(--dnn-color-danger-contrast, black);
         }
     }
     &.dnnFormWarning {
@@ -252,11 +245,6 @@ div.dnnFormGroup {
     }
 }
 
-/* Pane header */
-.dnnFormSectionHead span {
-    font-size: 18px;
-    color: #222;
-}
 
 /* Tooltips */
 .dnnTooltip {
@@ -340,7 +328,7 @@ legend.required:after {
     background: rgba(0,0,0,0.03);
     content: 'Required';
     font-weight: normal;
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 0.6875rem;
     font-style: italic;
     color: var(--dnn-color-foreground-light, #777);
@@ -589,7 +577,7 @@ a.pinHelp:hover {
     background-position: -150px 0px;
 }
 .dnnCheckbox-focus {
-    outline: 2px solid var(--dnn-color-forground, black);
+    outline: 2px solid var(--dnn-color-foreground, black);
     outline-offset: 2px;
 }
 .dnnBoxLabel{ display: inline-block;}

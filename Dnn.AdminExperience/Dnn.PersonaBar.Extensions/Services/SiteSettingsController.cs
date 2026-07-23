@@ -3153,6 +3153,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         EnablePopups = portalSettings.EnablePopUps,
                         portalSettings.InjectModuleHyperLink,
                         portalSettings.InlineEditorEnabled,
+                        portalSettings.AllowJsInHtmlModule,
                         portalSettings.AllowJsInModuleHeaders,
                         portalSettings.AllowJsInModuleFooters,
                         portalSettings.ShowQuickModuleAddMenu,
@@ -3186,6 +3187,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "EnablePopups", request.EnablePopups.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InjectModuleHyperLink", request.InjectModuleHyperLink.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InlineEditorEnabled", request.InlineEditorEnabled.ToString(), false, null, false);
+                PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInHtmlModule", request.AllowJsInHtmlModule.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleHeaders", request.AllowJsInModuleHeaders.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);

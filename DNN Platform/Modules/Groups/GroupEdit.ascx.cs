@@ -68,18 +68,11 @@ public partial class GroupEdit : GroupsModuleBase
     /// <param name="e">The event args.</param>
     protected void Page_Load(object sender, EventArgs e)
     {
-        JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
-
-        this.imgGroup.Src = this.Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/") + "sample-group-profile.jpg";
-        if (this.Page.IsPostBack || this.GroupId <= 0)
-        {
-            return;
-        }
-
         var roleInfo = this.roleController.GetRoleById(this.PortalId, this.GroupId);
-        if (roleInfo == null)
+        if (this.GroupId > 0 && roleInfo == null)
         {
-            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false));
+            var groupListingUrl = this.navigationManager.NavigateURL(this.TabId);
+            this.Response.Redirect(groupListingUrl);
             return;
         }
 
@@ -87,9 +80,17 @@ public partial class GroupEdit : GroupsModuleBase
         {
             if (roleInfo.CreatedByUserID != this.UserInfo.UserID)
             {
-                this.Response.Redirect(
-                    this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, $"groupid={this.GroupId}"));
+                var viewGroupUrl = this.navigationManager.NavigateURL(this.TabId, string.Empty, $"groupid={this.GroupId}");
+                this.Response.Redirect(viewGroupUrl);
             }
+        }
+
+        JavaScript.RequestRegistration(this.appStatus, this.eventLogger, this.PortalSettings, CommonJs.DnnPlugins);
+
+        this.imgGroup.Src = this.Page.ResolveUrl("~/DesktopModules/SocialGroups/Images/sample-group-profile.jpg");
+        if (this.Page.IsPostBack || this.GroupId <= 0)
+        {
+            return;
         }
 
         this.txtGroupName.Visible = !roleInfo.IsSystemRole;
@@ -118,7 +119,8 @@ public partial class GroupEdit : GroupsModuleBase
 
     private void Cancel_Click(object sender, EventArgs e)
     {
-        this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, $"groupid={this.GroupId}"));
+        var viewGroupUrl = this.navigationManager.NavigateURL(this.TabId, string.Empty, $"groupid={this.GroupId}");
+        this.Response.Redirect(viewGroupUrl);
     }
 
     private void Save_Click(object sender, EventArgs e)
@@ -161,14 +163,7 @@ public partial class GroupEdit : GroupsModuleBase
             roleInfo.Description = this.txtDescription.Text;
             roleInfo.IsPublic = this.rdAccessTypePublic.Checked;
 
-            if (roleInfo.Settings.ContainsKey("ReviewMembers"))
-            {
-                roleInfo.Settings["ReviewMembers"] = this.chkMemberApproved.Checked.ToString();
-            }
-            else
-            {
-                roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
-            }
+            roleInfo.Settings["ReviewMembers"] = this.chkMemberApproved.Checked.ToString();
 
             this.roleController.UpdateRoleSettings(roleInfo, true);
             this.roleController.UpdateRole(roleInfo);
@@ -178,19 +173,17 @@ public partial class GroupEdit : GroupsModuleBase
                 var groupFolder = this.folderManager.GetFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}") ??
                                   this.folderManager.AddFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}");
 
-                if (groupFolder != null)
-                {
-                    var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
-                    var fileInfo = this.fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true, true, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
-                    roleInfo.IconFile = $"FileID={fileInfo.FileId}";
-                    this.roleController.UpdateRole(roleInfo);
-                }
+                var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
+                var fileInfo = this.fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true, true, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
+                roleInfo.IconFile = $"FileID={fileInfo.FileId}";
+                this.roleController.UpdateRole(roleInfo);
             }
 
             // Clear Roles Cache
             DataCache.RemoveCache("GetRoles");
         }
 
-        this.Response.Redirect(this.navigationManager.NavigateURL(this.TabId, string.Empty, $"groupid={this.GroupId}"));
+        var viewGroupUrl = this.navigationManager.NavigateURL(this.TabId, string.Empty, $"groupid={this.GroupId}");
+        this.Response.Redirect(viewGroupUrl);
     }
 }

@@ -1057,6 +1057,11 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.UpdatePortalSetting(this.portalController, portalId, "ShowQuickModuleAddMenu", XmlUtils.GetNodeValue(nodeSettings, "showquickmoduleaddmenu", string.Empty));
             }
 
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowjsinhtmlmodule", string.Empty)))
+            {
+                PortalController.UpdatePortalSetting(portalId, "AllowJsInHtmlModule", XmlUtils.GetNodeValue(nodeSettings, "allowjsinhtmlmodule", string.Empty));
+            }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowjsinmoduleheaders", string.Empty)))
             {
                 PortalController.UpdatePortalSetting(portalId, "AllowJsInModuleHeaders", XmlUtils.GetNodeValue(nodeSettings, "allowjsinmoduleheaders", string.Empty));

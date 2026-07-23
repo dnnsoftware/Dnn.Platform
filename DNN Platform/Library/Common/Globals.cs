@@ -951,7 +951,7 @@ namespace DotNetNuke.Common
             return TestableGlobals.Instance.GetDomainName(request.Url, parsePortNumber);
         }
 
-        /// <summary>Determin whether use port number by the value in config file.</summary>
+        /// <summary>Determine whether use port number by the value in config file.</summary>
         /// <returns>
         /// <see langword="true"/> if use port number, otherwise, return <see langword="false"/>.
         /// </returns>
@@ -974,7 +974,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets the file list.</summary>
-        /// <param name="portalId">The portal id.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId)
         {
@@ -982,8 +982,8 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets the file list.</summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="strExtensions">The STR extensions.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="strExtensions">The comma-delimited list of valid file extensions, or <see langword="null"/> to allow any extension.</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions)
         {
@@ -991,9 +991,9 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets the file list.</summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="strExtensions">The STR extensions.</param>
-        /// <param name="noneSpecified">if set to <see langword="true"/> [none specified].</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="strExtensions">The comma-delimited list of valid file extensions, or <see langword="null"/> to allow any extension.</param>
+        /// <param name="noneSpecified">if set to <see langword="true"/> include an item that says "None Specified".</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified)
         {
@@ -1001,10 +1001,10 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets the file list.</summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="strExtensions">The STR extensions.</param>
-        /// <param name="noneSpecified">if set to <see langword="true"/> [none specified].</param>
-        /// <param name="folder">The folder.</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="strExtensions">The comma-delimited list of valid file extensions, or <see langword="null"/> to allow any extension.</param>
+        /// <param name="noneSpecified">if set to <see langword="true"/> include an item that says "None Specified".</param>
+        /// <param name="folder">The folder path.</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified, string folder)
         {
@@ -1012,64 +1012,80 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>Gets the file list.</summary>
-        /// <param name="portalId">The portal id.</param>
-        /// <param name="strExtensions">The STR extensions.</param>
-        /// <param name="noneSpecified">if set to <see langword="true"/> [none specified].</param>
-        /// <param name="folder">The folder.</param>
-        /// <param name="includeHidden">if set to <see langword="true"/> [include hidden].</param>
+        /// <param name="portalId">The portal ID.</param>
+        /// <param name="strExtensions">The comma-delimited list of valid file extensions, or <see langword="null"/> to allow any extension.</param>
+        /// <param name="noneSpecified">if set to <see langword="true"/> include an item that says "None Specified".</param>
+        /// <param name="folder">The folder path.</param>
+        /// <param name="includeHidden">if set to <see langword="true"/> include hidden files.</param>
         /// <returns>file list.</returns>
         public static ArrayList GetFileList(int portalId, string strExtensions, bool noneSpecified, string folder, bool includeHidden)
         {
             var arrFileList = new ArrayList();
             if (noneSpecified)
             {
-                arrFileList.Add(new FileItem(string.Empty, "<" + Localization.GetString("None_Specified") + ">"));
+                arrFileList.Add(new FileItem(string.Empty, $"<{Localization.GetString("None_Specified")}>"));
             }
 
             var objFolder = FolderManager.Instance.GetFolder(portalId, folder);
-
-            if (objFolder != null)
+            if (objFolder == null || !FolderPermissionController.CanViewFolder((FolderInfo)objFolder))
             {
-                try
+                return arrFileList;
+            }
+
+            try
+            {
+                var files = FolderManager.Instance.GetFiles(objFolder);
+                var fileManager = FileManager.Instance;
+
+                var extensions = string.IsNullOrEmpty(strExtensions)
+                    ? []
+                    : strExtensions.Split(',');
+                for (var i = 0; i < extensions.Length; i++)
                 {
-                    var files = FolderManager.Instance.GetFiles(objFolder);
-                    var fileManager = FileManager.Instance;
-
-                    foreach (var file in files)
+                    extensions[i] = extensions[i].Trim();
+                    if (extensions[i][0] != '.')
                     {
-                        if (FilenameMatchesExtensions(file.FileName, strExtensions))
-                        {
-                            if (file.SupportsFileAttributes)
-                            {
-                                if (fileManager.FileExists(objFolder, file.FileName))
-                                {
-                                    if (includeHidden)
-                                    {
-                                        arrFileList.Add(new FileItem(file.FileId.ToString(CultureInfo.InvariantCulture), file.FileName));
-                                    }
-                                    else
-                                    {
-                                        var attributes = file.FileAttributes;
+                        extensions[i] = $".{extensions[i]}";
+                    }
+                }
 
-                                        if ((attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
-                                        {
-                                            arrFileList.Add(new FileItem(file.FileId.ToString(CultureInfo.InvariantCulture), file.FileName));
-                                        }
-                                    }
-                                }
-                            }
-                            else
+                foreach (var file in files)
+                {
+                    if (!FilenameMatchesExtensions(file.FileName, extensions))
+                    {
+                        continue;
+                    }
+
+                    if (file.SupportsFileAttributes)
+                    {
+                        if (!fileManager.FileExists(objFolder, file.FileName))
+                        {
+                            continue;
+                        }
+
+                        if (includeHidden)
+                        {
+                            arrFileList.Add(new FileItem(file.FileId.ToString(CultureInfo.InvariantCulture), file.FileName));
+                        }
+                        else
+                        {
+                            var attributes = file.FileAttributes;
+                            if ((attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
                             {
-                                // File is stored in DB - Just add to arraylist
                                 arrFileList.Add(new FileItem(file.FileId.ToString(CultureInfo.InvariantCulture), file.FileName));
                             }
                         }
                     }
+                    else
+                    {
+                        // File is stored in DB - Just add to arraylist
+                        arrFileList.Add(new FileItem(file.FileId.ToString(CultureInfo.InvariantCulture), file.FileName));
+                    }
                 }
-                catch (Exception ex)
-                {
-                    Exceptions.LogException(ex);
-                }
+            }
+            catch (Exception ex)
+            {
+                Exceptions.LogException(ex);
             }
 
             return arrFileList;
@@ -3617,30 +3633,24 @@ namespace DotNetNuke.Common
 
         /// <summary>Check whether the Filename matches extensions.</summary>
         /// <param name="filename">The filename.</param>
-        /// <param name="strExtensions">The valid extensions.</param>
+        /// <param name="extensions">The valid extensions.</param>
         /// <returns><see langword="true"/> if the Filename matches extensions, otherwise, <see langword="false"/>.</returns>
-        private static bool FilenameMatchesExtensions(string filename, string strExtensions)
+        private static bool FilenameMatchesExtensions(string filename, string[] extensions)
         {
-            bool result = string.IsNullOrEmpty(strExtensions);
-            if (!result)
+            if (extensions.Length == 0)
             {
-                foreach (string extension in strExtensions.Split(','))
-                {
-                    string ext = extension.Trim();
-                    if (!ext.StartsWith(".", StringComparison.Ordinal))
-                    {
-                        ext = "." + extension;
-                    }
+                return true;
+            }
 
-                    result = filename.EndsWith(ext, StringComparison.OrdinalIgnoreCase);
-                    if (result)
-                    {
-                        break;
-                    }
+            foreach (var extension in extensions)
+            {
+                if (filename.EndsWith(extension, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
                 }
             }
 
-            return result;
+            return false;
         }
 
         /// <summary>

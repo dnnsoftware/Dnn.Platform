@@ -649,7 +649,7 @@ span.dnnFormError:after {
 }
 
 .personabarnav > li#Edit.locked svg .back {
-    fill: var(--dnn-color-tertiary, #0a85c3);
+    fill: var(--dnn-color-pb-menu-locked-icon-background-highlight, #0a85c3);
 }
 
 .personabarnav > li#Edit.locked svg .main {

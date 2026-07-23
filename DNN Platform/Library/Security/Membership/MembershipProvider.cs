@@ -87,7 +87,7 @@ namespace DotNetNuke.Security.Membership
         public abstract string GetPassword(UserInfo user, string passwordAnswer);
 
         /// <summary>GetUserCountByPortal gets the number of users in the portal.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <returns>The number of users.</returns>
         public abstract int GetUserCountByPortal(int portalId);
 
@@ -124,8 +124,8 @@ namespace DotNetNuke.Security.Membership
         public abstract void UpdateUser(UserInfo user);
 
         /// <summary>UserLogin attempts to log the user in, and returns the User if successful.</summary>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="username">The user name of the User attempting to log in.</param>
+        /// <param name="portalId">The ID of the Portal the user belongs to.</param>
+        /// <param name="username">The username of the User attempting to log in.</param>
         /// <param name="password">The password of the User attempting to log in.</param>
         /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
         /// <param name="loginStatus">An enumerated value indicating the login status.</param>
@@ -133,8 +133,8 @@ namespace DotNetNuke.Security.Membership
         public abstract UserInfo UserLogin(int portalId, string username, string password, string verificationCode, ref UserLoginStatus loginStatus);
 
         /// <summary>UserLogin attempts to log the user in, and returns the User if successful.</summary>
-        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
-        /// <param name="username">The user name of the User attempting to log in.</param>
+        /// <param name="portalId">The ID of the Portal the user belongs to.</param>
+        /// <param name="username">The username of the User attempting to log in.</param>
         /// <param name="password">The password of the User attempting to log in (may not be used by all Auth types).</param>
         /// <param name="authType">The type of Authentication Used.</param>
         /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
@@ -144,13 +144,13 @@ namespace DotNetNuke.Security.Membership
 
         // Users Online
 
-        /// <summary>Deletes all UserOnline info from the database that has activity outside of the time window.</summary>
+        /// <summary>Deletes all UserOnline info from the database that has activity outside the time window.</summary>
         /// <param name="timeWindow">Time Window in Minutes.</param>
         [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public abstract void DeleteUsersOnline(int timeWindow);
 
         /// <summary>Gets a collection of Online Users.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         [Obsolete("Deprecated in DotNetNuke 8.0.0. Other solutions exist outside of the DNN Platform. Scheduled for removal in v11.0.0.")]
         public abstract ArrayList GetOnlineUsers(int portalId);
@@ -174,13 +174,13 @@ namespace DotNetNuke.Security.Membership
         // Get Users
 
         /// <summary>GetUserByUserName retrieves a User from the DataStore.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
         /// <returns>The User as a UserInfo object.</returns>
         public abstract UserInfo GetUser(int portalId, int userId);
 
         /// <summary>GetUserByUserName retrieves a User from the DataStore. Supports user caching in memory cache.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
         /// <returns>The User as a UserInfo object.</returns>
         public abstract UserInfo GetUserByUserName(int portalId, string username);
@@ -191,7 +191,7 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsers gets all the users of the portal.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
@@ -200,7 +200,7 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsersByEmail gets all the users of the portal whose email matches a provided filter expression.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
@@ -210,7 +210,7 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsersByUserName gets all the users of the portal whose username matches a provided filter expression.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="userNameToMatch">The username to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
@@ -219,7 +219,7 @@ namespace DotNetNuke.Security.Membership
         public abstract ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords);
 
         /// <summary>GetUsersByProfileProperty gets all the users of the portal whose profile matches the profile property passed as a parameter.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="propertyName">The name of the property being matched.</param>
         /// <param name="propertyValue">The value of the property being matched.</param>
         /// <param name="pageIndex">The page of records to return.</param>
@@ -235,8 +235,8 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>GetUserByVanityUrl retrieves a User from the DataStore.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
-        /// <param name="vanityUrl">The vanityUrl of the user being retrieved from the Data Store.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
+        /// <param name="vanityUrl">The vanity URL of the user being retrieved from the Data Store.</param>
         /// <returns>The User as a UserInfo object or <see langword="null"/>.</returns>
         public virtual UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>GetUserByPasswordResetToken retrieves a User from the DataStore.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="resetToken">The password reset token.</param>
         /// <returns>The User as a UserInfo object.</returns>
         public virtual UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
@@ -269,12 +269,12 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsers gets all the users of the portal.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
+        /// <param name="superUsersOnly">Only select superusers.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         public virtual ArrayList GetUsers(int portalId, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
@@ -283,13 +283,13 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsersByEmail gets all the users of the portal whose email matches a provided filter expression.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
+        /// <param name="superUsersOnly">Only select superusers.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         public virtual ArrayList GetUsersByEmail(int portalId, string emailToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
@@ -298,13 +298,13 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsersByUserName gets all the users of the portal whose username matches a provided filter expression.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="userNameToMatch">The username to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
+        /// <param name="superUsersOnly">Only select superusers.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         public virtual ArrayList GetUsersByUserName(int portalId, string userNameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
@@ -313,13 +313,13 @@ namespace DotNetNuke.Security.Membership
 
         /// <summary>GetUsersByDisplayName gets all the users of the portal whose display name matches a provided filter expression.</summary>
         /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="nameToMatch">The display name to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
+        /// <param name="superUsersOnly">Only select superusers.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         public virtual ArrayList GetUsersByDisplayName(int portalId, string nameToMatch, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {
@@ -327,14 +327,14 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>GetUsersByProfileProperty gets all the users of the portal whose profile matches the profile property passed as a parameter.</summary>
-        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="portalId">The ID of the Portal.</param>
         /// <param name="propertyName">The name of the property being matched.</param>
         /// <param name="propertyValue">The value of the property being matched.</param>
         /// <param name="pageIndex">The page of records to return.</param>
         /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total number of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
-        /// <param name="superUsersOnly">Only select super users.</param>
+        /// <param name="superUsersOnly">Only select superusers.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         public virtual ArrayList GetUsersByProfileProperty(int portalId, string propertyName, string propertyValue, int pageIndex, int pageSize, ref int totalRecords, bool includeDeleted, bool superUsersOnly)
         {

@@ -787,6 +787,22 @@ namespace DotNetNuke.Common.Utilities
             return functionReturnValue;
         }
 
+        public static bool TryReadEndElement(XmlReader reader)
+        {
+            while (reader.NodeType == XmlNodeType.Whitespace)
+            {
+                reader.Read();
+            }
+
+            if (reader.NodeType == XmlNodeType.EndElement)
+            {
+                reader.ReadEndElement();
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>Creates an <see cref="XPathExpression"/> with variable arguments.</summary>
         /// <param name="xpath">The XPath expression that includes variables, e.g. <c>//root/data[@name=$resourceKeyName]/value</c>.</param>
         /// <param name="arguments">A collection of variable names and values.</param>

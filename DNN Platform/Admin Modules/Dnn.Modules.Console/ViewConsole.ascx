@@ -2,7 +2,7 @@
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls" Assembly="DotNetNuke.Web" %>
 <script type="text/javascript">
 	jQuery(document).ready(function($) {
-		$("#<%=Console.ClientID %>").dnnConsole({<%=GetClientSideSettings() %>});
+		$("#<%: Console.ClientID %>").dnnConsole(<%: GetClientSideSettingsObject() %>);
 	});
 </script>
 

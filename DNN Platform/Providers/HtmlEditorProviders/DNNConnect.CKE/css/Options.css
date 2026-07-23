@@ -3,9 +3,7 @@ a:hover {color:rgb(204, 0, 0);}
 hr {color: #d9d9d9;background-color: #d9d9d9;height:0;border: 1px solid #d9d9d9;}
 h1 {font-weight: bold;margin: 0;font-size:medium;font-family:Arial, Helvetica, sans-serif; color:#333}
 .ui-tabs .ui-tabs-panel {
-	border: 1px dotted #333; -moz-border-radius: 0.4em; -webkit-border-radius: 0.4em;
-	-ms-border-radius: 0.4em;
-	border-radius: 0.4em; display:block;overflow: auto;height:500px;margin-top:5px;
+	display:block;overflow: auto;height:500px;margin-top:5px; padding: 1em;
 }
 
 .SettingBox {width:100%;padding-left: 5px; margin-right: 15px;float: left; }

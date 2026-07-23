@@ -45,7 +45,8 @@ export class DnnRmFolderList {
         state.pageSize,
         state.sortField,
         state.sortOrder);
-        this.rootItem = await this.itemsClient.getFolderItem(state.settings.HomeFolderId)
+        this.rootItem = await this.itemsClient.getFolderItem(state.settings.HomeFolderId);
+        this.rootItem.iconUrl = await this.itemsClient.getFolderIconUrl(state.settings.HomeFolderId);
     } catch (error) {
       alert(error);
     }
@@ -88,6 +89,13 @@ export class DnnRmFolderList {
             this.rootItemContextMenu.open(e as PointerEvent).catch(console.error);
           }}
         >
+          {/* reusing code from dnn-rm-folder-list-item.tsx */}
+          {this.rootItem?.iconUrl != null && this.rootItem.iconUrl.length > 0
+            ?
+              <img src={this.rootItem.iconUrl} alt={state.settings.HomeFolderName} />
+            :
+              <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="#000000"><path d="M0 0h24v24H0z" fill="none"></path><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"></path></svg>
+            }
           <strong>{state.settings.HomeFolderName}</strong>
           <dnn-context-menu
             ref={el => this.rootItemContextMenu = el}

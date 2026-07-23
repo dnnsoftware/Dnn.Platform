@@ -302,7 +302,7 @@ namespace DotNetNuke.Build.Tasks
                 select new { release, version, isReleaseCandidate, };
             releases = releases.ToList();
 
-            var latestStable = releases.FirstOrDefault();
+            var latestStable = releases.FirstOrDefault(r => !r.isReleaseCandidate);
 
             context.Information(
                 "Latest stable release: {0}",

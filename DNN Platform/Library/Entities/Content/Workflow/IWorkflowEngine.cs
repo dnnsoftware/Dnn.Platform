@@ -81,9 +81,9 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// This method completes the workflow no matter what is the current state.
         /// It also sends a system notification to the user that submit the workflow to let him know about the complete workflow action.
         /// </summary>
-        /// <remarks>This method does not check review permission on the current state.</remarks>
         /// <param name="stateTransaction">State transaction Dto.</param>
         /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowConcurrencyException">Thrown when the current state of the workflow is not the same of the current state specified in the StateTransaction Dto.</exception>
+        /// <exception cref="DotNetNuke.Entities.Content.Workflow.Exceptions.WorkflowSecurityException">Thrown when the user does not have review permission on the current state.</exception>
         void CompleteWorkflow(StateTransaction stateTransaction);
 
         /// <summary>This method returns the user that started the workflow for the contentItem.</summary>

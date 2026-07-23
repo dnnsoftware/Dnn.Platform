@@ -1,6 +1,6 @@
 {
   "name": "seo",
-  "version": "10.3.2",
+  "version": "10.3.3",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -9,18 +9,18 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.2",
-    "@rsbuild/core": "^1.7.3",
-    "@rsbuild/plugin-less": "^1.6.2",
-    "@rsbuild/plugin-react": "^1.4.6",
+    "@dnnsoftware/dnn-react-common": "10.3.3",
+    "@rsbuild/core": "^2.1.2",
+    "@rsbuild/plugin-less": "^2.0.0",
+    "@rsbuild/plugin-react": "^2.1.0",
     "array.prototype.find": "2.2.3",
     "array.prototype.findindex": "2.2.4",
     "create-react-class": "^15.7.0",
     "es6-object-assign": "1.1.0",
-    "eslint": "9.39.4",
+    "eslint": "10.5.0",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^17.4.0",
-    "less": "4.6.4",
+    "globals": "^17.6.0",
+    "less": "4.6.6",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

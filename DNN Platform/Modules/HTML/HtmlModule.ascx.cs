@@ -208,7 +208,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             try
             {
                 // verify security
-                if (HtmlUtils.ContainsJavaScript(e.Text))
+                if (!this.PortalSettings.AllowJsInHtmlModule && HtmlUtils.ContainsJavaScript(e.Text))
                 {
                     throw new SecurityException();
                 }

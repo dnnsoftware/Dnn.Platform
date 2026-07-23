@@ -393,7 +393,6 @@ namespace Dnn.Modules.ResourceManager.Services
         /// <returns>Detailed information about the file.</returns>
         [HttpGet]
         [AllowAnonymous]
-
         public IHttpActionResult GetFileDetails(int fileId)
         {
             var file = FileManager.Instance.GetFile(fileId);

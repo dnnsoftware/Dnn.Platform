@@ -236,6 +236,12 @@ namespace DotNetNuke.Security.Roles
         private void ReadRoles(XmlReader reader)
         {
             reader.ReadStartElement("roles");
+
+            if (XmlUtils.TryReadEndElement(reader))
+            {
+                return;
+            }
+
             this.roles = new Dictionary<string, RoleInfo>();
             do
             {
