@@ -1,6 +1,6 @@
 {
   "name": "export-bundle",
-  "version": "10.3.3",
+  "version": "10.3.4",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -42,6 +42,6 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.3"
+    "@dnnsoftware/dnn-react-common": "10.3.4"
   }
 }
