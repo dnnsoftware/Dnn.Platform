@@ -6,6 +6,8 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 {
     using System;
     using System.IO;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using DotNetNuke.Common;
     using DotNetNuke.Web.Mvc.Framework.ActionResults;
@@ -21,6 +23,19 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             {
                 // Run the module
                 return moduleRequestContext.ModuleApplication.ExecuteRequest(moduleRequestContext);
+            }
+
+            return null;
+        }
+
+        public async Task<ModuleRequestResult> ExecuteModuleAsync(ModuleRequestContext moduleRequestContext, CancellationToken cancellationToken)
+        {
+            Requires.NotNull("moduleRequestContext", moduleRequestContext);
+
+            if (moduleRequestContext.ModuleApplication != null)
+            {
+                // Run the module
+                return await moduleRequestContext.ModuleApplication.ExecuteRequestAsync(moduleRequestContext, cancellationToken);
             }
 
             return null;

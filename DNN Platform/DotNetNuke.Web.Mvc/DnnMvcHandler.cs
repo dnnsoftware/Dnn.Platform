@@ -4,6 +4,8 @@
 namespace DotNetNuke.Web.Mvc
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
     using System.Web.Routing;
@@ -26,7 +28,7 @@ namespace DotNetNuke.Web.Mvc
 
     using Microsoft.Extensions.DependencyInjection;
 
-    public class DnnMvcHandler : IHttpHandler, IRequiresSessionState
+    public class DnnMvcHandler : HttpTaskAsyncHandler, IRequiresSessionState
     {
         public static readonly string MvcVersionHeaderName = "X-AspNetMvc-Version";
 
@@ -41,19 +43,13 @@ namespace DotNetNuke.Web.Mvc
 
         public RequestContext RequestContext { get; private set; }
 
-        /// <inheritdoc />
-        bool IHttpHandler.IsReusable => this.IsReusable;
-
         internal ControllerBuilder ControllerBuilder
         {
             get => this.controllerBuilder ??= ControllerBuilder.Current;
             set => this.controllerBuilder = value;
         }
 
-        protected virtual bool IsReusable => false;
-
-        /// <inheritdoc />
-        void IHttpHandler.ProcessRequest(HttpContext httpContext)
+        public override async Task ProcessRequestAsync(HttpContext context)
         {
             SetThreadCulture();
             MembershipModule.AuthenticateRequest(
@@ -65,10 +61,12 @@ namespace DotNetNuke.Web.Mvc
                 Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>(),
                 this.RequestContext.HttpContext,
                 allowUnknownExtensions: true);
-            this.ProcessRequest(httpContext);
+
+            var httpContextBase = new HttpContextWrapper(context);
+            await this.ProcessRequestAsync(httpContextBase, httpContextBase.Response.ClientDisconnectedToken);
         }
 
-        protected internal virtual void ProcessRequest(HttpContextBase httpContext)
+        protected internal virtual async Task ProcessRequestAsync(HttpContextBase httpContext, CancellationToken cancellationToken)
         {
             try
             {
@@ -76,19 +74,13 @@ namespace DotNetNuke.Web.Mvc
 
                 // Check if the controller supports IDnnController
                 var moduleResult =
-                    moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
+                    await moduleExecutionEngine.ExecuteModuleAsync(this.GetModuleRequestContext(httpContext), cancellationToken);
                 httpContext.SetModuleRequestResult(moduleResult);
                 this.RenderModule(moduleResult);
             }
             finally
             {
             }
-        }
-
-        protected virtual void ProcessRequest(HttpContext httpContext)
-        {
-            HttpContextBase httpContextBase = new HttpContextWrapper(httpContext);
-            this.ProcessRequest(httpContextBase);
         }
 
         private static void SetThreadCulture()

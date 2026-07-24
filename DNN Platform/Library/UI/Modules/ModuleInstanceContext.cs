@@ -510,6 +510,13 @@ namespace DotNetNuke.UI.Modules
             var actionable = this.moduleControl as IActionable;
             if (actionable != null)
             {
+                // Async module controls populate ModuleActions only after their async task executes.
+                if (this.moduleControl is IAsyncModuleControl && actionable.ModuleActions == null)
+                {
+                    throw new InvalidOperationException("Too early to access the ModuleActions. For async controls, ModuleActions collection is available only after the framework executes the `Page.ExecuteRegisteredAsyncTasks()`. " +
+                        "More specifically, you have to either register an async task using `Page.RegisterAsyncTask()` or use any of the sync events starting from PreRenderComplete to access them.");
+                }
+
                 this.moduleSpecificActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
 
                 ModuleActionCollection moduleActions = actionable.ModuleActions;

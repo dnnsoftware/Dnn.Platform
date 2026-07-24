@@ -6,8 +6,11 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     using System;
     using System.Globalization;
     using System.Reflection;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web;
     using System.Web.Mvc;
+    using System.Web.Mvc.Async;
     using System.Web.Routing;
 
     using DotNetNuke.Common;
@@ -121,6 +124,79 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
                 moduleController.Execute(this.RequestContext);
+                var result = moduleController.ResultOfLastExecute;
+
+                // Return the final result
+                return new ModuleRequestResult
+                {
+                    ActionResult = result,
+                    ControllerContext = moduleController.ControllerContext,
+                    ModuleActions = moduleController.ModuleActions,
+                    ModuleContext = context.ModuleContext,
+                    ModuleApplication = this,
+                };
+            }
+            finally
+            {
+                this.ControllerFactory.ReleaseController(controller);
+            }
+        }
+
+        public virtual async Task<ModuleRequestResult> ExecuteRequestAsync(ModuleRequestContext context, CancellationToken cancellationToken)
+        {
+            this.EnsureInitialized();
+            this.RequestContext = this.RequestContext ?? new RequestContext(context.HttpContext, context.RouteData);
+            var currentContext = HttpContext.Current;
+            if (currentContext != null)
+            {
+                var isRequestValidationEnabled = ValidationUtility.IsValidationEnabled(currentContext);
+                if (isRequestValidationEnabled == true)
+                {
+                    ValidationUtility.EnableDynamicValidation(currentContext);
+                }
+            }
+
+            this.AddVersionHeader(this.RequestContext.HttpContext);
+            this.RemoveOptionalRoutingParameters();
+
+            var controllerName = this.RequestContext.RouteData.GetRequiredString("controller");
+
+            // Construct the controller using the ControllerFactory
+            var controller = this.ControllerFactory.CreateController(this.RequestContext, controllerName);
+            try
+            {
+                // Check if the controller supports IDnnController
+                var moduleController = controller as IDnnController;
+
+                // If we couldn't adapt it, we fail.  We can't support IController implementations directly :(
+                // Because we need to retrieve the ActionResult without executing it, IController won't cut it
+                if (moduleController == null)
+                {
+                    throw new InvalidOperationException("Could Not Construct Controller");
+                }
+
+                moduleController.ValidateRequest = false;
+
+                moduleController.DnnPage = context.DnnPage;
+
+                moduleController.ModuleContext = context.ModuleContext;
+
+                moduleController.LocalResourceFile =
+                    $"~/DesktopModules/MVC/{context.ModuleContext.Configuration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{controllerName}.resx";
+
+                moduleController.ViewEngineCollectionEx = this.ViewEngines;
+
+                if (controller is not IAsyncController asyncController)
+                {
+                    // the base System.Web.Mvc.Controller class implements IAsyncController so this should normally never happen.
+                    throw new NotSupportedException("Synchronous only Controller implementation is not supported.");
+                }
+
+                // Execute the controller and capture the result
+                // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
+                // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render
+                await Task.Factory.FromAsync(asyncController.BeginExecute, asyncController.EndExecute, this.RequestContext, null);
+
                 var result = moduleController.ResultOfLastExecute;
 
                 // Return the final result
