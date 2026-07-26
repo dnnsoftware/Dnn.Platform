@@ -32,6 +32,7 @@
       <asp:LinkButton ID="lang_fr_FR" class="flag" runat="server" value="fr-FR" OnClientClick="upgradeWizard.changePageLocale('lang_fr_FR','fr-FR');"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>
       <asp:LinkButton ID="lang_it_IT" class="flag" runat="server" value="it-IT" OnClientClick="upgradeWizard.changePageLocale('lang_it_IT','it-IT');"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton>
       <asp:LinkButton ID="lang_nl_NL" class="flag" runat="server" value="nl-NL" OnClientClick="upgradeWizard.changePageLocale('lang_nl_NL','nl-NL');"><img src="../images/flags/nl-NL.gif" alt="nl-NL" class="flagimage"/></asp:LinkButton>
+      <asp:LinkButton id="lang_tr_TR" class="flag" runat="server" value="tr-TR" OnClientClick="upgradeWizard.changePageLocale('lang_tr_TR','tr-TR');"><img src="../images/flags/tr-TR.gif" alt="tr-TR" class="flagimage"/></asp:LinkButton>
     </div>
 
     <div class="install">
