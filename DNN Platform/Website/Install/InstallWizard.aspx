@@ -26,6 +26,7 @@
     <asp:placeholder runat="server" id="ClientResourceIncludes" />
     <form id="form1" runat="server">
         <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+        <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.js"></script>
         <asp:placeholder id="BodySCRIPTS" runat="server">
         </asp:placeholder>
 
