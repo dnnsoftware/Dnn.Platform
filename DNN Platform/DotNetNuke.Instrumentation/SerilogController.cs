@@ -87,7 +87,7 @@ internal static class SerilogController
             config = new LoggerConfiguration()
                 .WriteTo.File(
                     Path.Combine(applicationMapPath, "Portals\\_default\\Logs\\log.resources"),
-                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}",
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Properties:j}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day,
                     formatProvider: CultureInfo.InvariantCulture)
                 .MinimumLevel.Error();
