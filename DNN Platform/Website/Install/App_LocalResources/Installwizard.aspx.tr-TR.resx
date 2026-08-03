@@ -514,6 +514,12 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
   <data name="PasswordRulesHeadText.Text" xml:space="preserve">
     <value>Password Policy:</value>
   </data>
+  <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
+    <value>Şifre eşleşmiyor</value>
+  </data>
+  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
+    <value>Şifre Eşleşti</value>
+  </data>
   <data name="UserName.Required" xml:space="preserve">
     <value>Kullanıcı adı zorunludur.</value>
   </data>
