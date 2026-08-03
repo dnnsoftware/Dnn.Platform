@@ -490,6 +490,30 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
   <data name="Password.Required" xml:space="preserve">
     <value>Şifre gereklidir.</value>
   </data>
+  <data name="PasswordStrengthFair.Text" xml:space="preserve">
+    <value>fair</value>
+  </data>
+  <data name="PasswordStrengthMinLength.Text" xml:space="preserve">
+    <value>-character minimum</value>
+  </data>
+  <data name="PasswordStrengthStrong.Text" xml:space="preserve">
+    <value>strong</value>
+  </data>
+  <data name="PasswordStrengthWeak.Text" xml:space="preserve">
+    <value>weak</value>
+  </data>
+  <data name="CriteriaValidationExpression.Text" xml:space="preserve">
+    <value>Validation Expression: {0}</value>
+  </data>
+  <data name="CriteriaAtLeastNSpecialChars.Text" xml:space="preserve">
+    <value>At least {0} non-alphanumeric characters</value>
+  </data>
+  <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
+    <value>At least {0} characters</value>
+  </data>
+  <data name="PasswordRulesHeadText.Text" xml:space="preserve">
+    <value>Password Policy:</value>
+  </data>
   <data name="UserName.Required" xml:space="preserve">
     <value>Kullanıcı adı zorunludur.</value>
   </data>
