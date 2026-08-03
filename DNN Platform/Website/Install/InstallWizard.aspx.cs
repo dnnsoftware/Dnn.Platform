@@ -278,7 +278,10 @@ namespace DotNetNuke.Services.Install
 
                 if (!errorLogged)
                 {
-                    return Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                    return Localization.GetString(
+                        "NoErrorsLogged",
+                        "~/Install/App_LocalResources/InstallWizard.aspx.resx",
+                        !string.IsNullOrEmpty(cultureCode) ? cultureCode : culture);
                 }
 
                 return sb.ToString();
