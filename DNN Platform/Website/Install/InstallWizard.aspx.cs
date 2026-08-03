@@ -611,6 +611,8 @@ namespace DotNetNuke.Services.Install
                 ContainerSelector = ".dnnFormPassword",
                 UnmatchedCssClass = "unmatched",
                 MatchedCssClass = "matched",
+                ConfirmPasswordUnmatchedText = this.LocalizeString("ConfirmPasswordUnmatched"),
+                ConfirmPasswordMatchedText = this.LocalizeString("ConfirmPasswordMatched"),
             };
 
             var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
