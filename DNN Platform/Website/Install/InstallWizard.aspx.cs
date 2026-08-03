@@ -580,6 +580,20 @@ namespace DotNetNuke.Services.Install
             this.txtPassword.CssClass = "password-strength";
 
             var options = new DnnPaswordStrengthOptions();
+
+            // The Install Wizard cannot assume App_GlobalResources/WebControls.resx
+            // (which DnnPaswordStrengthOptions reads by default) has been translated
+            // for the selected culture at install time. Override with this page's
+            // own local resource file, consistent with every other string on this page.
+            options.MinLengthText = this.LocalizeString("PasswordStrengthMinLength");
+            options.WeakText = this.LocalizeString("PasswordStrengthWeak");
+            options.FairText = this.LocalizeString("PasswordStrengthFair");
+            options.StrongText = this.LocalizeString("PasswordStrengthStrong");
+            options.CriteriaAtLeastNCharsText = this.LocalizeString("CriteriaAtLeastNChars");
+            options.CriteriaAtLeastNSpecialCharsText = this.LocalizeString("CriteriaAtLeastNSpecialChars");
+            options.CriteriaValidationExpressionText = this.LocalizeString("CriteriaValidationExpression");
+            options.PasswordRulesHeadText = this.LocalizeString("PasswordRulesHeadText");
+
             var optionsAsJsonString = Json.Serialize(options);
             var script = string.Format(
                 "dnn.initializePasswordStrength('.{0}', {1});{2}",
