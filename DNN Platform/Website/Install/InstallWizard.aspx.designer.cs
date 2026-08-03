@@ -141,6 +141,15 @@ namespace DotNetNuke.Services.Install
         protected global::System.Web.UI.WebControls.LinkButton lang_nl_NL;
 
         /// <summary>
+        /// lang_tr_TR control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lang_tr_TR;
+
+        /// <summary>
         /// lblDotNetNukeInstalltion control.
         /// </summary>
         /// <remarks>
@@ -777,7 +786,7 @@ namespace DotNetNuke.Services.Install
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden __dnnVariable;
+        protected global::System.Web.UI.HtmlControls.HtmlInputHidden @__dnnVariable;
 
         /// <summary>
         /// PageLocale control.

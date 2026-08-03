@@ -505,7 +505,8 @@
             this.install = function () {
                 $.startProgressbar();
                 //Call PageMethod which triggers long running operation
-                PageMethods.RunInstall(function () {
+                PageMethods.RunInstall($("#PageLocale")[0].value, function () {
+
                 }, function (err) {
                     if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
                         return;
@@ -825,7 +826,7 @@
 
             var installationLogStartLine = 0;
             var getInstallationLog = function () {
-                PageMethods.GetInstallationLog(installationLogStartLine, function (result) {
+                PageMethods.GetInstallationLog(installationLogStartLine, $("#PageLocale")[0].value, function (result) {
                     if (result) {
                         if (installationLogStartLine === 0)
                             $('#installation-log').html(result);
