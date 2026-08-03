@@ -227,18 +227,20 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>Runs the installer.</summary>
+        /// <param name="cultureCode">The culture selected by the user in the wizard UI (from the PageLocale field), used as the source of truth for localization since the static culture field does not survive an AppDomain restart.</param>
         [WebMethod]
-        public static void RunInstall()
+        public static void RunInstall(string cultureCode)
         {
             installerRunning = false;
-            LaunchAutoInstall(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
+            LaunchAutoInstall(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), cultureCode);
         }
 
         /// <summary>Gets the installation log.</summary>
         /// <param name="startRow">At which line to start obtaining log lines.</param>
+        /// <param name="cultureCode">The culture selected by the user in the wizard UI (from the PageLocale field), used as the source of truth for localization since the static culture field does not survive an AppDomain restart.</param>
         /// <returns>Log string from the provided line number forward.</returns>
         [WebMethod]
-        public static object GetInstallationLog(int startRow)
+        public static object GetInstallationLog(int startRow, string cultureCode)
         {
             const int maxLines = 500;
             var logFile = InstallController.Instance.InstallerLogName;
@@ -655,7 +657,7 @@ namespace DotNetNuke.Services.Install
                 try
                 {
                     installerRunning = true;
-                    LaunchAutoInstall(this.appStatus);
+                    LaunchAutoInstall(this.appStatus, culture);
                 }
                 catch (Exception)
                 {
@@ -667,7 +669,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (installerRunning)
                 {
-                    LaunchAutoInstall(this.appStatus);
+                    LaunchAutoInstall(this.appStatus, culture);
                 }
                 else
                 {
@@ -735,7 +737,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static void LaunchAutoInstall(IApplicationStatusInfo appStatus)
+        private static void LaunchAutoInstall(IApplicationStatusInfo appStatus, string cultureCode = null)
         {
             if (appStatus.Status == UpgradeStatus.None)
             {
@@ -749,9 +751,12 @@ namespace DotNetNuke.Services.Install
             // Set Script timeout to MAX value
             HttpContext.Current.Server.ScriptTimeout = int.MaxValue;
 
-            if (culture != null)
+            // Prefer the culture passed in explicitly (e.g. from the client's PageLocale field) over the
+            // static culture field, which does not survive an AppDomain restart triggered mid-install.
+            var effectiveCulture = !string.IsNullOrEmpty(cultureCode) ? cultureCode : culture;
+            if (effectiveCulture != null)
             {
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(effectiveCulture);
             }
 
             Install(appStatus);
