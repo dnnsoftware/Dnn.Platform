@@ -307,7 +307,7 @@
     <value>Websitesi için kullanmak istediğiniz dil.</value>
   </data>
   <data name="Password.Help" xml:space="preserve">
-    <value>SuperUser hesabının şifresi.</value>
+    <value>Süper Kullanıcı hesabının şifresi.</value>
   </data>
   <data name="UserName.Help" xml:space="preserve">
     <value>Süper Kullanıcı hesabı için kullanıcı adı.</value>
