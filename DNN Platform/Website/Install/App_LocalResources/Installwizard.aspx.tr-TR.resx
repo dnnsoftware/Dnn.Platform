@@ -517,6 +517,9 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
   <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
     <value>En az {0} karakter</value>
   </data>
+  <data name="PasswordRulesHeadText.Text" xml:space="preserve">
+    <value>Şifre Politikası:</value>
+  </data>
   <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
     <value>Şifre eşleşmiyor</value>
   </data>
