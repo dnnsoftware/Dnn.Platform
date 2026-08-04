@@ -470,7 +470,7 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
     <value>Parolalar eşleşmiyor.</value>
   </data>
   <data name="Confirm.Required" xml:space="preserve">
-    <value>Onay parolası gereklidir.</value>
+    <value>Parolayı onaylamanız gereklidir.</value>
   </data>
   <data name="DatabaseFilename.Required" xml:space="preserve">
     <value>Veritabanı dosya adı gereklidir.</value>
