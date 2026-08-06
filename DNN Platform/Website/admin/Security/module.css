@@ -4,5 +4,5 @@
     
     .dnnPasswordResetContent input[type=text]{width:45%;}
 	.dnnPasswordResetContent ul.dnnActions{margin:0;border:none;padding:0;}
-	.dnnPasswordResetContent{width:550px;margin-top: 60px;}
+	.dnnPasswordResetContent{width:550px;}
 	.dnnPasswordResetContent .confirm-password-tooltip{ left: 3% !important; }
