@@ -27,18 +27,18 @@
     "lint": "prettier . --write && eslint --fix"
   },
   "dependencies": {
-    "@dnncommunity/dnn-elements": "^0.29.0",
-    "@stencil/core": "^4.43.0",
-    "@stencil/sass": "^3.2.3",
-    "@stencil/store": "^2.2.2"
+    "@dnncommunity/dnn-elements": "^0.29.3",
+    "@stencil/core": "^4.43.5",
+    "@stencil/sass": "^3.3.3",
+    "@stencil/store": "^2.2.3"
   },
+  "license": "MIT",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@stencil/eslint-plugin": "^1.1.0",
-    "@types/node": "^16.18.11",
-    "eslint": "^9.38.0",
-    "prettier": "^3.8.1",
-    "typescript-eslint": "^8.56.0"
-  },
-  "license": "MIT"
+    "@stencil/eslint-plugin": "^1.4.0",
+    "@types/node": "^26.2.0",
+    "eslint": "^10.8.1",
+    "prettier": "^3.9.6",
+    "typescript-eslint": "^8.67.0"
+  }
 }
