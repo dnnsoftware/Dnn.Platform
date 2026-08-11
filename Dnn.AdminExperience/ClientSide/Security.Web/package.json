@@ -30,7 +30,7 @@
     "redux-thunk": "^2.4.2"
   },
   "dependencies": {
-    "dompurify": "^3.4.10",
+    "dompurify": "^3.4.13",
     "html-react-parser": "^6.1.3"
   }
 }
