@@ -1,6 +1,6 @@
 {
   "name": "users",
-  "version": "10.3.3",
+  "version": "10.3.4",
   "private": true,
   "scripts": {
     "start": "rsbuild dev",
@@ -11,15 +11,15 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@rsbuild/core": "^1.7.3",
-    "@rsbuild/plugin-less": "^1.6.2",
-    "@rsbuild/plugin-react": "^1.4.6",
+    "@rsbuild/core": "^2.1.2",
+    "@rsbuild/plugin-less": "^2.0.0",
+    "@rsbuild/plugin-react": "^2.1.0",
     "create-react-class": "^15.7.0",
-    "eslint": "10.2.1",
+    "eslint": "10.5.0",
     "eslint-plugin-react": "7.37.5",
-    "globals": "^17.4.0",
-    "jest": "^30.3.0",
-    "less": "4.6.4",
+    "globals": "^17.6.0",
+    "jest": "^30.4.2",
+    "less": "4.6.6",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
@@ -35,7 +35,7 @@
     "throttle-debounce": "^5.0.2"
   },
   "dependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.3",
+    "@dnnsoftware/dnn-react-common": "10.3.4",
     "localization": "^1.0.2",
     "react-widgets": "^5.8.6"
   }

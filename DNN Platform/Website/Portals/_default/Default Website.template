@@ -34,6 +34,7 @@
     <sitemapminpriority>0.2</sitemapminpriority>
     <allowjsinmoduleheaders>False</allowjsinmoduleheaders>
     <allowjsinmodulefooters>False</allowjsinmodulefooters>
+    <allowjsinhtmlmodule>False</allowjsinhtmlmodule>
   </settings>
   <profiledefinitions>
     <profiledefinition>
@@ -76,7 +77,7 @@
       <propertyname>Photo</propertyname>
       <datatype>Image</datatype>
       <length>0</length>
-      <defaultvisibility>0</defaultvisibility>
+      <defaultvisibility>2</defaultvisibility>
     </profiledefinition>
     <profiledefinition>
       <propertycategory>Contact</propertycategory>

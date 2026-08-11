@@ -53,11 +53,11 @@
             var(--dnn-color-foreground-b, 0),
             0.04);
     }
-    .dnnTableDisplay tr:hover td {
+    tr:hover td {
         background: rgba(
             var(--dnn-color-info-r, 2),
-            139,
-            255,
+            var(--dnn-color-info-g, 139),
+            var(--dnn-color-info-b, 255),
             0.15);
     }
     tfoot tr:hover td {
@@ -68,9 +68,9 @@
 .dnnTableFilter {
     margin-bottom: 18px;
     background: rgba(
-        var(--dnn-color-foreground, 0),
-        var(--dnn-color-foreground, 0),
-        var(--dnn-color-foreground, 0),
+        var(--dnn-color-foreground-r, 0),
+        var(--dnn-color-foreground-g, 0),
+        var(--dnn-color-foreground-b, 0),
         0.04);
         .dnnTableDisplay {
             margin-bottom: 0;

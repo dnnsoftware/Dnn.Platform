@@ -43,8 +43,11 @@
     "lint": "lerna run lint",
     "test": "lerna run test"
   },
+  "//resolutions-comments": {
+    "@types/ws": "Workaround for https://stackoverflow.com/questions/76436147/types-ws-type-server-is-not-generic/76570993#76570993"
+  },
   "resolutions": {
     "@types/ws": "8.5.4"
   },
-  "packageManager": "yarn@4.13.0"
+  "packageManager": "yarn@4.16.0+sha512.5374c94eb4ef6aa8188fb112f20c1aa6569f248d676c5e576e1fd2a1a4d8d87a96df65d9dfe1c2a0252cbe38bda46cf18d955005b81b43cc7607a5c9d56fd2b6"
 }

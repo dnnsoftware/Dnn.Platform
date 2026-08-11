@@ -283,7 +283,9 @@ namespace DotNetNuke.Web.Client.ResourceManager
                 });
             }
 
-            return string.Join(string.Empty, sortedList.Select(resource => resource.Render(this.crmVersion, this.hostSettings.CdnEnabled, applicationPath)));
+            var crmVersion = this.hostSettings.DebugMode ? DateTimeOffset.UtcNow.ToUnixTimeSeconds() : this.crmVersion;
+
+            return string.Join(string.Empty, sortedList.Select(resource => resource.Render(unchecked((int)crmVersion), this.hostSettings.CdnEnabled, applicationPath)));
         }
 
         private List<T> AddResource<T>(List<T> resources, T resource)

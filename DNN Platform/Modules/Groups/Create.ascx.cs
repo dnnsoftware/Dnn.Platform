@@ -41,7 +41,7 @@ public partial class Create : GroupsModuleBase
     /// <summary>Initializes a new instance of the <see cref="Create"/> class.</summary>
     [Obsolete("Deprecated in DotNetNuke 10.1.1. Please use overload with INavigationManager. Scheduled removal in v12.0.0.")]
     public Create()
-        : this(null, null, null, null, null, null, null, null)
+        : this(null, null, null, null, null, null, null, null, null)
     {
     }
 
@@ -102,7 +102,8 @@ public partial class Create : GroupsModuleBase
 
     private void Cancel_Click(object sender, EventArgs e)
     {
-        this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
+        var groupListingUrl = this.navigationManager.NavigateURL(this.TabId);
+        this.Response.Redirect(groupListingUrl);
     }
 
     private void Create_Click(object sender, EventArgs e)
@@ -192,14 +193,10 @@ public partial class Create : GroupsModuleBase
         {
             var groupFolder = this.folderManager.GetFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}") ??
                               this.folderManager.AddFolder(this.PortalSettings.PortalId, $"Groups/{roleInfo.RoleID}");
-
-            if (groupFolder != null)
-            {
-                var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
-                var fileInfo = this.fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true, true, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
-                roleInfo.IconFile = $"FileID={fileInfo.FileId}";
-                this.roleController.UpdateRole(roleInfo);
-            }
+            var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);
+            var fileInfo = this.fileManager.AddFile(groupFolder, fileName, this.inpFile.PostedFile.InputStream, true, false, this.fileContentTypeManager.GetContentType(Path.GetExtension(fileName)));
+            roleInfo.IconFile = $"FileID={fileInfo.FileId}";
+            this.roleController.UpdateRole(roleInfo);
         }
 
         var notifications = new Notifications(this.hostSettings);
@@ -219,6 +216,7 @@ public partial class Create : GroupsModuleBase
             GroupUtilities.CreateJournalEntry(roleInfo, this.UserInfo);
         }
 
-        this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
+        var groupListingUrl = this.navigationManager.NavigateURL(this.TabId);
+        this.Response.Redirect(groupListingUrl);
     }
 }

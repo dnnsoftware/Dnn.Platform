@@ -2,64 +2,73 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
-namespace DotNetNuke.Web.InternalServices
+namespace DotNetNuke.Web.InternalServices;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+using DotNetNuke.Instrumentation;
+using DotNetNuke.Internal.SourceGenerators;
+using DotNetNuke.Services.Social.Messaging.Internal;
+using DotNetNuke.Services.Social.Notifications;
+using DotNetNuke.Web.Api;
+
+/// <summary>A web API controller for notifications.</summary>
+[DnnAuthorize]
+public partial class NotificationsServiceController : DnnApiController
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Net;
-    using System.Net.Http;
-    using System.Web.Http;
+    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationsServiceController));
 
-    using DotNetNuke.Instrumentation;
-    using DotNetNuke.Services.Social.Messaging.Internal;
-    using DotNetNuke.Services.Social.Notifications;
-    using DotNetNuke.Web.Api;
+    /// <summary>Dismisses a notification.</summary>
+    /// <param name="postData">Information about the notification.</param>
+    /// <returns>A response indicating success.</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    [DnnDeprecated(10, 3, 3, "Use overload taking NotificationRequest")]
+    public partial HttpResponseMessage Dismiss(NotificationDTO postData)
+        => this.Dismiss(postData?.ToNotificationRequest());
 
-    /// <summary>A web API controller for notifications.</summary>
-    [DnnAuthorize]
-    public class NotificationsServiceController : DnnApiController
+    /// <summary>Dismisses a notification.</summary>
+    /// <param name="requestBody">Information about the notification.</param>
+    /// <returns>A response indicating success.</returns>
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public HttpResponseMessage Dismiss(NotificationRequest requestBody)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationsServiceController));
-
-        /// <summary>Dismisses a notification.</summary>
-        /// <param name="postData">Information about the notification.</param>
-        /// <returns>A response indicating success.</returns>
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public HttpResponseMessage Dismiss(NotificationDTO postData)
+        try
         {
-            try
+            var recipient = InternalMessagingController.Instance.GetMessageRecipient(requestBody.NotificationId, this.UserInfo.UserID);
+            if (recipient != null)
             {
-                var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
-                if (recipient != null)
-                {
-                    NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
-                }
-
-                return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unable to dismiss notification");
+                NotificationsController.Instance.DeleteNotificationRecipient(requestBody.NotificationId, this.UserInfo.UserID);
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
             }
-            catch (Exception exc)
-            {
-                Logger.Error(exc);
-                return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
-            }
-        }
 
-        /// <summary>Gets toasts for the user.</summary>
-        /// <returns>A response with an object that has a <c>Toasts</c> field.</returns>
-        [HttpGet]
-        public HttpResponseMessage GetToasts()
-        {
-            var toasts = NotificationsController.Instance.GetToasts(this.UserInfo);
-            IList<object> convertedObjects = toasts.Select(this.ToExpandoObject).ToList();
-            return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
+            return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unable to dismiss notification");
         }
+        catch (Exception exc)
+        {
+            Logger.Error(exc);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
+        }
+    }
 
-        private object ToExpandoObject(Notification notification)
-        {
-            return new { Subject = notification.Subject, Body = notification.Body };
-        }
+    /// <summary>Gets toasts for the user.</summary>
+    /// <returns>A response with an object that has a <c>Toasts</c> field.</returns>
+    [HttpGet]
+    public HttpResponseMessage GetToasts()
+    {
+        var toasts = NotificationsController.Instance.GetToasts(this.UserInfo);
+        IList<object> convertedObjects = toasts.Select(this.ToExpandoObject).ToList();
+        return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, Toasts = convertedObjects.Take(3) });
+    }
+
+    private object ToExpandoObject(Notification notification)
+    {
+        return new { Subject = notification.Subject, Body = notification.Body };
     }
 }

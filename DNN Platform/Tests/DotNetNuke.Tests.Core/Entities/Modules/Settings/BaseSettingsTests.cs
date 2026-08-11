@@ -26,10 +26,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
     public abstract class BaseSettingsTests
     {
         public static readonly object[] SettingsCases =
-        {
+        [
             new object[] { "AbcdeF#2@kfdfdfds", 9, 1.45, false, new DateTime(2015, 11, 30, 13, 45, 16), TimeSpan.Zero, TestingEnum.Value1, default(ComplexType), },
-            new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, DateTime.Today.AddDays(-1), new TimeSpan(1, 5, 6, 7), TestingEnum.Value2, new ComplexType(8, -10), },
-        };
+            new object[] { "Bsskk41233[]#%&", -5, -13456.456, true, new DateTime(2026, 7, 8, 9, 10, 11, 12, DateTimeKind.Local), new TimeSpan(1, 5, 6, 7), TestingEnum.Value2, new ComplexType(8, -10), }
+        ];
 
         protected const string SettingNamePrefix = "UnitTestSetting_";
         protected const int ModuleId = 1234;
