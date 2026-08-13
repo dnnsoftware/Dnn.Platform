@@ -643,7 +643,7 @@ __metadata:
     html-react-parser: "npm:^6.1.3"
     interact.js: "npm:^1.2.8"
     less: "npm:4.6.6"
-    nanoid: "npm:^5.1.11"
+    nanoid: "npm:^5.1.16"
     prop-types: "npm:^15.8.1"
     raw-loader: "npm:4.0.2"
     react: "npm:^16.14.0"
@@ -12009,12 +12009,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^5.1.11":
-  version: 5.1.11
-  resolution: "nanoid@npm:5.1.11"
+"nanoid@npm:^5.1.16":
+  version: 5.1.16
+  resolution: "nanoid@npm:5.1.16"
   bin:
     nanoid: bin/nanoid.js
-  checksum: 10/d5971a1d39f68bd9845565c70a27733c832ba1bd73caad3c7b999a366c0355b6fcc65064f3b0179bca6cd36b50cacd5747d4482c303f026b58d62ebe31df9868
+  checksum: 10/b1e702e2b7072e74ac2ae880907d0a291853a36617ec5c3d27d81ab04965ebc0d4d0f707cf9220928cf93d5370b1f561c930efee853dc9c1a3facaefdf1a42ee
   languageName: node
   linkType: hard
 
