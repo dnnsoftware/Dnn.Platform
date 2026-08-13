@@ -71,6 +71,11 @@ namespace DotNetNuke.Tests.Core.Services.Sitemap
                         Language = "fr-FR",
                         Url = "https://example.fr/fr-fr/page",
                     },
+                    new AlternateUrl
+                    {
+                        Language = "x-default",
+                        Url = "https://example.com/en-us/page",
+                    },
                 },
             };
 
@@ -84,13 +89,16 @@ namespace DotNetNuke.Tests.Core.Services.Sitemap
 
             Assert.Multiple(() =>
             {
-                Assert.That(links, Has.Count.EqualTo(2));
+                Assert.That(links, Has.Count.EqualTo(3));
                 Assert.That(links?[0].Attribute("rel")?.Value, Is.EqualTo("alternate"));
                 Assert.That(links?[0].Attribute("hreflang")?.Value, Is.EqualTo("en-US"));
                 Assert.That(links?[0].Attribute("href")?.Value, Is.EqualTo("https://example.com/en-us/page"));
                 Assert.That(links?[1].Attribute("rel")?.Value, Is.EqualTo("alternate"));
                 Assert.That(links?[1].Attribute("hreflang")?.Value, Is.EqualTo("fr-FR"));
                 Assert.That(links?[1].Attribute("href")?.Value, Is.EqualTo("https://example.fr/fr-fr/page"));
+                Assert.That(links?[2].Attribute("rel")?.Value, Is.EqualTo("alternate"));
+                Assert.That(links?[2].Attribute("hreflang")?.Value, Is.EqualTo("x-default"));
+                Assert.That(links?[2].Attribute("href")?.Value, Is.EqualTo("https://example.com/en-us/page"));
             });
         }
 
