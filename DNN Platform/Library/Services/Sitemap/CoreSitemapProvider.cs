@@ -54,21 +54,16 @@ namespace DotNetNuke.Services.Sitemap
             {
                 try
                 {
-                    if (!tab.IsDeleted && !tab.DisableLink && tab.TabType == TabType.Normal &&
-                        (Null.IsNull(tab.StartDate) || tab.StartDate < DateTime.Now) &&
-                        (Null.IsNull(tab.EndDate) || tab.EndDate > DateTime.Now) && this.IsTabPublic(tab.TabPermissions))
+                    if (this.IsTabEligibleForSitemap(tab, DateTime.Now))
                     {
-                        if ((this.includeHiddenPages || tab.IsVisible) && tab.HasBeenPublished && tab.AllowIndex)
+                        try
                         {
-                            try
-                            {
-                                pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
-                                urls.Add(pageUrl);
-                            }
-                            catch (Exception exception)
-                            {
-                                Logger.CoreSitemapProviderErrorGettingPageUrl(exception, tab.TabName);
-                            }
+                            pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
+                            urls.Add(pageUrl);
+                        }
+                        catch (Exception exception)
+                        {
+                            Logger.CoreSitemapProviderErrorGettingPageUrl(exception, tab.TabName);
                         }
                     }
                 }
@@ -124,6 +119,68 @@ namespace DotNetNuke.Services.Sitemap
             }
 
             return hasPublicRole;
+        }
+
+        /// <summary>Determines whether a page is eligible to be included in sitemap output.</summary>
+        /// <param name="tab">The page to evaluate.</param>
+        /// <param name="now">The date and time used to evaluate the page publication window.</param>
+        /// <returns><see langword="true"/> when the page is eligible; otherwise, <see langword="false"/>.</returns>
+        internal bool IsTabEligibleForSitemap(TabInfo tab, DateTime now)
+        {
+            return tab != null &&
+                   !tab.IsDeleted &&
+                   !tab.DisableLink &&
+                   tab.TabType == TabType.Normal &&
+                   (Null.IsNull(tab.StartDate) || tab.StartDate < now) &&
+                   (Null.IsNull(tab.EndDate) || tab.EndDate > now) &&
+                   this.IsTabPublic(tab.TabPermissions) &&
+                   (this.includeHiddenPages || tab.IsVisible) &&
+                   tab.HasBeenPublished &&
+                   tab.AllowIndex;
+        }
+
+        /// <summary>Gets the eligible localized URLs for an hreflang group.</summary>
+        /// <param name="defaultLanguageTab">The default-language page.</param>
+        /// <param name="localizedTabs">The localized versions of the page.</param>
+        /// <param name="ps">The current portal settings.</param>
+        /// <param name="now">The date and time used to evaluate page publication windows.</param>
+        /// <returns>The eligible alternate URLs.</returns>
+        internal List<AlternateUrl> GetAlternateUrls(
+            TabInfo defaultLanguageTab,
+            IEnumerable<TabInfo> localizedTabs,
+            PortalSettings ps,
+            DateTime now)
+        {
+            var alternates = new List<AlternateUrl>();
+            List<TabInfo> eligibleLocalizedTabs = localizedTabs.Where(localizedTab => this.IsTabEligibleForSitemap(localizedTab, now)).ToList();
+            bool isDefaultLanguageTabEligible = this.IsTabEligibleForSitemap(defaultLanguageTab, now);
+
+            // A single self-reference is not an alternate-language relationship.
+            if (!isDefaultLanguageTabEligible && eligibleLocalizedTabs.Count < 2)
+            {
+                return alternates;
+            }
+
+            foreach (TabInfo localizedTab in eligibleLocalizedTabs)
+            {
+                alternates.Add(new AlternateUrl
+                {
+                    Url = TestableGlobals.Instance.NavigateURL(localizedTab.TabID, localizedTab.IsSuperTab, ps, string.Empty, localizedTab.CultureCode),
+                    Language = localizedTab.CultureCode,
+                });
+            }
+
+            if (alternates.Count > 0 && isDefaultLanguageTabEligible)
+            {
+                string defaultUrl = TestableGlobals.Instance.NavigateURL(defaultLanguageTab.TabID, defaultLanguageTab.IsSuperTab, ps, string.Empty, defaultLanguageTab.CultureCode);
+                alternates.Add(new AlternateUrl
+                {
+                    Url = defaultUrl,
+                    Language = defaultLanguageTab.CultureCode,
+                });
+            }
+
+            return alternates;
         }
 
         /// <summary>
@@ -187,42 +244,14 @@ namespace DotNetNuke.Services.Sitemap
             // support for alternate pages: https://support.google.com/webmasters/answer/2620865?hl=en
             if (ps.ContentLocalizationEnabled && !objTab.IsNeutralCulture)
             {
-                List<AlternateUrl> alternates = new List<AlternateUrl>();
-                TabInfo currentTab = objTab;
-
-                if (!objTab.IsDefaultLanguage)
+                TabInfo defaultLanguageTab = objTab.IsDefaultLanguage ? objTab : objTab.DefaultLanguageTab;
+                if (defaultLanguageTab != null)
                 {
-                    currentTab = objTab.DefaultLanguageTab;
-                }
-
-                foreach (TabInfo localized in currentTab.LocalizedTabs.Values)
-                {
-                    if ((!localized.IsDeleted && !localized.DisableLink && localized.TabType == TabType.Normal) &&
-                        (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
-                        (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
-                        this.IsTabPublic(localized.TabPermissions) &&
-                        (this.includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
+                    List<AlternateUrl> alternates = this.GetAlternateUrls(defaultLanguageTab, defaultLanguageTab.LocalizedTabs.Values, ps, DateTime.Now);
+                    if (alternates.Count > 0)
                     {
-                        string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, string.Empty, localized.CultureCode);
-                        alternates.Add(new AlternateUrl()
-                        {
-                            Url = alternateUrl,
-                            Language = localized.CultureCode,
-                        });
+                        pageUrl.AlternateUrls = alternates;
                     }
-                }
-
-                if (alternates.Count > 0)
-                {
-                    // add default language to the list
-                    string alternateUrl = TestableGlobals.Instance.NavigateURL(currentTab.TabID, currentTab.IsSuperTab, ps, string.Empty, currentTab.CultureCode);
-                    alternates.Add(new AlternateUrl()
-                    {
-                        Url = alternateUrl,
-                        Language = currentTab.CultureCode,
-                    });
-
-                    pageUrl.AlternateUrls = alternates;
                 }
             }
 
