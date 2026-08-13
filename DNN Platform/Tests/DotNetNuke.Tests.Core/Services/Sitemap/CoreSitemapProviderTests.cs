@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Core.Services.Sitemap
 
             Assert.Multiple(() =>
             {
-                Assert.That(result.Select(alternate => alternate.Language), Is.EqualTo(new[] { "fr-FR", "en-US" }));
+                Assert.That(result.Select(alternate => alternate.Language), Is.EqualTo(new[] { "fr-FR", "en-US", "x-default" }));
                 Assert.That(result, Has.None.Matches<AlternateUrl>(alternate => alternate.Language == "es-ES"));
                 this.globals.Verify(
                     global => global.NavigateURL(
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Core.Services.Sitemap
         }
 
         [Test]
-        public void GetAlternateUrls_UsesCultureSpecificUrls()
+        public void GetAlternateUrls_UsesCultureSpecificUrlsAndAddsXDefault()
         {
             TabInfo defaultTab = CreateTab("en-US");
             TabInfo localizedTab = CreateTab("fr-FR");
@@ -102,11 +102,13 @@ namespace DotNetNuke.Tests.Core.Services.Sitemap
 
             Assert.Multiple(() =>
             {
-                Assert.That(result, Has.Count.EqualTo(2));
+                Assert.That(result, Has.Count.EqualTo(3));
                 Assert.That(result[0].Language, Is.EqualTo("fr-FR"));
                 Assert.That(result[0].Url, Is.EqualTo("https://www.example.fr/page"));
                 Assert.That(result[1].Language, Is.EqualTo("en-US"));
                 Assert.That(result[1].Url, Is.EqualTo("https://www.example.com/page"));
+                Assert.That(result[2].Language, Is.EqualTo("x-default"));
+                Assert.That(result[2].Url, Is.EqualTo("https://www.example.com/page"));
             });
         }
 
@@ -157,6 +159,7 @@ namespace DotNetNuke.Tests.Core.Services.Sitemap
             {
                 Assert.That(result.Select(alternate => alternate.Language), Is.EqualTo(new[] { "fr-FR", "es-ES" }));
                 Assert.That(result, Has.None.Matches<AlternateUrl>(alternate => alternate.Language == "en-US"));
+                Assert.That(result, Has.None.Matches<AlternateUrl>(alternate => alternate.Language == "x-default"));
             });
         }
 
