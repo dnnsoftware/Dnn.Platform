@@ -22,6 +22,7 @@ namespace DotNetNuke.Security
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Entities.Users.Social;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Cookies;
     using DotNetNuke.Services.Cryptography;
@@ -758,6 +759,7 @@ namespace DotNetNuke.Security
             {
                 // save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
+                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("UserId", user?.UserID ?? Null.NullInteger);
             }
 
             // Identity the Login is processed by system.
@@ -821,6 +823,7 @@ namespace DotNetNuke.Security
 
             // Remove current userinfo from context items
             HttpContext.Current.Items.Remove("UserInfo");
+            DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("UserId", Null.NullInteger);
 
             // remove language cookie
             var httpCookie = HttpContext.Current.Response.Cookies["language"];

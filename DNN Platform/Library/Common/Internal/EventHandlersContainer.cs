@@ -14,12 +14,13 @@ namespace DotNetNuke.Common.Internal
     using DotNetNuke.ExtensionPoints;
     using DotNetNuke.Instrumentation;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A container to hold event handlers.</summary>
     /// <typeparam name="T">The type of event handlers.</typeparam>
     internal class EventHandlersContainer<T> : ComponentBase<IEventHandlersContainer<T>, EventHandlersContainer<T>>, IEventHandlersContainer<T>
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventHandlersContainer<T>));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<EventHandlersContainer<T>>();
 
         [ImportMany]
         private IEnumerable<Lazy<T>> eventHandlers = new List<Lazy<T>>();
@@ -38,7 +39,7 @@ namespace DotNetNuke.Common.Internal
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.Message, ex);
+                Logger.EventHandlersContainerConstructorException(ex, ex.Message);
             }
         }
 

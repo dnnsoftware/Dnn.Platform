@@ -20,10 +20,11 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class TabPublishingController : ServiceLocator<ITabPublishingController, TabPublishingController>, ITabPublishingController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabPublishingController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabPublishingController>();
         private readonly IPermissionDefinitionService permissionDefinitionService;
 
         /// <summary>Initializes a new instance of the <see cref="TabPublishingController"/> class.</summary>
@@ -58,7 +59,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 var errorMessage = Localization.GetExceptionMessage("PublishPagePermissionsNotMet", "Permissions are not met. The page has not been published.");
                 var permissionsNotMetExc = new PermissionsNotMetException(tabID, errorMessage);
-                Logger.Error(errorMessage, permissionsNotMetExc);
+                Logger.TabPublishingControllerPermissionsAreNotMetThePageHasNotBeenPublished(permissionsNotMetExc, errorMessage);
                 throw permissionsNotMetExc;
             }
 

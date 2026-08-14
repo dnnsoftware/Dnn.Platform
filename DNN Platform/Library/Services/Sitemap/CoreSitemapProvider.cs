@@ -20,9 +20,11 @@ namespace DotNetNuke.Services.Sitemap
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class CoreSitemapProvider : SitemapProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CoreSitemapProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CoreSitemapProvider>();
         private bool includeHiddenPages;
         private float minPagePriority;
 
@@ -63,9 +65,9 @@ namespace DotNetNuke.Services.Sitemap
                                 pageUrl = this.GetPageUrl(tab, currentLanguage, ps);
                                 urls.Add(pageUrl);
                             }
-                            catch (Exception)
+                            catch (Exception exception)
                             {
-                                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error has occurred getting PageUrl for {0}", tab.TabName);
+                                Logger.CoreSitemapProviderErrorGettingPageUrl(exception, tab.TabName);
                             }
                         }
                     }

@@ -6,13 +6,17 @@ namespace DotNetNuke.Services.ModuleCache
     using System;
     using System.Collections.Generic;
 
+    using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
 
-    public class PurgeModuleCache : SchedulerClient
+    using Microsoft.Extensions.Logging;
+
+    /// <summary>A scheduled task to purge the module cache.</summary>
+    public partial class PurgeModuleCache : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PurgeModuleCache>();
 
         /// <summary>Initializes a new instance of the <see cref="PurgeModuleCache"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The schedule history item.</param>
@@ -31,16 +35,16 @@ namespace DotNetNuke.Services.ModuleCache
                 {
                     try
                     {
-                        foreach (PortalInfo portal in portals)
+                        foreach (IPortalInfo portal in portals)
                         {
-                            kvp.Value.PurgeExpiredItems(portal.PortalID);
+                            kvp.Value.PurgeExpiredItems(portal.PortalId);
                             this.ScheduleHistoryItem.AddLogNote($"Purged Module cache for {kvp.Key}.  ");
                         }
                     }
                     catch (NotSupportedException exc)
                     {
                         // some Module caching providers don't use this feature
-                        Logger.Debug(exc);
+                        Logger.PurgeModuleCachePurgeNotSupportedException(exc);
                     }
                 }
 

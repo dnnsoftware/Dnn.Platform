@@ -33,14 +33,16 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Website;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The ModuleSettingsPage PortalModuleBase is used to edit the settings for a module.</summary>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleSettingsPage>();
         private readonly INavigationManager navigationManager;
         private readonly IPortalAliasService portalAliasService;
         private readonly IModuleControlPipeline moduleControlPipeline;
@@ -555,7 +557,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                         catch (ThreadAbortException exc)
                         {
-                            Logger.Debug(exc);
+                            Logger.ModuleSettingsThreadAbortException(exc);
 
                             Thread.ResetAbort(); // necessary
                         }

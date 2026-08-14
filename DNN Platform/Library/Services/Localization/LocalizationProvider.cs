@@ -7,7 +7,6 @@ namespace DotNetNuke.Services.Localization
     using System;
     using System.Collections.Generic;
     using System.Diagnostics.CodeAnalysis;
-    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -26,6 +25,7 @@ namespace DotNetNuke.Services.Localization
     using DotNetNuke.Services.Cache;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An <see cref="ILocalizationProvider"/> implementation.</summary>
     /// <param name="hostSettings">The host settings.</param>
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Localization
     public class LocalizationProvider(IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         : ComponentBase<ILocalizationProvider, LocalizationProvider>, ILocalizationProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LocalizationProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LocalizationProvider>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
 
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Localization
 
             if (!keyFound)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Missing localization key. key:{0} resFileRoot:{1} threadCulture:{2} userlan:{3}", key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
+                Logger.LocalizationProviderMissingLocalizationKey(key, resourceFileRoot, Thread.CurrentThread.CurrentUICulture, language);
             }
 
             return string.IsNullOrEmpty(resourceValue) ? string.Empty : resourceValue;
@@ -567,7 +567,7 @@ namespace DotNetNuke.Services.Localization
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LocalizationProviderGetLocaleException(ex);
             }
 
             if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))

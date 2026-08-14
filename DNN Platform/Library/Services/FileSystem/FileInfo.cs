@@ -18,6 +18,9 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     /// <summary>Represents the File object and holds the Properties of that object.</summary>
@@ -25,7 +28,7 @@ namespace DotNetNuke.Services.FileSystem
     [Serializable]
     public class FileInfo : BaseEntityInfo, IHydratable, IFileInfo
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileInfo));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileInfo>();
         private string folder;
         private bool? supportsFileAttributes;
         private DateTime? lastModificationTime;

@@ -6,9 +6,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System;
 
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IClearCacheStep" />
     internal sealed class ClearCacheStep : StepBase, IClearCacheStep
@@ -16,14 +17,13 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IDataCache dataCache;
 
         /// <summary>Initializes a new instance of the <see cref="ClearCacheStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="dataCache">An instance of <see cref="IDataCache"/>.</param>
-        public ClearCacheStep(ILoggerSource loggerSource, ILocalizer localizer, IDataCache dataCache)
-            : base(loggerSource, localizer)
+        public ClearCacheStep(ILogger<ClearCacheStep> logger, ILocalizer localizer, IDataCache dataCache)
+            : base(logger, localizer)
         {
-            this.dataCache = dataCache ??
-                throw new ArgumentNullException(nameof(dataCache));
+            this.dataCache = dataCache ?? throw new ArgumentNullException(nameof(dataCache));
 
             this.Quiet = true;
         }

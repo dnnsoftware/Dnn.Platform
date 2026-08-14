@@ -38,11 +38,13 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     internal class PortalTemplateImporter
     {
         public const string HtmlTextTimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlTextAutoSaveEnabled = "HtmlText_AutoSaveEnabled";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalTemplateImporter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalTemplateImporter>();
         private readonly IPermissionDefinitionService permissionDefinitionService;
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly ListController listController;
@@ -260,7 +262,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.PortalTemplateImporterParseTemplateException(ex);
                     }
                 }
 
@@ -653,7 +655,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 catch (InvalidFileExtensionException ex)
                 {
                     // when the file is not allowed, we should not break parse process, but just log the error.
-                    Logger.Error(ex.Message);
+                    Logger.PortalTemplateImporterParseFilesInvalidFileExtensionException(ex, ex.Message);
                 }
             }
         }
@@ -791,7 +793,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.PortalTemplateImporterGetFolderMappingException(ex);
                             folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                         }
 
@@ -804,7 +806,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.PortalTemplateImporterAddFolderException(ex);
 
                             // Retry with default folderMapping
                             var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);

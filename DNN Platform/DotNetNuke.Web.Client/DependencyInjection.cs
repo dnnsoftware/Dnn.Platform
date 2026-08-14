@@ -26,7 +26,7 @@ internal static class DependencyInjection
         }
         catch (Exception exception)
         {
-            LoggerSource.Instance.GetLogger(typeof(ClientResourceSettings)).Warn("Failed to get get types for reflection", exception);
+            DnnLoggingController.GetLogger(typeof(DependencyInjection)).DependencyInjectionFailedToGetTypesForReflection(exception);
         }
     }
 

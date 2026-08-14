@@ -44,7 +44,10 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Client.ResourceManager;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
@@ -53,7 +56,7 @@ namespace DotNetNuke.Framework
     /// <summary>The DNN default page.</summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DefaultPage>();
         private static readonly Regex HeaderTextRegex = new Regex(
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -279,7 +282,7 @@ namespace DotNetNuke.Framework
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("CSP error", ex);
+                        Logger.DefaultCspError(ex);
                     }
                 }
             }

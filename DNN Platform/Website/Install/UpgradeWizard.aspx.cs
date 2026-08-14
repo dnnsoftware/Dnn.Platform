@@ -34,7 +34,11 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.InternalController.Steps;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Services.UserRequest;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     using Globals = DotNetNuke.Common.Globals;
@@ -60,7 +64,7 @@ namespace DotNetNuke.Services.Install
         protected static readonly string StatusFilename = "upgradestat.log.resources.txt";
 
         private const string LocalesFile = "/Install/App_LocalResources/Locales.xml";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpgradeWizard));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UpgradeWizard>();
         private static string localResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
         private static string culture;
         private static string[] supportedLanguages;
@@ -729,7 +733,7 @@ namespace DotNetNuke.Services.Install
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UpgradeWizardAntiForgeryTokenException(ex);
                 return false; // malformed token.
             }
 

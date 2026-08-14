@@ -730,6 +730,7 @@
     <Compile Include="KeepAlive.aspx.designer.cs">
       <DependentUpon>KeepAlive.aspx</DependentUpon>
     </Compile>
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="admin\Skins\DnnJsInclude.xml">
       <SubType>Designer</SubType>
@@ -1213,6 +1214,13 @@
     <Content Include="Providers\DataProviders\SqlDataProvider\10.01.00.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.01.01.SqlDataProvider" />
     <Content Include="Providers\DataProviders\SqlDataProvider\10.02.03.SqlDataProvider" />
+    <Content Include="Config\Serilog.default.config" />
+    <None Include="web.Debug.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
+    <None Include="web.Release.config">
+      <DependentUpon>web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="403-3.gif" />

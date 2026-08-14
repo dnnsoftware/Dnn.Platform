@@ -11,13 +11,15 @@ namespace Dnn.PersonaBar.Library.Common
     using DotNetNuke.ComponentModel;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public class IocUtil
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<IocUtil>();
 
         /// <summary>Register a component into the IOC container for later instantiation.</summary>
-        /// <typeparam name="TContract">Contract interface for the component to registr with the IOC container.</typeparam>
-        /// <typeparam name="TConcrete">Concrete implementation class (must have apublic default constructor).</typeparam>
+        /// <typeparam name="TContract">Contract interface for the component to register with the IOC container.</typeparam>
+        /// <typeparam name="TConcrete">Concrete implementation class (must have a public default constructor).</typeparam>
         /// <param name="name">Optional name for the contract. Useful when more than once class implements the same contract.</param>
         /// <returns>True if the component was created; false if it was already created in the system.</returns>
         /// <remarks>This helper creates a singleton instance for the contract.</remarks>
@@ -52,7 +54,7 @@ namespace Dnn.PersonaBar.Library.Common
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                Logger.IocUtilRegisterComponentException(e);
                 return false;
             }
         }
@@ -91,7 +93,7 @@ namespace Dnn.PersonaBar.Library.Common
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                Logger.IocUtilRegisterComponentInstanceException(e);
                 return false;
             }
         }
@@ -107,11 +109,7 @@ namespace Dnn.PersonaBar.Library.Common
             var instance = GetInstanceLocal<TContract>(name);
             if (instance == null)
             {
-                Logger.WarnFormat(
-                    CultureInfo.InvariantCulture,
-                    "No instance of type '{0}' and name '{1}' is registered in the IOC container.",
-                    typeof(TContract).FullName,
-                    name ?? "<empty>");
+                Logger.IocUtilNoInstanceOfTypeAndNameIsRegisteredInTheIocContainer(typeof(TContract).FullName, name ?? "<empty>");
             }
 
             return instance;

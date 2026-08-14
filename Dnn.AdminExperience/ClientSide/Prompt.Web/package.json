@@ -11,10 +11,10 @@
   },
   "devDependencies": {
     "@dnnsoftware/dnn-react-common": "10.3.4",
-    "@rsbuild/core": "^2.1.2",
-    "@rsbuild/plugin-less": "^2.0.0",
+    "@rsbuild/core": "^2.1.10",
+    "@rsbuild/plugin-less": "^2.0.1",
     "@rsbuild/plugin-react": "^2.1.0",
-    "@rsbuild/plugin-svgr": "^2.0.4",
+    "@rsbuild/plugin-svgr": "^2.0.5",
     "array.prototype.find": "2.2.3",
     "array.prototype.findindex": "2.2.4",
     "create-react-class": "^15.7.0",
@@ -45,7 +45,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "dompurify": "^3.4.10",
+    "dompurify": "^3.4.13",
     "html-react-parser": "^6.1.3"
   }
 }

@@ -12,12 +12,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>FilePermissionCheck - Step that performs file permission checks prior to installation.</summary>
-    public class FilePermissionCheckStep : BaseInstallationStep
+    public partial class FilePermissionCheckStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FilePermissionCheckStep));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FilePermissionCheckStep>();
 
         /// <summary>Main method to execute the step.</summary>
         public override void Execute()
@@ -35,7 +37,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     + Localization.GetString("FileCreateCheck", this.LocalInstallResourceFile)
                     + Localization.GetString("FileDeleteCheck", this.LocalInstallResourceFile)
                     + Localization.GetString("FolderDeleteCheck", this.LocalInstallResourceFile);
-            Logger.TraceFormat(CultureInfo.InvariantCulture, "FilePermissionCheck - {0}", this.Details);
+            Logger.FilePermissionCheckStepCheck(this.Details);
 
             if (!verifiers.All(v => v.VerifyAll()))
             {
@@ -45,7 +47,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Percentage = 100;
 
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
-            Logger.TraceFormat(CultureInfo.InvariantCulture, "FilePermissionCheck Status - {0}", this.Status);
+            Logger.FilePermissionCheckStepStatus(this.Status);
         }
     }
 }

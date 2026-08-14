@@ -29,11 +29,12 @@ namespace DotNetNuke.Security.Roles
     using DotNetNuke.Services.Search.Entities;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The RoleController class provides Business Layer methods for Roles.</summary>
     public class RoleController : ServiceLocator<IRoleController, RoleController>, IRoleController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RoleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RoleController>();
         private static readonly string[] UserRoleActionsCaption = ["ASSIGNMENT", "UPDATE", "UNASSIGNMENT"];
         private readonly RoleProvider roleProvider;
         private readonly IHostSettings hostSettings;
@@ -922,7 +923,7 @@ namespace DotNetNuke.Security.Roles
                 catch (Exception exc)
                 {
                     // user already belongs to role
-                    Logger.Error(exc);
+                    Logger.RoleControllerUserAlreadyBelongsToRoleException(exc);
                 }
             }
         }

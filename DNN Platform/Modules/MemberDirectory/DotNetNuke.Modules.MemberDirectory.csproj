@@ -77,6 +77,7 @@
     </Compile>
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Components\UpgradeController.cs" />
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="Presenters\ModuleSettingsPresenter.cs" />
     <Compile Include="Services\Member.cs" />
     <Compile Include="Services\MemberDirectoryController.cs" />

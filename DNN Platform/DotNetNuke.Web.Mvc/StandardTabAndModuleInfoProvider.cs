@@ -4,16 +4,16 @@
 
 namespace DotNetNuke.Web.Mvc
 {
-    using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Net.Http;
     using System.Web;
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Instrumentation;
+
+    using Microsoft.Extensions.Logging;
 
     public sealed class StandardTabAndModuleInfoProvider : ITabAndModuleInfoProvider
     {
@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Mvc
         private const string MonikerQueryKey = "Moniker";
         private const string MonikerHeaderKey = "X-DNN-MONIKER";
         private const string MonikerSettingsKey = "Moniker";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardTabAndModuleInfoProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<StandardTabAndModuleInfoProvider>();
 
         /// <inheritdoc />
         public bool TryFindTabId(HttpRequestBase request, out int tabId)
@@ -155,10 +155,7 @@ namespace DotNetNuke.Web.Mvc
                     return ids.First();
                 }
 
-                if (Logger.IsWarnEnabled)
-                {
-                    Logger.WarnFormat(CultureInfo.InvariantCulture, "The specified moniker ({0}) is not defined in the system", monikerValue);
-                }
+                Logger.StandardTabAndModuleInfoProviderMonikerIsNotDefined(monikerValue);
             }
 
             return Null.NullInteger;

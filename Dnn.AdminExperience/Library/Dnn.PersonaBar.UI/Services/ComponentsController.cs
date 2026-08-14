@@ -26,12 +26,13 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Web.Api.Internal;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Services used for common components.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class ComponentsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ComponentsController>();
         private readonly RoleProvider roleProvider;
 
         /// <summary>Initializes a new instance of the <see cref="ComponentsController"/> class.</summary>
@@ -80,7 +81,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsControllerGetRoleGroupsException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
@@ -117,7 +118,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsControllerGetSuggestionUsersException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }
@@ -163,7 +164,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsControllerGetSuggestionRolesException(ex);
                 return this.Request.CreateResponse(HttpStatusCode.InternalServerError, new { Error = ex.Message });
             }
         }

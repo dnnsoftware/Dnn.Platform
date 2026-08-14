@@ -80,6 +80,9 @@ namespace DotNetNuke
         {
             services.AddTransient(typeof(Lazy<>), typeof(LazyWrapper<>));
 
+            var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~");
+            services.AddSerilog(applicationMapPath);
+
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, WebFormsModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, Html5ModuleControlFactory>());
             services.TryAddEnumerable(ServiceDescriptor.Singleton<IModuleControlFactory, ReflectedModuleControlFactory>());
@@ -91,6 +94,8 @@ namespace DotNetNuke
             services.AddScoped<IEventLogger, EventLogController>();
             services.AddScoped<IEventLogConfigService, EventLogController>();
             services.AddScoped<IEventLogService, EventLogController>();
+            services.AddTransient<ILoggerSource, LoggerSourceImpl>();
+            services.AddTransient<IPortalAliasController, PortalAliasController>();
 #pragma warning restore CS0618
 
             services.AddTransient<IPortalController, PortalController>();
@@ -124,7 +129,6 @@ namespace DotNetNuke
             services.AddTransient<IFolderManager, FolderManager>();
             services.AddTransient(_ => ComponentFactory.GetComponent<DataProvider>());
 
-            services.AddTransient<ILoggerSource, LoggerSourceImpl>();
             services.AddTransient<IModuleController, ModuleController>();
             services.AddTransient<IPackageController, PackageController>();
             services.AddTransient<ITabController, TabController>();
@@ -133,9 +137,6 @@ namespace DotNetNuke
             services.AddTransient<IJavaScriptLibraryController, JavaScriptLibraryController>();
             services.AddTransient<IJavaScriptLibraryHelper, JavaScript>();
             services.AddTransient<IPortalSettingsController, PortalSettingsController>();
-#pragma warning disable CS0618 // Type or member is obsolete
-            services.AddTransient<IPortalAliasController, PortalAliasController>();
-#pragma warning restore CS0618 // Type or member is obsolete
             services.AddTransient<IPortalGroupController, PortalGroupController>();
             services.AddTransient<DotNetNuke.Entities.Portals.Data.IDataService, DotNetNuke.Entities.Portals.Data.DataService>();
             services.AddTransient<DotNetNuke.Entities.Content.Data.IDataService, DotNetNuke.Entities.Content.Data.DataService>();

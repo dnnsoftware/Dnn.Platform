@@ -16,8 +16,8 @@ namespace DotNetNuke.Instrumentation
     using log4net.Repository;
     using log4net.Util;
 
-    /// <summary>Obsolete, use <see cref="LoggerSource"/> instead.</summary>
-    [DnnDeprecated(9, 13, 7, "Use LoggerSource.Instance", RemovalVersion = 11)]
+    /// <summary>Obsolete, use <see cref="Microsoft.Extensions.Logging.ILogger{T}"/> instead.</summary>
+    [DnnDeprecated(9, 13, 7, "Use Microsoft.Extensions.Logging.ILogger<T>", RemovalVersion = 11)]
     public sealed partial class DnnLogger : LoggerWrapperImpl
     {
         // add custom logging levels (below trace value of 20000)

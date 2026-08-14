@@ -12,10 +12,12 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>UpdateLanguagePackStep - Step that downloads and installs language pack.</summary>
     public class UpdateLanguagePackStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UpdateLanguagePackStep));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UpdateLanguagePackStep>();
 
         /// <summary>Main method to execute the step.</summary>
         public override void Execute()
@@ -46,7 +48,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 {
                     // we shouldn't break the install process when LP download failed, for admin user can install the LP after website created.
                     // so we logged what's wrong here, and user can check it later.
-                    Logger.Error(ex);
+                    Logger.UpdateLanguagePackStepExecuteException(ex);
                 }
             }
 

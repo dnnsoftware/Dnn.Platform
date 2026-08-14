@@ -30,6 +30,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>Provides messaging web services.</summary>
 /// <param name="portalController">The portal controller.</param>
@@ -42,7 +43,7 @@ using Microsoft.Extensions.DependencyInjection;
 public class MessagingServiceController(IPortalController portalController, IApplicationStatusInfo appStatus, IPortalGroupController portalGroupController, IHostSettings hostSettings)
     : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<MessagingServiceController>();
     private readonly IPortalController portalController = portalController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalController>();
     private readonly IApplicationStatusInfo appStatus = appStatus ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IApplicationStatusInfo>();
     private readonly IPortalGroupController portalGroupController = portalGroupController ?? HttpContextSource.Current.GetScope().ServiceProvider.GetRequiredService<IPortalGroupController>();
@@ -84,9 +85,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while trying to fetch the inbox, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorFetchingInbox(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to fetch the inbox, consult the server logs for more information.");
         }
     }
 
@@ -108,9 +108,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to fetch the Sent box, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorFetchingSentBox(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to fetch the Sent box, consult the server logs for more information.");
         }
     }
 
@@ -132,9 +131,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to fetch the archived box.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorFetchingArchivedBox(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to fetch the archived box.");
         }
     }
 
@@ -159,9 +157,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to fetch the thread, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorFetchingThread(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to fetch the thread, consult the server logs for more information.");
         }
     }
 
@@ -201,9 +198,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to reply to a conversation, see the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorReplying(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to reply to a conversation, see the server logs for more information.");
         }
     }
 
@@ -221,9 +217,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to fetch the archived box, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorMarkingArchived(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to fetch the archived box, consult the server logs for more information.");
         }
     }
 
@@ -241,9 +236,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to restore an archived conversation, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorRestoringArchivedConversation(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to restore an archived conversation, consult the server logs for more information.");
         }
     }
 
@@ -261,9 +255,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting mark a conversation as read, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorMarkingConversationAsRead(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting mark a conversation as read, consult the server logs for more information.");
         }
     }
 
@@ -281,9 +274,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to restore an archived conversation, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorMarkingConversationAsUnread(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to restore an archived conversation, consult the server logs for more information.");
         }
     }
 
@@ -301,9 +293,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to delete a user from a conversation, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorDeleteUserFromConversation(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to delete a user from a conversation, consult the server logs for more information.");
         }
     }
 
@@ -377,14 +368,13 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to fetch messaging notifications, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorFetchingNotifications(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to fetch messaging notifications, consult the server logs for more information.");
         }
     }
 
     /// <summary>Checks if a reply has recipients.</summary>
-    /// <param name="conversationId">The id of conversation to check./>.</param>
+    /// <param name="conversationId">The ID of conversation to check./>.</param>
     /// <returns>The recipient count or an InternalServerError.</returns>
     [HttpGet]
     public HttpResponseMessage CheckReplyHasRecipients(int conversationId)
@@ -396,9 +386,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to check the recipient count on a reply, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorCheckRecipientCount(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to check the recipient count on a reply, consult the server logs for more information.");
         }
     }
 
@@ -415,9 +404,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to get the notification count, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorGettingNotificationCount(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to get the notification count, consult the server logs for more information.");
         }
     }
 
@@ -434,9 +422,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to , consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorGettingUnreadCount(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to , consult the server logs for more information.");
         }
     }
 
@@ -458,9 +445,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to get the unread messages and new notifications count, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorGettingUnreadAndNotificationCounts(ex);
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to get the unread messages and new notifications count, consult the server logs for more information.");
         }
     }
 
@@ -477,9 +463,8 @@ public class MessagingServiceController(IPortalController portalController, IApp
         }
         catch (Exception ex)
         {
-            const string message = "An unexpected error occurred while attempting to dismiss notifications, consult the server logs for more information.";
-            Logger.Error(message, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
+            Logger.MessagingServiceControllerUnexpectedErrorDismissingNotifications(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while attempting to dismiss notifications, consult the server logs for more information.");
         }
     }
 

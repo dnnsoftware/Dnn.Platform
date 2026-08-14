@@ -12,6 +12,7 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     using DotNetNuke.Maintenance.Telerik;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// Check for Telerik presence in the site.
@@ -26,19 +27,19 @@ namespace Dnn.PersonaBar.Security.Components.Checks
 
         /// <summary>Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.</summary>
         public CheckTelerikPresence()
-            : this(Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>())
+            : this(
+                Globals.GetCurrentServiceProvider().GetRequiredService<ILogger<CheckTelerikPresence>>(),
+                Globals.GetCurrentServiceProvider().GetRequiredService<ITelerikUtils>())
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="CheckTelerikPresence"/> class.</summary>
-        /// <param name="telerikUtils">
-        /// An instance of the <see cref="ITelerikUtils"/> interface.
-        /// </param>
-        internal CheckTelerikPresence(ITelerikUtils telerikUtils)
-            : base()
+        /// <param name="logger">An instance of the <see cref="ILogger{T}"/> interface.</param>
+        /// <param name="telerikUtils">An instance of the <see cref="ITelerikUtils"/> interface.</param>
+        internal CheckTelerikPresence(ILogger<CheckTelerikPresence> logger, ITelerikUtils telerikUtils)
+            : base(logger ?? throw new ArgumentNullException(nameof(logger)))
         {
-            this.telerikUtils = telerikUtils ??
-                throw new ArgumentNullException(nameof(telerikUtils));
+            this.telerikUtils = telerikUtils ?? throw new ArgumentNullException(nameof(telerikUtils));
         }
 
         /// <inheritdoc />

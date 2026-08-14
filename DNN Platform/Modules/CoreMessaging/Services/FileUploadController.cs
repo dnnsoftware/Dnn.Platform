@@ -16,12 +16,15 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     /// <summary>Provides a file upload web service.</summary>
     public class FileUploadController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileUploadController>();
         private readonly IFileManager fileManager = FileManager.Instance;
         private readonly IFolderManager folderManager = FolderManager.Instance;
         private readonly IFileContentTypeManager fileContentTypeManager = FileContentTypeManager.Instance;
@@ -41,7 +44,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileUploadControllerUploadFileException(exc);
             }
 
             return this.IframeSafeJson(statuses);

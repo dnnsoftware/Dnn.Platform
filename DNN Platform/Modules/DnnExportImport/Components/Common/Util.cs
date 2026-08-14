@@ -29,13 +29,14 @@ namespace Dnn.ExportImport.Components.Common
     using DotNetNuke.Internal.SourceGenerators;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
     /// <summary>A collection of utilities for import/export.</summary>
     public static partial class Util
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(Util));
         private static int noRole = Convert.ToInt32(Globals.glbRoleNothing, CultureInfo.InvariantCulture);
 
         /// <summary>Checks if a string is either null or empty (<c>""</c>).</summary>

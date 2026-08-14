@@ -26,6 +26,8 @@ namespace DotNetNuke.Services.Mail
     using DotNetNuke.Services.Messaging.Data;
     using DotNetNuke.Services.Tokens;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>
@@ -34,7 +36,7 @@ namespace DotNetNuke.Services.Mail
     /// </summary>
     public class SendTokenizedBulkEmail : IDisposable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SendTokenizedBulkEmail>();
 
         // ReSharper restore InconsistentNaming
         private readonly List<string> addressedRoles = new List<string>();
@@ -303,7 +305,7 @@ namespace DotNetNuke.Services.Mail
         }
 
         /// <summary>Send bulkmail to all recipients according to settings.</summary>
-        /// <returns>Number of emails sent, null.integer if not determinable.</returns>
+        /// <returns>Number of emails sent, <see cref="Null.NullInteger"/> if not determinable.</returns>
         /// <remarks>Detailed status report is sent by email to sending user.</remarks>
         public int SendMails()
         {
@@ -321,7 +323,7 @@ namespace DotNetNuke.Services.Mail
                 {
                     // Add Base Href for any images inserted in to the email.
                     var host = this.PortalAlias.Contains("/") ? this.PortalAlias.Substring(0, this.PortalAlias.IndexOf('/')) : this.PortalAlias;
-                    body = "<html><head><base href='http://" + host + "'><title>" + this.Subject + "</title></head><body>" + body + "</body></html>";
+                    body = $"<html><head><base href='http://{host}'><title>{this.Subject}</title></head><body>{body}</body></html>";
                 }
 
                 string subject = this.Subject;
@@ -473,7 +475,7 @@ namespace DotNetNuke.Services.Mail
             catch (Exception exc)
             {
                 // send mail failure
-                Logger.Error(exc);
+                Logger.SendTokenizedBulkEmailSendMailsException(exc);
 
                 Debug.Write(exc.Message);
             }

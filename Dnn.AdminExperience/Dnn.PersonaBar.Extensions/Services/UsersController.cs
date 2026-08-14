@@ -29,10 +29,12 @@ namespace Dnn.PersonaBar.Users.Services
     using DotNetNuke.Services.Mail;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(MenuName = "Dnn.Users")]
     public class UsersController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UsersController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UsersController>();
 
         /// <summary>Create a User.</summary>
         /// <param name="contract">Information about the user to create.</param>
@@ -72,7 +74,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerCreateUserException(ex);
                 if (ex.GetType() == typeof(InvalidUserRegisterException))
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, ex.Message);
@@ -120,7 +122,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerGetUsersException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -136,7 +138,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.UsersControllerGetUserFiltersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -173,7 +175,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerGetUserDetailException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -187,8 +189,7 @@ namespace Dnn.PersonaBar.Users.Services
             {
                 var userId = changePasswordDto.UserId;
                 var password = changePasswordDto.Password;
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
@@ -201,12 +202,12 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (InvalidPasswordException exc)
             {
-                Logger.Error(exc);
+                Logger.UsersControllerChangePasswordInvalidPasswordException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, exc.Message);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerChangePasswordGeneralException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -218,15 +219,13 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                HttpResponseMessage httpResponseMessage;
-                if (this.IsCurrentUser(userId, out httpResponseMessage))
+                if (this.IsCurrentUser(userId, out var httpResponseMessage))
                 {
                     return httpResponseMessage;
                 }
@@ -239,7 +238,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerForceChangePasswordException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -282,12 +281,12 @@ namespace Dnn.PersonaBar.Users.Services
                     }
                     catch (ArgumentException exc)
                     {
-                        Logger.Error(exc);
+                        Logger.UsersControllerCreateResetTokenArgumentException(exc);
                         errorMessage = Localization.GetString("InvalidPasswordAnswer", Components.Constants.LocalResourcesFile);
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.UsersControllerCreateResetTokenGeneralException(exc);
                         errorMessage = Localization.GetString("PasswordResetFailed", Components.Constants.LocalResourcesFile);
                     }
                 }
@@ -296,7 +295,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerSendPasswordResetLinkException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -308,15 +307,13 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                HttpResponseMessage httpResponseMessage;
-                if (this.IsCurrentUser(userId, out httpResponseMessage))
+                if (this.IsCurrentUser(userId, out var httpResponseMessage))
                 {
                     return httpResponseMessage;
                 }
@@ -332,7 +329,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerUpdateAuthorizeStatusException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -361,7 +358,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerSoftDeleteUserException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -373,8 +370,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
@@ -389,7 +385,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerHardDeleteUserException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -423,8 +419,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
@@ -439,7 +434,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerRestoreDeletedUserException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -451,8 +446,7 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
@@ -468,7 +462,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerUpdateSuperUserStatusException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -481,27 +475,26 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userBasicDto);
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userBasicDto.UserId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userBasicDto.UserId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                var upadtedUser = Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
+                var updatedUser = Components.UsersController.Instance.UpdateUserBasicInfo(userBasicDto);
 
-                return this.Request.CreateResponse(HttpStatusCode.OK, upadtedUser);
+                return this.Request.CreateResponse(HttpStatusCode.OK, updatedUser);
             }
             catch (SqlException ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerUpdateUserBasicInfoSqlException(ex);
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.BadRequest,
                     Localization.GetString("UsernameNotUnique", Components.Constants.LocalResourcesFile));
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerUpdateUserBasicInfoGeneralException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -513,15 +506,13 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                HttpResponseMessage httpResponseMessage;
-                if (this.IsCurrentUser(userId, out httpResponseMessage))
+                if (this.IsCurrentUser(userId, out var httpResponseMessage))
                 {
                     return httpResponseMessage;
                 }
@@ -535,7 +526,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerUnlockUserException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -574,7 +565,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerGetSuggestRolesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -585,22 +576,20 @@ namespace Dnn.PersonaBar.Users.Services
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
                 }
 
-                int totalRoles;
-                var userRoles = Components.UsersController.Instance.GetUserRoles(user, keyword, out totalRoles, pageIndex, pageSize)
+                var userRoles = Components.UsersController.Instance.GetUserRoles(user, keyword, out var totalRoles, pageIndex, pageSize)
                         .Select(r => UserRoleDto.FromRoleInfo(this.PortalSettings, r));
 
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { UserRoles = userRoles, TotalRecords = totalRoles });
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerGetUserRolesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -613,8 +602,7 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userRoleDto);
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
@@ -631,7 +619,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerSaveUserRoleException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -644,8 +632,7 @@ namespace Dnn.PersonaBar.Users.Services
             try
             {
                 Validate(userRoleDto);
-                KeyValuePair<HttpStatusCode, string> response;
-                var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out response);
+                var user = Components.UsersController.GetUser(userRoleDto.UserId, this.PortalSettings, this.UserInfo, out var response);
                 if (user == null)
                 {
                     return this.Request.CreateErrorResponse(response.Key, response.Value);
@@ -663,7 +650,7 @@ namespace Dnn.PersonaBar.Users.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.UsersControllerRemoveUserRoleException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }

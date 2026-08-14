@@ -19,11 +19,13 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A Persona Bar API controller for pages.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class TabsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabsController>();
         private readonly Library.Controllers.TabsController controller = new Library.Controllers.TabsController();
 
         /// <summary>Gets the local resource file path.</summary>
@@ -81,7 +83,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TabsControllerGetPortalTabsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -95,7 +97,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="validateTab">The friendly name of a module which must be on the page.</param>
         /// <param name="includeHostPages">Whether to include host pages.</param>
         /// <param name="includeDisabled">Whether to include disabled pages.</param>
-        /// <param name="includeDeleted">WHether to include deleted pages.</param>
+        /// <param name="includeDeleted">Whether to include deleted pages.</param>
         /// <returns>A response with a <see cref="TabDto"/> <c>Results</c> field.</returns>
         [HttpGet]
         public HttpResponseMessage SearchPortalTabs(string searchText, int portalId, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false)
@@ -113,7 +115,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TabsControllerSearchPortalTabsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -139,7 +141,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TabsControllerGetPortalTabException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -184,7 +186,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TabsControllerGetTabsDescendantsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
