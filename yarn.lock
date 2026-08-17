@@ -10634,9 +10634,9 @@ __metadata:
   linkType: hard
 
 "jodit@npm:^4.11.15":
-  version: 4.12.27
-  resolution: "jodit@npm:4.12.27"
-  checksum: 10/16d879414753666bdbda0fa92ad8ab67bd50bcf5d843cea24dc094ea98223f07238cab47873298a218fd7e0be22842a1a91347daba1e02dcbfc5b90c45fa61c9
+  version: 4.13.22
+  resolution: "jodit@npm:4.13.22"
+  checksum: 10/731a44cbe15ebedb32739fb9988ea3911f0d12d72a5b7ef49e1971ae58c6b9df4204c4a68893c048fcdd730439b65ff50620caf17ff24eb96fc95401c4476fc1
   languageName: node
   linkType: hard
 
