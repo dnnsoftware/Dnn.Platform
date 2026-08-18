@@ -262,10 +262,10 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         SetTabData(localTab, otherTab);
-                        if (this.Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id).Any(setting => setting.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal)))
-                        {
-                            localTab.PageHeadText = null;
-                        }
+                        var hasNewStylePageHeaderTagSettings = this.HasNewStylePageHeaderTagSettings(otherTab);
+                        var legacyPageHeadText = otherTab.PageHeadText;
+
+                        localTab.PageHeadText = null;
 
                         localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                         var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
@@ -321,6 +321,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
                         this.UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                         this.AddTabRelatedItems(localTab, otherTab, false);
+                        this.MigrateLegacyPageHeadText(localTab, legacyPageHeadText, hasNewStylePageHeaderTagSettings);
                         this.TriggerImportEvent(localTab);
                         this.Result.AddLogEntry("Updated Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                         this.totals.TotalTabs++;
@@ -333,10 +334,10 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab = new TabInfo { PortalID = portalId };
                 SetTabData(localTab, otherTab);
-                if (this.Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id).Any(setting => setting.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal)))
-                {
-                    localTab.PageHeadText = null;
-                }
+                var hasNewStylePageHeaderTagSettings = this.HasNewStylePageHeaderTagSettings(otherTab);
+                var legacyPageHeadText = otherTab.PageHeadText;
+
+                localTab.PageHeadText = null;
 
                 localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                 var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
@@ -401,6 +402,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.totals.TotalTabs++;
                 this.UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                 this.AddTabRelatedItems(localTab, otherTab, true);
+                this.MigrateLegacyPageHeadText(localTab, legacyPageHeadText, hasNewStylePageHeaderTagSettings);
                 this.TriggerImportEvent(localTab);
             }
 
@@ -777,6 +779,27 @@ namespace Dnn.ExportImport.Components.Services
             this.totals.TotalTabPermissions += this.ImportTabPermissions(localTab, otherTab, isNew);
             this.totals.TotalTabUrls += this.ImportTabUrls(localTab, otherTab, isNew);
             this.totals.TotalTabModules += this.ImportTabModulesAndRelatedItems(localTab, otherTab, isNew);
+        }
+
+        private bool HasNewStylePageHeaderTagSettings(ExportTab otherTab)
+        {
+            return this.Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id)
+                .Any(setting => setting.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal));
+        }
+
+        private void MigrateLegacyPageHeadText(TabInfo localTab, string legacyPageHeadText, bool hasNewStylePageHeaderTagSettings)
+        {
+            if (hasNewStylePageHeaderTagSettings || string.IsNullOrWhiteSpace(legacyPageHeadText))
+            {
+                return;
+            }
+
+            var currentSettings = this.tabController.GetTabSettings(localTab.TabID);
+            if (!currentSettings.Contains(PageHeaderTagInfo.SettingPrefix + "Default"))
+            {
+                this.tabController.UpdateTabSetting(localTab.TabID, PageHeaderTagInfo.SettingPrefix + "Default", legacyPageHeadText);
+                this.Result.AddLogEntry("Migrated tab setting", $"PageHeadText -> {PageHeaderTagInfo.SettingPrefix}Default ({localTab.TabPath})");
+            }
         }
 
         private int ImportTabSettings(TabInfo localTab, ExportTab otherTab, bool isNew)
