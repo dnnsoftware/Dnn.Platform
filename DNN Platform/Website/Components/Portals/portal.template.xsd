@@ -40,6 +40,7 @@
               <xs:element name="controlpanelmode" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="controlpanelsecurity" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="controlpanelvisibility" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
               <xs:element name="pageheadertags" minOccurs="0" maxOccurs="1">
                 <xs:complexType>
                   <xs:sequence>
@@ -332,6 +333,8 @@
                       </xs:complexType>
                     </xs:element>
                     <xs:element name="refreshinterval" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <!-- Deprecated: legacy pageheadtext is still accepted when importing templates exported by older versions. Scheduled removal in v12.0.0. -->
+                    <xs:element name="pageheadtext" type="xs:string" minOccurs="0" maxOccurs="1" />
                     <xs:element name="permanentredirect" type="xs:boolean" minOccurs="0" maxOccurs="1" />
                     <xs:element name="panes" minOccurs="0" maxOccurs="1">
                       <xs:complexType>
