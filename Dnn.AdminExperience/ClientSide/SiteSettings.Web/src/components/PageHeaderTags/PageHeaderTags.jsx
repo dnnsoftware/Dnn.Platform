@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Collapsible, GridCell, MultiLineInputWithError, SvgIcons, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import utils from "../../utils";
+import resx from "../../resources";
 import "./style.less";
 
 class PageHeaderTags extends Component {
@@ -53,7 +54,7 @@ class PageHeaderTags extends Component {
 
     onDelete(index) {
         const { onChange, value } = this.props;
-        utils.utilities.confirm("Delete this tag?", "Delete", "Cancel", () => {
+        utils.utilities.confirm(resx.get("PageHeaderTags_DeleteConfirm"), resx.get("PageHeaderTags_Delete"), resx.get("Cancel"), () => {
             onChange((value || []).filter((item, itemIndex) => itemIndex !== index));
             if (this.state.editingIndex === index) {
                 this.onCloseForm();
@@ -123,30 +124,30 @@ class PageHeaderTags extends Component {
                     <GridCell columnSize={60}>
                         <SingleLineInputWithError
                             style={{ width: "100%" }}
-                            label="Name"
+                            label={resx.get("PageHeaderTags_Name")}
                             value={draft.name}
                             onChange={this.onChangeField.bind(this, "name")}
                             maxLength={30}
                             error={triedToSubmit && (!draft.name || duplicateName || nameTooLong)}
-                            errorMessage={!draft.name ? "Name is required" : duplicateName ? "Name already exists" : "Name must be 30 characters or less"}
+                            errorMessage={!draft.name ? resx.get("PageHeaderTags_NameRequired") : duplicateName ? resx.get("PageHeaderTags_NameDuplicate") : resx.get("PageHeaderTags_NameTooLong")}
                         />
                     </GridCell>
                     <GridCell columnSize={95}>
                         <MultiLineInputWithError
-                            label="Content"
+                            label={resx.get("PageHeaderTags_Content")}
                             value={draft.content}
                             onChange={this.onChangeField.bind(this, "content")}
                             error={triedToSubmit && !draft.content.trim()}
-                            errorMessage="Content is required"
+                            errorMessage={resx.get("PageHeaderTags_ContentRequired")}
                         />
                     </GridCell>
                 </GridCell>
                 <div className="buttons-box" style={{ float: "left", margin: "0 0 20px 0" }}>
                     <Button type="secondary" onClick={this.onCloseForm.bind(this)}>
-                        Cancel
+                        {resx.get("Cancel")}
                     </Button>
                     <Button type="primary" onClick={this.onSave.bind(this)}>
-                        Save
+                        {resx.get("Save")}
                     </Button>
                 </div>
                 <div style={{ clear: "both" }} />
@@ -203,12 +204,12 @@ class PageHeaderTags extends Component {
                 <div className="sectionTitle">{label}</div>
                 <div className={`AddItemBox${addingNew ? " active" : ""}`} onClick={!addingNew ? this.onOpenNewForm.bind(this) : undefined}>
                     <div className={`add-icon${addingNew ? " active" : ""}`}><SvgIcons.AddIcon /></div>
-                    Add Tag
+                    {resx.get("PageHeaderTags_AddTag")}
                 </div>
             </div>
             <div className="tag-table">
                 <div className="header-row">
-                    <GridCell columnSize={90}>Name</GridCell>
+                    <GridCell columnSize={90}>{resx.get("PageHeaderTags_Name")}</GridCell>
                     <GridCell columnSize={10} />
                 </div>
                 {this.renderAddRow()}

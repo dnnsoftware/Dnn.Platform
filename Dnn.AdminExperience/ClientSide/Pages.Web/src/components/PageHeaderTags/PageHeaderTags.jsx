@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { Button, Collapsible, GridCell, MultiLineInputWithError, SvgIcons, SingleLineInputWithError } from "@dnnsoftware/dnn-react-common";
 import utils from "../../utils";
+import Localization from "../../localization";
 import "./style.less";
 
 class PageHeaderTags extends Component {
@@ -53,7 +54,7 @@ class PageHeaderTags extends Component {
 
     onDelete(index) {
         const { onChange, value } = this.props;
-        utils.confirm("Delete this tag?", "Delete", "Cancel", () => {
+        utils.confirm(Localization.get("PageHeaderTags_DeleteConfirm"), Localization.get("PageHeaderTags_Delete"), Localization.get("Cancel"), () => {
             onChange((value || []).filter((item, itemIndex) => itemIndex !== index));
             if (this.state.editingIndex === index) {
                 this.onCloseForm();
@@ -123,30 +124,30 @@ class PageHeaderTags extends Component {
                     <GridCell columnSize={60}>
                         <SingleLineInputWithError
                             style={{ width: "100%" }}
-                            label="Name"
+                            label={Localization.get("PageHeaderTags_Name")}
                             value={draft.name}
                             onChange={this.onChangeField.bind(this, "name")}
                             maxLength={30}
                             error={triedToSubmit && (!draft.name || duplicateName || nameTooLong)}
-                            errorMessage={!draft.name ? "Name is required" : duplicateName ? "Name already exists" : "Name must be 30 characters or less"}
+                            errorMessage={!draft.name ? Localization.get("PageHeaderTags_NameRequired") : duplicateName ? Localization.get("PageHeaderTags_NameDuplicate") : Localization.get("PageHeaderTags_NameTooLong")}
                         />
                     </GridCell>
                     <GridCell columnSize={95}>
                         <MultiLineInputWithError
-                            label="Content"
+                            label={Localization.get("PageHeaderTags_Content")}
                             value={draft.content}
                             onChange={this.onChangeField.bind(this, "content")}
                             error={triedToSubmit && !draft.content.trim()}
-                            errorMessage="Content is required"
+                            errorMessage={Localization.get("PageHeaderTags_ContentRequired")}
                         />
                     </GridCell>
                 </GridCell>
                 <div className="buttons-box" style={{ float: "left", margin: "0 0 20px 0" }}>
                     <Button type="secondary" onClick={this.onCloseForm.bind(this)}>
-                        Cancel
+                        {Localization.get("Cancel")}
                     </Button>
                     <Button type="primary" onClick={this.onSave.bind(this)}>
-                        Save
+                        {Localization.get("Save")}
                     </Button>
                 </div>
                 <div style={{ clear: "both" }} />
@@ -203,12 +204,12 @@ class PageHeaderTags extends Component {
                 <div className="sectionTitle">{label}</div>
                 <div className={`AddItemBox${addingNew ? " active" : ""}`} onClick={!addingNew ? this.onOpenNewForm.bind(this) : undefined}>
                     <div className={`add-icon${addingNew ? " active" : ""}`}><SvgIcons.AddIcon /></div>
-                    Add Tag
+                    {Localization.get("PageHeaderTags_AddTag")}
                 </div>
             </div>
             <div className="tag-table">
                 <div className="header-row">
-                    <GridCell columnSize={90}>Name</GridCell>
+                    <GridCell columnSize={90}>{Localization.get("PageHeaderTags_Name")}</GridCell>
                     <GridCell columnSize={10} />
                 </div>
                 {this.renderAddRow()}
