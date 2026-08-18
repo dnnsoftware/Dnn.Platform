@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Tabs
 
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Portals;
+    using DotNetNuke.Security;
 
     public class PageHeaderTagInfo
     {
@@ -128,7 +129,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        private static List<PageHeaderTagInfo> Normalize(IEnumerable<PageHeaderTagInfo> items)
+        internal static List<PageHeaderTagInfo> Normalize(IEnumerable<PageHeaderTagInfo> items)
         {
             if (items == null)
             {
@@ -139,7 +140,7 @@ namespace DotNetNuke.Entities.Tabs
                 .Where(item => item != null)
                 .Select(item => new PageHeaderTagInfo
                 {
-                    Name = (item.Name ?? string.Empty).Trim(),
+                    Name = CleanName(item.Name),
                     Content = item.Content ?? string.Empty,
                 })
                 .Where(item => !string.IsNullOrWhiteSpace(item.Name) && !string.IsNullOrWhiteSpace(item.Content))
@@ -147,6 +148,19 @@ namespace DotNetNuke.Entities.Tabs
                 .Select(group => group.Last())
                 .OrderBy(item => item.Name, StringComparer.OrdinalIgnoreCase)
                 .ToList();
+        }
+
+        /// <summary>
+        /// Sanitizes a page header tag name. The name becomes part of a setting key and is also
+        /// displayed in the UI, so it must never contain markup. This is the central choke point
+        /// for every save path (tab and portal), matching the cleaning applied to other page fields.
+        /// </summary>
+        private static string CleanName(string name)
+        {
+            var trimmed = (name ?? string.Empty).Trim();
+#pragma warning disable CS0618 // Type or member is obsolete
+            return PortalSecurity.Instance.InputFilter(trimmed, PortalSecurity.FilterFlag.NoMarkup);
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }
