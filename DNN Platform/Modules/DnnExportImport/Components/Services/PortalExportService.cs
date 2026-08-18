@@ -194,6 +194,37 @@ namespace Dnn.ExportImport.Components.Services
                     return;
                 }
 
+                if (string.Equals(exportPortalSetting.SettingName, "PageHeadText", StringComparison.OrdinalIgnoreCase))
+                {
+                    var hasNewStylePageHeaderTags = portalSettings.Any(s =>
+                        s.SettingName != null &&
+                        s.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal) &&
+                        (s.CultureCode == exportPortalSetting.CultureCode ||
+                         (string.IsNullOrEmpty(s.CultureCode) && string.IsNullOrEmpty(exportPortalSetting.CultureCode))));
+                    if (!hasNewStylePageHeaderTags &&
+                        !string.IsNullOrEmpty(exportPortalSetting.SettingValue) &&
+                        exportPortalSetting.SettingValue != "false")
+                    {
+                        var createdBy = Util.GetUserIdByName(
+                            importJob,
+                            exportPortalSetting.CreatedByUserId,
+                            exportPortalSetting.CreatedByUserName);
+
+                        DotNetNuke.Data.DataProvider.Instance()
+                            .UpdatePortalSetting(
+                                importJob.PortalId,
+                                PageHeaderTagInfo.SettingPrefix + "Default",
+                                exportPortalSetting.SettingValue,
+                                createdBy,
+                                exportPortalSetting.CultureCode,
+                                exportPortalSetting.IsSecure);
+
+                        this.Result.AddLogEntry("Migrated portal settings", $"PageHeadText -> {PageHeaderTagInfo.SettingPrefix}Default");
+                    }
+
+                    continue;
+                }
+
                 var existingPortalSetting =
                     localPortalSettings.FirstOrDefault(
                         t =>
