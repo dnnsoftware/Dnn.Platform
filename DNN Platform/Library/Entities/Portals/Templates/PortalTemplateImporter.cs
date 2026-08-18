@@ -980,6 +980,18 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PageHeaderTagInfo.SavePortalItems(portalId, items);
                 PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", "false");
             }
+            else
+            {
+                var legacyHeadText = XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty);
+                if (!string.IsNullOrEmpty(legacyHeadText) && legacyHeadText != "false")
+                {
+                    PageHeaderTagInfo.SavePortalItems(portalId, new List<PageHeaderTagInfo>
+                    {
+                        new PageHeaderTagInfo { Name = "Default", Content = legacyHeadText },
+                    });
+                    PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", "false");
+                }
+            }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty)))
             {

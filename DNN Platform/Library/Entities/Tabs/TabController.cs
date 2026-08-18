@@ -349,7 +349,9 @@ namespace DotNetNuke.Entities.Tabs
                 tab.StartDate = XmlUtils.GetNodeValueDate(tabNode, "startdate", Null.NullDate);
                 tab.EndDate = XmlUtils.GetNodeValueDate(tabNode, "enddate", Null.NullDate);
                 tab.RefreshInterval = XmlUtils.GetNodeValueInt(tabNode, "refreshinterval", Null.NullInteger);
-                tab.PageHeadText = XmlUtils.GetNodeValue(tabNode, "pageheadtext", Null.NullString);
+
+                var legacyPageHeadText = XmlUtils.GetNodeValue(tabNode, "pageheadtext", Null.NullString);
+                tab.PageHeadText = Null.NullString;
                 tab.IsSecure = XmlUtils.GetNodeValueBoolean(tabNode, "issecure", false);
                 tab.SiteMapPriority = XmlUtils.GetNodeValueSingle(tabNode, "sitemappriority", 0.5F);
                 tab.CultureCode = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "cultureCode");
@@ -362,6 +364,11 @@ namespace DotNetNuke.Entities.Tabs
                 DeserializeTabPermissions(permissionDefinitionService, tabNode.SelectNodes("tabpermissions/permission"), tab, isAdminTemplate);
 
                 DeserializeTabSettings(tabNode.SelectNodes("tabsettings/tabsetting"), tab);
+
+                if (!string.IsNullOrWhiteSpace(legacyPageHeadText) && !tab.TabSettings.Contains(PageHeaderTagInfo.SettingPrefix + "Default"))
+                {
+                    tab.TabSettings[PageHeaderTagInfo.SettingPrefix + "Default"] = legacyPageHeadText;
+                }
 
                 // set tab skin and container
                 if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", string.Empty)))
