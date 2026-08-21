@@ -174,6 +174,15 @@
   <data name="NewApiUser" xml:space="preserve">
     <value>New API User</value>
   </data>
+  <data name="NewApiUserCredentialsTitle" xml:space="preserve">
+    <value>API User Credentials</value>
+  </data>
+  <data name="NewApiUserCredentialsWarning" xml:space="preserve">
+    <value>These credentials are shown only once. Copy and store them before closing this dialog.</value>
+  </data>
+  <data name="Copy" xml:space="preserve">
+    <value>Copy</value>
+  </data>
   <data name="NewIpSafelistEntry" xml:space="preserve">
     <value>New IP Safelist Entry</value>
   </data>

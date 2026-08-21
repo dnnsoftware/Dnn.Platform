@@ -30,8 +30,10 @@ export class DnnBiApiUsers {
     bypassIPWhitelist: false,
     expiresOn: addYear(new Date()),
   };
+  @State() private createdUserCredentials: User | null = null;
 
   private newUserModal: HTMLDnnModalElement;
+  private credentialsModal: HTMLDnnModalElement;
 
   private apiUserClient: ApiUserClient;
 
@@ -51,13 +53,20 @@ export class DnnBiApiUsers {
 
   private async createUser(_newUser: NewUser): Promise<void> {
     const createdUser = await this.apiUserClient.create(_newUser.name, _newUser.bypassIPWhitelist, _newUser.expiresOn);
-    this.users = [...this.users, createdUser];
     this.newUser = {
       name: '',
       bypassIPWhitelist: false,
       expiresOn: addYear(new Date()),
     };
     await this.newUserModal.hide();
+    this.createdUserCredentials = createdUser;
+    await this.credentialsModal.show();
+  }
+
+  private async onCredentialsDismissed(): Promise<void> {
+    this.createdUserCredentials = null;
+    const { users } = await this.apiUserClient.getAll();
+    this.users = users;
   }
 
   private async deleteUser(_user: User): Promise<void> {
@@ -98,8 +107,6 @@ export class DnnBiApiUsers {
                   <thead>
                     <tr>
                       <th>{store.resx.Name}</th>
-                      <th>{store.resx.ApiKey}</th>
-                      <th>{store.resx.EncryptionKey}</th>
                       <th>{store.resx.BypassIpAllowList}</th>
                       <th>{store.resx.Action}</th>
                     </tr>
@@ -108,8 +115,6 @@ export class DnnBiApiUsers {
                     {this.users.map(user => (
                       <tr>
                         <td>{user.name}</td>
-                        <td>{user.apiKey}</td>
-                        <td>{user.encryptionKey}</td>
                         <td>{String(user.bypassIPWhitelist)}</td>
                         <td>
                           <dnn-button
@@ -168,6 +173,44 @@ export class DnnBiApiUsers {
             </label>
             <dnn-button type="submit">{store.resx.Create}</dnn-button>
           </form>
+        </dnn-modal>
+        <dnn-modal
+          ref={el => (this.credentialsModal = el)}
+          onDismissed={() => { this.onCredentialsDismissed().catch(console.error); }}
+          preventBackdropDismiss
+        >
+          {this.createdUserCredentials && (
+            <div class="credentials">
+              <h4>{store.resx.NewApiUserCredentialsTitle}</h4>
+              <p class="credentials-warning">{store.resx.NewApiUserCredentialsWarning}</p>
+              <div class="credential-row">
+                <span class="credential-label">{store.resx.ApiKey}</span>
+                <code class="credential-value">{this.createdUserCredentials.apiKey}</code>
+                <dnn-button
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(this.createdUserCredentials.apiKey).catch(console.error);
+                    return;
+                  }}
+                >
+                  {store.resx.Copy}
+                </dnn-button>
+              </div>
+              <div class="credential-row">
+                <span class="credential-label">{store.resx.EncryptionKey}</span>
+                <code class="credential-value">{this.createdUserCredentials.encryptionKey}</code>
+                <dnn-button
+                  size="small"
+                  onClick={() => {
+                    navigator.clipboard.writeText(this.createdUserCredentials.encryptionKey).catch(console.error);
+                    return;
+                  }}
+                >
+                  {store.resx.Copy}
+                </dnn-button>
+              </div>
+            </div>
+          )}
         </dnn-modal>
       </Host>
     );

@@ -88,4 +88,45 @@
       text-align: center;
     }
   }
+
+  .credentials {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    h4 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .credentials-warning {
+      margin: 0;
+      padding: 0.5em;
+      border-radius: 0.25em solid var(--dnn-color-warning-dark, #E9AD00);
+      background-color: var(--dnn-color-warning, #FFC107);
+      color: var(--dnn-color-warning-contrast, white);
+    }
+
+    .credential-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      flex-wrap: wrap;
+
+      .credential-label {
+        font-weight: bold;
+        min-width: 8em;
+      }
+
+      .credential-value {
+        flex: 1;
+        padding: 0.25em 0.5em;
+        background-color: var(--dnn-color-neutral, #ededee);
+        border-radius: 0.25em;
+        font-family: monospace;
+        word-break: break-all;
+      }
+    }
+  }
 }

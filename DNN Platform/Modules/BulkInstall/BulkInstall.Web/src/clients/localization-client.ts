@@ -42,6 +42,7 @@ export interface BulkInstallLocalization {
   Cancel: string;
   CannotInstall: string;
   Close: string;
+  Copy: string;
   Create: string;
   Date: string;
   Delete: string;
@@ -68,6 +69,8 @@ export interface BulkInstallLocalization {
   Message: string;
   Name: string;
   NewApiUser: string;
+  NewApiUserCredentialsTitle: string;
+  NewApiUserCredentialsWarning: string;
   NewIpSafelistEntry: string;
   Packages: string;
   PackageDependencies: string;
