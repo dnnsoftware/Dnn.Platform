@@ -1,4 +1,4 @@
-import { Component, Host, h, State } from '@stencil/core';
+import { Component, Element, Host, h, State } from '@stencil/core';
 import store from '../../../stores/store';
 import { EventLogClient, Pagination } from '../../../clients/event-log-client';
 import { Event } from './dnn-bi-logs.model';
@@ -10,6 +10,8 @@ import { eventLogSeverity, EventLogSeverityInfo } from '../../../enums/EventLogS
   shadow: true,
 })
 export class DnnBiLogs {
+  @Element() hostElement!: HTMLDnnBiLogsElement;
+
   @State() private events: Event[] = [];
   @State() private eventTypes: string[] = [];
   @State() private pagination: Pagination;
@@ -17,6 +19,8 @@ export class DnnBiLogs {
   @State() private eventTypeFilter: string;
 
   private eventLogClient: EventLogClient;
+  private tabVisibilityObserver?: MutationObserver;
+  private tabWasVisible = false;
 
   constructor() {
     this.eventLogClient = new EventLogClient(store.moduleId);
@@ -33,6 +37,26 @@ export class DnnBiLogs {
     }
   }
 
+  componentDidLoad() {
+    this.tabWasVisible = this.isTabVisible();
+    const parentTab = this.hostElement.closest('dnn-tab') as HTMLElement | null;
+
+    if (parentTab !== null && parentTab.shadowRoot !== null) {
+      this.tabVisibilityObserver = new MutationObserver(() => {
+        this.handleTabVisibilityChange().catch(console.error);
+      });
+
+      this.tabVisibilityObserver.observe(parentTab.shadowRoot, {
+        childList: true,
+        subtree: true,
+      });
+    }
+  }
+
+  disconnectedCallback() {
+    this.tabVisibilityObserver?.disconnect();
+  }
+
   private async setSeverityFilter(key: string) {
     this.severityFilter = eventLogSeverity.fromKey(key);
     await this.loadPage(0);
@@ -47,6 +71,20 @@ export class DnnBiLogs {
     const { data, pagination } = await this.eventLogClient.browse(pageIndex, this.severityFilter, this.eventTypeFilter);
     this.events = data;
     this.pagination = pagination;
+  }
+
+  private isTabVisible(): boolean {
+    const parentTab = this.hostElement.closest('dnn-tab') as HTMLElement | null;
+    return parentTab !== null && parentTab.shadowRoot !== null && parentTab.shadowRoot.querySelector('slot') !== null;
+  }
+
+  private async handleTabVisibilityChange() {
+    const isVisible = this.isTabVisible();
+    if (isVisible && !this.tabWasVisible) {
+      await this.loadPage(this.pagination?.currentPage ?? 0);
+    }
+
+    this.tabWasVisible = isVisible;
   }
 
   private static formatDate(date: Date): string {
