@@ -54,6 +54,10 @@ export class DnnBiLogs {
     return formatter.format(date);
   }
 
+  private adjustMessage(message: string) {
+    return message.replace(/\\/g, "\\<wbr>");
+  }
+
   render() {
     return (
       <Host>
@@ -96,7 +100,7 @@ export class DnnBiLogs {
                         </td>
                         <td>{event.severity.localizedName}</td>
                         <td>{event.type}</td>
-                        <td>{event.message}</td>
+                        <td innerHTML={this.adjustMessage(event.message)}></td>
                       </tr>
                     ))}
                   </tbody>
