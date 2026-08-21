@@ -173,8 +173,11 @@ export class DnnBiInstall {
                     )}
                   </>
                 ))}
-                {this.installStatus.type === 'uploading' && (
-                  <div class="form-group">
+                {this.installStatus.type === 'uploading' && this.files.length > 0 && (
+                  <div class="controls">
+                    <dnn-button reversed onClick={() => this.reset()}>
+                      {store.resx.Reset}
+                    </dnn-button>
                     <dnn-button
                       disabled={this.files.length < 1 || this.files.some(f => getCanInstall(f) === false)}
                       onClick={() => {
@@ -183,9 +186,6 @@ export class DnnBiInstall {
                       }}
                     >
                       {store.resx.Install}
-                    </dnn-button>
-                    <dnn-button appearance="tertiary" reversed onClick={() => this.reset()}>
-                      {store.resx.Reset}
                     </dnn-button>
                   </div>
                 )}

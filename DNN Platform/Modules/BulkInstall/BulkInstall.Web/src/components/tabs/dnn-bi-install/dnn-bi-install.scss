@@ -57,4 +57,11 @@
   dnn-button {
     width: fit-content;
   }
+
+  .controls {
+    display: flex;
+    gap: 1em;
+    padding-top: 1em;
+    justify-content: flex-end;
+  }
 }
