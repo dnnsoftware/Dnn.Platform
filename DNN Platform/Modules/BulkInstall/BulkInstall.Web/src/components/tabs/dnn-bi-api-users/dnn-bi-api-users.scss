@@ -9,14 +9,6 @@
 
   .col {
     max-width: 100%;
-    padding: 1em 0;
-  }
-
-  .button-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 1em;
-    margin-bottom: 1rem;
   }
 
   /* Panel styling */
@@ -29,6 +21,10 @@
     padding: 0.3em 0.5em;
     border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
     background-color: var(--dnn-color-neutral, #ededee);
+    display: flex;
+    dnn-button{
+      margin-left: auto;
+    }
   }
 
   .panel-title {

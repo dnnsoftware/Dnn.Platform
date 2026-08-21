@@ -78,21 +78,20 @@ export class DnnBiApiUsers {
         )}
         <div class="row">
           <div class="col">
-            <div class="button-row">
-              <dnn-button
-                size="small"
-                disabled={this.enabled === false}
-                onClick={() => {
-                  this.newUserModal.show().catch(console.error);
-                  return;
-                }}
-              >
-                {store.resx.NewApiUser}
-              </dnn-button>
-            </div>
             <div class="panel">
               <div class="panel-heading">
                 <h3 class="panel-title">{store.resx.ApiUsers}</h3>
+                {this.enabled &&
+                  <dnn-button
+                    size="small"
+                    onClick={() => {
+                      this.newUserModal.show().catch(console.error);
+                      return;
+                    }}
+                  >
+                    {store.resx.NewApiUser}
+                  </dnn-button>
+                }
               </div>
               <div class="panel-body">
                 <table class="table">
