@@ -52,9 +52,10 @@ graph TD;
   dnn-bi-api-users --> dnn-input
   dnn-bi-api-users --> dnn-checkbox
   dnn-input --> dnn-fieldset
-  dnn-bi-ip-safelist --> dnn-input
   dnn-bi-ip-safelist --> dnn-button
   dnn-bi-ip-safelist --> dnn-toggle
+  dnn-bi-ip-safelist --> dnn-modal
+  dnn-bi-ip-safelist --> dnn-input
   style dnn-bulk-install fill:#f9f,stroke:#333,stroke-width:4px
 ```
 

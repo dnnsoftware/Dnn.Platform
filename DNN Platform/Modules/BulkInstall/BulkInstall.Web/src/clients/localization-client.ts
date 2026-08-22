@@ -26,6 +26,8 @@ export class LocalizationClient {
 }
 
 export interface BulkInstallLocalization {
+  [key: string]: string;
+
   Action: string;
   Add: string;
   All: string;
@@ -77,7 +79,7 @@ export interface BulkInstallLocalization {
   PlatformVersion: string;
   Reset: string;
   Save: string;
-  SessionStatus_NotStared: string;
+  SessionStatus_NotStarted: string;
   SessionStatus_InProgress: string;
   SessionStatus_Complete: string;
   Severity: string;

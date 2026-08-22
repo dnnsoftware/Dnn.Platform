@@ -14,9 +14,9 @@
 
 ## Events
 
-| Event          | Description | Type                  |
-| -------------- | ----------- | --------------------- |
-| `pageSelected` |             | `CustomEvent<number>` |
+| Event          | Description                   | Type                  |
+| -------------- | ----------------------------- | --------------------- |
+| `pageSelected` | Fires when a page is selected | `CustomEvent<number>` |
 
 
 ## Dependencies

@@ -7,18 +7,18 @@
 
 ## Properties
 
-| Property                         | Attribute              | Description                          | Type      | Default     |
-| -------------------------------- | ---------------------- | ------------------------------------ | --------- | ----------- |
-| `file` _(required)_              | --                     | The file to upload.                  | `File`    | `undefined` |
-| `maxUploadFileSize` _(required)_ | `max-upload-file-size` | The maximal allowed file upload size | `number`  | `undefined` |
-| `session` _(required)_           | --                     | The current session.                 | `Session` | `undefined` |
+| Property                         | Attribute              | Description                           | Type      | Default     |
+| -------------------------------- | ---------------------- | ------------------------------------- | --------- | ----------- |
+| `file` _(required)_              | --                     | The file to upload.                   | `File`    | `undefined` |
+| `maxUploadFileSize` _(required)_ | `max-upload-file-size` | The maximal allowed file upload size. | `number`  | `undefined` |
+| `session` _(required)_           | --                     | The current session.                  | `Session` | `undefined` |
 
 
 ## Events
 
-| Event             | Description | Type                                                                                                           |
-| ----------------- | ----------- | -------------------------------------------------------------------------------------------------------------- |
-| `uploadCompleted` |             | `CustomEvent<UploadStatus.Cancelled \| UploadStatus.Error \| UploadStatus.InProgress \| UploadStatus.Success>` |
+| Event             | Description                         | Type                                                                                                           |
+| ----------------- | ----------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `uploadCompleted` | Fires when the upload is completed. | `CustomEvent<UploadStatus.Cancelled \| UploadStatus.Error \| UploadStatus.InProgress \| UploadStatus.Success>` |
 
 
 ## Dependencies

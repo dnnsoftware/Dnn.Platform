@@ -32,8 +32,9 @@ export class EventLogSeverity {
 export class EventLogSeverityInfo {
   readonly eventLogSeverityKey: string;
 
-  get localizedName() {
-    return state.resx[`EventLogSeverity_${this.eventLogSeverityKey}`];
+  get localizedName() : string {
+    const key = `EventLogSeverity_${this.eventLogSeverityKey}`;
+    return state.resx[key] || this.eventLogSeverityKey;
   }
 
   constructor(eventLogSeverityKey: string = 'Info') {

@@ -14,9 +14,9 @@ export class DnnBiLogs {
 
   @State() private events: Event[] = [];
   @State() private eventTypes: string[] = [];
-  @State() private pagination: Pagination;
-  @State() private severityFilter: EventLogSeverityInfo;
-  @State() private eventTypeFilter: string;
+  @State() private pagination?: Pagination;
+  @State() private severityFilter?: EventLogSeverityInfo;
+  @State() private eventTypeFilter?: string;
 
   private eventLogClient: EventLogClient;
   private tabVisibilityObserver?: MutationObserver;
@@ -88,7 +88,16 @@ export class DnnBiLogs {
   }
 
   private static formatDate(date: Date): string {
-    const formatter = new Intl.DateTimeFormat(undefined, { dateStyle: 'long', timeStyle: 'medium' });
+    const formatter = new Intl.DateTimeFormat(
+      undefined,
+      {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
     return formatter.format(date);
   }
 
@@ -107,14 +116,14 @@ export class DnnBiLogs {
               </div>
               <div class="panel-body">
                 <div class="filters">
-                  <dnn-select label={store.resx.Severity} onValueChange={e => this.setSeverityFilter(e.detail).catch(console.error)}>
+                  <dnn-select label={store.resx.Severity} onValueChange={e => void this.setSeverityFilter(e.detail).catch(console.error)}>
                     <option value="">{store.resx.All}</option>
                     <option value={eventLogSeverity.info.eventLogSeverityKey}>{eventLogSeverity.info.localizedName}</option>
                     <option value={eventLogSeverity.warning.eventLogSeverityKey}>{eventLogSeverity.warning.localizedName}</option>
                     <option value={eventLogSeverity.alert.eventLogSeverityKey}>{eventLogSeverity.alert.localizedName}</option>
                     <option value={eventLogSeverity.critical.eventLogSeverityKey}>{eventLogSeverity.critical.localizedName}</option>
                   </dnn-select>
-                  <dnn-select label={store.resx.Type} onValueChange={e => this.setEventTypeFilter(e.detail).catch(console.error)}>
+                  <dnn-select label={store.resx.Type} onValueChange={e => void this.setEventTypeFilter(e.detail).catch(console.error)}>
                     <option value="">{store.resx.All}</option>
                     {this.eventTypes.map(eventType => (
                       <option>{eventType}</option>
@@ -143,7 +152,9 @@ export class DnnBiLogs {
                     ))}
                   </tbody>
                 </table>
-                <dnn-bi-log-pagination pagination={this.pagination} onPageSelected={e => this.loadPage(e.detail).catch(console.error)} />
+                {this.pagination != null &&
+                  <dnn-bi-log-pagination pagination={this.pagination} onPageSelected={e => void this.loadPage(e.detail).catch(console.error)} />                
+                }
               </div>
             </div>
           </div>

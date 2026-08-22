@@ -54,7 +54,7 @@ export namespace Components {
          */
         "file": File;
         /**
-          * The maximal allowed file upload size
+          * The maximal allowed file upload size.
          */
         "maxUploadFileSize": number;
         /**
@@ -195,7 +195,7 @@ declare global {
     }
 }
 declare namespace LocalJSX {
-    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}` | `prop:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K | `prop:${K}`]?: never } | { [P in `prop:${K}`]: PropT } & { [P in K | `attr:${K}`]?: never };
+    type OneOf<K extends string, PropT, AttrT = PropT> = { [P in K]: PropT } & { [P in `attr:${K}`]?: never } | { [P in `attr:${K}`]: AttrT } & { [P in K]?: never };
 
     interface DnnBiApiUsers {
     }
@@ -218,6 +218,9 @@ declare namespace LocalJSX {
     interface DnnBiIpSafelist {
     }
     interface DnnBiLogPagination {
+        /**
+          * Fires when a page is selected
+         */
         "onPageSelected"?: (event: DnnBiLogPaginationCustomEvent<number>) => void;
         /**
           * The pagination
@@ -242,9 +245,12 @@ declare namespace LocalJSX {
          */
         "file": File;
         /**
-          * The maximal allowed file upload size
+          * The maximal allowed file upload size.
          */
         "maxUploadFileSize": number;
+        /**
+          * Fires when the upload is completed.
+         */
         "onUploadCompleted"?: (event: DnnBiQueuedFileCustomEvent<UploadStatus>) => void;
         /**
           * The current session.

@@ -616,7 +616,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@dnnsoftware/dnn-react-common@npm:10.3.4, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
+"@dnnsoftware/dnn-react-common@npm:10.4.0, @dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common":
   version: 0.0.0-use.local
   resolution: "@dnnsoftware/dnn-react-common@workspace:Dnn.AdminExperience/ClientSide/Dnn.React.Common"
   dependencies:
@@ -3546,9 +3546,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^4.43.5":
-  version: 4.43.5
-  resolution: "@stencil/core@npm:4.43.5"
+"@stencil/core@npm:^4.44.0":
+  version: 4.44.0
+  resolution: "@stencil/core@npm:4.44.0"
   dependencies:
     "@rollup/rollup-darwin-arm64": "npm:4.44.0"
     "@rollup/rollup-darwin-x64": "npm:4.44.0"
@@ -3577,24 +3577,7 @@ __metadata:
       optional: true
   bin:
     stencil: bin/stencil
-  checksum: 10/e4edcc9e981c76675b83a14745cc80f0b685aee2aea4398a3f929feaa1d5f277d65331ef0dbc5cb2cdcb1d305b8116923e67d1d0d95c8d449f51c488910b6b0c
-  languageName: node
-  linkType: hard
-
-"@stencil/eslint-plugin@npm:^1.3.1":
-  version: 1.3.1
-  resolution: "@stencil/eslint-plugin@npm:1.3.1"
-  dependencies:
-    eslint-utils: "npm:^3.0.0"
-    jsdom: "npm:^27.0.1"
-    tsutils: "npm:^3.21.0"
-  peerDependencies:
-    "@typescript-eslint/eslint-plugin": ^7.0.0 || ^8.0.0
-    "@typescript-eslint/parser": ^7.0.0 || ^8.0.0
-    eslint: ^8.0.0 || ^9.0.0 || ^10.0.0
-    eslint-plugin-react: ^7.37.4
-    typescript: ^4.9.4 || ^5.0.0
-  checksum: 10/40a975814916581991a76ca8d8cc59e98330771a24a50e4e81e7fa2c59edb972c8da135b1b205526f13d05b74af76b7f8d9d42f5b1381f673d0cbeb17db59322
+  checksum: 10/406a5b4cd02d335e6f5a0186b00759635be305d4919b354e099088b3099e522be72004c3fdaa33998d62d56b977b283628a2d7ecc8e9438cc1f6bf245ec7762a
   languageName: node
   linkType: hard
 
@@ -3628,17 +3611,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/sass@npm:^3.2.3":
-  version: 3.2.3
-  resolution: "@stencil/sass@npm:3.2.3"
-  dependencies:
-    sass-embedded: "npm:^1.89.2"
-  peerDependencies:
-    "@stencil/core": ">=2.0.0 || >=3.0.0-beta.0 || >= 4.0.0-beta.0 || >= 4.0.0"
-  checksum: 10/8656c532c056a043e3ef033ef1e8439675c95544634e0057b44c0e204685197edfb822289cc589ba37bf165bd370c11d996c482b32039b6add27152eb3090009
-  languageName: node
-  linkType: hard
-
 "@stencil/sass@npm:^3.3.3":
   version: 3.3.3
   resolution: "@stencil/sass@npm:3.3.3"
@@ -3650,21 +3622,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/store@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "@stencil/store@npm:2.2.2"
+"@stencil/store@npm:^2.2.4":
+  version: 2.2.4
+  resolution: "@stencil/store@npm:2.2.4"
   peerDependencies:
     "@stencil/core": ">=2.0.0 || >=3.0.0 || >= 4.0.0-beta.0 || >= 4.0.0"
-  checksum: 10/baedd81a8dda4477fb27320390af3859a8fef1016e342a27a0ce6b17628c0a9c2946400e93f984891f5313afab3cb6a10bfc12cc44415021dc6d724d76b21edd
-  languageName: node
-  linkType: hard
-
-"@stencil/store@npm:^2.2.3":
-  version: 2.2.3
-  resolution: "@stencil/store@npm:2.2.3"
-  peerDependencies:
-    "@stencil/core": ">=2.0.0 || >=3.0.0 || >= 4.0.0-beta.0 || >= 4.0.0"
-  checksum: 10/3b99f2d661189c26082d3d2e50df78011e7cb711b0bae2579eefdf98d64ad4c6bd02bf6346264286a2b2d9069cfe528257de77c04b13b8147fec90051753fc09
+  checksum: 10/7d105d8479138e9b94750c8fd30c0b7479b39deb255fcdbaf2868c8bb0b328ab74af1043e1fd9d2cb6da140e8a43639f94e7c3fbe42917a58e13f5fea16572fe
   languageName: node
   linkType: hard
 
@@ -5038,7 +5001,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "admin-logs@workspace:Dnn.AdminExperience/ClientSide/AdminLogs.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -7199,10 +7162,10 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.3"
     "@eslint/js": "npm:^10.0.1"
-    "@stencil/core": "npm:^4.43.5"
+    "@stencil/core": "npm:^4.44.0"
     "@stencil/eslint-plugin": "npm:^1.4.0"
     "@stencil/sass": "npm:^3.3.3"
-    "@stencil/store": "npm:^2.2.3"
+    "@stencil/store": "npm:^2.2.4"
     "@types/node": "npm:^26.2.0"
     eslint: "npm:^10.8.1"
     prettier: "npm:^3.9.6"
@@ -7224,10 +7187,10 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.3"
     "@eslint/js": "npm:^10.0.1"
-    "@stencil/core": "npm:^4.43.5"
-    "@stencil/eslint-plugin": "npm:^1.3.1"
-    "@stencil/sass": "npm:^3.2.3"
-    "@stencil/store": "npm:^2.2.2"
+    "@stencil/core": "npm:^4.44.0"
+    "@stencil/eslint-plugin": "npm:^1.4.0"
+    "@stencil/sass": "npm:^3.3.3"
+    "@stencil/store": "npm:^2.2.4"
     "@types/node": "npm:^25.9.2"
     "@typescript-eslint/utils": "npm:^8.61.1"
     eslint: "npm:^10.5.0"
@@ -7241,7 +7204,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-sitegroups@workspace:Dnn.AdminExperience/ClientSide/SiteGroups.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -7261,7 +7224,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-sites-list-view@workspace:Dnn.AdminExperience/ClientSide/Sites.Web/src/_exportables"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -7285,7 +7248,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "dnn-users-exportables@workspace:Dnn.AdminExperience/ClientSide/Users.Web/src/_exportables"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -8622,7 +8585,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "export-bundle@workspace:Dnn.AdminExperience/ClientSide/Bundle.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -8661,7 +8624,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "extensions@workspace:Dnn.AdminExperience/ClientSide/Extensions.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -11357,7 +11320,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "licensing@workspace:Dnn.AdminExperience/ClientSide/Licensing.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -13291,7 +13254,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "pages@workspace:Dnn.AdminExperience/ClientSide/Pages.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -14169,7 +14132,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "prompt@workspace:Dnn.AdminExperience/ClientSide/Prompt.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -15301,7 +15264,7 @@ __metadata:
 
 "resolve@patch:resolve@npm%3A^1.1.7#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.10.0#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.1#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.12#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^1.22.4#optional!builtin<compat/resolve>":
   version: 1.22.12
-  resolution: "resolve@patch:resolve@npm%3A1.22.12#optional!builtin<compat/resolve>::version=1.22.12&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A1.22.12#optional!builtin<compat/resolve>::version=1.22.12&hash=9bd1a5"
   dependencies:
     es-errors: "npm:^1.3.0"
     is-core-module: "npm:^2.16.1"
@@ -15309,13 +15272,13 @@ __metadata:
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/f80ad2c2b6820331cbe079198a184ffce322cfeca140065118066276bc08b03d5fa2c1ce652aeb584ec74050d1f656f46f034cc0dd9300452c5ab7866907f8c0
+  checksum: 10/7c0ee8a1bd6126d7adde06b8cbba7578f6b791560200cd235b696106b9803038fcf680f0273b350a4e9476de1a5194a9a77827cb08e10d80bea38f4d63b1d254
   languageName: node
   linkType: hard
 
 "resolve@patch:resolve@npm%3A^2.0.0-next.5#optional!builtin<compat/resolve>, resolve@patch:resolve@npm%3A^2.0.0-next.7#optional!builtin<compat/resolve>":
   version: 2.0.0-next.7
-  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.7#optional!builtin<compat/resolve>::version=2.0.0-next.7&hash=c3c19d"
+  resolution: "resolve@patch:resolve@npm%3A2.0.0-next.7#optional!builtin<compat/resolve>::version=2.0.0-next.7&hash=9bd1a5"
   dependencies:
     es-errors: "npm:^1.3.0"
     is-core-module: "npm:^2.16.2"
@@ -15325,7 +15288,7 @@ __metadata:
     supports-preserve-symlinks-flag: "npm:^1.0.0"
   bin:
     resolve: bin/resolve
-  checksum: 10/2c6dd4194c8aa900db299020fcad253239c670ea82a65c8387f1d2885e8dcf6742b64c439e3c811e046a5252eba94f2092b7867e34b7f895e733be48d575192b
+  checksum: 10/b0bb50f5b12e0fb87baf9692d67a4bbcbfb58cb584d9c68973b12f7b351d9c61e64828a9e08073378b61b26fc3199b0a42d88056fcbe76963320e977642cf1b2
   languageName: node
   linkType: hard
 
@@ -15385,7 +15348,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "roles@workspace:Dnn.AdminExperience/ClientSide/Roles.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -15706,7 +15669,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass-embedded@npm:^1.100.0, sass-embedded@npm:^1.89.2, sass-embedded@npm:^1.93.2":
+"sass-embedded@npm:^1.100.0, sass-embedded@npm:^1.93.2":
   version: 1.100.0
   resolution: "sass-embedded@npm:1.100.0"
   dependencies:
@@ -15869,7 +15832,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "security-settings@workspace:Dnn.AdminExperience/ClientSide/Security.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -15975,7 +15938,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "seo@workspace:Dnn.AdminExperience/ClientSide/Seo.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -16033,7 +15996,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "servers@workspace:Dnn.AdminExperience/ClientSide/Servers.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -16249,7 +16212,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site-import-export@workspace:Dnn.AdminExperience/ClientSide/SiteImportExport.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -16284,7 +16247,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "site-settings@workspace:Dnn.AdminExperience/ClientSide/SiteSettings.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -16318,7 +16281,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "sites@workspace:Dnn.AdminExperience/ClientSide/Sites.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -16947,9 +16910,9 @@ __metadata:
   resolution: "styles@workspace:Dnn.AdminExperience/ClientSide/Styles.Web"
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.3"
-    "@stencil/core": "npm:^4.43.5"
-    "@stencil/eslint-plugin": "npm:^1.3.1"
-    "@stencil/sass": "npm:^3.2.3"
+    "@stencil/core": "npm:^4.44.0"
+    "@stencil/eslint-plugin": "npm:^1.4.0"
+    "@stencil/sass": "npm:^3.3.3"
     "@types/node": "npm:^25.9.2"
     "@typescript-eslint/eslint-plugin": "npm:^8.61.1"
     "@typescript-eslint/parser": "npm:^8.61.1"
@@ -17094,7 +17057,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "task-scheduler@workspace:Dnn.AdminExperience/ClientSide/TaskScheduler.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -17122,7 +17085,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "taxonomy@workspace:Dnn.AdminExperience/ClientSide/Vocabularies.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -17182,7 +17145,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "themes@workspace:Dnn.AdminExperience/ClientSide/Themes.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"
@@ -17963,7 +17926,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "users@workspace:Dnn.AdminExperience/ClientSide/Users.Web"
   dependencies:
-    "@dnnsoftware/dnn-react-common": "npm:10.3.4"
+    "@dnnsoftware/dnn-react-common": "npm:10.4.0"
     "@rsbuild/core": "npm:^2.1.2"
     "@rsbuild/plugin-less": "npm:^2.0.0"
     "@rsbuild/plugin-react": "npm:^2.1.0"

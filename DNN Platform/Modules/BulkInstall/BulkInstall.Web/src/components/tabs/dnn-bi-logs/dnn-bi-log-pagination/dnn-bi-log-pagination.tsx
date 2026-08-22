@@ -48,7 +48,8 @@ export class DnnBiLogPagination {
   /** The pagination */
   @Prop() public pagination!: Pagination;
 
-  @Event() public pageSelected: EventEmitter<number>;
+  /** Fires when a page is selected */
+  @Event() public pageSelected!: EventEmitter<number>;
 
   private getPages(): PageItem[] {
     return Array.from(makePagesIterator(this.pagination.currentPage, this.pagination.pages - 1));

@@ -17,6 +17,8 @@ export class DnnBiIpSafelist {
   };
   @State() private enableIpSafelist: boolean = false;
 
+  private newIpModal!: HTMLDnnModalElement;
+
   private ipSafelistClient: IpSafelistClient;
 
   constructor() {
@@ -40,6 +42,7 @@ export class DnnBiIpSafelist {
       name: '',
       ipAddress: '',
     };
+    await this.newIpModal.hide();
   }
 
   private async deleteIp(_ip: Ip): Promise<void> {
@@ -47,8 +50,15 @@ export class DnnBiIpSafelist {
     this.ipSafelist = await this.ipSafelistClient.getAll();
   }
 
-  private async saveIpSafelistConfiguration(_enableIpSafelist: boolean): Promise<void> {
-    await this.ipSafelistClient.saveIpSafelistConfiguration(_enableIpSafelist);
+  private async onEnableIpSafelistChanged(enabled: boolean): Promise<void> {
+    const previousValue = this.enableIpSafelist;
+    this.enableIpSafelist = enabled;
+    try {
+      await this.ipSafelistClient.saveIpSafelistConfiguration(enabled);
+    } catch (error) {
+      this.enableIpSafelist = previousValue;
+      throw error;
+    }
   }
 
   render() {
@@ -58,46 +68,16 @@ export class DnnBiIpSafelist {
           <div class="col">
             <div class="panel">
               <div class="panel-heading">
-                <h3 class="panel-title">{store.resx.NewIpSafelistEntry}</h3>
-              </div>
-              <div class="panel-body">
-                <div class="form-horizontal">
-                  <div class="form-group">
-                    <dnn-input
-                      type="text"
-                      label={store.resx.IPSafeListItemNameText}
-                      helpText={store.resx.IPSafeListItemNameHelp}
-                      required
-                      value={this.newIp.name}
-                      onValueInput={e => (this.newIp = { ...this.newIp, name: e.detail as string })}
-                    />
-                    <dnn-input
-                      type="text"
-                      label={store.resx.IPSafeListItemIpAddressText}
-                      helpText={store.resx.IPSafeListItemIpAddressHelp}
-                      required
-                      value={this.newIp.ipAddress}
-                      onValueInput={e => (this.newIp = { ...this.newIp, ipAddress: e.detail as string })}
-                    />
-                    <dnn-button
-                      onClick={() => {
-                        this.createIp(this.newIp).catch(console.error);
-                        return;
-                      }}
-                    >
-                      {store.resx.Add}
-                    </dnn-button>
-                  </div>
-                </div>
-
-                <div class="clearfix"></div>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-            <div class="panel">
-              <div class="panel-heading">
                 <h3 class="panel-title">{store.resx.IPSafeListEntries}</h3>
+                <dnn-button
+                  size="small"
+                  onClick={() => {
+                    this.newIpModal.show().catch(console.error);
+                    return;
+                  }}
+                >
+                  {store.resx.NewIpSafelistEntry}
+                </dnn-button>
               </div>
               <div class="panel-body">
                 <table class="table">
@@ -132,33 +112,52 @@ export class DnnBiIpSafelist {
               </div>
             </div>
           </div>
+        </div>
+        <div class="row controls-row">
           <div class="col">
-            <div class="panel">
-              <div class="panel-heading">
-                <h3 class="panel-title">{store.resx.IPSafeListConfiguration}</h3>
-              </div>
-              <div class="panel-body">
-                <div class="form-horizontal">
-                  <div class="form-group">
-                    <label>
-                      <dnn-toggle name="enableIpSafelist" checked={this.enableIpSafelist} onCheckChanged={e => (this.enableIpSafelist = e.detail.checked)} />
-                      {store.resx.EnableIpSafeList}
-                    </label>
-                    <dnn-button
-                      onClick={() => {
-                        this.saveIpSafelistConfiguration(this.enableIpSafelist).catch(console.error);
-                        return;
-                      }}
-                    >
-                      {store.resx.Save}
-                    </dnn-button>
-                  </div>
-                </div>
-                <div class="clearfix"></div>
-              </div>
+            <div class="panel-controls">
+              <label>
+                <span>{store.resx.EnableIpSafeList}</span>
+                <dnn-toggle
+                  name="enableIpSafelist"
+                  checked={this.enableIpSafelist}
+                  onCheckChanged={e => {
+                    this.onEnableIpSafelistChanged(e.detail.checked).catch(console.error);
+                  }}
+                />
+              </label>
             </div>
           </div>
         </div>
+        <dnn-modal ref={el => (this.newIpModal = el!)}>
+          <form
+            class="create-ip"
+            onSubmit={event => {
+              event.preventDefault();
+              this.createIp(this.newIp).catch(console.error);
+              return;
+            }}
+          >
+            <h4>{store.resx.NewIpSafelistEntry}</h4>
+            <dnn-input
+              type="text"
+              label={store.resx.IPSafeListItemNameText}
+              helpText={store.resx.IPSafeListItemNameHelp}
+              required
+              value={this.newIp.name}
+              onValueInput={e => (this.newIp = { ...this.newIp, name: e.detail as string })}
+            />
+            <dnn-input
+              type="text"
+              label={store.resx.IPSafeListItemIpAddressText}
+              helpText={store.resx.IPSafeListItemIpAddressHelp}
+              required
+              value={this.newIp.ipAddress}
+              onValueInput={e => (this.newIp = { ...this.newIp, ipAddress: e.detail as string })}
+            />
+            <dnn-button type="submit">{store.resx.Add}</dnn-button>
+          </form>
+        </dnn-modal>
       </Host>
     );
   }

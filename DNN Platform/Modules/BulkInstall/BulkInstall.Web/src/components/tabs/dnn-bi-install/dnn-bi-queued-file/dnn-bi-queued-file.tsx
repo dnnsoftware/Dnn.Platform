@@ -16,20 +16,21 @@ export class DnnBiQueuedFile {
   /** The current session. */
   @Prop() session!: Session;
 
-  /** The maximal allowed file upload size */
+  /** The maximal allowed file upload size. */
   @Prop() maxUploadFileSize!: number;
 
-  @Event() uploadCompleted: EventEmitter<UploadStatus>;
+  /** Fires when the upload is completed. */
+  @Event() uploadCompleted!: EventEmitter<UploadStatus>;
 
   @State() overwrite = false;
-  @State() progress: number;
-  @State() successMessage: string;
-  @State() dismissed: boolean;
+  @State() progress = 0;
+  @State() successMessage?: string;
+  @State() dismissed = false;
 
-  @Element() el: HTMLDnnBiQueuedFileElement;
+  @Element() el!: HTMLDnnBiQueuedFileElement;
 
   private installClient: InstallClient;
-  private abortController: AbortController;
+  private abortController?: AbortController;
 
   constructor() {
     this.installClient = new InstallClient(store.moduleId);
@@ -103,7 +104,7 @@ export class DnnBiQueuedFile {
               <button
                 title={store.resx.Cancel}
                 onClick={() => {
-                  this.abortController.abort();
+                  this.abortController?.abort();
                   this.uploadCompleted.emit(UploadStatus.Cancelled);
                   this.dismiss().catch(console.error);
                 }}

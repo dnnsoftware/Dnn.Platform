@@ -32,8 +32,8 @@ export class DnnBiApiUsers {
   };
   @State() private createdUserCredentials: User | null = null;
 
-  private newUserModal: HTMLDnnModalElement;
-  private credentialsModal: HTMLDnnModalElement;
+  private newUserModal?: HTMLDnnModalElement;
+  private credentialsModal?: HTMLDnnModalElement;
 
   private apiUserClient: ApiUserClient;
 
@@ -58,9 +58,9 @@ export class DnnBiApiUsers {
       bypassIPWhitelist: false,
       expiresOn: addYear(new Date()),
     };
-    await this.newUserModal.hide();
+    await this.newUserModal?.hide();
     this.createdUserCredentials = createdUser;
-    await this.credentialsModal.show();
+    await this.credentialsModal?.show();
   }
 
   private async onCredentialsDismissed(): Promise<void> {
@@ -94,7 +94,7 @@ export class DnnBiApiUsers {
                   <dnn-button
                     size="small"
                     onClick={() => {
-                      this.newUserModal.show().catch(console.error);
+                      this.newUserModal?.show().catch(console.error);
                       return;
                     }}
                   >
@@ -189,7 +189,7 @@ export class DnnBiApiUsers {
                 <dnn-button
                   size="small"
                   onClick={() => {
-                    navigator.clipboard.writeText(this.createdUserCredentials.apiKey).catch(console.error);
+                    navigator.clipboard.writeText(this.createdUserCredentials?.apiKey ?? "").catch(console.error);
                     return;
                   }}
                 >
@@ -202,7 +202,7 @@ export class DnnBiApiUsers {
                 <dnn-button
                   size="small"
                   onClick={() => {
-                    navigator.clipboard.writeText(this.createdUserCredentials.encryptionKey).catch(console.error);
+                    navigator.clipboard.writeText(this.createdUserCredentials?.encryptionKey ?? "").catch(console.error);
                     return;
                   }}
                 >

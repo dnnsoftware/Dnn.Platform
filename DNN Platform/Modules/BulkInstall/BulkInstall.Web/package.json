@@ -28,9 +28,9 @@
   },
   "dependencies": {
     "@dnncommunity/dnn-elements": "^0.29.3",
-    "@stencil/core": "^4.43.5",
+    "@stencil/core": "^4.44.0",
     "@stencil/sass": "^3.3.3",
-    "@stencil/store": "^2.2.3"
+    "@stencil/store": "^2.2.4"
   },
   "license": "MIT",
   "devDependencies": {

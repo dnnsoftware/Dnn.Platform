@@ -31,7 +31,7 @@ function getCanInstall(file: FileViewModel): boolean {
 })
 export class DnnBiInstall {
   @State() private files: FileViewModel[] = [];
-  @State() private session: Session | undefined;
+  @State() private session?: Session;
   @State() private maxUploadFileSize: number = 0;
   @State() private installStatus: InstallStatus = { type: 'uploading' };
   @State() private apiError = false;
@@ -68,7 +68,8 @@ export class DnnBiInstall {
     this.summaryAbortController?.abort(reason);
     try {
       this.summaryAbortController = new AbortController();
-      const jobs = await this.installClient.summary(this.session.sessionGuid, this.summaryAbortController.signal);
+      const guid = this.session?.sessionGuid ?? "";
+      const jobs = await this.installClient.summary(guid, this.summaryAbortController.signal);
       this.summaryAbortController = null;
 
       this.receiveInstallationSummary(jobs);
@@ -99,12 +100,14 @@ export class DnnBiInstall {
       return;
     }
 
-    await this.installClient.install(this.session.sessionGuid);
+    const guid = this.session?.sessionGuid ?? "";
+    await this.installClient.install(guid);
 
     const summaryWait = 1000;
     const updateSummary = async () => {
       try {
-        this.session = await this.installClient.getSession(this.session.sessionGuid);
+        const guid = this.session?.sessionGuid ?? "";
+        this.session = await this.installClient.getSession(guid);
         this.apiError = false;
         this.receiveInstallationSummary(this.session.response);
         if (this.session.status === sessionStatus.complete) {
@@ -162,20 +165,20 @@ export class DnnBiInstall {
                 {this.files.map(file => (
                   <>
                     {file.type === 'uploaded' && <dnn-bi-install-job key={file.job.name} job={file.job} />}
-                    {file.type !== 'uploaded' && (
+                    {file.type !== 'uploaded' && this.session != undefined && (
                       <dnn-bi-queued-file
                         key={file.file.name}
                         file={file.file}
                         session={this.session}
                         maxUploadFileSize={this.maxUploadFileSize}
-                        onUploadCompleted={e => this.handleUploadCompleted(file, e.detail)}
+                        onUploadCompleted={e => void this.handleUploadCompleted(file, e.detail)}
                       />
                     )}
                   </>
                 ))}
                 {this.installStatus.type === 'uploading' && this.files.length > 0 && (
                   <div class="controls">
-                    <dnn-button reversed onClick={() => this.reset()}>
+                    <dnn-button reversed onClick={() => void this.reset()}>
                       {store.resx.Reset}
                     </dnn-button>
                     <dnn-button
