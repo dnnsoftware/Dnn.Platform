@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
@@ -31,9 +31,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="IsCI" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" VersionOverride ="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride ="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride ="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Http" VersionOverride="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="10.0.3" />
 		<PackageReference Include="Spectre.Console" />
 		<PackageReference Include="Spectre.Console.Analyzer">
 			<PrivateAssets>all</PrivateAssets>

@@ -1,6 +1,6 @@
 {
   "name": "dnn-bulk-install",
-  "version": "10.0.0",
+  "version": "10.4.0",
   "description": "Bulk Install",
   "private": true,
   "main": "dist/index.cjs.js",
@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@dnncommunity/dnn-elements": "^0.29.3",
-    "@stencil/core": "^4.44.0",
+    "@stencil/core": "^4.44.1",
     "@stencil/sass": "^3.3.3",
     "@stencil/store": "^2.2.4"
   },

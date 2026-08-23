@@ -27,7 +27,7 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
-    "@stencil/core": "^4.43.5"
+    "@stencil/core": "^4.44.1"
   },
   "devDependencies": {
     "@dnncommunity/dnn-elements": "^0.29.3",

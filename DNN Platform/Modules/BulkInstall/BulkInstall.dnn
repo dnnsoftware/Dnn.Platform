@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
   <packages>
-    <package name="BulkInstall" type="Module" version="10.00.00">
+    <package name="BulkInstall" type="Module" version="10.04.00">
       <friendlyName>Bulk Install</friendlyName>
       <description>This module allows you to bulk install extensions.</description>
       <iconFile>Images/bulk-install-icon.png</iconFile>
@@ -29,7 +29,7 @@
           <desktopModule>
             <moduleName>BulkInstall</moduleName>
             <foldername>BulkInstall</foldername>
-            <businessControllerClass />
+            <businessControllerClass/>
             <supportedFeatures>
               <supportedFeature type="Upgradeable"/>
             </supportedFeatures>
