@@ -24,13 +24,14 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Search.Internals;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>The ModuleIndexer is an implementation of the abstract <see cref="IndexingProviderBase"/> class.</summary>
-    public class ModuleIndexer : IndexingProviderBase
+    public partial class ModuleIndexer : IndexingProviderBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleIndexer>();
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
         private readonly IBusinessControllerProvider businessControllerProvider;
@@ -105,16 +106,7 @@ namespace DotNetNuke.Services.Search
                             AddModuleMetaData(searchItems, module);
                             searchDocuments.AddRange(searchItems);
 
-                            if (Logger.IsTraceEnabled)
-                            {
-                                Logger.TraceFormat(
-                                    CultureInfo.InvariantCulture,
-                                    "ModuleIndexer: {0} search documents found for module [{1} mid:{2}]",
-                                    searchItems.Count,
-                                    module.DesktopModule.ModuleName,
-                                    module.ModuleID);
-                            }
-
+                            Logger.ModuleIndexerSearchDocumentsFoundForModule(searchItems.Count, module.DesktopModule.ModuleName, module.ModuleID);
                             if (searchDocuments.Count >= saveThreshold)
                             {
                                 totalIndexed += this.IndexCollectedDocs(indexer, searchDocuments, portalId, schedule);
@@ -171,7 +163,7 @@ namespace DotNetNuke.Services.Search
                             searchDoc.Tags = module.Terms.Select(t => t.Name);
                         }
 
-                        Logger.Trace("ModuleIndexer: Search document for metaData found for module [" + module.DesktopModule.ModuleName + " mid:" + module.ModuleID + "]");
+                        Logger.ModuleIndexerSearchDocumentForMetadataFoundForModule(module.DesktopModule.ModuleName, module.ModuleID);
 
                         searchDocuments.Add(searchDoc);
                     }
@@ -272,7 +264,7 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ModuleIndexerGetModulesForIndexException(ex);
                     ThrowLogError(module, ex);
                 }
                 finally

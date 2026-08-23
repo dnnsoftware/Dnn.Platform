@@ -12,11 +12,13 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
     internal sealed class OpmlDownloadManager
     {
         private const string OPMLDir = "/OPML/";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<OpmlDownloadManager>();
         private static readonly OpmlDownloadManager TheManager = new OpmlDownloadManager();
 
         private readonly Dictionary<string, Opml> cache;
@@ -205,7 +207,7 @@ namespace DotNetNuke.Services.Syndication
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.OpmlDownloadManagerDeleteException(ex);
                     }
 
                     // try next file

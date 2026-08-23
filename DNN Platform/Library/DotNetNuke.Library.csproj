@@ -23,7 +23,6 @@
     <PackageReference Include="AngleSharp" />
     <PackageReference Include="AngleSharp.Css" />
     <PackageReference Include="BouncyCastle.Cryptography" />
-    <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-j92c-7v7g-gj3f" />
     <PackageReference Include="HtmlSanitizer" />
     <PackageReference Include="Lucene.Net.Contrib" />
     <PackageReference Include="MailKit" />

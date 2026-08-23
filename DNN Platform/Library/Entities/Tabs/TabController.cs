@@ -44,6 +44,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Services.Search.Entities;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>TabController provides all operation to <see cref="TabInfo"/>.</summary>
     /// <remarks>
@@ -54,7 +55,7 @@ namespace DotNetNuke.Entities.Tabs
     public partial class TabController(IEventLogger eventLogger, DataProvider dataProvider, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings, IApplicationStatusInfo appStatus)
         : ServiceLocator<ITabController, TabController>, ITabController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabController>();
         private static readonly Regex TabNameCheck1 = new Regex("^LPT[1-9]$|^COM[1-9]$", RegexOptions.IgnoreCase);
         private static readonly Regex TabNameCheck2 = new Regex("^AUX$|^CON$|^NUL$|^SITEMAP$|^LINKCLICK$|^KEEPALIVE$|^DEFAULT$|^ERRORPAGE$|^LOGIN$|^REGISTER$", RegexOptions.IgnoreCase);
 
@@ -1482,7 +1483,7 @@ namespace DotNetNuke.Entities.Tabs
 
             if (tabId <= 0)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Invalid tabId {0} of portal {1}", tabId, portalId);
+                Logger.TabControllerInvalidTabId(tabId, portalId);
             }
             else if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
@@ -1512,7 +1513,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                     else
                     {
-                        Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find tabId {0} of portal {1}", tabId, portalId);
+                        Logger.TabControllerUnableToFindTabId(tabId, portalId);
                     }
                 }
             }
@@ -1521,8 +1522,8 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>Gets the tab by culture.</summary>
-        /// <param name="tabId">The tab id.</param>
-        /// <param name="portalId">The portal id.</param>
+        /// <param name="tabId">The tab ID.</param>
+        /// <param name="portalId">The portal ID.</param>
         /// <param name="locale">The locale.</param>
         /// <returns>tab info.</returns>
         public TabInfo GetTabByCulture(int tabId, int portalId, Locale locale)
@@ -2562,7 +2563,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             try
             {
-                Logger.TraceFormat(CultureInfo.InvariantCulture, "Localizing TabId: {0}, TabPath: {1}, Locale: {2}", originalTab.TabID, originalTab.TabPath, locale.Code);
+                Logger.TabControllerLocalizingTab(originalTab.TabID, originalTab.TabPath, locale.Code);
                 var defaultLocale = LocaleController.Instance.GetDefaultLocale(originalTab.PortalID);
 
                 // First Clone the Tab

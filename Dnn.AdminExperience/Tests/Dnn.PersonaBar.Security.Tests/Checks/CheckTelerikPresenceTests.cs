@@ -11,6 +11,9 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
     using DotNetNuke.Maintenance.Telerik;
     using DotNetNuke.Tests.Utilities.Fakes;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     using Moq;
     using NUnit.Framework;
 
@@ -41,7 +44,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
                 .Setup(x => x.TelerikIsInstalled())
                 .Throws<BadImageFormatException>();
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+            var sut = new CheckTelerikPresence(NullLogger<CheckTelerikPresence>.Instance, telerikUtilsMock.Object);
 
             // act
             var result = sut.Execute();
@@ -73,7 +76,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
                 .SetupGet(x => x.BinPath)
                 .Returns("bin");
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+            var sut = new CheckTelerikPresence(NullLogger<CheckTelerikPresence>.Instance, telerikUtilsMock.Object);
 
             // act
             var result = sut.Execute();
@@ -101,7 +104,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
                 .Setup(x => x.GetAssembliesThatDependOnTelerik())
                 .Returns(() => []);
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+            var sut = new CheckTelerikPresence(NullLogger<CheckTelerikPresence>.Instance, telerikUtilsMock.Object);
 
             // act
             var result = sut.Execute();
@@ -124,7 +127,7 @@ namespace Dnn.PersonaBar.Security.Tests.Checks
                 .Setup(x => x.TelerikIsInstalled())
                 .Returns(false);
 
-            var sut = new CheckTelerikPresence(telerikUtilsMock.Object);
+            var sut = new CheckTelerikPresence(NullLogger<CheckTelerikPresence>.Instance, telerikUtilsMock.Object);
 
             // act
             var result = sut.Execute();

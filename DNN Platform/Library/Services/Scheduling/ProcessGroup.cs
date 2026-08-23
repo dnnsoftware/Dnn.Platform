@@ -11,10 +11,11 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Common;
     using DotNetNuke.Instrumentation;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class ProcessGroup
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ProcessGroup>();
 
         private static int numberOfProcesses;
 
@@ -64,15 +65,11 @@ namespace DotNetNuke.Services.Scheduling
                     // in case the scheduler client
                     // didn't have proper exception handling
                     // make sure we fire the Errored event
-                    Logger.Error(exc);
+                    Logger.ProcessGroupDoWorkException(exc);
 
                     if (process != null)
                     {
-                        if (process.ScheduleHistoryItem != null)
-                        {
-                            process.ScheduleHistoryItem.Succeeded = false;
-                        }
-
+                        process.ScheduleHistoryItem?.Succeeded = false;
                         process.Errored(ref exc);
                     }
                 }

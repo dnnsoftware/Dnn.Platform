@@ -12,6 +12,8 @@ namespace DotNetNuke.DependencyInjection.Extensions
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary><see cref="Type"/> specific extensions to be used in Dependency Injection invocations.</summary>
     public static partial class TypeExtensions
     {
@@ -22,14 +24,22 @@ namespace DotNetNuke.DependencyInjection.Extensions
         [DnnDeprecated(9, 9, 0, "Please use the SafeGetTypes overload with the ILog parameter")]
         public static partial Type[] SafeGetTypes(this Assembly assembly)
         {
-            return assembly.SafeGetTypes(null);
+            return assembly.SafeGetTypes((ILogger)null);
         }
 
         /// <summary>Safely Get all Types from the assembly. If there is an error while retrieving the types it will return an empty array of <see cref="Type"/>.</summary>
         /// <param name="assembly">The assembly to retrieve all types from.</param>
-        /// <param name="logger">A optional <see cref="ILog"/> object. This will log issues loading the types.</param>
+        /// <param name="logger">An optional <see cref="ILog"/> object. This will log issues loading the types.</param>
         /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
-        public static Type[] SafeGetTypes(this Assembly assembly, ILog logger)
+        [DnnDeprecated(10, 4, 0, "Use overload taking ILogger")]
+        public static partial Type[] SafeGetTypes(this Assembly assembly, ILog logger)
+            => assembly.SafeGetTypes(logger is null ? null : new LogWrapper(logger));
+
+        /// <summary>Safely Get all Types from the assembly. If there is an error while retrieving the types it will return an empty array of <see cref="Type"/>.</summary>
+        /// <param name="assembly">The assembly to retrieve all types from.</param>
+        /// <param name="logger">An optional <see cref="ILogger"/> object. This will log issues loading the types.</param>
+        /// <returns>An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.</returns>
+        public static Type[] SafeGetTypes(this Assembly assembly, ILogger logger)
         {
             var (types, exception) = assembly.GetTypesAndException();
             if (logger is null || exception is null)
@@ -39,16 +49,12 @@ namespace DotNetNuke.DependencyInjection.Extensions
 
             if (exception is ReflectionTypeLoadException loadException)
             {
-                var messageBuilder = BuildLoaderExceptionMessage(
-                    new StringBuilder($"Unable to get all types for {assembly.FullName}, see exception for details").AppendLine(),
-                    assembly,
-                    loadException);
-
-                logger.Warn(messageBuilder.ToString(), loadException);
+                var messageBuilder = BuildLoaderExceptionMessage(new StringBuilder(), assembly, loadException);
+                logger.TypeExtensionsUnableToGetAllTypesFor(loadException, assembly.FullName, messageBuilder.ToString());
             }
             else
             {
-                logger.Error($"Unable to get any types for {assembly.FullName}, see exception for details", exception);
+                logger.TypeExtensionsUnableToGetAnyTypesFor(exception, assembly.FullName);
             }
 
             return types.ToArray();
@@ -93,7 +99,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// <summary>Logs the exceptions in <see cref="TypesResult.OtherExceptions"/> of <paramref name="result" /> using <paramref name="logger"/>.</summary>
         /// <param name="result">The types result to log.</param>
         /// <param name="logger">The logger.</param>
-        public static void LogOtherExceptions(this TypesResult result, ILog logger)
+        public static void LogOtherExceptions(this TypesResult result, ILogger logger)
         {
             if (logger is null)
             {
@@ -104,7 +110,7 @@ namespace DotNetNuke.DependencyInjection.Extensions
             {
                 var assembly = exceptionPair.Key;
                 var exception = exceptionPair.Value;
-                logger.Error($"Unable to get any types for {assembly.FullName}, see exception for details", exception);
+                logger.TypeExtensionsOtherExceptions(exception, assembly.FullName);
             }
         }
 

@@ -17,11 +17,14 @@ namespace DotNetNuke.Modules.Journal
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Web.Api;
     using DotNetNuke.Web.Api.Internal;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     public class FileUploadController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileUploadController>();
 
         private static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".JPG", ".JPE", ".BMP", ".GIF", ".PNG", ".JPEG", ".ICO", ".SVG", };
 
@@ -38,7 +41,7 @@ namespace DotNetNuke.Modules.Journal
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.FileUploadControllerUploadFileException(exc);
             }
 
             return IframeSafeJson(statuses);

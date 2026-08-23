@@ -17,11 +17,12 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Instrumentation;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.FileSystemGlobbing;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The CleanupInstaller cleans up (removes) files from previous versions.</summary>
     public class CleanupInstaller : FileInstaller
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CleanupInstaller>();
 
         private readonly IList<string> folders = new List<string>();
         private readonly IApplicationStatusInfo applicationStatusInfo;
@@ -212,7 +213,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.CleanupInstallerCleanupFileException(exc);
 
                 return false;
             }
@@ -230,12 +231,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    Logger.Warn($"Ignoring invalid cleanup folder path '{path}' in package '{this.Package?.Name}'.");
+                    Logger.CleanupInstallerIgnoringInvalidCleanupFolderPath(path, this.Package?.Name);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CleanupInstallerCleanupFolderException(ex);
             }
         }
 

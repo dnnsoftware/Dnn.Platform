@@ -30,6 +30,7 @@ namespace Dnn.ExportImport.Components.Controllers
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
@@ -39,7 +40,7 @@ namespace Dnn.ExportImport.Components.Controllers
         /// <summary>The full path to the folder used for import/export.</summary>
         public static readonly string ExportFolder;
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BaseController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<BaseController>();
 
         static BaseController()
         {
@@ -352,8 +353,7 @@ namespace Dnn.ExportImport.Components.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error(
-                    $"Failed to delete the job data. Error:{ex.Message}. It will need to be deleted manually. Folder Path:{jobFolder}");
+                Logger.BaseControllerFailedToDeleteJobData(ex, ex.Message, jobFolder);
             }
         }
     }

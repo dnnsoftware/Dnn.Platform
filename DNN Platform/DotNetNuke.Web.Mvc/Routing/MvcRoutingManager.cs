@@ -18,9 +18,12 @@ namespace DotNetNuke.Web.Mvc.Routing
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Mvc.Common;
 
-    public sealed class MvcRoutingManager : IMapRoute, IRoutingManager
+    using Microsoft.Extensions.Logging;
+
+    /// <summary>An <see cref="IRoutingManager"/> for MVC extensions.</summary>
+    public sealed partial class MvcRoutingManager : IMapRoute, IRoutingManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MvcRoutingManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MvcRoutingManager>();
         private readonly RouteCollection routes;
         private readonly PortalAliasMvcRouteManager portalAliasMvcRouteManager;
 
@@ -91,7 +94,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 var routeUrl = this.portalAliasMvcRouteManager.GetRouteUrl(moduleFolderName, url, count);
                 route = MapRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 this.routes.Add(route);
-                Logger.Trace($"Mapping route: {fullRouteName} @ {routeUrl}");
+                Logger.MvcRoutingManagerMappingRoute(fullRouteName, routeUrl);
             }
 
             return route;
@@ -107,7 +110,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 this.LocateServicesAndMapRoutes();
             }
 
-            Logger.TraceFormat(CultureInfo.InvariantCulture, "Registered a total of {0} routes", this.routes.Count);
+            Logger.MvcRoutingManagerRegisteredRoutes(this.routes.Count);
         }
 
         internal static bool IsValidServiceRouteMapper(Type t)
@@ -167,7 +170,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "{0}.RegisterRoutes threw an exception.  {1}\r\n{2}", routeMapper.GetType().FullName, e.Message, e.StackTrace);
+                    Logger.MvcRoutingManagerRegisterRoutesThrewException(e, routeMapper.GetType().FullName);
                 }
             }
         }
@@ -190,7 +193,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "Unable to create {0} while registering service routes.  {1}", routeMapperType.FullName, e.Message);
+                    Logger.MvcRoutingManagerUnableToCreateMapper(e, routeMapperType.FullName);
                     routeMapper = null;
                 }
 

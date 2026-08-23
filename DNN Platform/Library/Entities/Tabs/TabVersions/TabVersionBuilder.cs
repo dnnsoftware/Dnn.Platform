@@ -23,6 +23,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An <see cref="ITabVersionBuilder"/> implementation.</summary>
     /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -31,7 +32,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         : ServiceLocator<ITabVersionBuilder, TabVersionBuilder>, ITabVersionBuilder
     {
         private const int DefaultVersionNumber = 1;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabVersionBuilder));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabVersionBuilder>();
         private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private readonly ITabController tabController = TabController.Instance;
@@ -165,7 +166,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
                 catch (DnnTabVersionException e)
                 {
-                    Logger.Error($"There was a problem making rollback of the module {rollbackDetail.ModuleId}. Message: {e.Message}.");
+                    Logger.TabVersionBuilderProblemMakingRollbackOfTheModule(e, rollbackDetail.ModuleId);
                     continue;
                 }
 
@@ -782,7 +783,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.TabVersionBuilderConvertToModuleInfoException(ex);
             }
 
             return modules;

@@ -17,10 +17,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Data;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsLogsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsLogsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServerSettingsLogsController>();
         private readonly LogController logController = new LogController();
 
         [HttpGet]
@@ -42,7 +44,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsLogsControllerGetLogsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -62,7 +64,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsLogsControllerGetLogFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -83,7 +85,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsLogsControllerGetUpgradeLogFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

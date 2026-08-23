@@ -46,6 +46,7 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Search.Entities;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>ModuleController provides the Business Layer for Modules.</summary>
     /// <param name="eventLogger">The event logger.</param>
@@ -54,7 +55,7 @@ namespace DotNetNuke.Entities.Modules
     public partial class ModuleController(IEventLogger eventLogger, IPermissionDefinitionService permissionDefinitionService, IHostSettings hostSettings)
         : ServiceLocator<IModuleController, ModuleController>, IModuleController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleController>();
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
         private readonly IPermissionDefinitionService permissionDefinitionService = permissionDefinitionService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPermissionDefinitionService>();
@@ -627,7 +628,7 @@ namespace DotNetNuke.Entities.Modules
             catch (Exception exc)
             {
                 // module already in the page, ignore error
-                Logger.Error(exc);
+                Logger.ModuleControllerModuleAlreadyOnThePageException(exc);
             }
 
             this.ClearCache(sourceModule.TabID);
@@ -1244,14 +1245,11 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception ex)
             {
-                Logger.ErrorFormat(CultureInfo.InvariantCulture, "Error localizing module, moduleId: {0}, full exception: {1}", sourceModule.ModuleID, ex);
+                Logger.ModuleControllerErrorLocalizingModule(ex, sourceModule.ModuleID);
             }
         }
 
-        /// <summary>
-        /// MoveModule moves a Module from one Tab to another including all the
-        ///     TabModule settings.
-        /// </summary>
+        /// <summary>MoveModule moves a Module from one Tab to another including all the TabModule settings.</summary>
         /// <param name="moduleId">The ID of the module to move.</param>
         /// <param name="fromTabId">The ID of the source tab.</param>
         /// <param name="toTabId">The ID of the destination tab.</param>
@@ -1785,7 +1783,7 @@ namespace DotNetNuke.Entities.Modules
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModuleControllerAddContentException(exc);
             }
         }
 

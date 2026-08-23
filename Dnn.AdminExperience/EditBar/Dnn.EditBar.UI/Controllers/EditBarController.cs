@@ -26,6 +26,7 @@ namespace Dnn.EditBar.UI.Controllers
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An <see cref="IEditBarController"/> implementation.</summary>
     /// <param name="hostSettings">The host settings.</param>
@@ -33,7 +34,7 @@ namespace Dnn.EditBar.UI.Controllers
     public class EditBarController(IHostSettings hostSettings, IEnumerable<BaseMenuItem> menuItems)
         : ServiceLocator<IEditBarController, EditBarController>, IEditBarController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EditBarController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<EditBarController>();
 
         private readonly IHostSettings hostSettings = hostSettings ??
                                                       HttpContextSource.Current?.GetScope().ServiceProvider.GetRequiredService<IHostSettings>() ??
@@ -107,11 +108,7 @@ namespace Dnn.EditBar.UI.Controllers
                 }
                 catch (Exception e)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "Unable to create {0} while getting all edit bar menu items. {1}",
-                        type.FullName,
-                        e.Message);
+                    Logger.EditBarControllerUnableToCreateMenuItem(e, type.FullName);
                     menuItem = null;
                 }
 

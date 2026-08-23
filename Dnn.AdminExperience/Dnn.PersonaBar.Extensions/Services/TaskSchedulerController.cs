@@ -24,12 +24,14 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Web.Api;
+
+    using Microsoft.Extensions.Logging;
     using Microsoft.VisualBasic;
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class TaskSchedulerController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TaskSchedulerController>();
         private static string localResourcesFile = Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
         private Components.TaskSchedulerController controller = new Components.TaskSchedulerController();
 
@@ -66,7 +68,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerGetServersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -100,7 +102,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerGetScheduleItemsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -134,7 +136,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerGetSchedulerSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -177,7 +179,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerUpdateSchedulerSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -225,7 +227,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerGetScheduleItemHistoryException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -271,7 +273,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerGetScheduleItemException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -316,7 +318,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerCreateScheduleItemException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -378,7 +380,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerUpdateScheduleItemException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -463,7 +465,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerGetScheduleStatusException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -482,7 +484,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerStartScheduleException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -501,7 +503,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerStopScheduleException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -542,7 +544,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerRunScheduleException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -563,7 +565,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.TaskSchedulerControllerDeleteScheduleException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

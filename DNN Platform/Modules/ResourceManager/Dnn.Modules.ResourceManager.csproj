@@ -106,6 +106,7 @@
     <Compile Include="Exceptions\ModeValidationException.cs" />
     <Compile Include="Exceptions\NotFoundException.cs" />
     <Compile Include="Helpers\LocalizationHelper.cs" />
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="Services\Attributes\ResourceManagerExceptionFilter.cs" />
     <Compile Include="Services\Dto\CreateNewFolderRequest.cs" />
     <Compile Include="Services\Dto\DeleteFileRequest.cs" />

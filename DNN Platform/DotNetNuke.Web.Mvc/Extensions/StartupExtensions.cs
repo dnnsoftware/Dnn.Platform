@@ -11,11 +11,12 @@ namespace DotNetNuke.Web.Mvc.Extensions
 
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.DependencyInjection.Extensions;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Adds DNN MVC Controller Specific startup extensions to simplify the <see cref="Startup"/> Class.</summary>
     public static class StartupExtensions
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StartupExtensions));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(StartupExtensions));
 
         /// <summary>Configures all of the <see cref="DnnController"/>'s to be used with the Service Collection for Dependency Injection.</summary>
         /// <param name="services">Service Collection used to registering services in the container.</param>

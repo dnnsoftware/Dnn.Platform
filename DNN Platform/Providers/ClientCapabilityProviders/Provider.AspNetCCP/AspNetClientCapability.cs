@@ -14,6 +14,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>AspNet Browser Implementation of <see cref="DotNetNuke.Services.ClientCapability.IClientCapability"/>.</summary>
     public class AspNetClientCapability : Services.ClientCapability.ClientCapability
     {
@@ -30,7 +32,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         private const string UnixAgent3 = "i386";
         private const string X11Agent = "x11";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AspNetClientCapability));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AspNetClientCapability>();
 
         private static readonly Regex MobileCheck = new Regex(
             @"(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino",
@@ -78,7 +80,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.AspNetClientCapabilityDetectOperatingSystemException(ex);
                 }
             }
         }

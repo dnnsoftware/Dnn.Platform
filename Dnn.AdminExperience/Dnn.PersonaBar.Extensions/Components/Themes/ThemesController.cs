@@ -24,6 +24,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.UI.Skins;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Image = System.Drawing.Image;
 
@@ -38,7 +39,8 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
 
     /// <summary>The default container names.</summary>
     internal static readonly IList<string> DefaultContainerNames = ["Title-h2", "NoTitle", "Main", "Default",];
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<ThemesController>();
+
     private static readonly object ThreadLocker = new object();
 
     private readonly IHostSettings hostSettings = Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
@@ -97,9 +99,7 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
         if (Directory.Exists(themePath))
         {
             var fallbackSkin = theme.Type == ThemeType.Skin ? this.IsFallbackSkin(themePath) : this.IsFallbackContainer(themePath);
-
             var strSkinType = themePath.IndexOf(Globals.HostMapPath, StringComparison.OrdinalIgnoreCase) != -1 ? "G" : "L";
-
             var canDeleteSkin = SkinController.CanDeleteSkin(this.hostSettings, themePath, portalSettings.HomeDirectoryMapPath);
             var arrFiles = Directory.GetFiles(themePath, "*.ascx");
 
@@ -147,7 +147,8 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
             .Replace("/", string.Empty);
         var themeLevel = GetThemeLevel(filePath);
 
-        var themeInfo = (type == ThemeType.Skin ? this.GetLayouts(portalSettings, ThemeLevel.All)
+        var themeInfo = (type == ThemeType.Skin
+                ? this.GetLayouts(portalSettings, ThemeLevel.All)
                 : this.GetContainers(portalSettings, ThemeLevel.All))
             .FirstOrDefault(t => t.PackageName.Equals(themeName, StringComparison.OrdinalIgnoreCase) && t.Level == themeLevel);
 
@@ -471,7 +472,7 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
                     catch (Exception ex)
                     {
                         // problem creating thumbnail
-                        Logger.Error(ex);
+                        Logger.ComponentsThemesControllerCreateThumbnailException(ex);
                     }
                 }
             }
@@ -589,8 +590,29 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
         }
         catch (Exception ex)
         {
-            Logger.Error(ex);
+            Logger.ComponentsThemesControllerUpdateManifestException(ex);
         }
+    }
+
+    private string GetDefaultThemeFileName(string themePath, ThemeType type)
+    {
+        var themeFiles = new List<string>();
+        var folderPath = Path.Combine(this.appStatus.ApplicationMapPath, themePath);
+        themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
+
+        var defaultFile = themeFiles.FirstOrDefault(i =>
+        {
+            var fileName = Path.GetFileNameWithoutExtension(i);
+            return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
+                : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
+        });
+
+        if (string.IsNullOrEmpty(defaultFile))
+        {
+            defaultFile = themeFiles.FirstOrDefault();
+        }
+
+        return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
     }
 
     private List<ThemeInfo> GetThemes(ThemeType type, string strRoot)
@@ -617,27 +639,6 @@ public class ThemesController : ServiceLocator<IThemesController, ThemesControll
                 Thumbnail = this.GetThumbnail(themePath, defaultThemeFile),
                 CanDelete = canDelete,
             }).ToList();
-    }
-
-    private string GetDefaultThemeFileName(string themePath, ThemeType type)
-    {
-        var themeFiles = new List<string>();
-        var folderPath = Path.Combine(this.appStatus.ApplicationMapPath, themePath);
-        themeFiles.AddRange(Directory.GetFiles(folderPath, "*.ascx"));
-
-        var defaultFile = themeFiles.FirstOrDefault(i =>
-        {
-            var fileName = Path.GetFileNameWithoutExtension(i);
-            return type == ThemeType.Skin ? DefaultLayoutNames.Contains(fileName, StringComparer.OrdinalIgnoreCase)
-                : DefaultContainerNames.Contains(fileName, StringComparer.OrdinalIgnoreCase);
-        });
-
-        if (string.IsNullOrEmpty(defaultFile))
-        {
-            defaultFile = themeFiles.FirstOrDefault();
-        }
-
-        return !string.IsNullOrEmpty(defaultFile) ? Path.GetFileName(defaultFile) : string.Empty;
     }
 
     private string GetThumbnail(string themePath, string themeFileName)

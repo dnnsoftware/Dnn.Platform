@@ -27,6 +27,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using IConsoleCommand = DotNetNuke.Abstractions.Prompt.IConsoleCommand;
 #pragma warning disable CS0618
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.Prompt.Services
     [RequireHost]
     public class CommandController : ControllerBase, IServiceRouteMapper
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CommandController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CommandController>();
         private static readonly string[] DenyList = ["smtppassword", "password", "pwd", "pass", "apikey",];
         private static readonly string[] Namespaces = ["Dnn.PersonaBar.Prompt.Services",];
         private static readonly char[] Separators = [',', '|', ' ',];
@@ -104,7 +105,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             if (portal == null)
             {
                 var errorMessage = string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_GetPortal_NotFound", Constants.LocalResourcesFile), portalId);
-                Logger.Error(errorMessage);
+                Logger.CommandControllerCmdPortalNotFound(errorMessage);
                 return this.AddLogAndReturnResponse(null, null, command, DateTime.Now, errorMessage);
             }
 
@@ -182,7 +183,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CommandControllerCmdException(ex);
                 return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }
@@ -238,7 +239,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CommandControllerTryRunOldCommandException(ex);
                 return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }
@@ -259,7 +260,7 @@ namespace Dnn.PersonaBar.Prompt.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CommandControllerTryRunNewCommandException(ex);
                 return this.AddLogAndReturnResponse(null, null, command, startTime, ex.Message);
             }
         }

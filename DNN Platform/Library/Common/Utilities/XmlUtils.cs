@@ -21,10 +21,12 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Security.Permissions;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The XmlUtils class provides Shared/Static methods for manipulating xml files.</summary>
     public partial class XmlUtils
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(XmlUtils));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<XmlUtils>();
 
         public static void AppendElement(ref XmlDocument objDoc, XmlNode objNode, string attName, string attValue, bool includeIfEmpty)
         {

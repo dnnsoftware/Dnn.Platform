@@ -10,11 +10,12 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Services.Installer;
     using DotNetNuke.Services.Installer.Packages;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IInstallAvailablePackageStep" />
     internal sealed class InstallAvailablePackageStep : StepBase, IInstallAvailablePackageStep
@@ -24,27 +25,22 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IPackageController packageController;
 
         /// <summary>Initializes a new instance of the <see cref="InstallAvailablePackageStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="appStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         /// <param name="fsProvider">An instance of <see cref="IFileSystemProvider"/>.</param>
         /// <param name="packageController">An instance of <see cref="IPackageController"/>.</param>
         public InstallAvailablePackageStep(
-            ILoggerSource loggerSource,
+            ILogger<InstallAvailablePackageStep> logger,
             ILocalizer localizer,
             IApplicationStatusInfo appStatusInfo,
             IFileSystemProvider fsProvider,
             IPackageController packageController)
-            : base(loggerSource, localizer)
+            : base(logger, localizer)
         {
-            this.appStatusInfo = appStatusInfo ??
-                throw new ArgumentNullException(nameof(appStatusInfo));
-
-            this.fsProvider = fsProvider ??
-                throw new ArgumentNullException(nameof(fsProvider));
-
-            this.packageController = packageController ??
-                throw new ArgumentNullException(nameof(packageController));
+            this.appStatusInfo = appStatusInfo ?? throw new ArgumentNullException(nameof(appStatusInfo));
+            this.fsProvider = fsProvider ?? throw new ArgumentNullException(nameof(fsProvider));
+            this.packageController = packageController ?? throw new ArgumentNullException(nameof(packageController));
         }
 
         /// <inheritdoc />

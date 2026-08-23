@@ -19,14 +19,17 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
     using DotNetNuke.Services.Authentication;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The Login AuthenticationLoginBase is used to provide a login for a registered user portal.</summary>
     public partial class Login : AuthenticationLoginBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Login>();
         private readonly INavigationManager navigationManager;
         private readonly IPortalController portalController;
         private readonly IHostSettings hostSettings;
@@ -217,7 +220,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                     catch (Exception ex)
                     {
                         // control not there
-                        Logger.Error(ex);
+                        Logger.DnnLoginCleanUsernameException(ex);
                     }
                 }
 
@@ -229,7 +232,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 {
                     // Not sure why this Try/Catch may be necessary, logic was there in old setFormFocus location stating the following
                     // control not there or error setting focus
-                    Logger.Error(ex);
+                    Logger.DnnLoginSetFormFocusException(ex);
                 }
             }
 

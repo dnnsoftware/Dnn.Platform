@@ -15,10 +15,12 @@ namespace Dnn.PersonaBar.SiteGroups.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SiteGroupsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SiteGroupsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SiteGroupsController>();
 
         private static IManagePortalGroups GroupManager => SiteGroups.Instance;
 
@@ -47,7 +49,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SiteGroupsControllerSaveException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -63,7 +65,7 @@ namespace Dnn.PersonaBar.SiteGroups.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SiteGroupsControllerDeleteException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
