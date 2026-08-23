@@ -1,6 +1,6 @@
 {
   "name": "pages",
-  "version": "10.3.4",
+  "version": "10.4.0",
   "private": true,
   "scripts": {
     "start": "rsbuild dev",
@@ -18,7 +18,7 @@
     "es6-promise": "4.0.5"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.4",
+    "@dnnsoftware/dnn-react-common": "10.4.0",
     "@rsbuild/core": "^2.1.10",
     "@rsbuild/plugin-less": "^2.0.1",
     "@rsbuild/plugin-react": "^2.1.0",
