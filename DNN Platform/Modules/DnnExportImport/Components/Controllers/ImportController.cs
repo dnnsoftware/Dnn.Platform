@@ -114,6 +114,13 @@ namespace Dnn.ExportImport.Components.Controllers
             var dbPath = UnPackDatabase(importFolder);
             try
             {
+                // Must be checked before opening the repository below: opening a legacy-format file
+                // migrates it in place, so the legacy signature this checks for is gone afterward.
+                if (summary != null)
+                {
+                    summary.IsCrossVersionImport = ExportImportRepository.IsLegacyExportFile(dbPath);
+                }
+
                 using (var ctx = new ExportImportRepository(dbPath))
                 {
                     if (summary != null)
