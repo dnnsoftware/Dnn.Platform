@@ -57,6 +57,9 @@ namespace Dnn.ExportImport.Components.Dto
         /// <summary>Gets or sets exported file information.</summary>
         public ExportFileInfo ExportFileInfo { get; set; }
 
+        /// <summary>Gets or sets a value indicating whether this package was exported by an older major DNN version and is being imported into a newer one.</summary>
+        public bool IsCrossVersionImport { get; set; }
+
         /// <inheritdoc />
         public void ConvertToLocal(UserInfo userInfo)
         {

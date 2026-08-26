@@ -292,6 +292,19 @@ namespace Dnn.ExportImport.Repository
             collection.Update(documentsToUpdate);
         }
 
+        /// <summary>
+        /// Determines whether the given export database file was written by a legacy (LiteDB v3.x/v4.x,
+        /// on-disk "v7") DNN version, prior to the in-place migration this constructor performs.
+        /// Callers can use this to warn about a cross-version import before opening the repository,
+        /// since opening it migrates a legacy file in place and this signature no longer applies afterward.
+        /// </summary>
+        /// <param name="dbFileName">The database file path.</param>
+        /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
+        public static bool IsLegacyExportFile(string dbFileName)
+        {
+            return IsLegacyFormatFile(dbFileName);
+        }
+
         /// <summary>Determines whether the given file is a legacy (LiteDB v3.x/v4.x, on-disk "v7") database.</summary>
         /// <param name="dbFileName">The database file path.</param>
         /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
