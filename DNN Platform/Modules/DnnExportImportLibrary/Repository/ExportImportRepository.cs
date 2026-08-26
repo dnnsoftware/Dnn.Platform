@@ -59,10 +59,24 @@ namespace Dnn.ExportImport.Repository
             this.Dispose(false);
         }
 
+        /// <summary>
+        /// Determines whether the given export database file was written by a legacy (LiteDB v3.x/v4.x,
+        /// on-disk "v7") DNN version, prior to the in-place migration this constructor performs.
+        /// Callers can use this to warn about a cross-version import before opening the repository,
+        /// since opening it migrates a legacy file in place and this signature no longer applies afterward.
+        /// </summary>
+        /// <param name="dbFileName">The database file path.</param>
+        /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
+        public static bool IsLegacyExportFile(string dbFileName)
+        {
+            return IsLegacyFormatFile(dbFileName);
+        }
+
         /// <inheritdoc/>
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc/>
@@ -292,19 +306,6 @@ namespace Dnn.ExportImport.Repository
             collection.Update(documentsToUpdate);
         }
 
-        /// <summary>
-        /// Determines whether the given export database file was written by a legacy (LiteDB v3.x/v4.x,
-        /// on-disk "v7") DNN version, prior to the in-place migration this constructor performs.
-        /// Callers can use this to warn about a cross-version import before opening the repository,
-        /// since opening it migrates a legacy file in place and this signature no longer applies afterward.
-        /// </summary>
-        /// <param name="dbFileName">The database file path.</param>
-        /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
-        public static bool IsLegacyExportFile(string dbFileName)
-        {
-            return IsLegacyFormatFile(dbFileName);
-        }
-
         /// <summary>Determines whether the given file is a legacy (LiteDB v3.x/v4.x, on-disk "v7") database.</summary>
         /// <param name="dbFileName">The database file path.</param>
         /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
@@ -335,6 +336,40 @@ namespace Dnn.ExportImport.Repository
                 // If the header cannot be read for any reason, treat the file as non-legacy and let the
                 // normal open path handle (and report) any problem.
                 return false;
+            }
+        }
+
+        private static IEnumerable<IList<BsonDocument>> Batch(IEnumerable<BsonDocument> source, int size)
+        {
+            var bucket = new List<BsonDocument>(size);
+            foreach (var item in source)
+            {
+                bucket.Add(item);
+                if (bucket.Count == size)
+                {
+                    yield return bucket;
+                    bucket = new List<BsonDocument>(size);
+                }
+            }
+
+            if (bucket.Count > 0)
+            {
+                yield return bucket;
+            }
+        }
+
+        private static void SafeDeleteMigratedFile(string path)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch
+            {
+                // Best-effort cleanup of the temporary migrated copy; ignore failures.
             }
         }
 
@@ -406,58 +441,19 @@ namespace Dnn.ExportImport.Repository
             {
                 // If anything about the legacy migration fails, discard the partial copy and fall back to
                 // the original open path so behavior is never worse than before this fix.
-                this.SafeDeleteMigratedFile(targetDbFileName);
+                SafeDeleteMigratedFile(targetDbFileName);
                 this.migratedDbFileName = null;
                 return null;
             }
         }
 
-        private static IEnumerable<IList<BsonDocument>> Batch(IEnumerable<BsonDocument> source, int size)
-        {
-            var bucket = new List<BsonDocument>(size);
-            foreach (var item in source)
-            {
-                bucket.Add(item);
-                if (bucket.Count == size)
-                {
-                    yield return bucket;
-                    bucket = new List<BsonDocument>(size);
-                }
-            }
-
-            if (bucket.Count > 0)
-            {
-                yield return bucket;
-            }
-        }
-
-        private void SafeDeleteMigratedFile(string path)
-        {
-            try
-            {
-                if (!string.IsNullOrEmpty(path) && File.Exists(path))
-                {
-                    File.Delete(path);
-                }
-            }
-            catch
-            {
-                // Best-effort cleanup of the temporary migrated copy; ignore failures.
-            }
-        }
-
-        private void Dispose(bool isDisposing)
+        protected virtual void Dispose(bool disposing)
         {
             var temp = Interlocked.Exchange(ref this.liteDb, null);
             temp?.Dispose();
 
             var migrated = Interlocked.Exchange(ref this.migratedDbFileName, null);
-            this.SafeDeleteMigratedFile(migrated);
-
-            if (isDisposing)
-            {
-                GC.SuppressFinalize(this);
-            }
+            SafeDeleteMigratedFile(migrated);
         }
 
         private IEnumerable<T> InternalGetItems<T>(
