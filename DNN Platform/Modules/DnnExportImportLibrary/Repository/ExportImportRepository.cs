@@ -14,6 +14,7 @@ namespace Dnn.ExportImport.Repository
     using Dnn.ExportImport.Dto;
     using Dnn.ExportImport.Interfaces;
     using LiteDB;
+    using LiteDB.Engine;
 
     /// <inheritdoc/>
     public class ExportImportRepository : IExportImportRepository
@@ -306,6 +307,15 @@ namespace Dnn.ExportImport.Repository
             collection.Update(documentsToUpdate);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            var temp = Interlocked.Exchange(ref this.liteDb, null);
+            temp?.Dispose();
+
+            var migrated = Interlocked.Exchange(ref this.migratedDbFileName, null);
+            SafeDeleteMigratedFile(migrated);
+        }
+
         /// <summary>Determines whether the given file is a legacy (LiteDB v3.x/v4.x, on-disk "v7") database.</summary>
         /// <param name="dbFileName">The database file path.</param>
         /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
@@ -391,22 +401,22 @@ namespace Dnn.ExportImport.Repository
                     File.Delete(targetDbFileName);
                 }
 
+                // EngineSettings is public; only FileReaderV7 (and its IFileReader interface) are internal to
+                // LiteDB, so those still need to be constructed via reflection.
+                var engineSettings = new EngineSettings { Filename = sourceDbFileName };
+
                 var liteDbAssembly = typeof(LiteDatabase).Assembly;
-                var engineSettingsType = liteDbAssembly.GetType("LiteDB.Engine.EngineSettings");
                 var fileReaderType = liteDbAssembly.GetType("LiteDB.Engine.FileReaderV7");
-                if (engineSettingsType == null || fileReaderType == null)
+                if (fileReaderType == null)
                 {
                     return null;
                 }
-
-                var engineSettings = Activator.CreateInstance(engineSettingsType);
-                engineSettingsType.GetProperty("Filename").SetValue(engineSettings, sourceDbFileName);
 
                 var reader = (IDisposable)Activator.CreateInstance(
                     fileReaderType,
                     BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
                     null,
-                    new[] { engineSettings },
+                    new object[] { engineSettings },
                     null);
 
                 using (reader)
@@ -445,15 +455,6 @@ namespace Dnn.ExportImport.Repository
                 this.migratedDbFileName = null;
                 return null;
             }
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            var temp = Interlocked.Exchange(ref this.liteDb, null);
-            temp?.Dispose();
-
-            var migrated = Interlocked.Exchange(ref this.migratedDbFileName, null);
-            SafeDeleteMigratedFile(migrated);
         }
 
         private IEnumerable<T> InternalGetItems<T>(
