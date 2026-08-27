@@ -168,6 +168,12 @@ namespace DotNetNuke.Tests.Modules.ExportImport
             Assert.That(ExportImportRepository.IsLegacyExportFile(dbPath), Is.False);
         }
 
+        private static string TestDataDirectory()
+        {
+            var assemblyDir = Path.GetDirectoryName(new Uri(typeof(ExportImportRepositoryTests).Assembly.CodeBase).LocalPath);
+            return Path.Combine(assemblyDir, "ExportImport", "TestData");
+        }
+
         private string CopyFixture(string fixtureName)
         {
             var source = Path.Combine(TestDataDirectory(), fixtureName);
@@ -175,12 +181,6 @@ namespace DotNetNuke.Tests.Modules.ExportImport
             var destination = Path.Combine(this.workingDirectory, fixtureName);
             File.Copy(source, destination, true);
             return destination;
-        }
-
-        private static string TestDataDirectory()
-        {
-            var assemblyDir = Path.GetDirectoryName(new Uri(typeof(ExportImportRepositoryTests).Assembly.CodeBase).LocalPath);
-            return Path.Combine(assemblyDir, "ExportImport", "TestData");
         }
     }
 }
