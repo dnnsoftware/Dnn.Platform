@@ -20,6 +20,10 @@
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Security.Roles;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     using Moq;
     using NUnit.Framework;
 
@@ -43,6 +47,7 @@
             try
             {
                 new CheckUserProfilePage(
+                    NullLogger<CheckUserProfilePage>.Instance,
                     nullParamName == "portalController" ? null : new Mock<IPortalController>().Object,
                     nullParamName == "tabController" ? null : new Mock<ITabController>().Object,
                     nullParamName == "pagesController" ? null : new Mock<IPagesController>().Object);
@@ -74,6 +79,7 @@
             var pagesControllerMock = new Mock<IPagesController>();
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);
@@ -96,6 +102,7 @@
             var pagesControllerMock = new Mock<IPagesController>();
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);
@@ -119,6 +126,7 @@
             var pagesControllerMock = SetupPagesControllerMock(userProfilePageIsPublic: true);
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);
@@ -142,6 +150,7 @@
             var pagesControllerMock = SetupPagesControllerMock(userProfilePageIsPublic: false);
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);
@@ -165,6 +174,7 @@
             var pagesControllerMock = SetupPagesControllerMock(userProfilePageIsPublic: false);
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);
@@ -189,6 +199,7 @@
             var pagesControllerMock = SetupPagesControllerMock(userProfilePageIsPublic: false);
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);
@@ -216,6 +227,7 @@
             var pagesControllerMock = SetupPagesControllerMock(false, myProfilePageIsPublic);
 
             var sut = new CheckUserProfilePage(
+                NullLogger<CheckUserProfilePage>.Instance,
                 portalControllerMock.Object,
                 tabControllerMock.Object,
                 pagesControllerMock.Object);

@@ -266,7 +266,7 @@ namespace DotNetNuke.Modules.Html
                     content = HtmlUtils.AbsoluteToRelativeUrls(content, aliases);
                 }
 
-                htmlContent.Content = content;
+                htmlContent.Content = HtmlUtils.SanitizeHtmlIfNeeded(content, this.PortalSettings.AllowJsInHtmlModule);
                 var workflow = this.workflowManager.GetWorkflow(this.WorkflowID);
                 var draftStateID = workflow.FirstState.StateID;
                 var publishedStateID = workflow.LastState.StateID;

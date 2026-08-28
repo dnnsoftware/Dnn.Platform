@@ -13,9 +13,11 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Services.UserRequest;
 
+    using Microsoft.Extensions.Logging;
+
     public static class UrlRewriterUtils
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UrlRewriterUtils));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(UrlRewriterUtils));
 
         /// <summary>Return a FriendlyUrlOptions object from the provider settings.</summary>
         /// <param name="settings">The settings.</param>
@@ -173,8 +175,8 @@ namespace DotNetNuke.Entities.Urls
                     log.BypassBuffering = true;
                     LogController.Instance.AddLog(log);
 
-                    // Log this error in lig4net
-                    Logger.Error(ex);
+                    // Log this error in log4net
+                    Logger.UrlRewriterUtilsLogExceptionInRequest(ex);
                 }
             }
         }

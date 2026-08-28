@@ -118,6 +118,7 @@
       <DependentUpon>GroupEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="GroupListControl.cs" />
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="ModerationServiceController.cs" />
     <Compile Include="GroupView.ascx.cs">
       <DependentUpon>GroupView.ascx</DependentUpon>

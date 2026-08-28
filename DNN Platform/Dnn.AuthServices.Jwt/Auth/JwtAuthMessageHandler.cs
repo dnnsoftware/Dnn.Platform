@@ -12,6 +12,7 @@ namespace Dnn.AuthServices.Jwt.Auth
     using Dnn.AuthServices.Jwt.Components.Common.Controllers;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Web.Api.Auth;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
@@ -21,7 +22,7 @@ namespace Dnn.AuthServices.Jwt.Auth
     /// </summary>
     public class JwtAuthMessageHandler : AuthMessageHandlerBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
+        private readonly ILogger<JwtAuthMessageHandler> logger;
 
         private readonly IJwtController jwtController = JwtController.Instance;
 
@@ -35,6 +36,7 @@ namespace Dnn.AuthServices.Jwt.Auth
             // ServicesRoutingManager.RegisterAuthenticationHandlers()
             // this scheme gets marked as enabled.
             IsEnabled = true;
+            this.logger = DnnLoggingController.GetLogger<JwtAuthMessageHandler>();
         }
 
         /// <inheritdoc />
@@ -64,17 +66,14 @@ namespace Dnn.AuthServices.Jwt.Auth
                 var username = this.jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.Trace($"Authenticated user '{username}'");
-                    }
+                    this.logger.LogTrace("Authenticated user '{userName}'", username);
 
                     SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, this.AuthScheme), null), request);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error("Unexpected error in authenticating the user. " + ex);
+                this.logger.LogError(ex, "Unexpected error in authenticating the user.");
             }
         }
     }

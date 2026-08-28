@@ -59,8 +59,8 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema id="root" xmlns="" xmlns:xsd="https://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="https://www.w3.org/XML/1998/namespace" />
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -307,7 +307,7 @@
     <value>Websitesi için kullanmak istediğiniz dil.</value>
   </data>
   <data name="Password.Help" xml:space="preserve">
-    <value>SuperUser hesabının şifresi.</value>
+    <value>Süper Kullanıcı hesabının şifresi.</value>
   </data>
   <data name="UserName.Help" xml:space="preserve">
     <value>Süper Kullanıcı hesabı için kullanıcı adı.</value>
@@ -470,7 +470,7 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
     <value>Parolalar eşleşmiyor.</value>
   </data>
   <data name="Confirm.Required" xml:space="preserve">
-    <value>Onay parolası gereklidir.</value>
+    <value>Parolayı onaylamanız gereklidir.</value>
   </data>
   <data name="DatabaseFilename.Required" xml:space="preserve">
     <value>Veritabanı dosya adı gereklidir.</value>
@@ -490,6 +490,42 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
   <data name="Password.Required" xml:space="preserve">
     <value>Şifre gereklidir.</value>
   </data>
+  <data name="PasswordStrengthFair.Text" xml:space="preserve">
+    <value>orta</value>
+  </data>
+  <data name="PasswordStrengthMinLength.Text" xml:space="preserve">
+    <value>karakter minimum</value>
+  </data>
+  <data name="PasswordStrengthStrong.Text" xml:space="preserve">
+    <value>güçlü</value>
+  </data>
+  <data name="PasswordStrengthWeak.Text" xml:space="preserve">
+    <value>zayıf</value>
+  </data>
+  <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
+    <value>Şifre eşleşmiyor</value>
+  </data>
+  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
+    <value>Şifre Eşleşti</value>
+  </data>
+  <data name="CriteriaValidationExpression.Text" xml:space="preserve">
+    <value>Doğrulama İfadesi: {0}</value>
+  </data>
+  <data name="CriteriaAtLeastNSpecialChars.Text" xml:space="preserve">
+    <value>En az {0} alfasayısal olmayan karakter</value>
+  </data>
+  <data name="CriteriaAtLeastNChars.Text" xml:space="preserve">
+    <value>En az {0} karakter</value>
+  </data>
+  <data name="PasswordRulesHeadText.Text" xml:space="preserve">
+    <value>Şifre Politikası:</value>
+  </data>
+  <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
+    <value>Şifre eşleşmiyor</value>
+  </data>
+  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
+    <value>Şifre Eşleşti</value>
+  </data>
   <data name="UserName.Required" xml:space="preserve">
     <value>Kullanıcı adı zorunludur.</value>
   </data>
@@ -498,6 +534,14 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
   </data>
   <data name="HostWarning.Text" xml:space="preserve">
     <value>Ana bilgisayar adınız yasaklı karakterler içeriyor (yalnızca a-Z, 0-9, - ve . izin verilir). Kullandığınız ana bilgisayar adını değiştirmelisiniz.</value>
+  </data>
+  <data name="FileAndFolderPermissionCheckFailed.Text" xml:space="preserve">
+    <value>&lt;div class="permission"&gt;&lt;img alt="Web sitesinin kök klasörü için güvenlik ayarlarını gösteren resim, ASPNET veya NT AUTHORITY/NETWORK SERVICE hesapları için Okuma, Yazma ve Değiştirme Kontrolü olarak ayarlanmalıdır." src="..\403-3.gif" align="right" hspace="10"/&gt;
+&lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Siteniz izin kontrolünü geçemedi.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;
+Windows Gezgini'ni kullanarak web sitenizin klasörlerine gidin ( {0} ). Klasörün üzerine sağ tıklayın ve açılır menüden Paylaşım ve Güvenlik'i seçin. Güvenlik sekmesini seçin. Uygun Kullanıcı Hesabını ekleyin ve İzinleri ayarlayın.
+&lt;br/&gt;&lt;br/&gt;
+&lt;h3&gt;Windows 8 veya daha yeni, Windows Server 2008 R2 veya daha yeni ve IIS7.5 veya daha yeni kullanılıyorsa&lt;/h3&gt;
+&lt;p&gt;IIS AppPool\DefaultAppPool Kullanıcı Hesabının Web Sitesinin sanal kökünde Okuma, Yazma ve Değiştirme Kontrolüne sahip olması gerekir.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Tekrar Kontrol Et&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
   <data name="InstallVersion.Text" xml:space="preserve">
     <value>Yükleme Sürümü Ekleme</value>
@@ -537,13 +581,5 @@ Standart Veritabanı kurulum seçeneği mevcut değil</value>
   </data>
   <data name="InstallingSslStepSiteNotFound.Text" xml:space="preserve">
     <value>Site {0} bulunamadı, HTTPS ayarlanamadı</value>
-  </data>
-  <data name="FileAndFolderPermissionCheckFailed.Text" xml:space="preserve">
-    <value>&lt;div class="permission"&gt;&lt;img alt="Web sitesinin kök klasörü için güvenlik ayarlarını gösteren resim, ASPNET veya NT AUTHORITY/NETWORK SERVICE hesapları için Okuma, Yazma ve Değiştirme Kontrolü olarak ayarlanmalıdır." src="..\403-3.gif" align="right" hspace="10"/&gt;
-&lt;p&gt;&lt;b&gt;&lt;font color='red'&gt;Siteniz izin kontrolünü geçemedi.&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;
-Windows Gezgini'ni kullanarak web sitenizin klasörlerine gidin ( {0} ). Klasörün üzerine sağ tıklayın ve açılır menüden Paylaşım ve Güvenlik'i seçin. Güvenlik sekmesini seçin. Uygun Kullanıcı Hesabını ekleyin ve İzinleri ayarlayın.
-&lt;br/&gt;&lt;br/&gt;
-&lt;h3&gt;Windows 8 veya daha yeni, Windows Server 2008 R2 veya daha yeni ve IIS7.5 veya daha yeni kullanılıyorsa&lt;/h3&gt;
-&lt;p&gt;IIS AppPool\DefaultAppPool Kullanıcı Hesabının Web Sitesinin sanal kökünde Okuma, Yazma ve Değiştirme Kontrolüne sahip olması gerekir.&lt;/p&gt;&lt;p&gt;&lt;a class="dnnPrimaryAction" href=""&gt;Tekrar Kontrol Et&lt;/a&gt;&lt;/p&gt;&lt;/div&gt;</value>
   </data>
 </root>

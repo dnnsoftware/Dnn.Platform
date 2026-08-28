@@ -20,12 +20,13 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The web API controller for the Config Console component in the Persona Bar.</summary>
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ConfigConsoleController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ConfigConsoleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ConfigConsoleController>();
         private Components.ConfigConsoleController controller;
 
         /// <summary>Initializes a new instance of the <see cref="ConfigConsoleController"/> class.</summary>
@@ -63,7 +64,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerGetConfigFilesListException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -91,7 +92,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerGetConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -118,7 +119,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerValidateConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -142,7 +143,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerUpdateConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -162,7 +163,7 @@ namespace Dnn.PersonaBar.ConfigConsole.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ConfigConsoleControllerMergeConfigFileException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

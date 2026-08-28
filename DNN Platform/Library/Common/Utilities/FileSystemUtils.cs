@@ -17,6 +17,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Internal.SourceGenerators;
     using ICSharpCode.SharpZipLib.Zip;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Directory = SchwabenCode.QuickIO.QuickIODirectory;
     using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
@@ -25,7 +26,7 @@ namespace DotNetNuke.Common.Utilities
     /// <summary>File System utilities.</summary>
     public partial class FileSystemUtils
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileSystemUtils>();
 
         /// <summary>Adds a File to a Zip File.</summary>
         /// <param name="zipFile">The Zip File to add to.</param>
@@ -41,12 +42,7 @@ namespace DotNetNuke.Common.Utilities
             var len = fs.Read(buffer, 0, buffer.Length);
             if (len != fs.Length)
             {
-                Logger.ErrorFormat(
-                    CultureInfo.InvariantCulture,
-                    "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
-                    filePath,
-                    fs.Length,
-                    len);
+                Logger.FileSystemUtilsAddToZipDidNotReadAllDataInBuffer(filePath, fs.Length, len);
             }
 
             // Create Zip Entry
@@ -70,12 +66,7 @@ namespace DotNetNuke.Common.Utilities
             var len = await fs.ReadAsync(buffer, 0, buffer.Length, cancellationToken);
             if (len != fs.Length)
             {
-                Logger.ErrorFormat(
-                    CultureInfo.InvariantCulture,
-                    "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
-                    filePath,
-                    fs.Length,
-                    len);
+                Logger.FileSystemUtilsAddToZipDidNotReadAllDataInBuffer(filePath, fs.Length, len);
             }
 
             // Create Zip Entry
@@ -146,11 +137,11 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.FileSystemUtilsDeleteFileWithWaitException(exc);
                     fileDeleted = false;
                 }
 
-                if (fileDeleted == false)
+                if (!fileDeleted)
                 {
                     Thread.Sleep(waitInMilliseconds);
                 }
@@ -197,11 +188,11 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.FileSystemUtilsDeleteFileWithWaitException(exc);
                     fileDeleted = false;
                 }
 
-                if (fileDeleted == false)
+                if (!fileDeleted)
                 {
                     await Task.Delay(waitInMilliseconds, cancellationToken);
                 }
@@ -307,7 +298,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileSystemUtilsUnzipResourcesException(ex);
                 }
             }
         }
@@ -371,7 +362,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileSystemUtilsUnzipResourcesException(ex);
                 }
             }
         }
@@ -423,7 +414,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.FileSystemUtilsDeleteFilesFolderException(ex);
                         strExceptions += $"Processing folder ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                     }
                 }
@@ -441,7 +432,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.FileSystemUtilsDeleteFilesFileException(ex);
                         strExceptions += $"Processing file ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                     }
                 }
@@ -491,7 +482,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.FileSystemUtilsDeleteFilesFolderException(ex);
                         strExceptions += $"Processing folder ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                     }
                 }
@@ -509,7 +500,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.FileSystemUtilsDeleteFilesFileException(ex);
                         strExceptions += $"Processing file ({strPath}) Error: {ex.Message}{Environment.NewLine}";
                     }
                 }
@@ -551,7 +542,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileSystemUtilsDeleteFileException(ex);
                 }
             }
         }
@@ -594,7 +585,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileSystemUtilsDeleteFileException(ex);
                 }
             }
         }
@@ -606,7 +597,7 @@ namespace DotNetNuke.Common.Utilities
             strRoot = FixPath(strRoot);
             if (string.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
             {
-                Logger.Info($"{strRoot} does not exist. ");
+                Logger.FileSystemUtilsFolderDoesNotExist(strRoot);
                 return;
             }
 
@@ -623,8 +614,8 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Info($"{strRoot} does not exist.");
-                    Logger.Error(ex);
+                    Logger.FileSystemUtilsFolderDoesNotExist(strRoot);
+                    Logger.FileSystemUtilsDeleteFileException(ex);
                 }
             }
 
@@ -635,8 +626,8 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Info($"{strRoot} does not exist.");
-                Logger.Error(ex);
+                Logger.FileSystemUtilsFolderDoesNotExist(strRoot);
+                Logger.FileSystemUtilsDeleteFolderException(ex);
             }
         }
 
@@ -649,7 +640,7 @@ namespace DotNetNuke.Common.Utilities
             strRoot = FixPath(strRoot);
             if (string.IsNullOrEmpty(strRoot) || !await Directory.ExistsAsync(strRoot))
             {
-                Logger.Info($"{strRoot} does not exist. ");
+                Logger.FileSystemUtilsFolderDoesNotExist(strRoot);
                 return;
             }
 
@@ -668,8 +659,8 @@ namespace DotNetNuke.Common.Utilities
                 }
                 catch (Exception ex)
                 {
-                    Logger.Info($"{strRoot} does not exist.");
-                    Logger.Error(ex);
+                    Logger.FileSystemUtilsFolderDoesNotExist(strRoot);
+                    Logger.FileSystemUtilsDeleteFileException(ex);
                 }
             }
 
@@ -680,8 +671,8 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Info($"{strRoot} does not exist.");
-                Logger.Error(ex);
+                Logger.FileSystemUtilsFolderDoesNotExist(strRoot);
+                Logger.FileSystemUtilsDeleteFolderException(ex);
             }
         }
 
@@ -691,7 +682,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (string.IsNullOrWhiteSpace(path) || !Directory.Exists(path))
             {
-                Logger.Info($"{path} does not exist.");
+                Logger.FileSystemUtilsFolderDoesNotExist(path);
                 return;
             }
 
@@ -715,7 +706,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileSystemUtilsDeleteFolderException(ex);
             }
         }
 
@@ -727,7 +718,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (string.IsNullOrWhiteSpace(path) || !await Directory.ExistsAsync(path))
             {
-                Logger.Info($"{path} does not exist.");
+                Logger.FileSystemUtilsFolderDoesNotExist(path);
                 return;
             }
 
@@ -752,7 +743,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileSystemUtilsDeleteFolderException(ex);
             }
         }
 
@@ -786,12 +777,7 @@ namespace DotNetNuke.Common.Utilities
                 var len = fs.Read(buffer, 0, buffer.Length);
                 if (len != fs.Length)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "Reading from {0} didn't read all data in buffer. Requested to read {1} bytes, but was read {2} bytes",
-                        filePath,
-                        fs.Length,
-                        len);
+                    Logger.FileSystemUtilsAddToZipDidNotReadAllDataInBuffer(filePath, fs.Length, len);
                 }
 
                 // Create Zip Entry
@@ -871,7 +857,7 @@ namespace DotNetNuke.Common.Utilities
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.FileSystemUtilsUnzipException(ex);
                         }
                     }
 

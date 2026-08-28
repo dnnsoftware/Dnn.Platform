@@ -474,6 +474,9 @@ namespace DotNetNuke.Entities.Portals
         /// <inheritdoc />
         public bool InlineEditorEnabled { get; internal set; }
 
+        /// <summary>Gets a value indicating whether Javascript is allowed in HTML module content.</summary>
+        public bool AllowJsInHtmlModule { get; internal set; }
+
         /// <summary>Gets a value indicating whether JavaScript is allowed in module headers.</summary>
         public bool AllowJsInModuleHeaders { get; internal set; }
 

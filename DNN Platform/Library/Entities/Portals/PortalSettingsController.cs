@@ -220,6 +220,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.EnableUrlLanguage = settings.GetValueOrDefault("EnableUrlLanguage", this.hostSettings.EnableUrlLanguage);
             portalSettings.HideFoldersEnabled = settings.GetValueOrDefault("HideFoldersEnabled", true);
             portalSettings.InlineEditorEnabled = settings.GetValueOrDefault("InlineEditorEnabled", true);
+            portalSettings.AllowJsInHtmlModule = settings.GetValueOrDefault("AllowJsInHtmlModule", true);
             portalSettings.AllowJsInModuleHeaders = settings.GetValueOrDefault("AllowJsInModuleHeaders", true);
             portalSettings.AllowJsInModuleFooters = settings.GetValueOrDefault("AllowJsInModuleFooters", true);
             portalSettings.SearchIncludeCommon = settings.GetValueOrDefault("SearchIncludeCommon", this.hostSettings.SearchIncludeCommon);

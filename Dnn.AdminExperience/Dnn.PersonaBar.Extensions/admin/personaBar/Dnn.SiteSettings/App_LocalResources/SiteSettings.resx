@@ -1488,6 +1488,12 @@
   <data name="plInjectModuleHyperLink.Text" xml:space="preserve">
     <value>Inject Module Anchor</value>
   </data>
+  <data name="plAllowJsInHtmlModule.Help" xml:space="preserve">
+    <value>When switched on, javascript will be allowed in HTML module content.</value>
+  </data>
+  <data name="plAllowJsInHtmlModule.Text" xml:space="preserve">
+    <value>Allow Javascript in HTML Module</value>
+  </data>
   <data name="plAllowJsInModuleHeaders.Help" xml:space="preserve">
     <value>When switched on, javascript will be allowed in the value set for a module header.</value>
   </data>

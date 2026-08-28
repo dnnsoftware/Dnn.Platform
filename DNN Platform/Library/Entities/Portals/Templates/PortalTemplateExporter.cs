@@ -303,6 +303,12 @@ namespace DotNetNuke.Entities.Portals.Templates
                 writer.WriteElementString("showquickmoduleaddmenu", setting);
             }
 
+            settingsDictionary.TryGetValue("AllowJsInHtmlModule", out setting);
+            if (!string.IsNullOrEmpty(setting))
+            {
+                writer.WriteElementString("allowjsinhtmlmodule", setting);
+            }
+
             settingsDictionary.TryGetValue("AllowJsInModuleHeaders", out setting);
             if (!string.IsNullOrEmpty(setting))
             {

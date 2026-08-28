@@ -25,6 +25,7 @@ namespace Dnn.PersonaBar.Library.Permissions
     using DotNetNuke.Security.Roles;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
 
@@ -37,7 +38,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         private const string ViewPermissionKey = "VIEW";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MenuPermissionController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MenuPermissionController>();
 
         private static readonly DataService DataService = new DataService();
         private static readonly object ThreadLocker = new object();
@@ -124,7 +125,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.MenuPermissionControllerGetMenuPermissionsException(ex);
                         }
                         finally
                         {
@@ -401,7 +402,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.MenuPermissionControllerEnsureMenuDefaultPermissionsException(ex);
             }
         }
 
@@ -441,7 +442,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                         }
                         else if (role != null)
                         {
-                            Logger.Error($"Role \"{roleName}\" in portal \"{portalId}\" doesn't marked as system role, will ignore add this default permission to {menuItem.Identifier}.");
+                            Logger.MenuPermissionControllerRoleInPortalNotMarkedAsSystemRoleIgnoring(roleName, portalId, menuItem.Identifier);
                         }
 
                         break;
@@ -473,7 +474,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.MenuPermissionControllerSaveMenuDefaultPermissionsException(ex);
             }
         }
 

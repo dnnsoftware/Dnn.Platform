@@ -10,6 +10,8 @@ namespace DotNetNuke.Common.Utilities
     using System.Text.RegularExpressions;
     using System.Web;
 
+    using AngleSharp.Html.Parser;
+
     using DotNetNuke.Internal.SourceGenerators;
     using DotNetNuke.Services.Upgrade;
 
@@ -582,28 +584,17 @@ namespace DotNetNuke.Common.Utilities
         public static IHtmlString JavaScriptStringEncode(string value, bool addDoubleQuotes)
             => new HtmlString(HttpUtility.JavaScriptStringEncode(value, addDoubleQuotes));
 
-        /// <summary>Sanitize the given HTML, removing element which could include JavaScript.</summary>
+        /// <summary>Sanitize the given HTML, removing JavaScript while preserving non-JavaScript markup and attributes.</summary>
         /// <param name="htmlInput">The HTML to sanitize.</param>
         /// <returns>The sanitized HTML.</returns>
         public static string CleanOutOfJavascript(string htmlInput)
         {
-            var sanitizer = new HtmlSanitizer();
+            if (string.IsNullOrEmpty(htmlInput))
+            {
+                return string.Empty;
+            }
 
-            // We need to disallow all attributes that might contain JS
-            sanitizer.AllowedAttributes.Remove("onclick");
-            sanitizer.AllowedAttributes.Remove("onmouseover");
-            sanitizer.AllowedAttributes.Remove("onmouseout");
-            sanitizer.AllowedAttributes.Remove("onkeypress");
-            sanitizer.AllowedAttributes.Remove("onkeydown");
-            sanitizer.AllowedAttributes.Remove("onkeyup");
-
-            // We need to disallow tags like '<form action="javascript:submitForm()">'
-            sanitizer.AllowedSchemes.Remove("javascript");
-
-            // Tags like '<script>' are obviously not allowed
-            sanitizer.AllowedTags.Remove("script");
-
-            return sanitizer.Sanitize(htmlInput);
+            return CreateJavaScriptOnlySanitizer(htmlInput).Sanitize(htmlInput);
         }
 
         /// <summary>Determines whether the given <paramref name="htmlInput"/> contains any JavaScript.</summary>
@@ -645,6 +636,48 @@ namespace DotNetNuke.Common.Utilities
             }
 
             return rawHtmlInput;
+        }
+
+        private static HtmlSanitizer CreateJavaScriptOnlySanitizer(string htmlInput)
+        {
+            var sanitizer = new HtmlSanitizer
+            {
+                KeepChildNodes = true,
+            };
+
+            sanitizer.AllowedTags.Clear();
+            sanitizer.AllowedAttributes.Clear();
+            sanitizer.AllowedSchemes.Clear();
+
+            var parser = new HtmlParser();
+            var document = parser.ParseDocument(htmlInput);
+
+            foreach (var element in document.All)
+            {
+                var tagName = element.TagName.ToLowerInvariant();
+                if (!tagName.Equals("script", StringComparison.Ordinal))
+                {
+                    sanitizer.AllowedTags.Add(tagName);
+                }
+
+                foreach (var attribute in element.Attributes)
+                {
+                    if (!attribute.Name.StartsWith("on", StringComparison.OrdinalIgnoreCase))
+                    {
+                        sanitizer.AllowedAttributes.Add(attribute.Name.ToLowerInvariant());
+                    }
+                }
+            }
+
+            foreach (var scheme in HtmlSanitizerDefaults.AllowedSchemes)
+            {
+                if (!scheme.Equals("javascript", StringComparison.OrdinalIgnoreCase))
+                {
+                    sanitizer.AllowedSchemes.Add(scheme);
+                }
+            }
+
+            return sanitizer;
         }
 
         private static string StripHtmlSyntax(string html)

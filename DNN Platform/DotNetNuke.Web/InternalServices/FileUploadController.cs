@@ -39,6 +39,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
@@ -46,7 +47,7 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 [DnnAuthorize]
 public class FileUploadController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileUploadController>();
     private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static readonly List<string> ImageExtensions = Globals.ImageFileTypes.Split(',').ToList();
 
@@ -101,7 +102,7 @@ public class FileUploadController : DnnApiController
     [HttpPost]
     public HttpResponseMessage LoadFiles(FolderItemDTO folderItem)
     {
-        int effectivePortalId = this.PortalSettings.PortalId;
+        var effectivePortalId = this.PortalSettings.PortalId;
 
         if (folderItem.FolderId <= 0)
         {
@@ -109,7 +110,6 @@ public class FileUploadController : DnnApiController
         }
 
         var folder = FolderManager.Instance.GetFolder(folderItem.FolderId);
-
         if (folder == null)
         {
             return this.Request.CreateResponse(HttpStatusCode.BadRequest);
@@ -140,17 +140,15 @@ public class FileUploadController : DnnApiController
     [HttpGet]
     public HttpResponseMessage LoadImage(string fileId)
     {
-        if (!string.IsNullOrEmpty(fileId))
+        if (string.IsNullOrEmpty(fileId) || !int.TryParse(fileId, out var file))
         {
-            int file;
-            if (int.TryParse(fileId, out file))
-            {
-                var imageUrl = ShowImage(file);
-                return this.Request.CreateResponse(HttpStatusCode.OK, imageUrl);
-            }
+            return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
         }
 
-        return this.Request.CreateResponse(HttpStatusCode.InternalServerError);
+        var imageUrl = ShowImage(file);
+        return imageUrl == null
+            ? this.Request.CreateResponse(HttpStatusCode.NotFound)
+            : this.Request.CreateResponse(HttpStatusCode.OK, imageUrl);
     }
 
     /// <summary>Uploads an image.</summary>
@@ -160,8 +158,7 @@ public class FileUploadController : DnnApiController
     [IFrameSupportedValidateAntiForgeryToken]
     public Task<HttpResponseMessage> PostFile()
     {
-        HttpRequestMessage request = this.Request;
-
+        var request = this.Request;
         if (!request.Content.IsMimeMultipartContent())
         {
             throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
@@ -176,12 +173,12 @@ public class FileUploadController : DnnApiController
         var task = request.Content.ReadAsMultipartAsync(provider)
             .ContinueWith(_ =>
             {
-                string folder = string.Empty;
-                string filter = string.Empty;
-                string fileName = string.Empty;
-                bool overwrite = false;
-                bool isHostMenu = false;
-                bool extract = false;
+                var folder = string.Empty;
+                var filter = string.Empty;
+                var fileName = string.Empty;
+                var overwrite = false;
+                var isHostMenu = false;
+                var extract = false;
                 Stream stream = null;
                 var returnFileDto = new SavedFileDTO();
 
@@ -508,7 +505,7 @@ public class FileUploadController : DnnApiController
         }
         catch (Exception ex)
         {
-            Logger.Error(ex);
+            Logger.FileUploadControllerSaveFileException(ex);
             errorMessage = ex.Message;
             return savedFileDto;
         }
@@ -516,8 +513,7 @@ public class FileUploadController : DnnApiController
 
     private static string GetLocalizedString(string key)
     {
-        const string resourceFile = "/App_GlobalResources/FileUpload.resx";
-        return Localization.GetString(key, resourceFile);
+        return Localization.GetString(key, resourceFileRoot: "/App_GlobalResources/FileUpload.resx");
     }
 
     private static bool IsUserFolder(string folderPath, out int userId)
@@ -534,6 +530,12 @@ public class FileUploadController : DnnApiController
 
         if (image != null && IsImageExtension(image.Extension))
         {
+            var folder = FolderManager.Instance.GetFolder(image.FolderId);
+            if (folder == null || !FolderPermissionController.CanViewFolder((FolderInfo)folder))
+            {
+                return null;
+            }
+
             var imageUrl = FileManager.Instance.GetUrl(image);
             return imageUrl;
         }
@@ -657,7 +659,7 @@ public class FileUploadController : DnnApiController
                     }
                     catch (ArgumentException exc)
                     {
-                        Logger.Warn("Unable to get image dimensions for image file", exc);
+                        Logger.FileUploadControllerUnableToGetImageDimensions(exc);
                         size = new Size(32, 32);
                     }
                 }
@@ -686,7 +688,7 @@ public class FileUploadController : DnnApiController
         }
         catch (Exception exe)
         {
-            Logger.Error(exe);
+            Logger.FileUploadControllerUploadFileException(exe);
             result.Message = exe.Message;
             return result;
         }
@@ -709,10 +711,10 @@ public class FileUploadController : DnnApiController
     private static IPortalInfo[] GetMyPortalGroup()
     {
         return (
-                from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
-                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                select portals.Cast<IPortalInfo>().ToArray())
+            from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
+            select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+            where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+            select portals.Cast<IPortalInfo>().ToArray())
             .FirstOrDefault();
     }
 

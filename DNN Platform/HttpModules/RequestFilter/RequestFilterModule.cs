@@ -8,8 +8,9 @@ namespace DotNetNuke.HttpModules.RequestFilter
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Common.Utils;
-
+    using DotNetNuke.Instrumentation;
     using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>An <see cref="IHttpModule"/> to implement request filtering.</summary>
@@ -58,6 +59,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             }
 
             var request = app.Context.Request;
+            DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("DnnRequestId", Guid.NewGuid().ToString());
 
             if (!Initialize.ProcessHttpModule(request, true, true))
             {

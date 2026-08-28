@@ -14,6 +14,8 @@ namespace DotNetNuke.Services.Installer.Installers
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The ResourceFileInstaller installs Resource File Components (zips) to a DotNetNuke site.</summary>
     public class ResourceFileInstaller : FileInstaller
     {
@@ -23,7 +25,7 @@ namespace DotNetNuke.Services.Installer.Installers
         // ReSharper disable once InconsistentNaming
         public const string DEFAULT_MANIFESTEXT = ".manifest";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ResourceFileInstaller));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ResourceFileInstaller>();
         private string manifest;
 
         /// <inheritdoc />
@@ -147,7 +149,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ResourceFileInstallerInstallFileException(exc);
 
                 retValue = false;
             }

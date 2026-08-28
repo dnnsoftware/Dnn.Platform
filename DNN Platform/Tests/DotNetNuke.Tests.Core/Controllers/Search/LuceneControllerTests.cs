@@ -532,7 +532,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 "fuzzy",
                 "wuzzy",
-                };
+            };
             const string keyword = "wuzza";
 
             this.AddLinesAsSearchDocs(docs);
@@ -555,13 +555,13 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 "homez", // note home and homes could be returned by PorterFilter
                 "fuzzy",
                 "wuzzy",
-                };
+            };
 
             string[] keywords =
             {
                 "wuzza",
                 "homy",
-                };
+            };
 
             this.AddLinesAsSearchDocs(docs);
 
@@ -812,7 +812,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             string[] lines =
             {
                 Line1, Line2, Line3, Line4,
-                };
+            };
 
             this.AddLinesAsSearchDocs(lines);
         }

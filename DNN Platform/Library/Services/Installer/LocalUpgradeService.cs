@@ -187,6 +187,7 @@ public class LocalUpgradeService : ILocalUpgradeService
     /// <inheritdoc />
     public async Task StartLocalUpgrade(LocalUpgradeInfo upgrade, CancellationToken cancellationToken)
     {
+        this.SetAppOffline();
         var upgradeZipPath = Path.Combine(this.UpgradeDirectoryPath, upgrade.PackageName + ".zip");
         using var fileStream = File.OpenRead(upgradeZipPath);
         using var archive = new ZipArchive(fileStream, ZipArchiveMode.Read);
@@ -218,6 +219,7 @@ public class LocalUpgradeService : ILocalUpgradeService
                 .Where(entry => !upgradeSettings.UpgradeExclude.Any(filter => entry.FullName.StartsWith(filter, StringComparison.OrdinalIgnoreCase))),
             this.appStatus.ApplicationMapPath,
             cancellationToken);
+        this.SetAppOnline();
     }
 
     private static async Task<Version> ReadZippedAssemblyVersion(ZipArchiveEntry assemblyEntry, CancellationToken cancellationToken)
@@ -243,6 +245,30 @@ public class LocalUpgradeService : ILocalUpgradeService
         finally
         {
             Directory.Delete(tempPath, true);
+        }
+    }
+
+    private void SetAppOffline()
+    {
+        var appOfflineFile = Path.Combine(Globals.HostMapPath, "AppOffline", "App_Offline.htm.resources");
+        if (!File.Exists(appOfflineFile))
+        {
+            appOfflineFile = Path.Combine(this.appStatus.ApplicationMapPath, "Resources", "AppOffline", "App_Offline.htm.resources");
+        }
+
+        var targetFile = Path.Combine(this.appStatus.ApplicationMapPath, "App_Offline.htm");
+        if (!File.Exists(targetFile))
+        {
+            File.Copy(appOfflineFile, targetFile);
+        }
+    }
+
+    private void SetAppOnline()
+    {
+        var appOfflineFile = Path.Combine(this.appStatus.ApplicationMapPath, "App_Offline.htm");
+        if (File.Exists(appOfflineFile))
+        {
+            File.Delete(appOfflineFile);
         }
     }
 

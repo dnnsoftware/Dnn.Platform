@@ -9,6 +9,7 @@ instead of this one.
     --dnn-color-pb-menu-background-hover: var(--dnn-color-tertiary-dark, #0b1c24);
     --dnn-color-pb-menu-icon: var(--dnn-color-tertiary-light,#3c7a9a);
     --dnn-color-pb-menu-icon-background: var(--dnn-color-tertiary-dark, #0b1c24);
+    --dnn-color-pb-menu-locked-icon-background-highlight: var(--dnn-color-primary-dark, #0b1c24);
     --dnn-color-pb-menu-divider: var(--dnn-color-tertiary-light, #1e485e);
     --dnn-color-pb-menu-text-highlight: var(--dnn-color-tertiary-light, #3c7a9a);
     --dnn-pb-menu-brand-background: url('../images/Logo.svg') no-repeat center center;

@@ -9,12 +9,14 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>InstallExtensionsStep - Step that installs all the Extensions.</summary>
     public class InstallExtensionsStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InstallExtensionsStep>();
 
         /// <summary>Main method to execute the step.</summary>
         public override void Execute()
@@ -38,7 +40,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 var packageType = package.Value.PackageType;
                 var message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("InstallingExtension", this.LocalInstallResourceFile), packageType, Path.GetFileName(file));
                 this.Details = message;
-                Logger.Trace(this.Details);
+                Logger.InstallExtensionsStepInstallingExtensionPackage(this.Details);
                 var success = Upgrade.InstallPackage(file, packageType, false);
                 if (!success)
                 {

@@ -33,12 +33,13 @@ namespace DotNetNuke.Data
     using DotNetNuke.Services.Search.Entities;
     using Microsoft.ApplicationBlocks.Data;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Base implementation of a provider of core database activities.</summary>
     public abstract partial class DataProvider
     {
         private const int DuplicateKey = 2601;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DataProvider>();
         private readonly IApplicationStatusInfo appStatus;
 
         /// <summary>Initializes a new instance of the <see cref="DataProvider"/> class.</summary>
@@ -2411,7 +2412,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException ex)
             {
-                Logger.Debug(ex);
+                Logger.DataProviderSqlExceptionFromAddPropertyDefinition(ex);
 
                 // If not a duplicate (throw an Exception)
                 retValue = -ex.Number;
@@ -4104,7 +4105,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException ex)
             {
-                Logger.Error(ex);
+                Logger.DataProviderSqlExceptionFromAddSearchDeletedItems(ex);
             }
         }
 
@@ -4116,7 +4117,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException ex)
             {
-                Logger.Error(ex);
+                Logger.DataProviderSqlExceptionFromDeleteProcessedSearchDeletedItems(ex);
             }
         }
 

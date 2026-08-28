@@ -23,6 +23,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A base class for an OAuth client.</summary>
     public abstract class OAuthClientBase
     {
@@ -54,7 +56,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         // Directory implementation of OAuth V2
         private const string OAuthResourceKey = "resource";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthClientBase));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<OAuthClientBase>();
 
         private readonly Random random = new Random();
 
@@ -706,7 +708,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 if (responseStream != null)
                 {
                     using var responseReader = new StreamReader(responseStream);
-                    Logger.ErrorFormat(CultureInfo.InvariantCulture, "WebResponse exception: {0}", responseReader.ReadToEnd());
+                    Logger.OAuthClientBaseWebResponseException(ex, responseReader.ReadToEnd());
                 }
             }
 

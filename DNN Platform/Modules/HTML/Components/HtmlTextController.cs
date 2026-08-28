@@ -116,6 +116,8 @@ namespace DotNetNuke.Modules.Html
                 content = tr.ReplaceEnvironmentTokens(content);
             }
 
+            content = HtmlUtils.SanitizeHtmlIfNeeded(content, portalSettings.AllowJsInHtmlModule);
+
             // manage relative paths
             content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src");
             content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background");

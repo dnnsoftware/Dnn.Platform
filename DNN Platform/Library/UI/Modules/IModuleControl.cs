@@ -23,4 +23,8 @@ namespace DotNetNuke.UI.Modules
         /// <summary>Gets or sets the local resource localization file for the control.</summary>
         string LocalResourceFile { get; set; }
     }
+
+    public interface IAsyncModuleControl
+    {
+    }
 }

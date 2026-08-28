@@ -21,18 +21,21 @@ using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
+using DotNetNuke.Security.Permissions;
 using DotNetNuke.Security.Roles;
+using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Social.Messaging;
 using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Web.Api;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>A web API for messaging.</summary>
 [DnnAuthorize]
 public class MessagingServiceController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<MessagingServiceController>();
     private readonly IPortalController portalController;
     private readonly IApplicationStatusInfo appStatus;
     private readonly IPortalGroupController portalGroupController;
@@ -66,7 +69,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerWaitTimeForNextMessageException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -84,6 +87,19 @@ public class MessagingServiceController : DnnApiController
             var roleIdsList = string.IsNullOrEmpty(postData.RoleIds) ? null : postData.RoleIds.FromJson<IList<int>>();
             var userIdsList = string.IsNullOrEmpty(postData.UserIds) ? null : postData.UserIds.FromJson<IList<int>>();
             var fileIdsList = string.IsNullOrEmpty(postData.FileIds) ? null : postData.FileIds.FromJson<IList<int>>();
+
+            if (fileIdsList != null)
+            {
+                foreach (var fileId in fileIdsList)
+                {
+                    var file = FileManager.Instance.GetFile(fileId);
+                    var folder = file != null ? FolderManager.Instance.GetFolder(file.FolderId) : null;
+                    if (folder == null || !FolderPermissionController.CanViewFolder((FolderInfo)folder))
+                    {
+                        return this.Request.CreateResponse(HttpStatusCode.Forbidden, "Access to the specified file is not permitted.");
+                    }
+                }
+            }
 
             var roles = roleIdsList is { Count: > 0, }
                 ? roleIdsList.Select(id => RoleController.Instance.GetRole(portalId, r => r.RoleID == id)).Where(role => role != null).ToList()
@@ -105,7 +121,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerCreateException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -140,23 +156,23 @@ public class MessagingServiceController : DnnApiController
             // Roles should be visible to Administrators or User in the Role.
             var roles = RoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
             results.AddRange(from roleInfo in roles
-                where
-                    isAdmin ||
-                    this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
-                select new
-                {
-                    id = "role-" + roleInfo.RoleID,
-                    name = roleInfo.RoleName,
-                    iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
-                        ? "~/images/no_avatar.gif"
-                        : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
-                });
+                             where
+                                 isAdmin ||
+                                 this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == roleInfo.RoleID && ur.IsOwner) != null
+                             select new
+                             {
+                                 id = "role-" + roleInfo.RoleID,
+                                 name = roleInfo.RoleName,
+                                 iconfile = TestableGlobals.Instance.ResolveUrl(string.IsNullOrEmpty(roleInfo.IconFile)
+                                             ? "~/images/no_avatar.gif"
+                                             : this.PortalSettings.HomeDirectory.TrimEnd('/') + "/" + roleInfo.IconFile),
+                             });
 
             return this.Request.CreateResponse(HttpStatusCode.OK, results.OrderBy(sr => sr.name));
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerSearchException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }

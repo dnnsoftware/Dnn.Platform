@@ -10,10 +10,12 @@ namespace DotNetNuke.Services.Installer.Log
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The Logger class provides an Installer Log.</summary>
-    public class Logger
+    public partial class Logger
     {
-        private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof(Logger));
+        private static readonly ILogger DnnLogger = DnnLoggingController.GetLogger<Logger>();
         private readonly List<LogEntry> logs;
         private string errorClass;
         private bool hasWarnings;
@@ -119,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void AddFailure(string failure)
         {
             this.logs.Add(new LogEntry(LogType.Failure, failure));
-            DnnLogger.Error(failure);
+            DnnLogger.InstallLoggerLogFailure(failure);
             this.valid = false;
         }
 
@@ -134,7 +136,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void AddInfo(string info)
         {
             this.logs.Add(new LogEntry(LogType.Info, info));
-            DnnLogger.Info(info);
+            DnnLogger.InstallLoggerLogInfo(info);
         }
 
         /// <summary>The AddWarning method adds a new LogEntry of type Warning to the Logs collection.</summary>
@@ -142,7 +144,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void AddWarning(string warning)
         {
             this.logs.Add(new LogEntry(LogType.Warning, warning));
-            DnnLogger.Warn(warning);
+            DnnLogger.InstallLoggerLogWarning(warning);
             this.hasWarnings = true;
         }
 
@@ -151,7 +153,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void EndJob(string job)
         {
             this.logs.Add(new LogEntry(LogType.EndJob, job));
-            DnnLogger.Info(job);
+            DnnLogger.InstallLoggerLogInfo(job);
         }
 
         /// <summary>GetLogsTable formats log entries in an HtmlTable.</summary>
@@ -208,7 +210,7 @@ namespace DotNetNuke.Services.Installer.Log
         public void StartJob(string job)
         {
             this.logs.Add(new LogEntry(LogType.StartJob, job));
-            DnnLogger.Info(job);
+            DnnLogger.InstallLoggerLogInfo(job);
         }
     }
 }
