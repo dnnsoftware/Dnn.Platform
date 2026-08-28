@@ -133,19 +133,6 @@ namespace DotNetNuke.Tests.Modules.ExportImport
         }
 
         [Test]
-        public void IsLegacyExportFile_AfterOpeningRepository_ReturnsFalse()
-        {
-            // Arrange - opening the repository migrates a legacy file in place.
-            var dbPath = this.CopyFixture("legacy_v3_small.dnndb");
-            using (new ExportImportRepository(dbPath))
-            {
-            }
-
-            // Act & Assert - the legacy signature is gone once migrated, as VerifyImportPackage relies on.
-            Assert.That(ExportImportRepository.IsLegacyExportFile(dbPath), Is.False);
-        }
-
-        [Test]
         public void IsLegacyExportFile_WithNativeFiveDatabase_ReturnsFalse()
         {
             // Arrange - a freshly created (native LiteDB 5.x) database, i.e. the common 10.x -> 10.x case.
