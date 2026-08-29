@@ -41,6 +41,7 @@ namespace DotNetNuke
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Framework.JavaScriptLibraries;
+    using DotNetNuke.Framework.MvcPipeline;
     using DotNetNuke.Framework.Reflections;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Prompt;
@@ -201,6 +202,10 @@ namespace DotNetNuke
             services.AddTransient<PortalSecurity>();
             services.AddTransient<ListController>();
             RegisterModuleInjectionFilters(services);
+
+            services.AddScoped<IPortalSettings>(serviceProvider => PortalController.Instance.GetCurrentSettings());
+            services.AddScoped<MvcPipelineSettingsRepository>();
+            services.AddScoped<MvcPipelineSettings>(serviceProvider => serviceProvider.GetRequiredService<MvcPipelineSettingsRepository>().GetSettings());
         }
 
         private static void RegisterModuleInjectionFilters(IServiceCollection services)

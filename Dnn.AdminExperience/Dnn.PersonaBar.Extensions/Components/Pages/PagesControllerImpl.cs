@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Pages.Components
     using Dnn.PersonaBar.Pages.Services.Dto;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Abstractions.Modules;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
@@ -865,6 +866,7 @@ namespace Dnn.PersonaBar.Pages.Components
             page.IsWorkflowCompleted = isWorkflowCompleted;
             page.IsWorkflowOnDraft = isWorkflowOnDraft;
             page.PublishStatus = tab.HasBeenPublished && isWorkflowCompleted ? "Published" : "Draft";
+            page.PagePipeline = (int)tab.PagePipeline;
 
             return page;
         }
@@ -1034,6 +1036,7 @@ namespace Dnn.PersonaBar.Pages.Components
             pageSettings.EnabledVersioning = tabVersionSettings.IsVersioningEnabled(portalSettings.PortalId);
             pageSettings.WorkflowEnabled = tabWorkflowSettings.IsWorkflowEnabled(portalSettings.PortalId);
             pageSettings.WorkflowId = tabWorkflowSettings.GetDefaultTabWorkflowId(portalSettings.PortalId);
+            pageSettings.PagePipeline = Null.NullInteger;
 
             return pageSettings;
         }
@@ -1359,6 +1362,8 @@ namespace Dnn.PersonaBar.Pages.Components
             {
                 tab.IconFileLarge = null;
             }
+
+            tab.PagePipeline = (PagePipeline.PageRenderingPipeline)pageSettings.PagePipeline;
         }
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]

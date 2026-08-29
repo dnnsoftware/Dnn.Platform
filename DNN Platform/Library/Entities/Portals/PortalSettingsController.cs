@@ -12,11 +12,13 @@ namespace DotNetNuke.Entities.Portals
     using System.Linq;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Collections;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Framework;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
@@ -125,7 +127,7 @@ namespace DotNetNuke.Entities.Portals
             return aliasMapping;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public virtual IList<ModuleInfo> GetTabModules(PortalSettings portalSettings)
         {
             return portalSettings.ActiveTab.Modules.Cast<ModuleInfo>().Select(m => m).ToList();
@@ -183,13 +185,13 @@ namespace DotNetNuke.Entities.Portals
             var settings = PortalController.Instance.GetPortalSettings(portalSettings.PortalId);
             portalSettings.Registration = new RegistrationSettings(settings);
 
-            var clientResourcesSettings = new ClientResourceSettings();
+            var clientResourcesSettings = new Web.Client.ClientResourceSettings();
             bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled(portalSettings.PortalId);
 
             int crmVersion;
             if (overridingDefaultSettings)
             {
-                int? globalVersion = new ClientResourceSettings().GetVersion(portalSettings.PortalId);
+                int? globalVersion = new Web.Client.ClientResourceSettings().GetVersion(portalSettings.PortalId);
                 crmVersion = globalVersion ?? default(int);
             }
             else
@@ -281,7 +283,6 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.DataConsentDelayMeasurement = setting;
             setting = settings.GetValueOrDefault("AllowedExtensionsWhitelist", this.hostSettingsService.GetString("DefaultEndUserExtensionWhitelist"));
             portalSettings.AllowedExtensionsWhitelist = new FileExtensionWhitelist(setting);
-
             setting = settings.GetValueOrDefault("CspHeaderMode", "OFF");
             switch (setting.ToUpperInvariant())
             {

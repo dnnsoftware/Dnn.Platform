@@ -18,6 +18,7 @@ namespace DotNetNuke.Entities.Tabs
     using System.Xml.Serialization;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Collections.Internal;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Internal;
@@ -27,6 +28,7 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework;
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.FileSystem;
@@ -525,6 +527,10 @@ namespace DotNetNuke.Entities.Tabs
         [XmlElement("localizedVersionGuid")]
         public Guid LocalizedVersionGuid { get; set; }
 
+        /// <summary>Gets or sets the rendering pipeline of the page.</summary>
+        [XmlElement("pagepipeline")]
+        public PagePipeline.PageRenderingPipeline PagePipeline { get; set; }
+
         /// <summary>Gets or sets a collection of the modules on this page.</summary>
         /// <value>An <see cref="ArrayList"/> of <see cref="ModuleInfo"/>.</value>
         [XmlIgnore]
@@ -855,6 +861,10 @@ namespace DotNetNuke.Entities.Tabs
                     propertyNotFound = false;
                     result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(formatProvider), format);
                     break;
+                case "pagepipeline":
+                    propertyNotFound = false;
+                    result = this.PagePipeline.ToString();
+                    break;
             }
 
             if (!isPublic && currentScope != Scope.Debug)
@@ -985,6 +995,7 @@ namespace DotNetNuke.Entities.Tabs
             this.BreadCrumbs = null;
             this.Modules = null;
             this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
+            this.PagePipeline = (PagePipeline.PageRenderingPipeline)Null.SetNullInteger(dr["PagePipeline"]);
         }
 
         /// <summary>Gets the URL for the given <paramref name="cultureCode"/>.</summary>
