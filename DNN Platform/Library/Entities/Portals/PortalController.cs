@@ -1481,6 +1481,10 @@ namespace DotNetNuke.Entities.Portals
                 {
                     this.CreatePortalInternal(portalId, portalName, adminUser, description, keyWords, template, homeDirectory, portalAlias, serverPath, childPath, isChildPortal, ref message);
                 }
+                else
+                {
+                    throw new CreatePortalException(message);
+                }
             }
             else
             {
