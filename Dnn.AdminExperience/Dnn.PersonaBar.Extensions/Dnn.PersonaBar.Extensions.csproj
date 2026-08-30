@@ -20,6 +20,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Extensions" />
@@ -27,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\DNN Platform\DotNetNuke.ContentSecurityPolicy\DotNetNuke.ContentSecurityPolicy.csproj" />
+    <ProjectReference Include="..\..\DotNetNuke.BulkInstall\DotNetNuke.BulkInstall.Encryption\DotNetNuke.BulkInstall.Encryption.csproj" />
     <ProjectReference Include="..\..\DotNetNuke.Internal.SourceGenerators\DotNetNuke.Internal.SourceGenerators.csproj" ReferenceOutputAssembly="false" OutputItemType="Analyzer" />
     <ProjectReference Include="..\..\DNN Platform\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj" />
     <ProjectReference Include="..\..\DNN Platform\DotNetNuke.DependencyInjection\DotNetNuke.DependencyInjection.csproj" />

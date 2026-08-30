@@ -1,4 +1,4 @@
-import { IInitStylesConfig, INotifyOptions } from "../window.dnn";
+import { DnnWindow, IInitStylesConfig, INotifyOptions } from "../types";
 
 export default class StylesClient {
     private serviceRoot: string;
@@ -7,11 +7,13 @@ export default class StylesClient {
     private isHost: boolean = false;
 
     constructor() {
-        const dnnStyles = window.dnn as unknown as IDnnWrapper;
-        this.config = dnnStyles.initStyles();
-        if (this.config == undefined) {
+        const dnn = window.dnn as DnnWindow;
+        const dnnStyles = dnn.initStyles?.();
+        if (dnnStyles == undefined) {
             throw new Error("dnn.initStyles() is not defined.");
         }
+
+        this.config = dnnStyles;
         if (this.config.utility == undefined) {
             throw new Error("dnn.initStyles().utility is not defined.");
         }

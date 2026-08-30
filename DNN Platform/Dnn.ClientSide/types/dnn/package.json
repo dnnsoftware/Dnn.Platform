@@ -1,0 +1,56 @@
+{
+  "name": "@dnncommunity/dnn-types",
+  "version": "0.1.0",
+  "description": "TypeScript type definitions for DNN Platform (DotNetNuke) - PersonaBar and Core APIs",
+  "main": "index.d.ts",
+  "types": "index.d.ts",
+  "exports": {
+    ".": "./index.d.ts",
+    "./persona-bar": "./persona-bar/index.d.ts"
+  },
+  "scripts": {
+    "test": "echo \"No tests yet\" && exit 0",
+    "prepublishOnly": "echo \"Pre-publish validation\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dnnsoftware/Dnn.Platform.git",
+    "directory": "DNN Platform/Dnn.ClientSide/types/dnn"
+  },
+  "keywords": [
+    "dnn",
+    "dotnetnuke",
+    "typescript",
+    "types",
+    "definitions",
+    "personabar",
+    "persona-bar",
+    "dnn-platform",
+    "cms"
+  ],
+  "author": "DNN Community",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dnnsoftware/Dnn.Platform/issues"
+  },
+  "homepage": "https://github.com/dnnsoftware/Dnn.Platform/tree/development/DNN%20Platform/Dnn.ClientSide/types/dnn#readme",
+  "peerDependencies": {
+    "@types/jquery": "^3.5.0",
+    "dayjs": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.31",
+    "dayjs": "^1.11.13",
+    "typescript": "^5.0.0"
+  },
+  "files": [
+    "index.d.ts",
+    "persona-bar/**/*.d.ts",
+    "dnn-core/**/*.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}

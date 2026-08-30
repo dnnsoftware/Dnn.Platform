@@ -4,6 +4,7 @@
   "private": true,
   "workspaces": [
     "Dnn.AdminExperience/ClientSide/AdminLogs.Web",
+    "Dnn.AdminExperience/ClientSide/BulkInstall.Web",
     "Dnn.AdminExperience/ClientSide/Bundle.Web",
     "Dnn.AdminExperience/ClientSide/Dnn.React.Common",
     "Dnn.AdminExperience/ClientSide/Extensions.Web",
@@ -29,6 +30,7 @@
     "DNN Platform/Modules/BulkInstall/BulkInstall.Web",
     "DNN Platform/Skins/Aperture",
     "DNN Platform/Dnn.ClientSide",
+    "DNN Platform/Dnn.ClientSide/types/dnn",
     "DNN Platform/Modules/Samples/Dnn.ContactList.SpaReact"
   ],
   "devDependencies": {
