@@ -43,11 +43,6 @@ public class DeployCommand : AsyncCommand<DeployInput>
             return ValidationResult.Error("--target-uri must be a valid URI");
         }
 
-        if (!settings.LegacyApi && !targetUri.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
-        {
-            return ValidationResult.Error("--target-uri must use HTTPS unless --legacy-api is specified");
-        }
-
         if (string.IsNullOrWhiteSpace(settings.ApiKey))
         {
             return ValidationResult.Error("--api-key must be supplied");
