@@ -1,6 +1,6 @@
 {
   "name": "@dnncommunity/dnn-types",
-  "version": "0.1.0",
+  "version": "10.4.0",
   "description": "TypeScript type definitions for DNN Platform (DotNetNuke) - PersonaBar and Core APIs",
   "main": "index.d.ts",
   "types": "index.d.ts",
