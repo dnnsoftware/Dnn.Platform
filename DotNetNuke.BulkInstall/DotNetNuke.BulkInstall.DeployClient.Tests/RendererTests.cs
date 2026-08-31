@@ -338,7 +338,7 @@ public class RendererTests
     {
         var console = new TestConsole().Interactive();
 
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
         var sessionResponse = new SessionResponse
         {
             Packages = new List<PackageResponse?>
@@ -418,7 +418,7 @@ public class RendererTests
     public void RenderInstallationStatus_OnlyOutputsAttemptedSessionResponses(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var jimmy = new SessionResponse
         {
@@ -446,7 +446,7 @@ public class RendererTests
     public void RenderInstallationStatus_OutputsMultipleResponsesOnDifferentLines(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var jimmy = new SessionResponse
         {
@@ -492,7 +492,7 @@ public class RendererTests
         };
 
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
         renderer.RenderInstallationStatus(logLevel, packages);
 
         console.Output.ShouldContainStringsInOrder(
@@ -533,7 +533,7 @@ public class RendererTests
     public void RenderInstallationStatus_DoesNotOutputDuplicateInformation(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var james = new SessionResponse
         {
@@ -564,7 +564,7 @@ public class RendererTests
     public void RenderInstallationStatus_WhenErrorLevel_DoesNotOutputInformationLevel(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var james = new SessionResponse
         {
@@ -595,7 +595,7 @@ public class RendererTests
     public void RenderInstallationStatus_OutputsMessageWhenPackageIsSuccessful(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var james = new SessionResponse
         {
@@ -617,7 +617,7 @@ public class RendererTests
     public void RenderInstallationStatus_RendersFailures(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var jimmy = new SessionResponse
         {
@@ -645,7 +645,7 @@ public class RendererTests
     public void RenderInstallationStatus_FailuresHaveSpectreMarkup_RendersFailures(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
-        var renderer = new Renderer(console);
+        var renderer = new Renderer(console, useDecorativeIcons: true);
 
         var jimmy = new SessionResponse
         {
@@ -697,5 +697,74 @@ public class RendererTests
                 nameof(RendererTests),
                 nameof(this.RenderCriticalError));
         }
+    }
+
+    [Fact]
+    public void RenderInstallationStatus_WhenUnicodeNotSupported_SuccessRendersWithoutIcon()
+    {
+        var console = new TestConsole().Interactive();
+        var renderer = new Renderer(console, useDecorativeIcons: false);
+
+        var jimmy = new SessionResponse
+        {
+            Name = "Jimmy",
+            Attempted = true,
+            Success = true,
+            CanInstall = true,
+        };
+
+        renderer.RenderInstallationStatus(LogLevel.Information, new SortedList<int, SessionResponse?> { { 1, jimmy }, });
+        console.Output.ShouldContain("Jimmy");
+        console.Output.ShouldContain("Succeeded");
+        console.Output.ShouldNotContain("✅");
+    }
+
+    [Fact]
+    public void RenderInstallationStatus_WhenUnicodeNotSupported_FailureRendersWithoutIcon()
+    {
+        var console = new TestConsole().Interactive();
+        var renderer = new Renderer(console, useDecorativeIcons: false);
+
+        var jimmy = new SessionResponse
+        {
+            Name = "Jimmy",
+            Attempted = true,
+            Failures = new List<string?> { "BAD ZIP" },
+            CanInstall = true,
+        };
+
+        renderer.RenderInstallationStatus(LogLevel.Error, new SortedList<int, SessionResponse?> { { 1, jimmy }, });
+        console.Output.ShouldContain("Jimmy");
+        console.Output.ShouldContain("Failed");
+        console.Output.ShouldContain("BAD ZIP");
+        console.Output.ShouldNotContain("❌");
+    }
+
+    [Fact]
+    public void RenderInstallationOverview_WhenUnicodeNotSupported_UnknownDependencyRendersWithoutIcon()
+    {
+        var console = new TestConsole().Interactive();
+        var renderer = new Renderer(console, useDecorativeIcons: false);
+
+        var sessionResponse = new SessionResponse
+        {
+            Packages = new List<PackageResponse?>
+            {
+                new()
+                {
+                    Name = "Jamestown.zip",
+                    Dependencies = new List<DependencyResponse?>
+                    {
+                        new() { PackageName = "Unknown Package", DependencyVersion = string.Empty, IsPackageDependency = false, },
+                    },
+                    CanInstall = true,
+                },
+            },
+        };
+
+        renderer.RenderInstallationOverview(LogLevel.Information, new SortedList<int, SessionResponse?> { { 1, sessionResponse }, });
+        console.Output.ShouldContain("Jamestown.zip");
+        console.Output.ShouldContain("Unknown Package");
+        console.Output.ShouldNotContain("⚙");
     }
 }

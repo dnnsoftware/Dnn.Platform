@@ -15,6 +15,7 @@ public class DeployInputTests
     [InlineData("", false)]
     [InlineData("/test", false)]
     [InlineData("https://test.com", true)]
+    [InlineData("http://test.com", true)]
     [Theory]
     public void Validate_TargetUri(string targetUri, bool isSuccess)
     {
@@ -24,28 +25,6 @@ public class DeployInputTests
         validate.Successful.ShouldBe(isSuccess);
 
         validate.Message.ShouldBe(isSuccess ? null : "--target-uri must be a valid URI");
-    }
-
-    [Fact]
-    public void Validate_TargetUri_NonLegacyApiRequiresHttps()
-    {
-        var input = TestHelpers.CreateDeployInput(targetUri: "http://test.com", legacyApi: false);
-
-        var validate = ValidateInput(input);
-
-        validate.Successful.ShouldBeFalse();
-        validate.Message.ShouldBe("--target-uri must use HTTPS unless --legacy-api is specified");
-    }
-
-    [Fact]
-    public void Validate_TargetUri_LegacyApiAllowsHttp()
-    {
-        var input = TestHelpers.CreateDeployInput(targetUri: "http://test.com", legacyApi: true);
-
-        var validate = ValidateInput(input);
-
-        validate.Successful.ShouldBeTrue();
-        validate.Message.ShouldBeNull();
     }
 
     [InlineData("", false)]

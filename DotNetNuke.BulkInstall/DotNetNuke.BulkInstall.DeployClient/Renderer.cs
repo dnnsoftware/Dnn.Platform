@@ -25,6 +25,17 @@ public class Renderer : IRenderer, ILogger
         this.outputEncodingCodePage = outputEncodingCodePage;
     }
 
+    /// <summary>Initializes a new instance of the <see cref="Renderer"/> class with explicit icon support control (for testing).</summary>
+    /// <param name="console">The console.</param>
+    /// <param name="useDecorativeIcons">Whether to use decorative unicode icons.</param>
+    internal Renderer(IAnsiConsole console, bool useDecorativeIcons)
+    {
+        this.console = console;
+        this.useDecorativeIcons = useDecorativeIcons;
+        this.unicodeSupported = useDecorativeIcons;
+        this.outputEncodingCodePage = useDecorativeIcons ? 65001 : null;
+    }
+
     /// <inheritdoc/>
     public void Welcome(LogLevel level)
     {
