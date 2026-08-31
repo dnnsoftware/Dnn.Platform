@@ -41,6 +41,10 @@
               <name>Dnn.PersonaBar.Extensions.dll</name>
               <path>bin</path>
             </assembly>
+            <assembly>
+              <name>DotNetNuke.BulkInstall.Encryption.dll</name>
+              <path>bin</path>
+            </assembly>
           </assemblies>
         </component>
         <component type="Script">
