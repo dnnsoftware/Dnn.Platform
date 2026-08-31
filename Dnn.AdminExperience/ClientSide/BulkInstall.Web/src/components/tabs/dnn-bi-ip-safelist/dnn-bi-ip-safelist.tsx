@@ -70,7 +70,6 @@ export class DnnBiIpSafelist {
               <div class="panel-heading">
                 <h3 class="panel-title">{store.resx.IPSafeListEntries}</h3>
                 <dnn-button
-                  size="small"
                   onClick={() => {
                     this.newIpModal.show().catch(console.error);
                     return;
@@ -96,7 +95,6 @@ export class DnnBiIpSafelist {
                         <td>
                           <dnn-button
                             appearance="danger"
-                            size="small"
                             onClick={() => {
                               this.deleteIp(ip).catch(console.error);
                               return;

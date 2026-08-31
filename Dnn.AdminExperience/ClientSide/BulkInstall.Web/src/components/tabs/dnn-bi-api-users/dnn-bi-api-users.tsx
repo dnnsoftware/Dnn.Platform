@@ -92,7 +92,6 @@ export class DnnBiApiUsers {
                 <h3 class="panel-title">{store.resx.ApiUsers}</h3>
                 {this.enabled &&
                   <dnn-button
-                    size="small"
                     onClick={() => {
                       this.newUserModal?.show().catch(console.error);
                       return;
@@ -119,7 +118,6 @@ export class DnnBiApiUsers {
                         <td>
                           <dnn-button
                             appearance="danger"
-                            size="small"
                             onClick={() => {
                               this.deleteUser(user).catch(console.error);
                               return;
@@ -187,7 +185,6 @@ export class DnnBiApiUsers {
                 <span class="credential-label">{store.resx.ApiKey}</span>
                 <code class="credential-value">{this.createdUserCredentials.apiKey}</code>
                 <dnn-button
-                  size="small"
                   onClick={() => {
                     navigator.clipboard.writeText(this.createdUserCredentials?.apiKey ?? "").catch(console.error);
                     return;
@@ -200,7 +197,6 @@ export class DnnBiApiUsers {
                 <span class="credential-label">{store.resx.EncryptionKey}</span>
                 <code class="credential-value">{this.createdUserCredentials.encryptionKey}</code>
                 <dnn-button
-                  size="small"
                   onClick={() => {
                     navigator.clipboard.writeText(this.createdUserCredentials?.encryptionKey ?? "").catch(console.error);
                     return;
