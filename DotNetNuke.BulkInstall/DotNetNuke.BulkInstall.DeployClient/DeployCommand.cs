@@ -38,9 +38,14 @@ public class DeployCommand : AsyncCommand<DeployInput>
             return ValidationResult.Error("--packages-directory must be a valid path");
         }
 
-        if (!Uri.TryCreate(settings.TargetUri, UriKind.Absolute, out _))
+        if (!Uri.TryCreate(settings.TargetUri, UriKind.Absolute, out var targetUri))
         {
             return ValidationResult.Error("--target-uri must be a valid URI");
+        }
+
+        if (!settings.LegacyApi && !targetUri.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase))
+        {
+            return ValidationResult.Error("--target-uri must use HTTPS unless --legacy-api is specified");
         }
 
         if (string.IsNullOrWhiteSpace(settings.ApiKey))

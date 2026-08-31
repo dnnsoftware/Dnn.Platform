@@ -60,6 +60,12 @@ public class DeployInput : CommandSettings
     [DefaultValue(false)]
     public bool LegacyApi { get; set; }
 
+    /// <summary>Gets or sets a value indicating whether HTTPS certificate validation should be bypassed.</summary>
+    [CommandOption("--allow-untrusted-certificates")]
+    [Description("Whether to bypass HTTPS certificate validation for local or self-signed certificates.")]
+    [DefaultValue(false)]
+    public bool AllowUntrustedCertificates { get; set; }
+
     /// <summary>Gets the URI of the site to which to deploy the packages.</summary>
     /// <returns>An absolute <see cref="Uri"/>.</returns>
     public Uri GetTargetUri() => new Uri(this.TargetUri, UriKind.Absolute);

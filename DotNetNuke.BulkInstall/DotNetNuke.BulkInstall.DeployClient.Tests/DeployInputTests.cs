@@ -26,6 +26,28 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--target-uri must be a valid URI");
     }
 
+    [Fact]
+    public void Validate_TargetUri_NonLegacyApiRequiresHttps()
+    {
+        var input = TestHelpers.CreateDeployInput(targetUri: "http://test.com", legacyApi: false);
+
+        var validate = ValidateInput(input);
+
+        validate.Successful.ShouldBeFalse();
+        validate.Message.ShouldBe("--target-uri must use HTTPS unless --legacy-api is specified");
+    }
+
+    [Fact]
+    public void Validate_TargetUri_LegacyApiAllowsHttp()
+    {
+        var input = TestHelpers.CreateDeployInput(targetUri: "http://test.com", legacyApi: true);
+
+        var validate = ValidateInput(input);
+
+        validate.Successful.ShouldBeTrue();
+        validate.Message.ShouldBeNull();
+    }
+
     [InlineData("", false)]
     [InlineData(" ", false)]
     [InlineData("\t", false)]

@@ -15,6 +15,7 @@ public class Installer : IInstaller
 {
     private static readonly string DeployClientVersion = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? string.Empty;
     private readonly HttpClient httpClient;
+    private readonly HttpClient untrustedCertificateHttpClient;
     private readonly IStopwatch stopwatch;
     private readonly ILogger logger;
 
@@ -23,8 +24,19 @@ public class Installer : IInstaller
     /// <param name="stopwatch">The stopwatch.</param>
     /// <param name="logger">The logger.</param>
     public Installer(HttpClient httpClient, IStopwatch stopwatch, ILogger logger)
+        : this(httpClient, null, stopwatch, logger)
+    {
+    }
+
+    /// <summary>Initializes a new instance of the <see cref="Installer"/> class.</summary>
+    /// <param name="httpClient">The primary HTTP client.</param>
+    /// <param name="untrustedCertificateHttpClient">An optional HTTP client that can bypass certificate validation.</param>
+    /// <param name="stopwatch">The stopwatch.</param>
+    /// <param name="logger">The logger.</param>
+    internal Installer(HttpClient httpClient, HttpClient? untrustedCertificateHttpClient, IStopwatch stopwatch, ILogger logger)
     {
         this.httpClient = httpClient;
+        this.untrustedCertificateHttpClient = untrustedCertificateHttpClient ?? this.CreateUntrustedCertificateHttpClient(httpClient.Timeout);
         this.stopwatch = stopwatch;
         this.logger = logger;
     }
@@ -180,7 +192,10 @@ public class Installer : IInstaller
             try
             {
                 using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(Math.Max(100, options.InstallationStatusTimeout)));
-                var webResult = new WebResult(await this.httpClient.SendAsync(request, cts.Token));
+                var client = options.AllowUntrustedCertificates && request.RequestUri.Scheme.Equals(Uri.UriSchemeHttps, StringComparison.OrdinalIgnoreCase)
+                    ? this.untrustedCertificateHttpClient
+                    : this.httpClient;
+                var webResult = new WebResult(await client.SendAsync(request, cts.Token));
                 if (webResult.Exception is not null)
                 {
                     this.logger.LogTrace(options.LogLevel, $"Exception sending {request.Method} request to {request.RequestUri}:\n{await webResult.Response.Content.ReadAsStringAsync(cts.Token)}");
@@ -198,10 +213,23 @@ public class Installer : IInstaller
             }
             catch (HttpRequestException requestException)
             {
-                this.logger.LogTrace(options.LogLevel, $"Error sending {request.Method} request to {request.RequestUri}");
+                this.logger.LogTrace(options.LogLevel, $"Error sending {request.Method} request to {request.RequestUri}: {requestException.Message}");
                 return new WebResult(requestException);
             }
         }
+    }
+
+    private HttpClient CreateUntrustedCertificateHttpClient(TimeSpan timeout)
+    {
+        var handler = new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator,
+        };
+
+        return new HttpClient(handler)
+        {
+            Timeout = timeout,
+        };
     }
 
     private class ResponseJson

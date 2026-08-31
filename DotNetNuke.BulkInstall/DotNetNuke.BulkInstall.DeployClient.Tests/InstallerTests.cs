@@ -64,6 +64,48 @@ public class InstallerTests
         exception.InnerException.ShouldBeAssignableTo<HttpRequestException>();
     }
 
+    [Fact]
+    public async Task StartSessionAsync_AllowUntrustedCertificates_UsesUntrustedClientForHttps()
+    {
+        var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var targetUri = new Uri("https://bulkinstall.example.com/");
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), allowUntrustedCertificates: true);
+
+        var secureHandler = new FakeMessageHandler(
+            new Uri(targetUri, "/DesktopModules/BulkInstall/API/Remote/CreateSession"),
+            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { SessionGuid = expectedSessionId, })), });
+        var primaryHandler = new ThrowingMessageHandler(new HttpRequestException("The SSL connection could not be established."));
+        var installer = CreateInstaller(primaryHandler, secureHandler);
+
+        var sessionId = await installer.StartSessionAsync(options);
+
+        sessionId.ShouldBe(expectedSessionId);
+        primaryHandler.CallCount.ShouldBe(0);
+        var secureRequest = secureHandler.Request.ShouldNotBeNull();
+        secureRequest.ShouldHaveBearerAuth(options.ApiKey);
+    }
+
+    [Fact]
+    public async Task StartSessionAsync_AllowUntrustedCertificates_DoesNotUseUntrustedClientForHttp()
+    {
+        var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
+        var targetUri = new Uri("http://bulkinstall.example.com/");
+        var options = TestHelpers.CreateDeployInput(targetUri.ToString(), Guid.NewGuid().ToString(), allowUntrustedCertificates: true);
+
+        var primaryHandler = new FakeMessageHandler(
+            new Uri(targetUri, "/DesktopModules/BulkInstall/API/Remote/CreateSession"),
+            new HttpResponseMessage(HttpStatusCode.OK) { Content = new StringContent(JsonSerializer.Serialize(new { SessionGuid = expectedSessionId, })), });
+        var secureHandler = new ThrowingMessageHandler(new HttpRequestException("Should not use secure handler for HTTP."));
+        var installer = CreateInstaller(primaryHandler, secureHandler);
+
+        var sessionId = await installer.StartSessionAsync(options);
+
+        sessionId.ShouldBe(expectedSessionId);
+        var primaryRequest = primaryHandler.Request.ShouldNotBeNull();
+        primaryRequest.ShouldHaveBearerAuth(options.ApiKey);
+        secureHandler.CallCount.ShouldBe(0);
+    }
+
     [Theory]
     [MemberData(nameof(ApiData))]
     public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectSessionId(bool legacyApi, string baseUri)
@@ -406,6 +448,26 @@ public class InstallerTests
             new HttpClient(messageHandler),
             stopwatch ?? new TestStopwatch(),
             logger ?? new TestLogger());
+    }
+
+    private static Installer CreateInstaller(HttpMessageHandler messageHandler, HttpMessageHandler untrustedCertificateMessageHandler, IStopwatch? stopwatch = null, ILogger? logger = null)
+    {
+        return new Installer(
+            new HttpClient(messageHandler),
+            new HttpClient(untrustedCertificateMessageHandler),
+            stopwatch ?? new TestStopwatch(),
+            logger ?? new TestLogger());
+    }
+
+    private class ThrowingMessageHandler(Exception exception) : HttpMessageHandler
+    {
+        public int CallCount { get; private set; }
+
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            this.CallCount++;
+            throw exception;
+        }
     }
 
     private class FakeMessageHandler : HttpMessageHandler
