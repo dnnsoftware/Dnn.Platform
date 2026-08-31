@@ -5,7 +5,7 @@ import { Config } from '@stencil/core';
 if (!dnnConfig || !dnnConfig.WebsitePath) {
   console.error('WebsitePath is not defined in settings.local.json');
 }
-const outPath = `${dnnConfig.WebsitePath}\\DesktopModules\\BulkInstall\\Scripts`;
+const outPath = `${dnnConfig.WebsitePath}\\DesktopModules\\Admin\\Dnn.PersonaBar\\Dnn.BulkInstall\\Scripts`;
 
 export const config: Config = {
   ...originalConfig,
