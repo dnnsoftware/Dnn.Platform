@@ -9,6 +9,9 @@ using Spectre.Console;
 public class Renderer : IRenderer, ILogger
 {
     private readonly IAnsiConsole console;
+    private readonly bool useDecorativeIcons;
+    private readonly bool unicodeSupported;
+    private readonly int? outputEncodingCodePage;
     private readonly HashSet<string> succeededPackageFiles = new();
     private readonly HashSet<string> failedPackageFiles = new();
 
@@ -17,11 +20,19 @@ public class Renderer : IRenderer, ILogger
     public Renderer(IAnsiConsole console)
     {
         this.console = console;
+        this.useDecorativeIcons = this.CanUseDecorativeIcons(out var unicodeSupported, out var outputEncodingCodePage);
+        this.unicodeSupported = unicodeSupported;
+        this.outputEncodingCodePage = outputEncodingCodePage;
     }
 
     /// <inheritdoc/>
     public void Welcome(LogLevel level)
     {
+        if (level <= LogLevel.Trace)
+        {
+            this.console.WriteLine($"Icon rendering enabled: {this.useDecorativeIcons} (Unicode: {this.unicodeSupported}, CodePage: {this.outputEncodingCodePage?.ToString() ?? "unknown"})");
+        }
+
         var shouldLog = level <= LogLevel.Information;
         if (!shouldLog)
         {
@@ -72,7 +83,7 @@ public class Renderer : IRenderer, ILogger
             return;
         }
 
-        var tree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
+        var tree = new Tree(Markup.FromInterpolated($"{Icon(this.useDecorativeIcons, ":file_folder:", "DIR")} [yellow]Packages[/]"));
         foreach (var packageFile in packageFiles.Values)
         {
             if (packageFile == null)
@@ -80,7 +91,7 @@ public class Renderer : IRenderer, ILogger
                 continue;
             }
 
-            var fileNode = tree.AddNode(Markup.FromInterpolated($":page_facing_up: [aqua]{packageFile.Name}[/]"));
+            var fileNode = tree.AddNode(Markup.FromInterpolated($"{Icon(this.useDecorativeIcons, ":page_facing_up:", "FILE")} [aqua]{packageFile.Name}[/]"));
             if (packageFile.Packages == null)
             {
                 continue;
@@ -93,7 +104,7 @@ public class Renderer : IRenderer, ILogger
                     continue;
                 }
 
-                var packageNode = fileNode.AddNode(Markup.FromInterpolated($":wrapped_gift: [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
+                var packageNode = fileNode.AddNode(Markup.FromInterpolated($"{Icon(this.useDecorativeIcons, ":wrapped_gift:", "PKG")} [lime]{package.Name}[/] [grey]{package.VersionStr}[/]"));
                 if (package.Dependencies == null)
                 {
                     continue;
@@ -110,16 +121,16 @@ public class Renderer : IRenderer, ILogger
                     {
                         if (Version.TryParse(dependency.PackageName, out _))
                         {
-                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :radioactive: [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on {Icon(this.useDecorativeIcons, ":radioactive:", "DNN")} [lime]Platform Version[/] [grey]{dependency.PackageName}[/]"));
                         }
                         else
                         {
-                            packageNode.AddNode(Markup.FromInterpolated($"Depends on :gear: [grey]{dependency.PackageName}[/]"));
+                            packageNode.AddNode(Markup.FromInterpolated($"Depends on {Icon(this.useDecorativeIcons, ":gear:", "DEP")} [grey]{dependency.PackageName}[/]"));
                         }
                     }
                     else
                     {
-                        packageNode.AddNode(Markup.FromInterpolated($"Depends on :wrapped_gift: [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
+                        packageNode.AddNode(Markup.FromInterpolated($"Depends on {Icon(this.useDecorativeIcons, ":wrapped_gift:", "PKG")} [lime]{dependency.PackageName}[/] [grey]{dependency.DependencyVersion}[/]"));
                     }
                 }
             }
@@ -139,25 +150,25 @@ public class Renderer : IRenderer, ILogger
 
         var separatedFiles = files.Select(GetFileParts).Select(fileParts => fileParts.ToArray());
 
-        var fileTree = new Tree(new Markup(":file_folder: [yellow]Packages[/]"));
-        fileTree.AddNodes(MakeNode(separatedFiles));
+        var fileTree = new Tree(Markup.FromInterpolated($"{Icon(this.useDecorativeIcons, ":file_folder:", "DIR")} [yellow]Packages[/]"));
+        fileTree.AddNodes(MakeNode(separatedFiles, this.useDecorativeIcons));
 
         this.console.Write(fileTree);
 
-        static TreeNode MakeNode(IEnumerable<string[]> files)
+        static TreeNode MakeNode(IEnumerable<string[]> files, bool useDecorativeIcons)
         {
             var filesList = files.ToList();
             if (filesList is [[var fileName,],])
             {
-                return new TreeNode(Markup.FromInterpolated($":page_facing_up: [aqua]{fileName}[/]"));
+                return new TreeNode(Markup.FromInterpolated($"{Icon(useDecorativeIcons, ":page_facing_up:", "FILE")} [aqua]{fileName}[/]"));
             }
 
             var (joinedPath, groupedFiles) = GetGroupedFiles(filesList);
 
             var folderNode =
-                new TreeNode(Markup.FromInterpolated($":file_folder: [yellow]{joinedPath}[/]"));
+                new TreeNode(Markup.FromInterpolated($"{Icon(useDecorativeIcons, ":file_folder:", "DIR")} [yellow]{joinedPath}[/]"));
 
-            folderNode.AddNodes(groupedFiles.Select(MakeNode));
+            folderNode.AddNodes(groupedFiles.Select(f => MakeNode(f, useDecorativeIcons)));
 
             return folderNode;
         }
@@ -230,7 +241,7 @@ public class Renderer : IRenderer, ILogger
             {
                 if (level <= LogLevel.Information)
                 {
-                    this.console.MarkupLineInterpolated($":check_mark_button: [aqua]{file.Name}[/] [green]Succeeded[/]");
+                    this.console.MarkupLineInterpolated($"{Icon(this.useDecorativeIcons, ":check_mark_button:", "OK")} [aqua]{file.Name}[/] [green]Succeeded[/]");
                 }
 
                 this.succeededPackageFiles.Add(file.Name);
@@ -240,7 +251,7 @@ public class Renderer : IRenderer, ILogger
             {
                 if (level <= LogLevel.Error)
                 {
-                    var failureTree = new Tree(Markup.FromInterpolated($":cross_mark: [aqua]{file.Name}[/] [red]Failed[/]"));
+                    var failureTree = new Tree(Markup.FromInterpolated($"{Icon(this.useDecorativeIcons, ":cross_mark:", "ERR")} [aqua]{file.Name}[/] [red]Failed[/]"));
 
                     if (file.Failures?.Any() == true)
                     {
@@ -284,5 +295,33 @@ public class Renderer : IRenderer, ILogger
         }
 
         this.console.WriteLine(message);
+    }
+
+    private static string Icon(bool useDecorativeIcons, string decorativeIcon, string fallbackText)
+    {
+        _ = fallbackText;
+        return useDecorativeIcons ? $"{decorativeIcon} " : string.Empty;
+    }
+
+    private bool CanUseDecorativeIcons(out bool unicodeSupported, out int? outputEncodingCodePage)
+    {
+        unicodeSupported = this.console.Profile.Capabilities.Unicode;
+        outputEncodingCodePage = null;
+
+        if (!unicodeSupported)
+        {
+            return false;
+        }
+
+        try
+        {
+            outputEncodingCodePage = Console.OutputEncoding.CodePage;
+        }
+        catch
+        {
+            return false;
+        }
+
+        return outputEncodingCodePage == 65001;
     }
 }
