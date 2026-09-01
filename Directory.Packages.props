@@ -20,7 +20,7 @@
     <PackageVersion Include="Dnn.CakeUtils" Version="2.1.4" />
     <PackageVersion Include="Dnn.ClientDependency" Version="1.10.0" />
     <PackageVersion Include="FakeItEasy" Version="9.0.1" />
-    <PackageVersion Include="Google.Apis.Auth" Version="1.69.0" />
+    <PackageVersion Include="Google.Apis.Auth" Version="1.76.0" />
     <PackageVersion Include="HtmlSanitizer" Version="9.2.1039" />
     <PackageVersion Include="IsCI" Version="1.0.0" />
     <PackageVersion Include="LiteDB" Version="5.0.21" />
