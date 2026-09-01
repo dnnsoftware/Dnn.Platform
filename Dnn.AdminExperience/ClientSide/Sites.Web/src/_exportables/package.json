@@ -1,6 +1,6 @@
 {
   "name": "dnn-sites-list-view",
-  "version": "10.4.0",
+  "version": "10.3.4",
   "description": "DNN Sites List View",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -11,7 +11,7 @@
   },
   "license": "UNLICENSED",
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.4.0",
+    "@dnnsoftware/dnn-react-common": "10.3.4",
     "@rsbuild/core": "^2.1.10",
     "@rsbuild/plugin-less": "^2.0.1",
     "@rsbuild/plugin-react": "^2.1.0",
