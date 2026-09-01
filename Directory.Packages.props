@@ -4,8 +4,8 @@
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="AngleSharp" Version="1.5.2" />
-    <PackageVersion Include="AngleSharp.Css" Version="1.0.0-beta.224" />
+    <PackageVersion Include="AngleSharp" Version="1.7.3" />
+    <PackageVersion Include="AngleSharp.Css" Version="1.0.2" />
     <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageVersion Include="Cake.BuildSystems.Module" Version="9.0.0" />
     <PackageVersion Include="Cake.FileHelpers" Version="7.0.0" />
@@ -21,7 +21,7 @@
     <PackageVersion Include="Dnn.ClientDependency" Version="1.10.0" />
     <PackageVersion Include="FakeItEasy" Version="9.0.1" />
     <PackageVersion Include="Google.Apis.Auth" Version="1.69.0" />
-    <PackageVersion Include="HtmlSanitizer" Version="9.1.968-beta" />
+    <PackageVersion Include="HtmlSanitizer" Version="9.2.1039" />
     <PackageVersion Include="IsCI" Version="1.0.0" />
     <PackageVersion Include="LiteDB" Version="5.0.21" />
     <PackageVersion Include="Lucene.Net.Contrib" Version="3.0.3" />
