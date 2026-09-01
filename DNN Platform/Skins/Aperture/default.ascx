@@ -1,3 +1,7 @@
+<%-- 
+	** This file will be overwritten on upgrade, do not modify it.
+	** Need a custom version? Copy the folder and customize the copy instead.
+--%>
 <!--#include file="partials/_registers.ascx" -->
 <!--#include file="partials/_includes.ascx" -->
 
