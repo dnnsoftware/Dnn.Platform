@@ -26,13 +26,15 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Services.Mail;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Website;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The Password UserModuleBase is used to manage Users Passwords.</summary>
     public partial class Password : UserModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Password>();
         private readonly IEventLogger eventLogger;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IClientResourceController clientResourceController;
@@ -350,12 +352,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             catch (ArgumentException exc)
             {
-                Logger.Error(exc);
+                Logger.PasswordResetArgumentException(exc);
                 this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.PasswordResetGeneralException(exc);
                 this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
             }
         }
@@ -385,12 +387,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             catch (ArgumentException exc)
             {
-                Logger.Error(exc);
+                Logger.PasswordUserResetArgumentException(exc);
                 this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.PasswordUserResetGeneralException(exc);
                 this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
             }
         }
@@ -502,7 +504,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     catch (MembershipPasswordException exc)
                     {
                         // Password Answer missing
-                        Logger.Error(exc);
+                        Logger.PasswordUserUpdateMembershipPasswordException(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     }
@@ -513,7 +515,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     catch (Exception exc)
                     {
                         // Fail
-                        Logger.Error(exc);
+                        Logger.PasswordUserUpdateGeneralException(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
                     }
@@ -529,7 +531,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     catch (MembershipPasswordException exc)
                     {
                         // Password Answer missing
-                        Logger.Error(exc);
+                        Logger.PasswordUserAdminUpdateMembershipPasswordException(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     }
@@ -540,7 +542,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     catch (Exception exc)
                     {
                         // Fail
-                        Logger.Error(exc);
+                        Logger.PasswordUserAdminUpdateGeneralException(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
                     }

@@ -11,18 +11,19 @@ namespace DotNetNuke.Modules.Journal
 
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security;
     using DotNetNuke.Services.Journal;
     using DotNetNuke.Services.Social.Notifications;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     [ValidateAntiForgeryToken]
     public class NotificationServicesController : DnnApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationServicesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<NotificationServicesController>();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -32,7 +33,7 @@ namespace DotNetNuke.Modules.Journal
             {
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
 
-                if (notification != null && notification.Context != null && notification.Context.Contains("_"))
+                if (notification is { Context: not null, } && notification.Context.Contains("_"))
                 {
                     // Dismiss the notification
                     NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
@@ -41,17 +42,17 @@ namespace DotNetNuke.Modules.Journal
                     var userId = Convert.ToInt32(context[0]);
                     var journalId = Convert.ToInt32(context[1]);
                     var ji = JournalController.Instance.GetJournalItem(this.PortalSettings.PortalId, userId, journalId);
-                    if (ji.ProfileId != Null.NullInteger)
-                    {
-                        return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = Globals.UserProfileURL(ji.ProfileId) });
-                    }
-
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", Link = Globals.UserProfileURL(userId) });
+                    var profileLink = ji.ProfileId != Null.NullInteger
+                        ? Globals.UserProfileURL(ji.ProfileId)
+                        : Globals.UserProfileURL(userId);
+                    return this.Request.CreateResponse(
+                        HttpStatusCode.OK,
+                        new { Result = "success", Link = profileLink, });
                 }
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.NotificationServicesControllerViewJournalException(exc);
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");

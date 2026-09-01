@@ -12,6 +12,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     using System.Linq;
     using System.Text;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Web.UI;
 
     using DotNetNuke.Abstractions;
@@ -32,14 +33,16 @@ namespace DotNetNuke.Modules.Admin.Modules
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins;
     using DotNetNuke.UI.Skins.Controls;
+    using DotNetNuke.Website;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The ModuleSettingsPage PortalModuleBase is used to edit the settings for a module.</summary>
     public partial class ModuleSettingsPage : PortalModuleBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleSettingsPage>();
         private readonly INavigationManager navigationManager;
         private readonly IPortalAliasService portalAliasService;
         private readonly IModuleControlPipeline moduleControlPipeline;
@@ -320,7 +323,25 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         // Get the module settings from the PortalSettings and pass the
                         // two settings hashtables to the sub control to process
-                        this.SettingsControl.LoadSettings();
+                        if (this.SettingsControl is IAsyncSettingsControl asyncSettingsControl)
+                        {
+                            this.Page.RegisterAsyncTask(new PageAsyncTask(async cancellationToken =>
+                            {
+                                try
+                                {
+                                    await asyncSettingsControl.LoadSettingsAsync(cancellationToken);
+                                }
+                                catch (Exception exc)
+                                {
+                                    Exceptions.ProcessModuleLoadException(this, exc);
+                                }
+                            }));
+                        }
+                        else
+                        {
+                            this.SettingsControl.LoadSettings();
+                        }
+
                         this.specificSettingsTab.Visible = true;
                         this.fsSpecific.Visible = true;
                     }
@@ -506,16 +527,37 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Module.AllModules = this.chkAllModules.Checked;
                     ModuleController.Instance.UpdateModule(this.Module);
 
+                    var executeAsync = false;
+
                     // Update Custom Settings
                     if (this.SettingsControl != null)
                     {
                         try
                         {
-                            this.SettingsControl.UpdateSettings();
+                            if (this.SettingsControl is IAsyncSettingsControl asyncSettingsControl)
+                            {
+                                executeAsync = true;
+                                this.Page.RegisterAsyncTask(new PageAsyncTask(async cancellationToken =>
+                                {
+                                    try
+                                    {
+                                        await asyncSettingsControl.UpdateSettingsAsync(cancellationToken);
+                                        Continuation();
+                                    }
+                                    catch (Exception exc)
+                                    {
+                                        Exceptions.ProcessModuleLoadException(this, exc);
+                                    }
+                                }));
+                            }
+                            else
+                            {
+                                this.SettingsControl.UpdateSettings();
+                            }
                         }
                         catch (ThreadAbortException exc)
                         {
-                            Logger.Debug(exc);
+                            Logger.ModuleSettingsThreadAbortException(exc);
 
                             Thread.ResetAbort(); // necessary
                         }
@@ -525,70 +567,78 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    // These Module Copy/Move statements must be
-                    // at the end of the Update as the Controller code assumes all the
-                    // Updates to the Module have been carried out.
-
-                    // Check if the Module is to be Moved to a new Tab
-                    if (!this.chkAllTabs.Checked)
+                    if (!executeAsync)
                     {
-                        var newTabId = int.Parse(this.cboTab.SelectedValue);
-                        if (this.TabId != newTabId)
-                        {
-                            // First check if there already is an instance of the module on the target page
-                            var tmpModule = ModuleController.Instance.GetModule(this.moduleId, newTabId, false);
-                            if (tmpModule == null)
-                            {
-                                // Move module
-                                ModuleController.Instance.MoveModule(this.moduleId, this.TabId, newTabId, Globals.glbDefaultPane);
-                            }
-                            else
-                            {
-                                // Warn user
-                                Skin.AddModuleMessage(this, Localization.GetString("ModuleExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
-                                return;
-                            }
-                        }
+                        Continuation();
                     }
 
-                    // Check if Module is to be Added/Removed from all Tabs
-                    if (allTabsChanged)
+                    void Continuation()
                     {
-                        var listTabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, this.PortalSettings.PortalId, Null.NullInteger, false, true);
-                        if (this.chkAllTabs.Checked)
+                        // These Module Copy/Move statements must be
+                        // at the end of the Update as the Controller code assumes all the
+                        // Updates to the Module have been carried out.
+
+                        // Check if the Module is to be Moved to a new Tab
+                        if (!this.chkAllTabs.Checked)
                         {
-                            if (!this.chkNewTabs.Checked)
+                            var newTabId = int.Parse(this.cboTab.SelectedValue);
+                            if (this.TabId != newTabId)
                             {
-                                foreach (var destinationTab in listTabs)
+                                // First check if there already is an instance of the module on the target page
+                                var tmpModule = ModuleController.Instance.GetModule(this.moduleId, newTabId, false);
+                                if (tmpModule == null)
                                 {
-                                    var module = ModuleController.Instance.GetModule(this.moduleId, destinationTab.TabID, false);
-                                    if (module != null)
+                                    // Move module
+                                    ModuleController.Instance.MoveModule(this.moduleId, this.TabId, newTabId, Globals.glbDefaultPane);
+                                }
+                                else
+                                {
+                                    // Warn user
+                                    Skin.AddModuleMessage(this, Localization.GetString("ModuleExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
+                                    return;
+                                }
+                            }
+                        }
+
+                        // Check if Module is to be Added/Removed from all Tabs
+                        if (allTabsChanged)
+                        {
+                            var listTabs = TabController.GetPortalTabs(this.hostSettings, this.appStatus, this.PortalSettings.PortalId, Null.NullInteger, false, true);
+                            if (this.chkAllTabs.Checked)
+                            {
+                                if (!this.chkNewTabs.Checked)
+                                {
+                                    foreach (var destinationTab in listTabs)
                                     {
-                                        if (module.IsDeleted)
+                                        var module = ModuleController.Instance.GetModule(this.moduleId, destinationTab.TabID, false);
+                                        if (module != null)
                                         {
-                                            ModuleController.Instance.RestoreModule(module);
+                                            if (module.IsDeleted)
+                                            {
+                                                ModuleController.Instance.RestoreModule(module);
+                                            }
                                         }
-                                    }
-                                    else
-                                    {
-                                        if (!this.PortalSettings.ContentLocalizationEnabled || (this.Module.CultureCode == destinationTab.CultureCode))
+                                        else
                                         {
-                                            ModuleController.Instance.CopyModule(this.Module, destinationTab, this.Module.PaneName, true);
+                                            if (!this.PortalSettings.ContentLocalizationEnabled || (this.Module.CultureCode == destinationTab.CultureCode))
+                                            {
+                                                ModuleController.Instance.CopyModule(this.Module, destinationTab, this.Module.PaneName, true);
+                                            }
                                         }
                                     }
                                 }
                             }
+                            else
+                            {
+                                ModuleController.Instance.DeleteAllModules(this.moduleId, this.TabId, listTabs, true, false, false);
+                            }
                         }
-                        else
-                        {
-                            ModuleController.Instance.DeleteAllModules(this.moduleId, this.TabId, listTabs, true, false, false);
-                        }
-                    }
 
-                    if (!this.DoNotRedirectOnUpdate)
-                    {
-                        // Navigate back to admin page
-                        this.Response.Redirect(this.ReturnURL, true);
+                        if (!this.DoNotRedirectOnUpdate)
+                        {
+                            // Navigate back to admin page
+                            this.Response.Redirect(this.ReturnURL, true);
+                        }
                     }
                 }
             }

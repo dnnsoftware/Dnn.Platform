@@ -12,11 +12,13 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Helper class that provides memory and disk caching of the downloaded feeds.</summary>
     internal sealed class RssDownloadManager
     {
         private const string RSSDir = "/RSS/";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RssDownloadManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RssDownloadManager>();
         private static readonly RssDownloadManager TheManager = new RssDownloadManager();
 
         private readonly Dictionary<string, RssChannelDom> cache;
@@ -191,7 +193,7 @@ namespace DotNetNuke.Services.Syndication
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.RssDownloadManagerDeleteException(ex);
                     }
 
                     // try next file

@@ -9,10 +9,12 @@ namespace DotNetNuke.Services.Syndication
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Class for managing an OPML feed.</summary>
     public class Opml
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Opml>();
         private XmlDocument opmlDoc;
 
         /// <summary>Initializes a new instance of the <see cref="Opml"/> class.</summary>
@@ -348,7 +350,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseCreatedException(ex);
             }
 
             newOutline.Category = ParseElement(node, "category");
@@ -358,7 +360,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseXmlUrlException(ex);
             }
 
             try
@@ -367,7 +369,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseHtmlUrlException(ex);
             }
 
             newOutline.Language = ParseElement(node, "language");
@@ -379,7 +381,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.OpmlParseUrlException(ex);
             }
 
             newOutline.Description = ParseElement(node, "description");

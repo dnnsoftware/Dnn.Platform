@@ -17,11 +17,12 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Scheduling;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class TaskSchedulerController
     {
         private static readonly string SchedulersToRunOnSameWebServerKey = "SchedulersToRunOnSameWebServer";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TaskSchedulerController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TaskSchedulerController>();
 
         private static string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/Modules/Dnn.TaskScheduler/App_LocalResources/TaskScheduler.resx");
 
@@ -153,7 +154,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ComponentsTaskSchedulerControllerGetScheduleItemsException(exc);
                 return null;
             }
         }

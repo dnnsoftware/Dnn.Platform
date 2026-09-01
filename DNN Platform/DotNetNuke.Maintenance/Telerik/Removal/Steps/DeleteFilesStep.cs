@@ -8,9 +8,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System.IO;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Deletes files.</summary>
     internal sealed class DeleteFilesStep : StepBase, IDeleteFilesStep
@@ -19,22 +20,19 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IApplicationStatusInfo applicationStatusInfo;
 
         /// <summary>Initializes a new instance of the <see cref="DeleteFilesStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="fileSystemProvider">An instance of <see cref="IFileSystemProvider"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         public DeleteFilesStep(
-            ILoggerSource loggerSource,
+            ILogger<DeleteFilesStep> logger,
             ILocalizer localizer,
             IFileSystemProvider fileSystemProvider,
             IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, localizer)
+            : base(logger, localizer)
         {
-            this.fileSystemProvider = fileSystemProvider ??
-                throw new ArgumentNullException(nameof(fileSystemProvider));
-
-            this.applicationStatusInfo = applicationStatusInfo ??
-                throw new ArgumentNullException(nameof(applicationStatusInfo));
+            this.fileSystemProvider = fileSystemProvider ?? throw new ArgumentNullException(nameof(fileSystemProvider));
+            this.applicationStatusInfo = applicationStatusInfo ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
         }
 
         /// <inheritdoc />

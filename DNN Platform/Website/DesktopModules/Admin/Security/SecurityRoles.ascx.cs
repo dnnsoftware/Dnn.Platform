@@ -30,14 +30,16 @@ namespace DotNetNuke.Modules.Admin.Security
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins.Controls;
     using DotNetNuke.UI.Utilities;
+    using DotNetNuke.Website;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>The SecurityRoles PortalModuleBase is used to manage the users and roles they have.</summary>
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SecurityRoles>();
         private readonly INavigationManager navigationManager;
         private readonly RoleProvider roleProvider;
         private readonly IRoleController roleController;
@@ -328,9 +330,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this.CurrentPage = 1;
             if (this.Request.QueryString["CurrentPage"] != null)
             {
-                var currentPage = 0;
-                if (int.TryParse(this.Request.QueryString["CurrentPage"], out currentPage)
-                    && currentPage > 0)
+                if (int.TryParse(this.Request.QueryString["CurrentPage"], out var currentPage) && currentPage > 0)
                 {
                     this.CurrentPage = currentPage;
                 }
@@ -366,13 +366,13 @@ namespace DotNetNuke.Modules.Admin.Security
                     return;
                 }
 
-                this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
-                this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
+                this.placeIsOwner.Visible = this.Role.SecurityMode is SecurityMode.SocialGroup or SecurityMode.Both;
+                this.placeIsOwnerHeader.Visible = this.Role.SecurityMode is SecurityMode.SocialGroup or SecurityMode.Both;
             }
             catch (ThreadAbortException exc)
             {
                 // Do nothing if ThreadAbort as this is caused by a redirect
-                Logger.Debug(exc);
+                Logger.SecurityRolesThreadAbortException(exc);
             }
             catch (Exception exc)
             {

@@ -16,13 +16,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     using DotNetNuke.UI.WebControls;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The DateEditControl control provides a standard UI component for editing date properties.</summary>
     /// <remarks>This control is only for internal use, please don't reference it in any other place as it may be removed in the future.</remarks>
     [ToolboxData("<{0}:DateTimeEditControl runat=server></{0}:DateTimeEditControl>")]
     public class DateTimeEditControl : EditControl
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateTimeEditControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DateTimeEditControl>();
         private TextBox dateControl;
 
         /// <inheritdoc />
@@ -46,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.DateTimeEditControlDateValueException(exc);
                 }
 
                 return dteValue;
@@ -100,7 +101,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.DateTimeEditControlOldDateValueException(exc);
                 }
 
                 return dteValue;

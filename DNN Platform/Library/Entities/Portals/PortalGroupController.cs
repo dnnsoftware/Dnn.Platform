@@ -23,11 +23,12 @@ namespace DotNetNuke.Entities.Portals
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The default <see cref="IPortalGroupController"/> implementation.</summary>
     public class PortalGroupController : ComponentBase<IPortalGroupController, PortalGroupController>, IPortalGroupController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalGroupController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalGroupController>();
         private readonly IDataService dataService;
         private readonly IPortalController portalController;
         private readonly IHostSettings hostSettings;
@@ -392,7 +393,7 @@ namespace DotNetNuke.Entities.Portals
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.PortalGroupControllerLogEventException(exc);
             }
         }
 

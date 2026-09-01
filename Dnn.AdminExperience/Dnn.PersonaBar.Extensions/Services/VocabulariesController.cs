@@ -21,13 +21,15 @@ namespace Dnn.PersonaBar.Vocabularies.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     using Constants = Dnn.PersonaBar.Vocabularies.Components.Constants;
 
     [MenuPermission(MenuName = Constants.MenuIdentifier)]
     public class VocabulariesController : PersonaBarApiController
     {
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(VocabulariesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<VocabulariesController>();
         private Components.VocabulariesController controller = new Components.VocabulariesController();
 
         private static string LocalResourcesFile => Path.Combine(Library.Constants.PersonaBarRelativePath, "Modules/Dnn.Vocabularies/App_LocalResources/Vocabularies.resx");
@@ -43,8 +45,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
         {
             try
             {
-                int total = 0;
-                var vocabularies = this.controller.GetVocabularies(this.PortalId, pageIndex, pageSize, scopeTypeId, out total).Select(v => new
+                var vocabularies = this.controller.GetVocabularies(this.PortalId, pageIndex, pageSize, scopeTypeId, out var total).Select(v => new
                 {
                     v.VocabularyId,
                     v.Name,
@@ -66,7 +67,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerGetVocabulariesException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
@@ -97,7 +98,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerCreateVocabularyException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
@@ -132,14 +133,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerUpdateVocabularyException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
         /// POST: api/Vocabularies/DeleteVocabulary
         /// <summary>Removes an existing vocabulary.</summary>
-        /// <param name="vocabularyId">Id of an existing vocabulary that will be deleted.</param>
+        /// <param name="vocabularyId">ID of an existing vocabulary that will be deleted.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -158,14 +159,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerDeleteVocabularyException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
         /// GET: api/Vocabularies/GetTermsByVocabularyId
         /// <summary>Gets a list of terms belonging to a specific vocabulary.</summary>
-        /// <param name="vocabularyId">Id of an existing vocabulary.</param>
+        /// <param name="vocabularyId">ID of an existing vocabulary.</param>
         /// <returns>List of terms.</returns>
         [HttpGet]
         public HttpResponseMessage GetTermsByVocabularyId(int vocabularyId)
@@ -191,14 +192,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerGetTermsByVocabularyIdException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
         /// GET: api/Vocabularies/GetTerm
         /// <summary>Gets a term.</summary>
-        /// <param name="termId">Id of an existing term.</param>
+        /// <param name="termId">ID of an existing term.</param>
         /// <returns>Data of a term.</returns>
         [HttpGet]
         public HttpResponseMessage GetTerm(int termId)
@@ -219,7 +220,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerGetTermException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
@@ -255,7 +256,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerCreateTermException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -292,14 +293,14 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerUpdateTermException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }
 
         /// POST: api/Vocabularies/DeleteTerm
         /// <summary>Removes an existing term.</summary>
-        /// <param name="termId">Id of an existing term.</param>
+        /// <param name="termId">ID of an existing term.</param>
         /// <returns>A response indicating success.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -319,7 +320,7 @@ namespace Dnn.PersonaBar.Vocabularies.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.VocabulariesControllerDeleteTermException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
             }
         }

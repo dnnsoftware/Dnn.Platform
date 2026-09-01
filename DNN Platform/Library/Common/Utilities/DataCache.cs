@@ -26,6 +26,7 @@ namespace DotNetNuke.Common.Utilities
     using DotNetNuke.Services.OutputCache;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     [Obsolete("Deprecated in DotNetNuke 9.13.8. This type has no known use. Scheduled for removal in v11.0.0.")]
     public enum CoreCacheType
@@ -317,7 +318,7 @@ namespace DotNetNuke.Common.Utilities
 
         internal const string UserIdListToClearDiskImageCacheKey = "UserIdListToClearDiskImage_{0}";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DataCache>();
 
         private static readonly ReaderWriterLockSlim DictionaryLock = new ReaderWriterLockSlim();
         private static readonly Dictionary<string, object> LockDictionary = new Dictionary<string, object>();
@@ -595,7 +596,7 @@ namespace DotNetNuke.Common.Utilities
             catch (Exception exc)
             {
                 // Swallow exception
-                Logger.Error(exc);
+                Logger.DataCacheItemRemovedCallbackException(exc);
             }
         }
 

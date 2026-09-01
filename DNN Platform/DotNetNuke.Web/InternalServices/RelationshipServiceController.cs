@@ -21,6 +21,7 @@ using DotNetNuke.Services.Social.Notifications;
 using DotNetNuke.Web.Api;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>A web API controller for relationships.</summary>
 /// <param name="hostSettings">The host settings.</param>
@@ -28,7 +29,7 @@ using Microsoft.Extensions.DependencyInjection;
 public partial class RelationshipServiceController(IHostSettings hostSettings)
     : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RelationshipServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<RelationshipServiceController>();
     private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
 
     /// <summary>Initializes a new instance of the <see cref="RelationshipServiceController"/> class.</summary>
@@ -76,7 +77,7 @@ public partial class RelationshipServiceController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.RelationshipServiceControllerAcceptFriendException(exc);
         }
 
         if (success)
@@ -135,7 +136,7 @@ public partial class RelationshipServiceController(IHostSettings hostSettings)
         }
         catch (UserRelationshipExistsException exc)
         {
-            Logger.Error(exc);
+            Logger.RelationshipServiceControllerFollowBackUserRelationshipExistsException(exc);
             var response = new
             {
                 Message = Localization.GetExceptionMessage(
@@ -146,7 +147,7 @@ public partial class RelationshipServiceController(IHostSettings hostSettings)
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.RelationshipServiceControllerFollowBackGeneralException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc.Message);
         }
 

@@ -18,11 +18,13 @@ namespace Dnn.PersonaBar.UI.Services
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Service to perform portal operations.</summary>
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class PortalsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalsController>();
 
         /// GET: api/Portals/GetPortals
         /// <summary>Gets portals.</summary>
@@ -65,7 +67,7 @@ namespace Dnn.PersonaBar.UI.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.PortalsControllerGetPortalsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

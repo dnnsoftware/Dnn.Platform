@@ -22,9 +22,11 @@ namespace Dnn.PersonaBar.Library.Controllers
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class ModulesController : ServiceLocator<IModulesController, ModulesController>, IModulesController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModulesController>();
         private IContentVerifier contentVerifier;
 
         /// <summary>Initializes a new instance of the <see cref="ModulesController"/> class.</summary>
@@ -155,7 +157,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ModulesControllerCopyModuleException(ex);
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, Localization.GetString(moveBahaviour ? "Prompt_ErrorWhileMoving" : "Prompt_ErrorWhileCopying"));
                 }
 
@@ -182,7 +184,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ModulesControllerDeleteModuleException(ex);
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, string.Format(CultureInfo.CurrentCulture, Localization.GetString("Prompt_FailedtoDeleteModule", Constants.LocalResourcesFile), moduleId));
                 }
             }

@@ -28,11 +28,12 @@ namespace Dnn.PersonaBar.UI.Components
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Provides upgrade logic for the Persona Bar.</summary>
-    public class BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController) : IUpgradeable
+    public partial class BusinessController(IHostSettingsService hostSettingsService, IHostSettings hostSettings, IPortalController portalController) : IUpgradeable
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BusinessController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<BusinessController>();
         private readonly IHostSettingsService hostSettingsService = hostSettingsService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettingsService>();
         private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
         private readonly IPortalController portalController = portalController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalController>();
@@ -83,7 +84,10 @@ namespace Dnn.PersonaBar.UI.Components
 
         private static void RemoveAssembly(string assemblyName)
         {
-            Logger.Info(string.Concat(Localization.GetString("LogStart", Localization.GlobalResourceFile), "Removal of assembly:", assemblyName));
+            if (Logger.IsEnabled(LogLevel.Information))
+            {
+                Logger.BusinessControllerRemovalOfAssembly(Localization.GetString("LogStart", Localization.GlobalResourceFile), assemblyName);
+            }
 
             var packageInfo = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p =>
                 p.Name.Equals(assemblyName, StringComparison.OrdinalIgnoreCase)
@@ -93,12 +97,12 @@ namespace Dnn.PersonaBar.UI.Components
                 var fileName = assemblyName + ".dll";
                 if (DataProvider.Instance().UnRegisterAssembly(packageInfo.PackageID, fileName))
                 {
-                    Logger.Info($"{Util.ASSEMBLY_UnRegistered} - {fileName}");
+                    Logger.BusinessControllerAssemblyUnregistered(Util.ASSEMBLY_UnRegistered, fileName);
                 }
             }
             else
             {
-                Logger.Info($"{Util.ASSEMBLY_InUse} - {assemblyName}");
+                Logger.BusinessControllerAssemblyInUse(Util.ASSEMBLY_InUse, assemblyName);
             }
         }
 

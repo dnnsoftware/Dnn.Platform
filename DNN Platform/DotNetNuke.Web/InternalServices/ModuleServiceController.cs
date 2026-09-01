@@ -21,12 +21,13 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>A web API controller for module information.</summary>
 [DnnAuthorize]
 public class ModuleServiceController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleServiceController>();
     private readonly IHostSettings hostSettings;
     private readonly DataProvider dataProvider;
 
@@ -83,11 +84,11 @@ public class ModuleServiceController : DnnApiController
         if (desktopModule == null)
         {
             var message = $"Cannot find module ID {moduleId} (tab ID {tabId}, portal ID {portalId})";
-            Logger.Error(message);
+            Logger.ModuleServiceControllerCannotFindModule(moduleId, tabId, portalId);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, message);
         }
 
-        return this.Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning });
+        return this.Request.CreateResponse(HttpStatusCode.OK, new { Shareable = desktopModule.Shareable.ToString(), RequiresWarning = requiresWarning, });
     }
 
     /// <summary>Moves a module.</summary>

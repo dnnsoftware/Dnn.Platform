@@ -26,6 +26,7 @@
     <asp:placeholder runat="server" id="ClientResourceIncludes" />
     <form id="form1" runat="server">
         <asp:ScriptManager ID="scManager" runat="server" EnablePageMethods="true"></asp:ScriptManager>
+        <script type="text/javascript" src="../Resources/Shared/scripts/dnn.jquery.js"></script>
         <asp:placeholder id="BodySCRIPTS" runat="server">
         </asp:placeholder>
 
@@ -38,6 +39,7 @@
         <asp:LinkButton  id="lang_fr_FR" class="flag" runat="server" value="fr-FR" title="Français (France)" OnClientClick="installWizard.changePageLocale('lang_fr_FR','fr-FR');" CausesValidation="false"><img src="../images/flags/fr-FR.gif" alt="fr-FR" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_it_IT" class="flag" runat="server" value="it-IT" title="Italiano (Italia)" OnClientClick="installWizard.changePageLocale('lang_it_IT','it-IT');" CausesValidation="false"><img src="../images/flags/it-IT.gif" alt="it-IT" class="flagimage"/></asp:LinkButton>
         <asp:LinkButton  id="lang_nl_NL" class="flag" runat="server" value="nl-NL" title="Nederlands (Nederland)" OnClientClick="installWizard.changePageLocale('lang_nl_NL','nl-NL');" CausesValidation="false"><img src="../images/flags/nl-NL.gif" alt="nl-NL" class="flagimage"/></asp:LinkButton>
+        <asp:LinkButton  id="lang_tr_TR" class="flag" runat="server" value="tr-TR" title="Türkçe (Türkiye)" OnClientClick="installWizard.changePageLocale('lang_tr_TR','tr-TR');" CausesValidation="false"><img src="../images/flags/tr-TR.gif" alt="tr-TR" class="flagimage"/></asp:LinkButton>
     </div>
 
     <div class="install">
@@ -503,7 +505,8 @@
             this.install = function () {
                 $.startProgressbar();
                 //Call PageMethod which triggers long running operation
-                PageMethods.RunInstall(function () {
+                PageMethods.RunInstall($("#PageLocale")[0].value, function () {
+
                 }, function (err) {
                     if (err._statusCode === 500 && !err._stackTrace) { //the error thrown by azure proxy, then need ignore.
                         return;
@@ -823,7 +826,7 @@
 
             var installationLogStartLine = 0;
             var getInstallationLog = function () {
-                PageMethods.GetInstallationLog(installationLogStartLine, function (result) {
+                PageMethods.GetInstallationLog(installationLogStartLine, $("#PageLocale")[0].value, function (result) {
                     if (result) {
                         if (installationLogStartLine === 0)
                             $('#installation-log').html(result);

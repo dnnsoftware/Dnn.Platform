@@ -16,10 +16,12 @@ namespace DotNetNuke.Services.Analytics
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>Controller class definition for GoogleAnalytics which handles upgrades.</summary>
     public class GoogleAnalyticsController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(GoogleAnalyticsController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<GoogleAnalyticsController>();
 
         /// <summary>Handles module upgrades includes a new Google Analytics Asynchronous script.</summary>
         /// <param name="version">The upgrade version.</param>
@@ -88,7 +90,7 @@ namespace DotNetNuke.Services.Analytics
                 LogController.Instance.AddLog(log);
                 fileReader?.Close();
 
-                Logger.Error(ex);
+                Logger.GoogleAnalyticsControllerGetConfigFileException(ex);
             }
 
             return fileReader;

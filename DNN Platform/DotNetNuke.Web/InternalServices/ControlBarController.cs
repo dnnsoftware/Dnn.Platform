@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
+
 namespace DotNetNuke.Web.InternalServices;
 
 using System;
@@ -38,6 +39,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>A web API for the control bar.</summary>
 /// <param name="businessControllerProvider">The business controller provider.</param>
@@ -54,7 +56,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
     : DnnApiController
 {
     private const string DefaultExtensionImage = "icon_extensions_32px.png";
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ControlBarController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<ControlBarController>();
     private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
     private readonly PersonalizationController personalizationController = personalizationController ?? Globals.GetCurrentServiceProvider().GetRequiredService<PersonalizationController>();
     private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
@@ -139,7 +141,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
 
             // move Html on top
             filteredList = filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase)).
-                Concat(filteredList.Except(filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase))));
+                            Concat(filteredList.Except(filteredList.Where(m => m.Key.Equals(topModule, StringComparison.OrdinalIgnoreCase))));
         }
 
         filteredList = filteredList
@@ -176,10 +178,10 @@ public class ControlBarController(IBusinessControllerProvider businessController
             var groups = PortalGroupController.Instance.GetPortalGroups().ToArray();
 
             var myGroup = (
-                    from @group in groups
-                    select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId).Cast<IPortalInfo>() into portals
-                    where portals.Any(x => x.PortalId == PortalSettings.Current.PortalId)
-                    select portals.ToArray())
+                from @group in groups
+                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId).Cast<IPortalInfo>() into portals
+                where portals.Any(x => x.PortalId == PortalSettings.Current.PortalId)
+                select portals.ToArray())
                 .FirstOrDefault();
 
             if (myGroup != null && myGroup.Any(p => p.PortalId == portalSettings.PortalId))
@@ -221,8 +223,8 @@ public class ControlBarController(IBusinessControllerProvider businessController
 
                 Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                 result.AddRange(from kvp in resultDict
-                    let imageUrl = GetTabModuleImage(this.hostSettings, tabId, kvp.Key)
-                    select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
+                                let imageUrl = GetTabModuleImage(this.hostSettings, tabId, kvp.Key)
+                                select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, result);
@@ -265,7 +267,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ControlBarControllerParseVisibilityException(exc);
                 permissionType = 0;
             }
 
@@ -282,7 +284,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.ControlBarControllerParseSortException(exc);
                 }
             }
 
@@ -308,7 +310,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ControlBarControllerParseModuleIdException(exc);
                 moduleLstId = -1;
             }
 
@@ -326,7 +328,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
                         }
                         catch (Exception exc)
                         {
-                            Logger.Error(exc);
+                            Logger.ControlBarControllerParsePageIdException(exc);
                             pageId = -1;
                         }
 
@@ -345,7 +347,7 @@ public class ControlBarController(IBusinessControllerProvider businessController
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ControlBarControllerAddModuleException(ex);
             }
         }
 

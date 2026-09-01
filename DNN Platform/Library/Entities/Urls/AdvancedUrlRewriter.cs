@@ -29,6 +29,7 @@ namespace DotNetNuke.Entities.Urls
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Framework;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.EventQueue;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -701,6 +702,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     ps = (PortalSettings)context.Items["PortalSettings"];
                                     context.Items.Remove("PortalSettings"); // nix it from the context
+                                    DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", Null.NullInteger);
                                 }
                             }
 
@@ -776,6 +778,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 // re-add the context items portal settings back in
                                 context.Items.Add("PortalSettings", ps);
+                                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", ps.PortalId);
                             }
 
                             if (redirect)
@@ -1051,9 +1054,11 @@ namespace DotNetNuke.Entities.Urls
                                     if (context != null)
                                     {
                                         context.Items.Add("PortalSettings", portalSettings);
+                                        DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", portalSettings.PortalId);
                                         result.Reason = RedirectReason.File_Url;
                                         string fileUrl = Globals.LinkClick(tab.Url, tab.TabID, -1);
                                         context.Items.Remove("PortalSettings");
+                                        DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", Null.NullInteger);
 
                                         // take back out again, because it will be done further downstream
                                         // do a check to make sure we're not repeating the Url again, because the tabid is set, but we don't want to touch
@@ -2606,6 +2611,7 @@ namespace DotNetNuke.Entities.Urls
                             if (context != null && portalSettings != null && !context.Items.Contains("PortalSettings"))
                             {
                                 context.Items.Add("PortalSettings", portalSettings);
+                                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", portalSettings.PortalId);
 
                                 // load PortalSettings and HostSettings dictionaries into current context
                                 // specifically for use in DotNetNuke.Web.Client, which can't reference DotNetNuke.dll to get settings the normal way

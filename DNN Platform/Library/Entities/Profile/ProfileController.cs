@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Profile
     using DotNetNuke.Services.FileSystem;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The ProfileController class provides Business Layer methods for profiles and
@@ -31,7 +32,7 @@ namespace DotNetNuke.Entities.Profile
     /// </summary>
     public partial class ProfileController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProfileController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ProfileController>();
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private static readonly ProfileProvider ProfileProvider = ProfileProvider.Instance();
         private static int orderCounter;
@@ -630,7 +631,7 @@ namespace DotNetNuke.Entities.Profile
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ProfileControllerCreateThumbnailsException(ex);
                 }
             }
 
@@ -755,7 +756,7 @@ namespace DotNetNuke.Entities.Profile
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ProfileControllerFillPropertyDefinitionInfoException(ex);
             }
             finally
             {
@@ -767,8 +768,6 @@ namespace DotNetNuke.Entities.Profile
 
         private static ProfilePropertyDefinition FillPropertyDefinitionInfo(IDataReader dr, bool checkForOpenDataReader)
         {
-            ProfilePropertyDefinition definition;
-
             // read datareader
             var canContinue = true;
             if (checkForOpenDataReader)
@@ -783,7 +782,7 @@ namespace DotNetNuke.Entities.Profile
 
             var portalId = 0;
             portalId = Convert.ToInt32(Null.SetNull(dr["PortalId"], portalId), CultureInfo.InvariantCulture);
-            definition = new ProfilePropertyDefinition(portalId);
+            var definition = new ProfilePropertyDefinition(portalId);
             definition.PropertyDefinitionId = Convert.ToInt32(Null.SetNull(dr["PropertyDefinitionId"], definition.PropertyDefinitionId), CultureInfo.InvariantCulture);
             definition.ModuleDefId = Convert.ToInt32(Null.SetNull(dr["ModuleDefId"], definition.ModuleDefId), CultureInfo.InvariantCulture);
             definition.DataType = Convert.ToInt32(Null.SetNull(dr["DataType"], definition.DataType), CultureInfo.InvariantCulture);
