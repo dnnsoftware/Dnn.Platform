@@ -1,6 +1,6 @@
 {
   "name": "task-scheduler",
-  "version": "10.4.0",
+  "version": "10.3.4",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -9,7 +9,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.4.0",
+    "@dnnsoftware/dnn-react-common": "10.3.4",
     "@rsbuild/core": "^2.1.10",
     "@rsbuild/plugin-less": "^2.0.1",
     "@rsbuild/plugin-react": "^2.1.0",
