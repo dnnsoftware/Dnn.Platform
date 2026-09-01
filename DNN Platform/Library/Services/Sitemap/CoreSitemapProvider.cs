@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Sitemap
         /// <param name="localizedTabs">The localized versions of the page.</param>
         /// <param name="ps">The current portal settings.</param>
         /// <param name="now">The date and time used to evaluate page publication windows.</param>
-        /// <returns>The eligible alternate URLs.</returns>
+        /// <returns>The eligible alternate URLs, including the default and x-default URLs when appropriate.</returns>
         internal List<AlternateUrl> GetAlternateUrls(
             TabInfo defaultLanguageTab,
             IEnumerable<TabInfo> localizedTabs,
@@ -177,6 +177,11 @@ namespace DotNetNuke.Services.Sitemap
                 {
                     Url = defaultUrl,
                     Language = defaultLanguageTab.CultureCode,
+                });
+                alternates.Add(new AlternateUrl
+                {
+                    Url = defaultUrl,
+                    Language = "x-default",
                 });
             }
 

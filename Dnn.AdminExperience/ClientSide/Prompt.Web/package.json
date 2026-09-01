@@ -25,7 +25,7 @@
     "eslint-plugin-react": "7.37.5",
     "globals": "^17.6.0",
     "jest": "^30.4.2",
-    "less": "4.6.6",
+    "less": "4.8.1",
     "localization": "^1.0.2",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
