@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<LangVersion>latest</LangVersion>
+		<Deterministic>true</Deterministic>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<ToolCommandName>dnn-bulkinstall</ToolCommandName>
+		<PackageId>DotNetNuke.BulkInstall</PackageId>
+		<PackageDescription>A tool for deploying extensions to a DNN Platform website.</PackageDescription>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackAsTool>true</PackAsTool>
+		<DocumentationFile>bin/$(Configuration)/DotNetNuke.BulkInstall.DeployClient.xml</DocumentationFile>
+		<NoWarn>$(NoWarn),1573,1591,1712</NoWarn>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Using Include="System" />
+		<Using Include="System.Collections.Generic" />
+		<Using Include="System.IO" />
+		<Using Include="System.Linq" />
+		<Using Include="System.Net.Http" />
+		<Using Include="System.Threading" />
+		<Using Include="System.Threading.Tasks" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="IsCI" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" VersionOverride ="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride ="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride ="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" VersionOverride="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="10.0.3" />
+		<PackageReference Include="Spectre.Console" />
+		<PackageReference Include="Spectre.Console.Analyzer">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Spectre.Console.Cli" />
+		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" />
+		<PackageReference Include="System.IO.Abstractions" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\..\SolutionInfo.cs" Link="SolutionInfo.cs" />
+    <AdditionalFiles Include="..\..\stylecop.json" Link="stylecop.json" />
+    <None Include="README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DotNetNuke.BulkInstall.Encryption\DotNetNuke.BulkInstall.Encryption.csproj" />
+	</ItemGroup>
+
+</Project>

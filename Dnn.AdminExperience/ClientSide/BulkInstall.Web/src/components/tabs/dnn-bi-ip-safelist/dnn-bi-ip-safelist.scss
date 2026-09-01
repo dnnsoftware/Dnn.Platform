@@ -1,0 +1,87 @@
+:host {
+  display: block;
+
+  /* Grid layout */
+  .row {
+    display: block;
+    margin: 0;
+  }
+
+  .col {
+    max-width: 100%;
+    padding: 1em 0;
+  }
+
+  /* Panel styling */
+  .panel {
+    border: 1px solid var(--dnn-color-neutral, #ededee);
+    border-radius: 0.5em;
+  }
+
+  .panel-heading {
+    padding: 0.3em 0.5em;
+    border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
+    background-color: var(--dnn-color-neutral, #ededee);
+    display: flex;
+
+    dnn-button {
+      margin-left: auto;
+    }
+  }
+
+  .panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  label {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+  }
+
+  .panel-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 0.8em;
+  }
+
+  .controls-row .col {
+    padding-top: 0.2em;
+  }
+
+  dnn-button {
+    width: fit-content;
+  }
+
+  /* Table styling */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.3em 0.5em;
+    text-align: left;
+    border: 1px solid var(--dnn-color-neutral, #ededee);
+  }
+
+  .table th {
+    background-color: var(--dnn-color-neutral-dark, #999999);
+    color: var(--dnn-color-neutral, #ededee);
+  }
+
+  form.create-ip {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    h4 {
+      margin: 0;
+      text-align: center;
+    }
+  }
+}

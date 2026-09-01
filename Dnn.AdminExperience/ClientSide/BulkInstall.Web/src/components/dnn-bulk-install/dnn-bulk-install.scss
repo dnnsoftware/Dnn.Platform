@@ -1,0 +1,25 @@
+:host {
+  display: block;
+}
+
+.container {
+  display: flex;
+  margin: 0 auto;
+  padding: 2rem 0;
+  width: 100%;
+  max-width: 1280px;
+
+  dnn-tabs {
+    --color-background: var(--dnn-color-neutral, #ededee);
+    --color-visible: var(--dnn-color-tertiary-light, #1aaee3);
+    --color-visible-text: var(--dnn-color-tertiary-contrast, #ffffff);
+    --color-text: var(--dnn-color-neutral-contrast, #000000);
+
+    width: 100%;
+
+    .tab-content {
+      padding: 1rem;
+      background-color: var(--dnn-color-background, white);
+    }
+  }
+}
