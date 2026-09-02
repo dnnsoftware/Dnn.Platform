@@ -8,13 +8,15 @@
     <PackageVersion Include="AngleSharp.Css" Version="1.0.2" />
     <PackageVersion Include="BouncyCastle.Cryptography" Version="2.7.0" />
     <PackageVersion Include="Cake.BuildSystems.Module" Version="9.0.0" />
-    <PackageVersion Include="Cake.FileHelpers" Version="7.0.0" />
-    <PackageVersion Include="Cake.Frosting" Version="6.1.0" />
+    <PackageVersion Include="Cake.FileHelpers" Version="9.0.0" />
+    <PackageVersion Include="Cake.Frosting" Version="6.2.0" />
     <PackageVersion Include="Cake.Frosting.Git" Version="5.0.1" />
-    <PackageVersion Include="Cake.Frosting.Issues.MsBuild" Version="5.9.1" />
-    <PackageVersion Include="Cake.Frosting.Issues.PullRequests.GitHubActions" Version="5.9.1" />
-    <PackageVersion Include="Cake.Issues" Version="5.9.1" />
-    <PackageVersion Include="Cake.Json" Version="7.0.1" />
+    <PackageVersion Include="Cake.Frosting.Issues.BuildServer.GitHubActions" Version="6.0.0" />
+    <PackageVersion Include="Cake.Frosting.Issues.MsBuild" Version="6.0.0" />
+    <PackageVersion Include="Cake.Frosting.Issues.PullRequests" Version="6.0.0" />
+    <PackageVersion Include="Cake.Issues" Version="6.0.0" />
+    <PackageVersion Include="Cake.Issues.BuildServer" Version="6.0.0" />
+    <PackageVersion Include="Cake.Json" Version="11.0.0" />
     <PackageVersion Include="Cake.XdtTransform" Version="2.0.0" />
     <PackageVersion Include="coverlet.collector" Version="10.0.1" />
     <PackageVersion Include="Dnn.CakeUtils" Version="2.1.4" />
@@ -60,8 +62,6 @@
     <PackageVersion Include="Moq" Version="4.20.72" />
     <PackageVersion Include="MimeKit" Version="4.17.0" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageVersion Include="NuGet.Packaging" Version="7.3.1" />
-    <PackageVersion Include="NuGet.Protocol" Version="7.3.1" />
     <PackageVersion Include="NUnit" Version="4.6.1" />
     <PackageVersion Include="NUnit.Analyzers" Version="4.14.0" />
     <PackageVersion Include="NUnit3TestAdapter" Version="6.3.0" />
@@ -79,11 +79,11 @@
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
     <PackageVersion Include="System.Collections.Immutable" Version="10.0.11" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
-    <PackageVersion Include="Spectre.Console" Version="0.54.0" />
+    <PackageVersion Include="Spectre.Console" Version="0.55.2" />
     <PackageVersion Include="Spectre.Console.Analyzer" Version="1.0.0" />
-    <PackageVersion Include="Spectre.Console.Cli" Version="0.53.1" />
+    <PackageVersion Include="Spectre.Console.Cli" Version="0.55.0" />
     <PackageVersion Include="Spectre.Console.Registrars.Microsoft-Di" Version="0.6.0" />
-    <PackageVersion Include="Spectre.Console.Testing" Version="0.54.0" />
+    <PackageVersion Include="Spectre.Console.Testing" Version="0.55.2" />
     <PackageVersion Include="System.IO.Abstractions" Version="22.2.0" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
     <PackageVersion Include="TestStack.Dossier" Version="4.0.0" />

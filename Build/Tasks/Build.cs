@@ -11,13 +11,12 @@ namespace DotNetNuke.Build.Tasks
     using Cake.Common.Build.AzurePipelines.Data;
     using Cake.Common.IO;
     using Cake.Common.Tools.MSBuild;
-    using Cake.Core;
     using Cake.Core.IO;
     using Cake.Frosting;
     using Cake.Issues;
+    using Cake.Issues.BuildServer;
+    using Cake.Issues.BuildServer.GitHubActions;
     using Cake.Issues.MsBuild;
-    using Cake.Issues.PullRequests;
-    using Cake.Issues.PullRequests.GitHubActions;
 
     using DotNetNuke.Build;
 
@@ -99,13 +98,7 @@ namespace DotNetNuke.Build.Tasks
 
         private static void ReportIssuesToGitHubActions(Context context, IEnumerable<MsBuildIssuesProvider> issueProviders)
         {
-            foreach (var issueProvider in issueProviders)
-            {
-                context.ReportIssuesToPullRequest(
-                    issueProvider,
-                    context.GitHubActionsBuilds(),
-                    context.RootDir);
-            }
+            context.ReportIssuesToBuildServer(issueProviders, context.GitHubActionsBuilds(), context.RootDir);
         }
     }
 }
