@@ -54,7 +54,7 @@
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" />
     <PackageVersion Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
-    <PackageVersion Include="Microsoft.SqlServer.SqlManagementObjects" Version="181.12.0" />
+    <PackageVersion Include="Microsoft.SqlServer.SqlManagementObjects" Version="181.36.0" />
     <PackageVersion Include="Microsoft.Web.Administration" Version="11.1.0" />
     <PackageVersion Include="Microsoft.Web.Infrastructure" Version="2.0.0" />
     <PackageVersion Include="Moq" Version="4.20.72" />
