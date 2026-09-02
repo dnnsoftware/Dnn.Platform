@@ -4,7 +4,6 @@
     <PackageVersion Update="Microsoft.Bcl.AsyncInterfaces" Version="10.0.11" />
     <PackageVersion Update="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageVersion Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-    <PackageVersion Update="Microsoft.Identity.Client" Version="4.83.3" />
     <PackageVersion Update="Microsoft.IdentityModel.JsonWebTokens" Version="8.17.0" />
     <PackageVersion Update="System.Text.Json" Version="10.0.11" />
   </ItemGroup>
