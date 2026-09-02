@@ -35,7 +35,7 @@
     <PackageVersion Include="Microsoft.AspNet.WebHelpers" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages.WebData" Version="3.3.0" />
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="8.0.0" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.11" />
     <!-- NOTE: this version also needs to be managed in DotNetNuke.Internal.SourceGenerators.csproj -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="4.1.0" />
