@@ -1,8 +1,5 @@
 <Project>
   <Import Project="$(MSBuildThisFileDirectory)Directory.Packages.props" />
   <ItemGroup>
-    <PackageVersion Update="Microsoft.Extensions.DependencyInjection" Version="10.0.0" />
-    <PackageVersion Update="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
-    <PackageVersion Update="System.Text.Json" Version="10.0.11" />
   </ItemGroup>
 </Project>

@@ -31,11 +31,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="IsCI" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" VersionOverride ="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" VersionOverride ="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" VersionOverride ="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Http" VersionOverride="10.0.3" />
-    <PackageReference Include="Microsoft.Extensions.Logging" VersionOverride="10.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
 		<PackageReference Include="Spectre.Console" />
 		<PackageReference Include="Spectre.Console.Analyzer">
 			<PrivateAssets>all</PrivateAssets>
