@@ -45,30 +45,30 @@
   </ItemGroup>
 
   <Import Project="..\..\DNN_Platform.build" />
-  <Target Name="CopyBin" BeforeTargets="Build">
-    <Copy SourceFiles="bin\net48\DotNetNuke.Log4Net.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsitePath)\bin" />
-    <Copy SourceFiles="bin\net48\DotNetNuke.Instrumentation.pdb" DestinationFolder="$(WebsitePath)\bin" />
-    <Copy SourceFiles="bin\net48\DotNetNuke.Instrumentation.xml" DestinationFolder="$(WebsitePath)\bin" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Configuration.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Configuration.Binder.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Configuration.FileExtensions.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Configuration.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.DependencyModel.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.FileProviders.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.FileProviders.Physical.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Logging.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Options.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Microsoft.Extensions.Primitives.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Serilog.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Serilog.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Serilog.Settings.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\Serilog.Sinks.File.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\System.Diagnostics.DiagnosticSource.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\System.Text.Encodings.Web.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\System.Text.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
-    <Copy SourceFiles="bin\net48\System.Threading.Channels.dll" DestinationFolder="$(WebsitePath)\bin\" />
+  <Target Name="CopyBin" BeforeTargets="Build" Condition="'$(TargetFramework)' == 'net48'">
+    <Copy SourceFiles="bin\$(TargetFramework)\DotNetNuke.Log4Net.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\DotNetNuke.Instrumentation.dll" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="bin\$(TargetFramework)\DotNetNuke.Instrumentation.pdb" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="bin\$(TargetFramework)\DotNetNuke.Instrumentation.xml" DestinationFolder="$(WebsitePath)\bin" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Configuration.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Configuration.Binder.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Configuration.FileExtensions.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Configuration.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.DependencyModel.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.FileProviders.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.FileProviders.Physical.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Logging.Abstractions.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Options.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Microsoft.Extensions.Primitives.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Serilog.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Serilog.Extensions.Logging.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Serilog.Settings.Configuration.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\Serilog.Sinks.File.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\System.Diagnostics.DiagnosticSource.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\System.Text.Encodings.Web.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\System.Text.Json.dll" DestinationFolder="$(WebsitePath)\bin\" />
+    <Copy SourceFiles="bin\$(TargetFramework)\System.Threading.Channels.dll" DestinationFolder="$(WebsitePath)\bin\" />
   </Target>
 </Project>
