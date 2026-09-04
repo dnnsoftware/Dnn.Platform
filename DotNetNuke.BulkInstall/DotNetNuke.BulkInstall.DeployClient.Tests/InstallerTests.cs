@@ -10,16 +10,18 @@ using System.Text.Json;
 
 using DotNetNuke.BulkInstall.DeployClient;
 
+using NUnit.Framework;
+
+[TestFixture]
 public class InstallerTests
 {
-    public static TheoryData<bool, string> ApiData => new()
-    {
-        { true, "/DesktopModules/PolyDeploy/API/Remote/" },
-        { false, "/DesktopModules/BulkInstall/API/Remote/" },
-    };
+    public static IEnumerable<TestCaseData<bool, string>> ApiData =>
+    [
+        new(true, "/DesktopModules/PolyDeploy/API/Remote/"),
+        new(false, "/DesktopModules/BulkInstall/API/Remote/"),
+    ];
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task StartSessionAsync_CallsCreateSessionApi(bool legacyApi, string baseUri)
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -46,8 +48,7 @@ public class InstallerTests
         sessionId.ShouldBe(expectedSessionId);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task StartSessionAsync_CallsSessionPostApi_NotFound_ThrowsHttpRequestException(bool legacyApi, string baseUri)
     {
         var targetUri = new Uri("https://bulkinstall.example.com/");
@@ -64,7 +65,7 @@ public class InstallerTests
         exception.InnerException.ShouldBeAssignableTo<HttpRequestException>();
     }
 
-    [Fact]
+    [Test]
     public async Task StartSessionAsync_AllowUntrustedCertificates_UsesUntrustedClientForHttps()
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -85,7 +86,7 @@ public class InstallerTests
         secureRequest.ShouldHaveBearerAuth(options.ApiKey);
     }
 
-    [Fact]
+    [Test]
     public async Task StartSessionAsync_AllowUntrustedCertificates_DoesNotUseUntrustedClientForHttp()
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -106,8 +107,7 @@ public class InstallerTests
         secureHandler.CallCount.ShouldBe(0);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectSessionId(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -137,11 +137,10 @@ public class InstallerTests
         var innerContent = formContent.ShouldHaveSingleItem();
         var disposition = innerContent.Headers.ContentDisposition.ShouldNotBeNull();
         disposition.FileName.ShouldBe("Jamestown_install_5.5.7.zip");
-        (await innerContent.ReadAsStringAsync(TestContext.Current.CancellationToken)).ShouldBe("XYZ");
+        (await innerContent.ReadAsStringAsync()).ShouldBe("XYZ");
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task UploadPackageAsync_CallsAddPackagesPostApiUsesCorrectFileName(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -162,8 +161,7 @@ public class InstallerTests
         disposition.FileName.ShouldBe("Jamestown_install_5.5.7.zip");
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task UploadPackageAsync_WhenApiErrors_ThrowWrappedException(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -187,8 +185,7 @@ public class InstallerTests
         exception.Message.ShouldBe("An Error Occurred While Uploading the Packages");
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task InstallPackagesAsync_WhenAPIErrors_ThrowsWrappedException(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -205,8 +202,7 @@ public class InstallerTests
         exception.Message.ShouldBe("An Error Occurred While Installing the Packages");
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task InstallPackagesAsync_DoesGetInstall(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -232,8 +228,7 @@ public class InstallerTests
         }
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task GetSessionAsync_DeserializesInProgressResponse(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -299,8 +294,7 @@ public class InstallerTests
         sessionResponse.CanInstall.ShouldBeTrue();
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task GetSessionAsync_TimeoutResponse_Exception(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -319,8 +313,7 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(3);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task GetSessionAsync_GoodResponseAfterNotFound_Succeeds(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -339,8 +332,7 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(3);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task GetSessionAsync_GoodResponseAfterHttpException_Succeeds(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -359,8 +351,7 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(2);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task UploadPackageAsync_DoesNotRetryAfterFailure(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -386,8 +377,7 @@ public class InstallerTests
         handler.Requests.Count.ShouldBe(1);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task UploadPackageAsync_TracksUploadProgress(bool legacyApi, string baseUri)
     {
         var sessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);
@@ -417,8 +407,7 @@ public class InstallerTests
         progressResults.Count.ShouldBeGreaterThan(1);
     }
 
-    [Theory]
-    [MemberData(nameof(ApiData))]
+    [TestCaseSource(nameof(ApiData))]
     public async Task StartSessionAsync_SetsUserAgentHeader(bool legacyApi, string baseUri)
     {
         var expectedSessionId = Guid.NewGuid().ToString().Replace("-", string.Empty);

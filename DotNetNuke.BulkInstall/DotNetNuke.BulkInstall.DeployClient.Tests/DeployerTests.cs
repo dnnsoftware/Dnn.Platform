@@ -7,9 +7,12 @@ using System.Text;
 
 using DotNetNuke.BulkInstall.DeployClient;
 
+using NUnit.Framework;
+
+[TestFixture]
 public class DeployerTests
 {
-    [Fact]
+    [Test]
     public async Task StartAsync_WelcomesUsers()
     {
         var renderer = A.Fake<IRenderer>();
@@ -21,7 +24,7 @@ public class DeployerTests
         A.CallTo(() => renderer.Welcome(A.Dummy<LogLevel>())).MustHaveHappened();
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_GivenRenderer_MustRenderFiles()
     {
         var renderer = A.Fake<IRenderer>();
@@ -36,7 +39,7 @@ public class DeployerTests
         A.CallTo(() => renderer.RenderListOfFiles(A.Dummy<LogLevel>(), Array.Empty<string>())).MustHaveHappened();
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_GivenPackageFiles_MustRenderFiles()
     {
         var actualFiles = new List<string>();
@@ -54,7 +57,7 @@ public class DeployerTests
         actualFiles.ShouldBe(new[] { "Package 1.zip", "Another Package.zip" }, ignoreOrder: true);
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_CallsGetSessionApi()
     {
         var installer = A.Fake<IInstaller>();
@@ -66,7 +69,7 @@ public class DeployerTests
         A.CallTo(() => installer.StartSessionAsync(A<DeployInput>._)).MustHaveHappened();
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_EncryptsPackages()
     {
         var options = A.Dummy<DeployInput>();
@@ -102,7 +105,7 @@ public class DeployerTests
             });
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_RendersFileUploadStatus()
     {
         IEnumerable<UploadPackageResult>? uploads = null;
@@ -125,7 +128,7 @@ public class DeployerTests
         result.PackageName.ShouldBe("Install.zip");
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_StartsInstallation()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -144,7 +147,7 @@ public class DeployerTests
             .Then(A.CallTo(() => installer.InstallPackagesAsync(options, sessionId)).MustHaveHappenedOnceExactly());
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_DoesNotWaitForInstallationResponse()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -162,7 +165,7 @@ public class DeployerTests
         await Should.NotThrowAsync(async () => await deployer.StartAsync(options));
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_CallsGetSessionUntilInstallationIsComplete()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -189,7 +192,7 @@ public class DeployerTests
         A.CallTo(() => installer.GetSessionAsync(options, sessionId)).MustHaveHappened(4, Times.Exactly);
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_RendersSessionOverview()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -219,7 +222,7 @@ public class DeployerTests
         package2.Attempted.ShouldBeFalse();
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_RendersInstallationStatus_OnCompletion()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -244,7 +247,7 @@ public class DeployerTests
         fakeRenderer.InstallStatus.Count.ShouldBe(2);
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_InstallerExceptionThrown_RendersMessage()
     {
         var options = A.Dummy<DeployInput>();
@@ -265,7 +268,7 @@ public class DeployerTests
         fakeRenderer.ErrorException.ShouldBe(innerException);
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_InstallCompleteWithoutFailure_ExitsWithFailure()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -289,7 +292,7 @@ public class DeployerTests
         exitCode.ShouldBe(ExitCode.PackageError);
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_InstallCompleteWithFailure_ExitsSuccessfully()
     {
         var sessionId = Guid.NewGuid().ToString();
@@ -313,7 +316,7 @@ public class DeployerTests
         exitCode.ShouldBe(ExitCode.Success);
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_ExceptionThrown_RendersMessage()
     {
         var options = A.Dummy<DeployInput>();
@@ -333,7 +336,7 @@ public class DeployerTests
         fakeRenderer.ErrorException.ShouldBeOfType<HttpRequestException>();
     }
 
-    [Fact]
+    [Test]
     public async Task StartAsync_PackagesDirectoryPath_UsedToGetPackageFiles()
     {
         var options = TestHelpers.CreateDeployInput(packagesDirectoryPath: "path/to/packages");

@@ -21,7 +21,6 @@
 		<Using Include="System.Threading.Tasks" />
 		<Using Include="FakeItEasy" />
 		<Using Include="Shouldly" />
-		<Using Include="Xunit" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -38,6 +37,13 @@
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="Spectre.Console.Testing" VersionOverride="0.55.2" />
+    <PackageReference Include="NUnit" />
+    <PackageReference Include="NUnit.Analyzers">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="NUnit3TestAdapter" />
 		<PackageReference Include="coverlet.collector">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
