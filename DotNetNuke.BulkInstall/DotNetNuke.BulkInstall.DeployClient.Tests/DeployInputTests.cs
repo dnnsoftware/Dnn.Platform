@@ -7,16 +7,18 @@ using System.IO.Abstractions;
 
 using DotNetNuke.BulkInstall.DeployClient;
 
+using NUnit.Framework;
+
 using Spectre.Console;
 using Spectre.Console.Cli;
 
+[TestFixture]
 public class DeployInputTests
 {
-    [InlineData("", false)]
-    [InlineData("/test", false)]
-    [InlineData("https://test.com", true)]
-    [InlineData("http://test.com", true)]
-    [Theory]
+    [TestCase("", false)]
+    [TestCase("/test", false)]
+    [TestCase("https://test.com", true)]
+    [TestCase("http://test.com", true)]
     public void Validate_TargetUri(string targetUri, bool isSuccess)
     {
         var input = TestHelpers.CreateDeployInput(targetUri);
@@ -27,11 +29,10 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--target-uri must be a valid URI");
     }
 
-    [InlineData("", false)]
-    [InlineData(" ", false)]
-    [InlineData("\t", false)]
-    [InlineData("123-654", true)]
-    [Theory]
+    [TestCase("", false)]
+    [TestCase(" ", false)]
+    [TestCase("\t", false)]
+    [TestCase("123-654", true)]
     public void Validate_ApiKey(string apiKey, bool isSuccess)
     {
         var input = TestHelpers.CreateDeployInput(apiKey: apiKey);
@@ -42,11 +43,10 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--api-key must be supplied");
     }
 
-    [InlineData("", false)]
-    [InlineData(" ", false)]
-    [InlineData("\t", false)]
-    [InlineData("123-654", true)]
-    [Theory]
+    [TestCase("", false)]
+    [TestCase(" ", false)]
+    [TestCase("\t", false)]
+    [TestCase("123-654", true)]
     public void Validate_EncryptionKey(string encryptionKey, bool isSuccess)
     {
         var input = TestHelpers.CreateDeployInput(encryptionKey: encryptionKey);
@@ -57,10 +57,9 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--encryption-key must be supplied");
     }
 
-    [InlineData(-1, false)]
-    [InlineData(0, true)]
-    [InlineData(1, true)]
-    [Theory]
+    [TestCase(-1, false)]
+    [TestCase(0, true)]
+    [TestCase(1, true)]
     public void Validate_InstallationStatusTimeout(int timeout, bool isSuccess)
     {
         var input = TestHelpers.CreateDeployInput(installationStatusTimeout: timeout);
@@ -71,10 +70,9 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--installation-status-timeout must be non-negative");
     }
 
-    [InlineData("", true)]
-    [InlineData("='\'", false)]
-    [InlineData("Dir/Blah", true)]
-    [Theory]
+    [TestCase("", true)]
+    [TestCase("='\'", false)]
+    [TestCase("Dir/Blah", true)]
     public void Validate_PackagesDirectoryPath(string packagesDirectoryPath, bool isSuccess)
     {
         var fileSystem = A.Fake<IFileSystem>();
@@ -90,18 +88,17 @@ public class DeployInputTests
         validate.Message.ShouldBe(isSuccess ? null : "--packages-directory must be a valid path");
     }
 
-    [Fact]
+    [Test]
     public void CanSearchRecursively()
     {
         var input = new DeployInput { Recurse = true };
         input.Recurse.ShouldBeTrue();
     }
 
-    [InlineData(LogLevel.Trace, true)]
-    [InlineData(LogLevel.Error, true)]
-    [InlineData((LogLevel)7, false)]
-    [InlineData((LogLevel)(-1), false)]
-    [Theory]
+    [TestCase(LogLevel.Trace, true)]
+    [TestCase(LogLevel.Error, true)]
+    [TestCase((LogLevel)7, false)]
+    [TestCase((LogLevel)(-1), false)]
     public void Validate_LogLevel(LogLevel logLevel, bool isSuccess)
     {
         var input = TestHelpers.CreateDeployInput(logLevel: logLevel);
