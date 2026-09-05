@@ -599,6 +599,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@date-fns/tz@npm:^1.4.1":
+  version: 1.5.0
+  resolution: "@date-fns/tz@npm:1.5.0"
+  checksum: 10/a629879b1f307429e0a00a92dea71e19f63398ba304ee0f58f4d141d50c3058d678c4095b25962f7e5fda508c70502811dd565e58df99e5632dc16097da184a8
+  languageName: node
+  linkType: hard
+
 "@dnncommunity/dnn-elements@npm:^0.29.3":
   version: 0.29.3
   resolution: "@dnncommunity/dnn-elements@npm:0.29.3"
@@ -664,7 +671,7 @@ __metadata:
     react-addons-test-utils: "npm:^15.6.2"
     react-collapse: "npm:^5.1.1"
     react-custom-scrollbars: "npm:^4.2.1"
-    react-day-picker: "npm:^7.4.10"
+    react-day-picker: "npm:^10.0.1"
     react-dom: "npm:^16.14.0"
     react-height: "npm:^3.0.2"
     react-hot-loader: "npm:^4.13.1"
@@ -6906,6 +6913,13 @@ __metadata:
   version: 4.1.0
   resolution: "date-arithmetic@npm:4.1.0"
   checksum: 10/a20dd330206a81e7a638f8a8f076ab5923c4cd2aa85da6efb34314960f86edc1bcc731ee6776443c05cf6c4d0b13103b9f505ef4a518855f8226eb393f2b1dcf
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.1.0":
+  version: 4.4.0
+  resolution: "date-fns@npm:4.4.0"
+  checksum: 10/ae702acea42fb8452abe74f6d133c2360de9a14f00985645684b0df9c12280276649e95b52298a4fd7dabcc3b38799eb111107da99320d1cd94ba1d8a3d1c174
   languageName: node
   linkType: hard
 
@@ -13321,7 +13335,7 @@ __metadata:
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-custom-scrollbars: "npm:4.2.1"
-    react-day-picker: "npm:^7.4.10"
+    react-day-picker: "npm:^10.0.1"
     react-dom: "npm:^16.14.0"
     react-hot-loader: "npm:4.13.1"
     react-test-renderer: "npm:^17.0.2"
@@ -14485,14 +14499,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:^7.4.10":
-  version: 7.4.10
-  resolution: "react-day-picker@npm:7.4.10"
+"react-day-picker@npm:^10.0.1":
+  version: 10.0.1
+  resolution: "react-day-picker@npm:10.0.1"
   dependencies:
-    prop-types: "npm:^15.6.2"
+    "@date-fns/tz": "npm:^1.4.1"
+    date-fns: "npm:^4.1.0"
   peerDependencies:
-    react: ~0.13.x || ~0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 10/6a63aced75dbab630cb0f0317f4f843c5930f768a52922bea0eda09c3856c9a211321d30ccac74fd8891a5285671a8da3a541a04a3056dc66b656d8f8415ce0f
+    "@types/react": ">=16.8.0"
+    react: ">=16.8.0"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 10/fdc1c30c5520b455832c624fd44214b94ec7f6b75d87616746c7c172b338032686b2b1496bccc44cc48383a1d18622295c63d58f092dca6bfd3d6214a0de0859
   languageName: node
   linkType: hard
 

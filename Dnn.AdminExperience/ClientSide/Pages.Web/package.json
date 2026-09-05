@@ -50,7 +50,7 @@
     "promise": "^8.3.0",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
-    "react-day-picker": "^7.4.10",
+    "react-day-picker": "^10.0.1",
     "url-parse": "^1.5.10"
   }
 }
