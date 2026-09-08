@@ -13,6 +13,8 @@ namespace DotNetNuke.Common.Extensions
     /// <summary>Dependency injection extensions for HttpContext.</summary>
     public static class HttpContextDependencyInjectionExtensions
     {
+        private const string ScopeLockName = "GetScope_lock";
+
         /// <summary>Sets the service scope for the http context.</summary>
         /// <param name="httpContext">The http context.</param>
         /// <param name="scope">The service scope.</param>
@@ -40,6 +42,7 @@ namespace DotNetNuke.Common.Extensions
         public static void ClearScope(this HttpContextBase httpContext)
         {
             httpContext.Items.Remove(typeof(IServiceScope));
+            httpContext.Items.Remove(ScopeLockName);
         }
 
         /// <summary>Gets the http context service scope.</summary>
@@ -59,7 +62,6 @@ namespace DotNetNuke.Common.Extensions
                 return scope;
             }
 
-            const string ScopeLockName = "GetScope_lock";
             if (httpContext.Items.Contains(ScopeLockName))
             {
                 // another thread is adding the scope, try again
@@ -78,6 +80,8 @@ namespace DotNetNuke.Common.Extensions
                         httpContext.Items[typeof(IServiceScope)] = scope;
                     }
                 }
+                
+                httpContext.Items.Remove(ScopeLockName);
             }
 
             if (scope is not null)
