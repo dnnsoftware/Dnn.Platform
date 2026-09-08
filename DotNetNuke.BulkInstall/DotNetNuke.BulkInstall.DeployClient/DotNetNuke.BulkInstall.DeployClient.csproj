@@ -30,19 +30,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="IsCI" />
+    <PackageReference Include="IsCI" />
     <PackageReference Include="Microsoft.Extensions.Configuration" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Logging" />
-		<PackageReference Include="Spectre.Console" />
-		<PackageReference Include="Spectre.Console.Analyzer">
+		<PackageReference Include="Spectre.Console" VersionOverride="0.55.2" />
+		<PackageReference Include="Spectre.Console.Analyzer" VersionOverride="1.0.0">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Spectre.Console.Cli" />
-		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" />
+		<PackageReference Include="Spectre.Console.Cli" VersionOverride="0.55.0" />
+		<PackageReference Include="Spectre.Console.Registrars.Microsoft-Di" VersionOverride="0.6.0" />
 		<PackageReference Include="System.IO.Abstractions" />
 	</ItemGroup>
 

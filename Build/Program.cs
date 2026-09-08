@@ -29,10 +29,10 @@ namespace DotNetNuke.Build
                 .UseWorkingDirectory("..")
                 .UseModule<AzurePipelinesModule>()
                 .UseModule<GitHubActionsModule>()
-                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.7.0"))
+                .InstallTool(new Uri("dotnet:?package=GitVersion.Tool&version=6.8.2"))
                 .InstallTool(new Uri("nuget:?package=Microsoft.TestPlatform&version=" + MicrosoftTestPlatformVersion))
                 .InstallTool(new Uri("nuget:?package=NUnit3TestAdapter&version=" + NUnit3TestAdapterVersion))
-                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=7.3.1"))
+                .InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=7.9.0"))
                 .Run(args);
         }
     }
