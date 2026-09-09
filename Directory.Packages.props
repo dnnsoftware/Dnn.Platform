@@ -35,23 +35,23 @@
     <PackageVersion Include="Microsoft.AspNet.WebHelpers" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages.WebData" Version="3.3.0" />
-    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.12" />
     <!-- NOTE: this version also needs to be managed in DotNetNuke.Internal.SourceGenerators.csproj -->
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="5.9.0" />
     <PackageVersion Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform" Version="4.1.0" />
     <PackageVersion Include="Microsoft.Data.SqlClient" Version="7.0.2" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.11" />
-    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.11" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Json" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="10.0.12" />
     <PackageVersion Include="Microsoft.Identity.Client" Version="4.88.0" />
     <PackageVersion Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.22.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
     <PackageVersion Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" />
     <PackageVersion Include="Microsoft.SqlServer.Compact" Version="4.0.8876.1" />
     <PackageVersion Include="Microsoft.SqlServer.SqlManagementObjects" Version="181.36.0" />
@@ -68,7 +68,7 @@
     <PackageVersion Include="Octokit" Version="14.0.0" />
     <PackageVersion Include="PetaPoco.Compiled" Version="6.0.683" />
     <PackageVersion Include="System.Net.Http" Version="4.3.4" />
-    <PackageVersion Include="System.Text.Json" Version="10.0.11" />
+    <PackageVersion Include="System.Text.Json" Version="10.0.12" />
     <PackageVersion Include="YamlDotNet" Version="18.1.0" />
     <PackageVersion Include="Portable.BouncyCastle" Version="1.9.0" />
     <PackageVersion Include="QuickIO.NET" Version="2.6.2" />
@@ -77,7 +77,7 @@
     <PackageVersion Include="Serilog.Sinks.File" Version="7.0.0" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="10.0.1" />
     <PackageVersion Include="SharpZipLib" Version="1.4.2" />
-    <PackageVersion Include="System.Collections.Immutable" Version="10.0.11" />
+    <PackageVersion Include="System.Collections.Immutable" Version="10.0.12" />
     <PackageVersion Include="Shouldly" Version="4.3.0" />
     <PackageVersion Include="Spectre.Console" Version="0.54.0" />
     <PackageVersion Include="Spectre.Console.Analyzer" Version="1.0.0" />
@@ -95,7 +95,7 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.400" />
+    <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401" />
     <GlobalPackageReference Include="MSBuildTasks" Version="1.5.0.235" />
     <GlobalPackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556" />
   </ItemGroup>
