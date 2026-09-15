@@ -1103,7 +1103,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
 
                 // register any assemblies in the bin folder that are not yet registered
-                CheckAssembliesForRegistration();
+                EnsureAssembliesRegistered();
             }
             else
             {
@@ -1661,7 +1661,7 @@ namespace DotNetNuke.Services.Upgrade
             DataCache.ClearHostCache(true);
 
             // register any assemblies in the bin folder that are not yet registered
-            CheckAssembliesForRegistration();
+            EnsureAssembliesRegistered();
         }
 
         /// <summary>Gets a URL for an image which indicates the latest known version of DNN.</summary>
@@ -2793,7 +2793,7 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>Scans the bin folder and registers every assembly in the database, ignoring whether it is already registered.</summary>
-        private static void CheckAssembliesForRegistration()
+        private static void EnsureAssembliesRegistered()
         {
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
 
