@@ -32,7 +32,7 @@
     "react-tabs": "3.2.3",
     "react-tooltip": "^6.0.8",
     "react-widgets": "^5.8.6",
-    "redux": "4.2.1",
+    "redux": "5.0.1",
     "redux-devtools": "3.7.0",
     "redux-devtools-dock-monitor": "1.2.0",
     "redux-devtools-log-monitor": "2.1.0",
