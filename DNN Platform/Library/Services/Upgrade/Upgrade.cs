@@ -1101,6 +1101,9 @@ namespace DotNetNuke.Services.Upgrade
                         }
                     }
                 }
+
+                // register any assemblies in the bin folder that are not yet registered
+                CheckAssembliesForRegistration();
             }
             else
             {
@@ -1656,6 +1659,9 @@ namespace DotNetNuke.Services.Upgrade
             UpgradeApplication();
 
             DataCache.ClearHostCache(true);
+
+            // register any assemblies in the bin folder that are not yet registered
+            CheckAssembliesForRegistration();
         }
 
         /// <summary>Gets a URL for an image which indicates the latest known version of DNN.</summary>
@@ -2784,6 +2790,46 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return true;
+        }
+
+        /// <summary>Scans the bin folder and registers every assembly in the database, ignoring whether it is already registered.</summary>
+        private static void CheckAssembliesForRegistration()
+        {
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
+
+            var binFolder = Path.Combine(Globals.ApplicationMapPath, "bin");
+            if (!Directory.Exists(binFolder))
+            {
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
+                return;
+            }
+
+            foreach (var strAssemblyPath in Directory.GetFiles(binFolder, "*.dll"))
+            {
+                Version version;
+                try
+                {
+                    version = System.Reflection.AssemblyName.GetAssemblyName(strAssemblyPath).Version;
+                }
+                catch (Exception)
+                {
+                    // Skip any file that isn't a readable managed assembly.
+                    continue;
+                }
+
+                if (version == null)
+                {
+                    continue;
+                }
+
+                var fileName = Path.GetFileName(strAssemblyPath);
+
+                // Register the assembly regardless of whether it is already registered (ignore the return code).
+                DataProvider.Instance().RegisterAssembly(Null.NullInteger, fileName, version.ToString(3));
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RegisterAssembly:" + fileName + " - " + version.ToString(3));
+            }
+
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
         }
     }
 }
