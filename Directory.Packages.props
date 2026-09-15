@@ -87,7 +87,7 @@
     <PackageVersion Include="System.IO.Abstractions" Version="22.2.0" />
     <PackageVersion Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
     <PackageVersion Include="TestStack.Dossier" Version="4.0.0" />
-    <PackageVersion Include="Verify.NUnit" Version="33.0.2" />
+    <PackageVersion Include="Verify.NUnit" Version="32.0.0" />
     <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />
     <PackageVersion Include="WebFormsMvp" Version="1.4.5" />
     <PackageVersion Include="WindowsAzure.Storage" Version="9.3.3" />
