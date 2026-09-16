@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -119,7 +118,7 @@ public class LocalUpgradeService : ILocalUpgradeService
             Version mainAssemblyVersion = null;
             if (mainAssemblyEntry is not null)
             {
-                mainAssemblyVersion = await ReadZippedAssemblyVersion(mainAssemblyEntry, cancellationToken);
+                mainAssemblyVersion = await AssemblyVersions.GetAssemblyFileVersion(mainAssemblyEntry, cancellationToken);
             }
 
             var upgradeInfo = archive.FileEntries()
@@ -222,32 +221,6 @@ public class LocalUpgradeService : ILocalUpgradeService
         this.SetAppOnline();
     }
 
-    private static async Task<Version> ReadZippedAssemblyVersion(ZipArchiveEntry assemblyEntry, CancellationToken cancellationToken)
-    {
-        var tempPath = Path.Combine(Globals.InstallMapPath, "Temp", Path.GetFileNameWithoutExtension(Path.GetRandomFileName()));
-        var tempAssemblyPath = Path.Combine(tempPath, assemblyEntry.Name);
-
-        Directory.CreateDirectory(tempPath);
-        try
-        {
-            using (var tempAssemblyFileStream = File.Create(tempAssemblyPath))
-            using (var assemblyStream = assemblyEntry.Open())
-            {
-                const int DefaultBufferSize = 81920;
-                await assemblyStream.CopyToAsync(
-                    tempAssemblyFileStream,
-                    DefaultBufferSize,
-                    cancellationToken);
-            }
-
-            return AssemblyName.GetAssemblyName(tempAssemblyPath).Version;
-        }
-        finally
-        {
-            Directory.Delete(tempPath, true);
-        }
-    }
-
     private void SetAppOffline()
     {
         var appOfflineFile = Path.Combine(Globals.HostMapPath, "AppOffline", "App_Offline.htm.resources");
@@ -286,7 +259,7 @@ public class LocalUpgradeService : ILocalUpgradeService
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var installFile = new InstallFile(entry, this.Package.InstallerInfo);
-                installFile.SetVersion(await ReadZippedAssemblyVersion(entry, cancellationToken));
+                installFile.SetVersion(await AssemblyVersions.GetAssemblyFileVersion(entry, cancellationToken));
                 this.Files.Add(installFile);
             }
         }

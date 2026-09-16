@@ -2809,7 +2809,7 @@ namespace DotNetNuke.Services.Upgrade
                 Version version;
                 try
                 {
-                    version = System.Reflection.AssemblyName.GetAssemblyName(strAssemblyPath).Version;
+                    version = AssemblyVersions.GetAssemblyFileVersion(strAssemblyPath);
                 }
                 catch (Exception)
                 {
