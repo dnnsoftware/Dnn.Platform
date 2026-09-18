@@ -21,23 +21,23 @@
 		<Using Include="System.Threading.Tasks" />
 		<Using Include="FakeItEasy" />
 		<Using Include="Shouldly" />
-		<Using Include="Xunit" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="FakeItEasy" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
-    <PackageReference Include="Microsoft.Extensions.Logging" />
+		<PackageReference Include="Microsoft.Extensions.Logging" />
 		<PackageReference Include="Microsoft.NET.Test.Sdk" />
 		<PackageReference Include="Shouldly" />
 		<PackageReference Include="Spectre.Console.Testing" />
-		<PackageReference Include="xunit.v3" />
-		<PackageReference Include="xunit.runner.visualstudio">
+		<PackageReference Include="NUnit" />
+		<PackageReference Include="NUnit.Analyzers">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
 		</PackageReference>
+		<PackageReference Include="NUnit3TestAdapter" />
 		<PackageReference Include="coverlet.collector">
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 			<PrivateAssets>all</PrivateAssets>
