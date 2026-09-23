@@ -65,6 +65,13 @@ class ControlFields extends Component {
                         error={props.triedToSave && props.error.source}
                         onSelect={this.onSelect.bind(this, "source")}
                     />
+                
+                    <SingleLineInputWithError
+                        label={Localization.get("AddModuleControl_MvcControl.Label")}
+                        tooltipMessage={Localization.get("AddModuleControl_MvcControl.HelpText")}
+                        style={inputStyle}
+                        value={props.controlBeingEdited.mvcControl}
+                        onChange={props.onChange.bind(this, "mvcControl")} />
                 </GridCell>
                 <GridSystem>
                     <div>

@@ -21,6 +21,19 @@ class More extends Component {
         onChangeField(key, event.target.value);
     }
 
+    onPagePipelineSelected(option) {
+        const {onChangeField} = this.props;
+        onChangeField("pagePipeline", option.value);
+    }
+
+    getPagePipelineOptions() {
+        const options = [];
+        options.push({ value: -1, label: Localization.get("Inherited") });
+        options.push({ value: 0, label: Localization.get("WebForms") });
+        options.push({ value: 1, label: Localization.get("Mvc") });
+        return options;
+    }
+
     onCacheProviderSelected(option) {
         this.props.onChangeField("cacheProvider", option.value);
         if (!this.props.page.cacheProvider && option.value) {
@@ -210,12 +223,33 @@ class More extends Component {
                                         options={this.getWorkflowOptions()}
                                         label={page.workflowId ? this.getWorkflowOptions().find(x => x.value === page.workflowId).label : Localization.get("Workflow")}
                                         value={page.workflowId !== "" && page.workflowId}
-                                        onSelect={this.onWorkflowDropDownChange.bind(this)}                               
+                                        onSelect={this.onWorkflowDropDownChange.bind(this)}
                                         withBorder={true} />}
                             </GridCell>
                         }
                     </GridSystem></>
+
+
                 }
+                <div className="title sectionTitle">
+                    {Localization.get("PipelineSettings")}
+                </div>
+
+                <GridSystem>
+                    <GridCell className="left-column">
+                    <Label
+                                labelType="block"
+                                tooltipMessage={Localization.get("PagePipeline_tooltip") }
+                                label={Localization.get("PagePipeline") } />
+                            <Dropdown options={this.getPagePipelineOptions() }
+                                value={page.pagePipeline}
+                                onSelect={this.onPagePipelineSelected.bind(this) }
+                                withBorder={true} />
+                    </GridCell>
+                    <GridCell className="right-column">
+
+                    </GridCell>
+                </GridSystem>
             </div>
         );
     }

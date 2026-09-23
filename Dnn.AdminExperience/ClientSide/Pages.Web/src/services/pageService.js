@@ -93,6 +93,7 @@ const PageService = function () {
                 page.iconFile = null;
                 page.iconFileLarge = null;
                 page.sitemapPriority = 0.5;
+                page.pagePipeline = "";
                 return page;
             });
     };

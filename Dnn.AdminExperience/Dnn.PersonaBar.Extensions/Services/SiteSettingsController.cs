@@ -24,6 +24,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using Dnn.PersonaBar.SiteSettings.Services.Dto;
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security;
@@ -39,6 +40,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using DotNetNuke.Entities.Tabs.TabVersions;
     using DotNetNuke.Entities.Urls;
     using DotNetNuke.Entities.Users;
+    using DotNetNuke.Framework.MvcPipeline;
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
     using DotNetNuke.Services.Exceptions;
@@ -108,6 +110,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
         private readonly RoleProvider roleProvider = roleProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<RoleProvider>();
         private readonly ITabController tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+        private readonly MvcPipelineSettingsRepository mvcPipelineSettingsRepository = Globals.GetCurrentServiceProvider().GetRequiredService<MvcPipelineSettingsRepository>();
+        private readonly MvcPipelineSettings mvcPipelineSettings = Globals.GetCurrentServiceProvider().GetRequiredService<MvcPipelineSettings>();
 
         /// <summary>Initializes a new instance of the <see cref="SiteSettingsController"/> class.</summary>
         /// <param name="navigationManager">A manager to provide navigation services.</param>
@@ -3162,6 +3166,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         MaxNumberOfVersions = TabVersionSettings.Instance.GetMaxNumberOfVersions(pid),
                         WorkflowEnabled = TabWorkflowSettings.Instance.IsWorkflowEnabled(pid),
                         DefaultTabWorkflowId = TabWorkflowSettings.Instance.GetDefaultTabWorkflowId(pid),
+                        PagePipeline = ((int)this.mvcPipelineSettings.DefaultPagePipeline).ToString(System.Globalization.CultureInfo.InvariantCulture),
                     },
                     Workflows = WorkflowManager.Instance.GetWorkflows(pid).Select(w => new { label = w.WorkflowName, value = w.WorkflowID }).ToList(),
                 });
@@ -3192,6 +3197,9 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleHeaders", request.AllowJsInModuleHeaders.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
+                var pagePipeline = (PagePipeline.PortalRenderingPipeline)Enum.Parse(typeof(PagePipeline.PortalRenderingPipeline), request.PagePipeline, true);
+                this.mvcPipelineSettings.DefaultPagePipeline = pagePipeline;
+                this.mvcPipelineSettingsRepository.SaveSettings(this.mvcPipelineSettings);
                 if (request.AllowedExtensionsWhitelist == this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString())
                 {
                     PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);

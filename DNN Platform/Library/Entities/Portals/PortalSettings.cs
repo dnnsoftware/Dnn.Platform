@@ -9,6 +9,7 @@ namespace DotNetNuke.Entities.Portals
     using System.Linq;
     using System.Web;
 
+    using DotNetNuke.Abstractions.Framework;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;

@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
             controlSrc = controlSrc.Replace('\\', '/');
             moduleControl.ControlSrc = controlSrc;
-
+            moduleControl.MvcControlClass = Util.ReadElement(controlNav, "mvcControlClass");
             moduleControl.IconFile = Util.ReadElement(controlNav, "iconfile");
 
             string controlType = Util.ReadElement(controlNav, "type");

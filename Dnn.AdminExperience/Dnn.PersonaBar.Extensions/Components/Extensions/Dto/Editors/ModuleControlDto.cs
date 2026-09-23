@@ -21,6 +21,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
             this.Key = moduleControl.ControlKey;
             this.Title = moduleControl.ControlTitle;
             this.Source = moduleControl.ControlSrc;
+            this.MvcControl = moduleControl.MvcControlClass;
             this.Type = moduleControl.ControlType;
             this.Order = moduleControl.ViewOrder;
             this.Icon = moduleControl.IconFile;
@@ -43,6 +44,9 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
 
         [JsonProperty("source")]
         public string Source { get; set; }
+
+        [JsonProperty("mvcControl")]
+        public string MvcControl { get; set; }
 
         [JsonProperty("type")]
         public SecurityAccessLevel Type { get; set; }
@@ -71,6 +75,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Dto.Editors
                 ControlKey = this.Key,
                 ControlTitle = this.Title,
                 ControlSrc = this.Source,
+                MvcControlClass = this.MvcControl,
                 ControlType = this.Type,
                 ViewOrder = this.Order,
                 IconFile = this.Icon,
