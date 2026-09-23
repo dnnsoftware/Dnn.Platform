@@ -74,6 +74,7 @@ namespace DotNetNuke.Entities.Users
         public string DisplayFormat { get; set; }
 
         /// <summary>Gets or sets the site (portal) id.</summary>
+        [Obsolete("Deprecated in DotNetNuke 10.4.0. This property does nothing, do not use. Scheduled removal in v12.0.0.")]
         public int PortalId { get; set; }
 
         /// <summary>Gets the number count for all duplicate e-mail addresses in the database.</summary>
@@ -1798,9 +1799,9 @@ namespace DotNetNuke.Entities.Users
 
             // if the httpcontext is null, then use the default minimum length
             var usernameMinLength = Globals.glbUserNameMinLength;
-            if (HttpContext.Current != null)
+            if (PortalSettings.Current != null)
             {
-                usernameMinLength = PortalController.GetPortalSettingAsInteger("Security_UserNameMinLength", this.PortalId, usernameMinLength);
+                usernameMinLength = PortalController.GetPortalSettingAsInteger("Security_UserNameMinLength", PortalSettings.Current.PortalId, usernameMinLength);
             }
 
             return userName.Length >= usernameMinLength &&
@@ -1823,11 +1824,20 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>Update all the users display names.</summary>
-        public void UpdateDisplayNames()
+        [DnnDeprecated(10, 4, 0, "Use overload taking portal ID")]
+        public partial void UpdateDisplayNames()
         {
-            int portalId = GetEffectivePortalId(this.PortalId);
+            var portalId = PortalSettings.Current?.PortalId ?? 0;
+            this.UpdateDisplayNames(portalId);
+        }
 
-            var arrUsers = GetUsers(this.PortalId);
+        /// <summary>Runs <see cref="UserInfo.UpdateDisplayName"/> on all users of the portal.</summary>
+        /// <param name="portalId">The portal ID.</param>
+        public void UpdateDisplayNames(int portalId)
+        {
+            portalId = GetEffectivePortalId(portalId);
+
+            var arrUsers = GetUsers(portalId);
             foreach (UserInfo objUser in arrUsers)
             {
                 objUser.UpdateDisplayName(this.DisplayFormat);

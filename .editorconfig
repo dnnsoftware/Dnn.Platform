@@ -37,6 +37,16 @@ indent_size = 2
 end_of_line = lf
 indent_size = 2
 
+# Verify.SourceGenerators testing library artifacts
+[*.{received,verified}.{cs,txt}]
+charset = utf-8-bom
+end_of_line = lf
+indent_size = unset
+indent_style = unset
+insert_final_newline = false
+tab_width = unset
+trim_trailing_whitespace = false
+
 # Dotnet code style settings:
 [*.{cs,vb}]
 # Sort using and Import directives with System.* appearing first

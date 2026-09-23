@@ -1,0 +1,26 @@
+:host {
+  .pagination {
+    display: flex;
+    margin: 0;
+    padding: 1em;
+    gap: 1em;
+    li {
+      flex: 0 0 fit-content;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      button {
+        border: 1px solid transparent;
+        background: none;
+      }
+      &.ellipsis {
+        color: var(--dnn-color-neutral, #ededee);
+      }
+      &.active {
+        button {
+          border-bottom-color: var(--dnn-color-neutral, #ededee);
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 import { Component, Host, h, State, Element } from '@stencil/core';
-import { IStylesResx } from '../../window.dnn';
+import { DnnWindow, IStylesResx } from '../../types';
 import StylesClient, { IPortalStyles } from '../../clients/styles-client';
 import { DnnColorInfo } from '@dnncommunity/dnn-elements/dist/types/components';
 import ColorNames from './color-names';
@@ -50,8 +50,13 @@ export class DnnStylesModule {
   }
 
   componentWillLoad() {
-    const dnnStyles = window.dnn as unknown as IDnnWrapper;
-    this.resx = dnnStyles.initStyles().utility?.resx?.Styles;
+    const dnn = window.dnn as DnnWindow;
+    const dnnStyles = dnn.initStyles?.();
+    if (dnnStyles == undefined) {
+      throw new Error("dnn.initStyles() is not defined.");
+    }
+
+    this.resx = dnnStyles.utility.resx.Styles;
     const header = document.querySelector("#dnnStylesHeader h3");
     if (header) {
       header.textContent = this.resx.nav_Styles;

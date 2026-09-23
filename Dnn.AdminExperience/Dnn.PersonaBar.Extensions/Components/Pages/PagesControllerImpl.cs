@@ -601,6 +601,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.SavePagePermissions(tab, pageSettings.Permissions);
 
             var tabId = this.tabController.AddTab(tab);
+            PageHeaderTagInfo.SaveTabItems(tabId, pageSettings.PageHeaderTags?.Select(this.ToPageHeaderTagInfo));
 
             this.CreateOrUpdateContentItem(tab);
 
@@ -928,6 +929,7 @@ namespace Dnn.PersonaBar.Pages.Components
             this.SavePagePermissions(tab, pageSettings.Permissions);
 
             this.tabController.UpdateTab(tab);
+            PageHeaderTagInfo.SaveTabItems(tab.TabID, pageSettings.PageHeaderTags?.Select(this.ToPageHeaderTagInfo));
 
             this.CreateOrUpdateContentItem(tab);
 
@@ -1236,7 +1238,7 @@ namespace Dnn.PersonaBar.Pages.Components
             tab.TabSettings["AllowIndex"] = pageSettings.AllowIndex;
 
             tab.SiteMapPriority = pageSettings.SiteMapPriority;
-            tab.PageHeadText = pageSettings.PageHeadText;
+            tab.PageHeadText = Null.NullString;
 
             tab.PermanentRedirect = pageSettings.PermanentRedirect;
             tab.Url = GetInternalUrl(pageSettings);
@@ -1619,7 +1621,7 @@ namespace Dnn.PersonaBar.Pages.Components
         {
             tab.IconFile = sourceTab.IconFile;
             tab.IconFileLarge = sourceTab.IconFileLarge;
-            tab.PageHeadText = sourceTab.PageHeadText;
+            tab.PageHeadText = Null.NullString;
             tab.RefreshInterval = sourceTab.RefreshInterval;
             this.tabController.UpdateTab(tab);
 
@@ -1631,6 +1633,8 @@ namespace Dnn.PersonaBar.Pages.Components
                     this.tabController.UpdateTabSetting(tab.TabID, key, Convert.ToString(sourceTab.TabSettings[key], CultureInfo.InvariantCulture));
                 }
             }
+
+            PageHeaderTagInfo.SaveTabItems(tab.TabID, PageHeaderTagInfo.GetTabItems(sourceTab.TabID));
         }
 
         private void CopyModulesFromSourceTab(TabInfo tab, TabInfo sourceTab, IEnumerable<ModuleItem> includedModules)
@@ -1725,6 +1729,13 @@ namespace Dnn.PersonaBar.Pages.Components
                     }
                 }
             }
+        }
+
+        private PageHeaderTagInfo ToPageHeaderTagInfo(PageHeaderTagItem item)
+        {
+            return item == null
+                ? null
+                : new PageHeaderTagInfo { Name = item.Name, Content = item.Content };
         }
     }
 }

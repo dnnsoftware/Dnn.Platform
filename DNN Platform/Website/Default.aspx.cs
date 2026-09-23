@@ -609,14 +609,20 @@ namespace DotNetNuke.Framework
                 this.Page.Header.Controls.AddAt(0, new LiteralControl(this.Comment));
             }
 
-            if (this.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
+            var tabHeaderTags = string.Empty;
+            if (!Globals.IsAdminControl())
             {
-                this.Page.Header.Controls.Add(new LiteralControl(this.PortalSettings.ActiveTab.PageHeadText));
+                tabHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetTabItems(this.PortalSettings.ActiveTab.TabID));
+                if (!string.IsNullOrEmpty(tabHeaderTags))
+                {
+                    this.Page.Header.Controls.Add(new LiteralControl(tabHeaderTags));
+                }
             }
 
-            if (!string.IsNullOrEmpty(this.PortalSettings.PageHeadText))
+            var portalHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetPortalItems(this.PortalSettings.PortalId, this.PortalSettings.CultureCode));
+            if (!string.IsNullOrEmpty(portalHeaderTags))
             {
-                this.metaPanel.Controls.Add(new LiteralControl(this.PortalSettings.PageHeadText));
+                this.metaPanel.Controls.Add(new LiteralControl(portalHeaderTags));
             }
 
             // set page title
@@ -735,10 +741,10 @@ namespace DotNetNuke.Framework
             // META generator
             this.Generator = string.Empty;
 
-            // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
+            // META Robots - hide it inside popups and if header tags already contain a robots meta tag
             if (!UrlUtils.InPopUp() &&
-                !(HeaderTextRegex.IsMatch(this.PortalSettings.ActiveTab.PageHeadText) ||
-                  HeaderTextRegex.IsMatch(this.PortalSettings.PageHeadText)))
+                !(HeaderTextRegex.IsMatch(tabHeaderTags) ||
+                  HeaderTextRegex.IsMatch(portalHeaderTags)))
             {
                 this.MetaRobots.Visible = true;
                 var allowIndex = true;

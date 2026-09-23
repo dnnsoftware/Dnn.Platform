@@ -13,10 +13,10 @@ namespace DotNetNuke.Build
     public class Program
     {
         /// <summary>The version of the Microsoft.TestPlatform NuGet package.</summary>
-        internal const string MicrosoftTestPlatformVersion = "18.4.0";
+        internal const string MicrosoftTestPlatformVersion = "18.9.0";
 
         /// <summary>The version of the NUnit3TestAdapter NuGet package.</summary>
-        internal const string NUnit3TestAdapterVersion = "6.2.0";
+        internal const string NUnit3TestAdapterVersion = "6.3.0";
 
         /// <summary>Runs the build process.</summary>
         /// <param name="args">The arguments from the command line.</param>

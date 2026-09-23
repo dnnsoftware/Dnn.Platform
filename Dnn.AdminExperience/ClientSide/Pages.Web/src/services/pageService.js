@@ -93,6 +93,7 @@ const PageService = function () {
                 page.iconFile = null;
                 page.iconFileLarge = null;
                 page.sitemapPriority = 0.5;
+                page.pageHeaderTags = page.pageHeaderTags || [];
                 page.pagePipeline = "";
                 return page;
             });
@@ -133,6 +134,7 @@ const PageService = function () {
             ...page,
             startDate: page.schedulingEnabled ? page.startDate : null,
             endDate: page.schedulingEnabled ? page.endDate : null,
+            pageHeadText: undefined,
             schedulingEnabled: undefined
         };
     };

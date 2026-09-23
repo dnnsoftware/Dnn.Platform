@@ -118,6 +118,9 @@ namespace Dnn.PersonaBar.Pages.Services.Dto
         [DataMember(Name = "pageHeadText")]
         public string PageHeadText { get; set; }
 
+        [DataMember(Name = "pageHeaderTags")]
+        public IList<PageHeaderTagItem> PageHeaderTags { get; set; }
+
         [DataMember(Name = "sitemapPriority")]
         public float SiteMapPriority { get; set; }
 

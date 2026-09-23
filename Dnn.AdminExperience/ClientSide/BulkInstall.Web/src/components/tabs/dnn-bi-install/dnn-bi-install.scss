@@ -1,0 +1,67 @@
+:host {
+  display: block;
+
+  /* Grid layout */
+  .row {
+    display: block;
+    margin: 0;
+  }
+
+  .col {
+    max-width: 100%;
+    padding: 1em 0;
+  }
+
+  /* Panel styling */
+  .panel {
+    border: 1px solid var(--dnn-color-neutral, #ededee);
+    border-radius: 0.5em;
+  }
+
+  .panel-heading {
+    padding: 0.3em 0.5em;
+    border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
+    background-color: var(--dnn-color-neutral, #ededee);
+  }
+
+  .panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .panel-body {
+    padding: 1em;
+  }
+
+  /* Form styling */
+  .form-vertical {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: row;
+    gap: 1em;
+    width: fit-content;
+    padding: 1em;
+  }
+
+  label {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+  }
+
+  dnn-button {
+    width: fit-content;
+  }
+
+  .controls {
+    display: flex;
+    gap: 1em;
+    padding-top: 1em;
+    justify-content: flex-end;
+  }
+}

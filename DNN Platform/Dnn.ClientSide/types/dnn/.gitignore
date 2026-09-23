@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+*.tsbuildinfo
+*.log
+
+# Temporary files
+temp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

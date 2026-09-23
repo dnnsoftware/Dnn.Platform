@@ -5,24 +5,51 @@ namespace Dnn.ExportImport.Repository
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Linq.Expressions;
+    using System.Reflection;
     using System.Threading;
 
     using Dnn.ExportImport.Dto;
     using Dnn.ExportImport.Interfaces;
     using LiteDB;
+    using LiteDB.Engine;
 
-    /// <inheritdoc />
+    /// <inheritdoc/>
     public class ExportImportRepository : IExportImportRepository
     {
+        // Legacy (LiteDB v3.x/v4.x, on-disk "v7") files carry this ASCII signature starting at byte
+        // offset 25, with the file-format version stored at byte offset 52. This mirrors the internal
+        // LiteDB.Engine.FileReaderV7.IsVersion check and lets us detect a legacy export database without
+        // opening it through the broken upgrade/rebuild path.
+        private const string LegacyFileSignature = "** This is a LiteDB file **";
+        private const int LegacySignatureOffset = 25;
+        private const int LegacyVersionOffset = 52;
+        private const byte LegacyFileVersion = 7;
+
         private LiteDatabase liteDb;
+        private string migratedDbFileName;
 
         /// <summary>Initializes a new instance of the <see cref="ExportImportRepository"/> class.</summary>
         /// <param name="dbFileName">The LiteDB connection string.</param>
         public ExportImportRepository(string dbFileName)
         {
-            this.liteDb = new LiteDatabase(new ConnectionString(dbFileName) { Upgrade = true });
+            // A DNN 9.10.2-era (LiteDB 3.x on-disk format) export database is upgraded/rebuilt in place
+            // when opened with Upgrade = true. LiteDB 5.0.21 has a bug in that rebuild path
+            // (IndexService.FindAll loop guard) that throws "Detected loop in FindAll({0})" for any
+            // collection larger than ~2,550 records, blocking the import before it starts. To avoid the
+            // broken rebuild, detect a legacy-format file and migrate it into a fresh LiteDB 5.x database
+            // by streaming documents through normal inserts (which do not use the broken guard), then open
+            // the migrated copy. Native 5.x databases (and small legacy ones that still fail to migrate)
+            // fall back to the original Upgrade = true fast path with no behavior change.
+            var fileToOpen = dbFileName;
+            if (IsLegacyFormatFile(dbFileName))
+            {
+                fileToOpen = this.TryMigrateLegacyDatabase(dbFileName) ?? dbFileName;
+            }
+
+            this.liteDb = new LiteDatabase(new ConnectionString(fileToOpen) { Upgrade = true });
             this.liteDb.Mapper.EmptyStringToNull = false;
             this.liteDb.Mapper.TrimWhitespace = false;
         }
@@ -33,14 +60,27 @@ namespace Dnn.ExportImport.Repository
             this.Dispose(false);
         }
 
-        /// <inheritdoc />
+        /// <summary>
+        /// Determines whether the given export database file was written by a legacy (LiteDB v3.x/v4.x,
+        /// on-disk "v7") DNN version, prior to the in-place migration this constructor performs.
+        /// Callers can use this to warn about a cross-version import before opening the repository,
+        /// since opening it migrates a legacy file in place and this signature no longer applies afterward.
+        /// </summary>
+        /// <param name="dbFileName">The database file path.</param>
+        /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
+        public static bool IsLegacyExportFile(string dbFileName)
+        {
+            return IsLegacyFormatFile(dbFileName);
+        }
+
+        /// <inheritdoc/>
         public void Dispose()
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public T AddSingleItem<T>(T item)
             where T : class
         {
@@ -49,7 +89,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public T UpdateSingleItem<T>(T item)
             where T : class
         {
@@ -58,7 +98,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public T GetSingleItem<T>()
             where T : class
         {
@@ -67,7 +107,7 @@ namespace Dnn.ExportImport.Repository
             return collection.FindById(first);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public T CreateItem<T>(T item, int? referenceId)
             where T : BasicExportImportDto
         {
@@ -86,7 +126,7 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null)
             where T : BasicExportImportDto
         {
@@ -110,14 +150,14 @@ namespace Dnn.ExportImport.Repository
             collection.Insert(allItems);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public T GetItem<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {
             return this.InternalGetItems(predicate).FirstOrDefault();
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IEnumerable<T> GetItems<T>(
             Expression<Func<T, bool>> predicate,
             Func<T, object> orderKeySelector = null,
@@ -129,7 +169,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public int GetCount<T>()
             where T : BasicExportImportDto
         {
@@ -137,7 +177,7 @@ namespace Dnn.ExportImport.Repository
             return collection?.Count() ?? 0;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public int GetCount<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {
@@ -145,7 +185,7 @@ namespace Dnn.ExportImport.Repository
             return collection?.Count(predicate) ?? 0;
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false)
             where T : BasicExportImportDto
         {
@@ -153,7 +193,7 @@ namespace Dnn.ExportImport.Repository
             collection.EnsureIndex(predicate, unique);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IEnumerable<T> GetAllItems<T>(
             Func<T, object> orderKeySelector = null, bool asc = true, int? skip = null, int? max = null)
             where T : BasicExportImportDto
@@ -161,7 +201,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(null, orderKeySelector, asc, skip, max);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public T GetItem<T>(int id)
             where T : BasicExportImportDto
         {
@@ -169,7 +209,7 @@ namespace Dnn.ExportImport.Repository
             return collection.FindById(id);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IEnumerable<T> GetItems<T>(IEnumerable<int> idList)
             where T : BasicExportImportDto
         {
@@ -177,7 +217,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IEnumerable<T> GetRelatedItems<T>(int referenceId)
             where T : BasicExportImportDto
         {
@@ -185,7 +225,7 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {
@@ -193,7 +233,7 @@ namespace Dnn.ExportImport.Repository
             return collection.Find(predicate);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void UpdateItem<T>(T item)
             where T : BasicExportImportDto
         {
@@ -211,7 +251,7 @@ namespace Dnn.ExportImport.Repository
             collection.Update(item);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void UpdateItems<T>(IEnumerable<T> items)
             where T : BasicExportImportDto
         {
@@ -225,7 +265,7 @@ namespace Dnn.ExportImport.Repository
             collection.Update(allItems);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public bool DeleteItem<T>(int id)
             where T : BasicExportImportDto
         {
@@ -239,7 +279,7 @@ namespace Dnn.ExportImport.Repository
             return collection.Delete(id);
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression)
             where T : BasicExportImportDto
         {
@@ -250,7 +290,7 @@ namespace Dnn.ExportImport.Repository
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         public void CleanUpLocal(string collectionName)
         {
             if (!this.liteDb.CollectionExists(collectionName))
@@ -269,10 +309,151 @@ namespace Dnn.ExportImport.Repository
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            var temp = Interlocked.Exchange(ref this.liteDb, null);
+            temp?.Dispose();
+
+            var migrated = Interlocked.Exchange(ref this.migratedDbFileName, null);
+            SafeDeleteMigratedFile(migrated);
+        }
+
+        /// <summary>Determines whether the given file is a legacy (LiteDB v3.x/v4.x, on-disk "v7") database.</summary>
+        /// <param name="dbFileName">The database file path.</param>
+        /// <returns><c>true</c> when the file exists and carries the legacy LiteDB file signature and version.</returns>
+        private static bool IsLegacyFormatFile(string dbFileName)
+        {
+            try
             {
-                var temp = Interlocked.Exchange(ref this.liteDb, null);
-                temp?.Dispose();
+                if (string.IsNullOrEmpty(dbFileName) || !File.Exists(dbFileName))
+                {
+                    return false;
+                }
+
+                var header = new byte[LegacyVersionOffset + 1];
+                using (var stream = new FileStream(dbFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    var read = stream.Read(header, 0, header.Length);
+                    if (read < header.Length)
+                    {
+                        return false;
+                    }
+                }
+
+                var signature = System.Text.Encoding.UTF8.GetString(header, LegacySignatureOffset, LegacyFileSignature.Length);
+                return signature == LegacyFileSignature && header[LegacyVersionOffset] == LegacyFileVersion;
+            }
+            catch
+            {
+                // If the header cannot be read for any reason, treat the file as non-legacy and let the
+                // normal open path handle (and report) any problem.
+                return false;
+            }
+        }
+
+        private static IEnumerable<IList<BsonDocument>> Batch(IEnumerable<BsonDocument> source, int size)
+        {
+            var bucket = new List<BsonDocument>(size);
+            foreach (var item in source)
+            {
+                bucket.Add(item);
+                if (bucket.Count == size)
+                {
+                    yield return bucket;
+                    bucket = new List<BsonDocument>(size);
+                }
+            }
+
+            if (bucket.Count > 0)
+            {
+                yield return bucket;
+            }
+        }
+
+        private static void SafeDeleteMigratedFile(string path)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(path) && File.Exists(path))
+                {
+                    File.Delete(path);
+                }
+            }
+            catch
+            {
+                // Best-effort cleanup of the temporary migrated copy; ignore failures.
+            }
+        }
+
+        /// <summary>
+        /// Reads every collection and document from a legacy-format LiteDB database using LiteDB's own
+        /// legacy reader (<c>FileReaderV7</c>) and writes them into a fresh LiteDB 5.x database via normal
+        /// inserts, sidestepping the broken in-place rebuild. Documents are inserted with their original
+        /// <c>_id</c> values preserved.
+        /// </summary>
+        /// <param name="sourceDbFileName">The legacy database file to migrate.</param>
+        /// <returns>The path to the migrated 5.x database, or <c>null</c> if migration was not possible.</returns>
+        private string TryMigrateLegacyDatabase(string sourceDbFileName)
+        {
+            var targetDbFileName = sourceDbFileName + ".migrated";
+            try
+            {
+                if (File.Exists(targetDbFileName))
+                {
+                    File.Delete(targetDbFileName);
+                }
+
+                // EngineSettings is public; only FileReaderV7 (and its IFileReader interface) are internal to
+                // LiteDB, so those still need to be constructed via reflection.
+                var engineSettings = new EngineSettings { Filename = sourceDbFileName };
+
+                var liteDbAssembly = typeof(LiteDatabase).Assembly;
+                var fileReaderType = liteDbAssembly.GetType("LiteDB.Engine.FileReaderV7");
+                if (fileReaderType == null)
+                {
+                    return null;
+                }
+
+                var reader = (IDisposable)Activator.CreateInstance(
+                    fileReaderType,
+                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                    null,
+                    new object[] { engineSettings },
+                    null);
+
+                using (reader)
+                {
+                    fileReaderType.GetMethod("Open").Invoke(reader, null);
+                    var getCollections = fileReaderType.GetMethod("GetCollections");
+                    var getDocuments = fileReaderType.GetMethod("GetDocuments");
+
+                    using (var targetDb = new LiteDatabase(new ConnectionString(targetDbFileName)))
+                    {
+                        var collectionNames = (IEnumerable<string>)getCollections.Invoke(reader, null);
+                        foreach (var collectionName in collectionNames.ToList())
+                        {
+                            var documents = (IEnumerable<BsonDocument>)getDocuments.Invoke(reader, new object[] { collectionName });
+                            var target = targetDb.GetCollection<BsonDocument>(collectionName);
+
+                            // Insert in batches to bound memory while streaming large collections.
+                            foreach (var batch in Batch(documents, 2000))
+                            {
+                                target.Insert(batch);
+                            }
+                        }
+
+                        targetDb.Checkpoint();
+                    }
+                }
+
+                this.migratedDbFileName = targetDbFileName;
+                return targetDbFileName;
+            }
+            catch
+            {
+                // If anything about the legacy migration fails, discard the partial copy and fall back to
+                // the original open path so behavior is never worse than before this fix.
+                SafeDeleteMigratedFile(targetDbFileName);
+                this.migratedDbFileName = null;
+                return null;
             }
         }
 

@@ -1,0 +1,140 @@
+﻿IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_APIUsers]') IS NULL
+    CREATE TABLE {databaseOwner}[{objectQualifier}BulkInstall_APIUsers]
+    (
+        [APIUserID] int NOT NULL IDENTITY
+            CONSTRAINT [PK_{objectQualifier}BulkInstall_APIUsers] PRIMARY KEY CLUSTERED,
+        [Name] nvarchar(64) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_Name] UNIQUE,
+        [APITokenID] int NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_APITokenID] UNIQUE,
+        [EncryptionKey_Enc] char(172) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_EncryptionKey_Enc] UNIQUE,
+        [Salt] char(32) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_APIUsers_Salt] UNIQUE,
+        [BypassIPWhitelist] bit NOT NULL
+            CONSTRAINT [DF_{objectQualifier}BulkInstall_APIUsers_BypassIPWhitelist] DEFAULT (0)
+    );
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_IPSpecs]') IS NULL
+    CREATE TABLE {databaseOwner}[{objectQualifier}BulkInstall_IPSpecs]
+    (
+        [IPSpecID] int NOT NULL IDENTITY
+            CONSTRAINT [PK_{objectQualifier}BulkInstall_IPSpecs] PRIMARY KEY CLUSTERED,
+        [Name] nvarchar(64) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_IPSpecs_Name] UNIQUE,
+        [Address_Sha] char(64) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_IPSpecs_Address_Sha] UNIQUE,
+        [Salt] char(32) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_IPSpecs_Salt] UNIQUE
+    );
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_Sessions]') IS NULL
+    CREATE TABLE {databaseOwner}[{objectQualifier}BulkInstall_Sessions]
+    (
+        [SessionID] int NOT NULL IDENTITY,
+        [Guid] char(32) NOT NULL
+            CONSTRAINT [UQ_{objectQualifier}BulkInstall_Sessions_Guid] UNIQUE,
+        [LastUsed] datetime NOT NULL,
+        [Status] int,
+        [Response] nvarchar(MAX),
+        CONSTRAINT [PK_{objectQualifier}BulkInstall_Sessions] PRIMARY KEY CLUSTERED ([SessionID])
+    ); 
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_EventLogs]') IS NULL
+    CREATE TABLE {databaseOwner}[{objectQualifier}BulkInstall_EventLogs]
+    (
+        [EventLogID] int NOT NULL IDENTITY,
+        [Date] datetime NOT NULL
+            INDEX [IN_{objectQualifier}BulkInstall_EventLogs_Date] NONCLUSTERED,
+        [EventType] varchar(32) NOT NULL,
+        [Severity] int NOT NULL,
+        [Message] varchar(MAX) NOT NULL,
+        [StackTrace] varchar(MAX),
+        CONSTRAINT [PK_{objectQualifier}BulkInstall_EventLogs] PRIMARY KEY CLUSTERED ([EventLogID])
+    );
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_Settings]') IS NULL
+    CREATE TABLE {databaseOwner}[{objectQualifier}BulkInstall_Settings]
+    (
+        [SettingID] int NOT NULL IDENTITY
+            CONSTRAINT [PK_{objectQualifier}BulkInstall_Settings] PRIMARY KEY CLUSTERED,
+        [Group] nvarchar(16) NOT NULL,
+        [Key] nvarchar(32) NOT NULL,
+        [Value] nvarchar(128) NOT NULL,
+        CONSTRAINT [UQ_{objectQualifier}BulkInstall_Settings_GroupKey] UNIQUE ([Group], [Key])
+    );
+GO
+
+IF NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}BulkInstall_Settings])
+    INSERT INTO {databaseOwner}[{objectQualifier}BulkInstall_Settings] ([Group], [Key], [Value])
+    VALUES ('SAFELIST', 'ENABLED', 'false');
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_IPSpecByAddress]') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_IPSpecByAddress];
+GO
+
+/*
+    This procedure provides a mechanism to easily retrieve an IPSpec by its
+    address.
+
+    As each IPSpec's address is stored as a salted and hashed value in the
+    Address_Sha field it's more efficient to let the database perform the
+    required hashing and return only the applicable result. This works almost
+    identically to the BulkInstall_APIUserByAPIKey stored procedure.
+
+    The basic procedure is as follows:
+    - Concatenate plain address with stored salt
+    - Produce hashed bytes of the concatenated value using SHA256
+    - Convert the hashed bytes to a string for comparison
+
+    Note: The third parameter passed to CONVERT removes the leading '0x' from
+    the returned value.
+    (https://docs.microsoft.com/en-us/sql/t-sql/functions/cast-and-convert-transact-sql#binary-styles)
+*/
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_IPSpecByAddress]
+    @Address varchar(15)
+AS
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}BulkInstall_IPSpecs]
+    WHERE [Address_Sha] = CONVERT(varchar(64), HASHBYTES('SHA2_256', CONCAT(@Address, [Salt])), 2);
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPage]') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPage];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPage]
+    @PageNumber int,
+    @PageSize int,
+    @EventType nvarchar(32) = null,
+    @Severity int = null
+AS
+    SELECT *
+    FROM {databaseOwner}[{objectQualifier}BulkInstall_EventLogs]
+    WHERE (@EventType IS NULL OR ([EventType] = @EventType))
+      AND (@Severity IS NULL OR ([Severity] = @Severity))
+    ORDER BY [Date] DESC
+    OFFSET @PageSize * @PageNumber ROWS
+        FETCH NEXT @PageSize ROWS ONLY;
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPageTotal]') IS NOT NULL
+    DROP PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPageTotal];
+GO
+
+CREATE PROCEDURE {databaseOwner}[{objectQualifier}BulkInstall_GetEventLogsPageTotal]
+    @PageNumber int,
+    @PageSize int,
+    @EventType nvarchar(32) = null,
+    @Severity int = null
+AS
+    SELECT COUNT(1) AS [RowCount]
+    FROM {databaseOwner}[{objectQualifier}BulkInstall_EventLogs]
+    WHERE (@EventType IS NULL OR ([EventType] = @EventType))
+      AND (@Severity IS NULL OR ([Severity] = @Severity));
+GO

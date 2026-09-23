@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -203,6 +203,33 @@
   </data>
   <data name="PageHeaderTags_tooltip.Text" xml:space="preserve">
     <value>Enter any tags (i.e. META tags) that should be rendered in the "HEAD" tag of the HTML for this page.</value>
+  </data>
+  <data name="PageHeaderTags_AddTag.Text" xml:space="preserve">
+    <value>Add Tag</value>
+  </data>
+  <data name="PageHeaderTags_Name.Text" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PageHeaderTags_NameRequired.Text" xml:space="preserve">
+    <value>Name is required</value>
+  </data>
+  <data name="PageHeaderTags_NameDuplicate.Text" xml:space="preserve">
+    <value>Name already exists</value>
+  </data>
+  <data name="PageHeaderTags_NameTooLong.Text" xml:space="preserve">
+    <value>Name must be 30 characters or less</value>
+  </data>
+  <data name="PageHeaderTags_Content.Text" xml:space="preserve">
+    <value>Content</value>
+  </data>
+  <data name="PageHeaderTags_ContentRequired.Text" xml:space="preserve">
+    <value>Content is required</value>
+  </data>
+  <data name="PageHeaderTags_DeleteConfirm.Text" xml:space="preserve">
+    <value>Are you sure you want to delete this tag?</value>
+  </data>
+  <data name="PageHeaderTags_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
   </data>
   <data name="AddUrl.Text" xml:space="preserve">
     <value>Add URL</value>

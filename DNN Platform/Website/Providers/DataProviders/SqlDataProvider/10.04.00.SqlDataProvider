@@ -7,3 +7,43 @@
 /*****       for {databaseOwner} and {objectQualifier}  *****/
 /*****                                                  *****/
 /************************************************************/
+
+
+-- Migrate Portal-level PageHeadText to PageHeaderTag_Default setting
+INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings] 
+    (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode)
+SELECT ps.PortalID, 'PageHeaderTag_Default', ps.SettingValue, ps.CreatedByUserID, GETDATE(), ps.LastModifiedByUserID, GETDATE(), ps.CultureCode
+FROM {databaseOwner}[{objectQualifier}PortalSettings]  ps
+WHERE ps.SettingName = 'PageHeadText'
+  AND ISNULL(ps.SettingValue, '') NOT IN ('', 'false')
+  AND NOT EXISTS (
+      SELECT 1
+      FROM {databaseOwner}[{objectQualifier}PortalSettings]  psExisting
+      WHERE psExisting.PortalID = ps.PortalID
+        AND ISNULL(psExisting.CultureCode, '') = ISNULL(ps.CultureCode, '')
+        AND psExisting.SettingName = 'PageHeaderTag_Default');
+GO
+
+-- Delete legacy PageHeadText records after migration
+DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+WHERE SettingName = 'PageHeadText'
+GO
+
+-- Migrate Tab-level PageHeadText to TabSettings
+INSERT INTO {databaseOwner}[{objectQualifier}TabSettings]
+    (TabID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+SELECT t.TabID, 'PageHeaderTag_Default', t.PageHeadText, t.CreatedByUserID, GETDATE(), t.LastModifiedByUserID, GETDATE()
+FROM {databaseOwner}[{objectQualifier}Tabs] t
+WHERE ISNULL(t.PageHeadText, '') <> ''
+  AND NOT EXISTS (
+      SELECT 1
+      FROM {databaseOwner}[{objectQualifier}TabSettings] tsExisting
+      WHERE tsExisting.TabID = t.TabID
+        AND tsExisting.SettingName = 'PageHeaderTag_Default');
+GO
+
+-- Clear legacy PageHeadText column after migration
+UPDATE {databaseOwner}[{objectQualifier}Tabs]
+SET PageHeadText = NULL
+WHERE ISNULL(PageHeadText, '') <> '';
+GO

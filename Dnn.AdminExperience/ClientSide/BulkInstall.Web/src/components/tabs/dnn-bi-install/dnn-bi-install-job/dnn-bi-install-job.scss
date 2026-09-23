@@ -1,0 +1,32 @@
+:host {
+  display: block;
+  border: 2px solid gray;
+  border-radius: var(--dnn-controls-radius, 5px);
+  margin-top: 1em;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  .preview {
+    width: 32px;
+    height: 32px;
+    padding: 0.5em;
+  }
+  .file {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.5em;
+  }
+  .failure {
+    color: var(--dnn-color-danger, red);
+    font-weight: bold;
+    .icon {
+      fill: var(--dnn-color-danger, red);
+    }
+  }
+  .success .icon {
+    fill: var(--dnn-color-success, green);
+  }
+}

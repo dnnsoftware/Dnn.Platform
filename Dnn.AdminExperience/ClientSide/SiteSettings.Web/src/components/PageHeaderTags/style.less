@@ -1,0 +1,148 @@
+@import "~@dnnsoftware/dnn-react-common/styles/index.less";
+
+.page-header-tags {
+    width: 100%;
+
+    .tag-table {
+        margin-bottom: 30px;
+        width: 100%;
+        float: left;
+        border-left: 1px solid @alto;
+        border-right: 1px solid @alto;
+    }
+
+    .header-row {
+        display: table;
+        width: 100%;
+        border-bottom: 1px solid @alto;
+        border-top: 1px solid @alto;
+        float: left;
+        position: relative;
+        padding: 15px 20px;
+        box-sizing: border-box;
+        text-transform: uppercase;
+    }
+
+    .tagRow {
+        display: table;
+        border-bottom: 1px solid @alto;
+        color: #666;
+        width: 100%;
+        position: relative;
+        padding: 15px 20px;
+        box-sizing: border-box;
+        cursor: auto;
+
+        &.row-opened {
+            margin-top: -3px;
+            margin-bottom: -1px;
+            border-top: 2px solid #0d6efd;
+            border-bottom: 2px solid #0d6efd !important;
+        }
+    }
+
+    .tag-name {
+        word-break: break-all;
+    }
+
+    .extension-action,
+    .extension-action-hidden {
+        width: 16px;
+        height: 16px;
+        float: right;
+        margin-right: 5px;
+    }
+
+    .extension-action {
+        cursor: pointer;
+        color: #8a8a8a;
+
+        &:hover {
+            color: #222;
+        }
+
+        svg {
+            width: 16px;
+            height: 16px;
+        }
+    }
+
+    .extension-action-hidden {
+        visibility: hidden;
+    }
+
+    .editTag {
+        width: 100%;
+        float: left;
+        padding: 15px 20px 0 20px;
+
+        .editTag-body {
+            .left-column {
+                padding-right: 15px;
+            }
+
+            .right-column {
+                padding-left: 15px;
+            }
+
+            .dnn-single-line-input-with-error,
+            .dnn-multi-line-input-with-error {
+                width: 100%;
+            }
+        }
+    }
+
+    .addItemRow {
+        width: 100%;
+        margin: 0 0 15px 0;
+        font-weight: bolder;
+        border-bottom: 1px solid @alto;
+        overflow: hidden;
+
+        .sectionTitle {
+            font-weight: bolder;
+            float: left;
+            line-height: 25px;
+            width: auto;
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+
+        .AddItemBox {
+            width: auto;
+            float: right;
+            color: @thunder;
+            cursor: pointer;
+            line-height: 25px;
+
+            &.active {
+                color: @curiousBlue;
+                cursor: inherit;
+            }
+
+            .add-icon {
+                margin-left: 20px;
+                margin-right: 5px;
+                margin-top: 4px;
+                float: left;
+                cursor: pointer;
+
+                svg {
+                    width: 16px;
+                    float: left;
+                    height: 16px;
+                    fill: @thunder;
+                }
+
+                &.active {
+                    svg {
+                        fill: @curiousBlue;
+                    }
+
+                    cursor: inherit;
+                }
+            }
+        }
+    }
+}

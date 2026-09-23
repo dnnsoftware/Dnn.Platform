@@ -1,0 +1,11 @@
+.icon {
+  height: 1em;
+  width: 1em;
+}
+.failure .icon,
+.invalid .icon {
+  fill: var(--dnn-color-danger, red);
+}
+.success .icon {
+  fill: var(--dnn-color-success, green);
+}

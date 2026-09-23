@@ -51,7 +51,11 @@ internal static class SerilogController
     private static SerilogLoggerProvider CreateSerilogLoggerProvider()
     {
         // initialize Serilog
+#if NET48_OR_GREATER
         var applicationMapPath = System.Web.Hosting.HostingEnvironment.MapPath("~") ?? AppDomain.CurrentDomain.BaseDirectory;
+#else
+        var applicationMapPath = AppDomain.CurrentDomain.BaseDirectory;
+#endif
         InitializeSerilog(applicationMapPath);
         return new SerilogLoggerProvider(Log.Logger);
     }

@@ -8,7 +8,9 @@ namespace DotNetNuke.Instrumentation
     using System.Globalization;
     using System.IO;
     using System.Linq;
+#if NET48_OR_GREATER
     using System.Web.Compilation;
+#endif
 
     using DotNetNuke.Internal.SourceGenerators;
     using log4net.Config;
@@ -37,7 +39,12 @@ namespace DotNetNuke.Instrumentation
                 if (stack != null)
                 {
                     Type reflectedType = stack[frameDepth].GetMethod().ReflectedType;
-                    while (reflectedType == BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false) || reflectedType == typeof(DnnLogger) || reflectedType == typeof(DnnLog))
+#if NET48_OR_GREATER
+                    var dnnExceptionType = BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
+#else
+                    var dnnExceptionType = Type.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
+#endif
+                    while (reflectedType == dnnExceptionType || reflectedType == typeof(DnnLogger) || reflectedType == typeof(DnnLog))
                     {
                         frameDepth++;
                         reflectedType = stack[frameDepth].GetMethod().ReflectedType;

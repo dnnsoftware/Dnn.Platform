@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import styles from "./style.module.less";
-import { GridSystem, GridCell, Label, Dropdown, MultiLineInputWithError, Switch } from "@dnnsoftware/dnn-react-common";
+import { GridCell, Label, Dropdown, Switch } from "@dnnsoftware/dnn-react-common";
 import Localization from "../../localization";
 import PageUrls from "./PageUrls/PageUrls";
+import PageHeaderTags from "../PageHeaderTags/PageHeaderTags";
 
 class Seo extends Component {
 
@@ -40,40 +41,37 @@ class Seo extends Component {
                         pageHasParent={page.hasParent}
                         primaryAliasId={page.primaryAliasId} />}
 
-                <GridSystem>
-                    <GridCell className="left-column">
-                        <MultiLineInputWithError
-                            label={Localization.get("PageHeaderTags") }
-                            tooltipMessage={Localization.get("PageHeaderTags_tooltip") }
-                            value={page.pageHeadText}
-                            onChange={this.onChangeField.bind(this, "pageHeadText") } />
-                    </GridCell>
-                    <GridCell className="right-column">
-                        <GridCell>
-                            <Label
-                                labelType="block"
-                                tooltipMessage={Localization.get("SitemapPriority_tooltip") }
-                                label={Localization.get("SitemapPriority") } />
-                            <Dropdown options={this.getSitemapPriorityOptions() }
-                                value={page.sitemapPriority}
-                                onSelect={this.onSitemapPrioritySelected.bind(this) }
-                                withBorder={true} />
-                        </GridCell>
-                        <GridCell className="new-section">
-                            <Label
-                                labelType="inline"
-                                tooltipMessage={Localization.get("AllowIndexing_tooltip") }
-                                label={Localization.get("AllowIndexing") }
-                            />
-                            <Switch
-                                labelHidden={false}
-                                onText={Localization.get("On") }
-                                offText={Localization.get("Off") }
-                                value={page.allowIndex}
-                                onChange={onChangeField.bind(this, "allowIndex") } />
-                        </GridCell>
-                    </GridCell>
-                </GridSystem>
+                <GridCell className="seo-row">
+                    <PageHeaderTags
+                        label={Localization.get("PageHeaderTags") }
+                        value={page.pageHeaderTags}
+                        onChange={(value) => onChangeField("pageHeaderTags", value)} />
+                </GridCell>
+
+                <GridCell className="seo-row new-section">
+                    <Label
+                        labelType="block"
+                        tooltipMessage={Localization.get("SitemapPriority_tooltip") }
+                        label={Localization.get("SitemapPriority") } />
+                    <Dropdown options={this.getSitemapPriorityOptions() }
+                        value={page.sitemapPriority}
+                        onSelect={this.onSitemapPrioritySelected.bind(this) }
+                        withBorder={true} />
+                </GridCell>
+
+                <GridCell className="seo-row new-section">
+                    <Label
+                        labelType="inline"
+                        tooltipMessage={Localization.get("AllowIndexing_tooltip") }
+                        label={Localization.get("AllowIndexing") }
+                    />
+                    <Switch
+                        labelHidden={false}
+                        onText={Localization.get("On") }
+                        offText={Localization.get("Off") }
+                        value={page.allowIndex}
+                        onChange={onChangeField.bind(this, "allowIndex") } />
+                </GridCell>
             </div>
         );
     }

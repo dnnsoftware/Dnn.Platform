@@ -41,6 +41,10 @@
               <name>Dnn.PersonaBar.Extensions.dll</name>
               <path>bin</path>
             </assembly>
+            <assembly>
+              <name>DotNetNuke.BulkInstall.Encryption.dll</name>
+              <path>bin</path>
+            </assembly>
           </assemblies>
         </component>
         <component type="Script">
@@ -91,10 +95,15 @@
               <name>09.11.02.SqlDataProvider</name>
               <version>09.11.02</version>
             </script>
+            <script type="Install">
+              <path>SqlDataProvider</path>
+              <name>10.04.00.SqlDataProvider</name>
+              <version>10.04.00</version>
+            </script>
             <script type="UnInstall">
               <path>SqlDataProvider</path>
               <name>Uninstall.SqlDataProvider</name>
-              <version>09.11.02</version>
+              <version>10.04.00</version>
             </script>
           </scripts>
         </component>
@@ -324,6 +333,17 @@
         </component>
         <component type="PersonaBarMenu">
           <menu>
+            <identifier>Dnn.BulkInstall</identifier>
+            <moduleName>BulkInstall</moduleName>
+            <resourceKey>nav_BulkInstall</resourceKey>
+            <path>BulkInstall</path>
+            <parent>Settings</parent>
+            <order>48</order>
+            <defaultPermissions>Administrators</defaultPermissions>
+          </menu>
+        </component>
+        <component type="PersonaBarMenu">
+          <menu>
             <identifier>Dnn.Servers</identifier>
             <moduleName>Servers</moduleName>
             <controller>Dnn.PersonaBar.Servers.MenuControllers.ServersMenuController, Dnn.PersonaBar.Extensions</controller>
@@ -467,6 +487,27 @@
             <order>40</order>
             <defaultPermissions>Administrators</defaultPermissions>
           </menu>
+        </component>
+        <component type="Config">
+          <config>
+            <configFile>web.config</configFile>
+            <install>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings" action="update" collision="overwrite" key="key">
+                    <add key="aspnet:UseTaskFriendlySynchronizationContext" value="true" />
+                  </node>
+                </nodes>
+              </configuration>
+            </install>
+            <uninstall>
+              <configuration>
+                <nodes>
+                  <node path="/configuration/appSettings/add[@key='aspnet:UseTaskFriendlySynchronizationContext']" action="remove" collision="overwrite" />
+                </nodes>
+              </configuration>
+            </uninstall>
+          </config>
         </component>
       </components>
     </package>
