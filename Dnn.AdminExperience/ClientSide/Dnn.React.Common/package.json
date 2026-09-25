@@ -33,7 +33,7 @@
     "react-accessible-tooltip": "^2.0.3",
     "react-collapse": "^5.1.1",
     "react-custom-scrollbars": "^4.2.1",
-    "react-day-picker": "^7.4.10",
+    "react-day-picker": "^10.0.1",
     "react-height": "^3.0.2",
     "react-motion": "^0.5.2",
     "react-scrollbar": "^0.5.6",
