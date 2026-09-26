@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DayPicker, { WeekdayPropTypes, DateUtils } from "react-day-picker";
 import * as dayjs from "dayjs";
+import localizedFormat from "dayjs/plugin/localizedFormat";
 import TimePicker from "./TimePicker";
 import TimezonePicker from "./TimezonePicker";
 import timeZones from "./timeZones";
@@ -10,6 +11,8 @@ import CalendarIcon from "./img/calendar.svg";
 import CalendarEndIcon from "./img/calendar_end.svg";
 import CalendarStartIcon from "./img/calendar_start.svg";
 import "./style.less";
+
+dayjs.extend(localizedFormat);
 
 const DefaultControllerClassName = "calendar-controller";
 
