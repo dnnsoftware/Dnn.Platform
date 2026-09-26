@@ -81,7 +81,13 @@ export class DnnBiQueuedFile {
     });
   }
 
+  private getUploadStatusTooltip() {
+    return this.progress > 0 ? store.resx.BulkInstallStatus_Uploading : store.resx.BulkInstallStatus_QueuedForUpload;
+  }
+
   render() {
+    const uploadStatusTooltip = this.getUploadStatusTooltip();
+
     return (
       <Host>
         <div class="container">
@@ -102,7 +108,8 @@ export class DnnBiQueuedFile {
           {this.successMessage === undefined && (
             <div class="dismiss">
               <button
-                title={store.resx.Cancel}
+                aria-label={store.resx.Cancel}
+                title={`${uploadStatusTooltip} (${store.resx.Cancel})`}
                 onClick={() => {
                   this.abortController?.abort();
                   this.uploadCompleted.emit(UploadStatus.Cancelled);
@@ -114,7 +121,7 @@ export class DnnBiQueuedFile {
             </div>
           )}
           {this.successMessage && (
-            <div class="uploaded">
+            <div class="uploaded" title={store.resx.BulkInstallStatus_Uploaded}>
               <dnn-bi-checkmark-icon />
             </div>
           )}

@@ -22,6 +22,13 @@ export class LocalizationClient {
       ApiUserExpiresOnHelp: resx('ApiUserExpiresOnHelp'),
       ApiUsers: resx('ApiUsers'),
       BulkInstall: resx('BulkInstall'),
+      BulkInstallStatus_CannotInstall: resx('BulkInstallStatus_CannotInstall') || 'Cannot install',
+      BulkInstallStatus_InstallFailed: resx('BulkInstallStatus_InstallFailed') || 'Install failed',
+      BulkInstallStatus_Installed: resx('BulkInstallStatus_Installed') || 'Installed',
+      BulkInstallStatus_QueuedForInstall: resx('BulkInstallStatus_QueuedForInstall') || 'Queued for install',
+      BulkInstallStatus_QueuedForUpload: resx('BulkInstallStatus_QueuedForUpload') || 'Queued for upload',
+      BulkInstallStatus_Uploaded: resx('BulkInstallStatus_Uploaded') || 'Uploaded',
+      BulkInstallStatus_Uploading: resx('BulkInstallStatus_Uploading') || 'Uploading',
       BypassIpAllowList: resx('BypassIpAllowList'),
       Cancel: resx('Cancel'),
       CannotInstall: resx('CannotInstall'),
@@ -94,6 +101,13 @@ export interface BulkInstallLocalization {
   ApiUserExpiresOnHelp: string;
   ApiUsers: string;
   BulkInstall: string;
+  BulkInstallStatus_CannotInstall: string;
+  BulkInstallStatus_InstallFailed: string;
+  BulkInstallStatus_Installed: string;
+  BulkInstallStatus_QueuedForInstall: string;
+  BulkInstallStatus_QueuedForUpload: string;
+  BulkInstallStatus_Uploaded: string;
+  BulkInstallStatus_Uploading: string;
   BypassIpAllowList: string;
   Cancel: string;
   CannotInstall: string;
