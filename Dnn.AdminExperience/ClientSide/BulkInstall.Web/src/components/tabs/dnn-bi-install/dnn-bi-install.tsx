@@ -36,8 +36,11 @@ export class DnnBiInstall {
   @State() private installStatus: InstallStatus = { type: 'uploading' };
   @State() private apiError = false;
 
+  private static readonly summaryRefreshDelay = 250;
+
   private installClient: InstallClient;
   private summaryAbortController: AbortController | null = null;
+  private summaryRefreshTimeout?: number;
 
   constructor() {
     this.installClient = new InstallClient();
@@ -59,8 +62,19 @@ export class DnnBiInstall {
     } else if (status === UploadStatus.Error) {
       this.files = [...this.files.map((f): FileViewModel => (file.type === 'pending' ? (f !== file ? f : { type: 'error', file: file.file }) : file))];
     } else if (status === UploadStatus.Success) {
-      await this.getInstallationSummary();
+      this.scheduleInstallationSummary();
     }
+  }
+
+  private scheduleInstallationSummary() {
+    if (this.summaryRefreshTimeout) {
+      window.clearTimeout(this.summaryRefreshTimeout);
+    }
+
+    this.summaryRefreshTimeout = window.setTimeout(() => {
+      this.summaryRefreshTimeout = undefined;
+      this.getInstallationSummary().catch(console.error);
+    }, DnnBiInstall.summaryRefreshDelay);
   }
 
   private async getInstallationSummary() {

@@ -10,6 +10,10 @@ import { Session, UploadStatus } from '../dnn-bi-install.model';
   shadow: true,
 })
 export class DnnBiQueuedFile {
+  private static readonly maxConcurrentUploads = 3;
+  private static activeUploads = 0;
+  private static uploadQueue: Array<() => void> = [];
+
   /** The file to upload. */
   @Prop() file!: File;
 
@@ -26,11 +30,13 @@ export class DnnBiQueuedFile {
   @State() progress = 0;
   @State() successMessage?: string;
   @State() dismissed = false;
+  @State() uploadStarted = false;
 
   @Element() el!: HTMLDnnBiQueuedFileElement;
 
   private installClient: InstallClient;
   private abortController?: AbortController;
+  private hasUploadSlot = false;
 
   constructor() {
     this.installClient = new InstallClient();
@@ -39,6 +45,9 @@ export class DnnBiQueuedFile {
   async componentDidLoad() {
     try {
       this.abortController = new AbortController();
+      await this.acquireUploadSlot(this.abortController.signal);
+      this.hasUploadSlot = true;
+      this.uploadStarted = true;
       await this.installClient.addPackage(this.session.sessionGuid, this.file, this.abortController.signal, ev => this.onProgress(ev));
       this.uploadCompleted.emit(UploadStatus.Success);
       this.successMessage = store.resx.FileUploadedMessage;
@@ -49,7 +58,52 @@ export class DnnBiQueuedFile {
         this.uploadCompleted.emit(UploadStatus.Error);
       }
       console.log(err);
+    } finally {
+      if (this.hasUploadSlot) {
+        this.releaseUploadSlot();
+        this.hasUploadSlot = false;
+      }
     }
+  }
+
+  private acquireUploadSlot(signal: AbortSignal): Promise<void> {
+    if (signal.aborted) {
+      return Promise.reject(new Error('Upload cancelled'));
+    }
+
+    if (DnnBiQueuedFile.activeUploads < DnnBiQueuedFile.maxConcurrentUploads) {
+      DnnBiQueuedFile.activeUploads++;
+      return Promise.resolve();
+    }
+
+    return new Promise<void>((resolve, reject) => {
+      const resumeUpload = () => {
+        signal.removeEventListener('abort', onAbort);
+        DnnBiQueuedFile.activeUploads++;
+        resolve();
+      };
+
+      const onAbort = () => {
+        const queueIndex = DnnBiQueuedFile.uploadQueue.indexOf(resumeUpload);
+        if (queueIndex >= 0) {
+          DnnBiQueuedFile.uploadQueue.splice(queueIndex, 1);
+        }
+
+        reject(new Error('Upload cancelled'));
+      };
+
+      signal.addEventListener('abort', onAbort, { once: true });
+      DnnBiQueuedFile.uploadQueue.push(resumeUpload);
+    });
+  }
+
+  private releaseUploadSlot() {
+    if (DnnBiQueuedFile.activeUploads > 0) {
+      DnnBiQueuedFile.activeUploads--;
+    }
+
+    const nextUpload = DnnBiQueuedFile.uploadQueue.shift();
+    nextUpload?.();
   }
 
   private onProgress(ev: ProgressEvent) {
@@ -82,7 +136,7 @@ export class DnnBiQueuedFile {
   }
 
   private getUploadStatusTooltip() {
-    return this.progress > 0 ? store.resx.BulkInstallStatus_Uploading : store.resx.BulkInstallStatus_QueuedForUpload;
+    return this.uploadStarted ? store.resx.BulkInstallStatus_Uploading : store.resx.BulkInstallStatus_QueuedForUpload;
   }
 
   render() {
