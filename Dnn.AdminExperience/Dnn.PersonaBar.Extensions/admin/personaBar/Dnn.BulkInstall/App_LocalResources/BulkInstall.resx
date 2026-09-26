@@ -318,4 +318,25 @@
   <data name="nav_BulkInstall.Text" xml:space="preserve">
     <value>Bulk Install</value>
   </data>
+  <data name="BulkInstallStatus_CannotInstall" xml:space="preserve">
+    <value>Cannot install</value>
+  </data>
+  <data name="BulkInstallStatus_InstallFailed" xml:space="preserve">
+    <value>Install failed</value>
+  </data>
+  <data name="BulkInstallStatus_Installed" xml:space="preserve">
+    <value>Installed</value>
+  </data>
+  <data name="BulkInstallStatus_QueuedForInstall" xml:space="preserve">
+    <value>Queued for install</value>
+  </data>
+  <data name="BulkInstallStatus_QueuedForUpload" xml:space="preserve">
+    <value>Queued for upload</value>
+  </data>
+  <data name="BulkInstallStatus_Uploaded" xml:space="preserve">
+    <value>Uploaded</value>
+  </data>
+  <data name="BulkInstallStatus_Uploading" xml:space="preserve">
+    <value>Uploading</value>
+  </data>
 </root>

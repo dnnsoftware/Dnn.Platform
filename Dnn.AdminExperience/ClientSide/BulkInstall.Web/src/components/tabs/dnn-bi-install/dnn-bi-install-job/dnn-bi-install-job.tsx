@@ -11,7 +11,25 @@ export class DnnBiInstallJob {
   /** The install job. */
   @Prop() job!: InstallJob;
 
+  private getStatusTooltip() {
+    if (!this.job.attempted && this.job.canInstall) {
+      return store.resx.BulkInstallStatus_QueuedForInstall;
+    }
+
+    if (!this.job.attempted && !this.job.canInstall) {
+      return store.resx.BulkInstallStatus_CannotInstall;
+    }
+
+    if (this.job.attempted && !this.job.success) {
+      return store.resx.BulkInstallStatus_InstallFailed;
+    }
+
+    return store.resx.BulkInstallStatus_Installed;
+  }
+
   render() {
+    const statusTooltip = this.getStatusTooltip();
+
     return (
       <Host>
         <div class="container">
@@ -44,22 +62,22 @@ export class DnnBiInstallJob {
             )}
           </div>
           {!this.job.attempted && this.job.canInstall && (
-            <div class="pending">
+            <div class="pending" title={statusTooltip}>
               <dnn-bi-clock-icon />
             </div>
           )}
           {!this.job.attempted && !this.job.canInstall && (
-            <div class="failure">
+            <div class="failure" title={statusTooltip}>
               <dnn-bi-circle-x-icon />
             </div>
           )}
           {this.job.attempted && !this.job.success && (
-            <div class="failure">
+            <div class="failure" title={statusTooltip}>
               <dnn-bi-circle-x-icon />
             </div>
           )}
           {this.job.attempted && this.job.success && (
-            <div class="success">
+            <div class="success" title={statusTooltip}>
               <dnn-bi-checkmark-icon />
             </div>
           )}
