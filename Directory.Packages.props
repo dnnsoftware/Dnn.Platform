@@ -28,12 +28,14 @@
     <PackageVersion Include="MailKit" Version="4.17.0" />
     <PackageVersion Include="Microsoft.ApplicationBlocks.Data" Version="2.0.0" />
     <PackageVersion Include="Microsoft.AspNet.Mvc" Version="5.3.0" />
+    <PackageVersion Include="Microsoft.AspNet.Razor" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi" Version="5.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.Client" Version="6.0.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.Core" Version="5.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebApi.WebHost" Version="5.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebHelpers" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages" Version="3.3.0" />
+    <PackageVersion Include="Microsoft.AspNet.WebPages.Data" Version="3.3.0" />
     <PackageVersion Include="Microsoft.AspNet.WebPages.WebData" Version="3.3.0" />
     <PackageVersion Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.11" />
     <!-- NOTE: this version also needs to be managed in DotNetNuke.Internal.SourceGenerators.csproj -->

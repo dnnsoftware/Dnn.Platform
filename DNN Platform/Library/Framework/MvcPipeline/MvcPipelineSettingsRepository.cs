@@ -27,6 +27,11 @@ namespace DotNetNuke.Framework.MvcPipeline
 
         public MvcPipelineSettings GetSettings()
         {
+            if (this.portalSettings == null)
+            {
+                return new MvcPipelineSettings();
+            }
+
             return this.GetSettings(this.portalSettings.PortalId);
         }
 
