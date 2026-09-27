@@ -17,6 +17,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Logging;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework.JavaScriptLibraries;
@@ -314,19 +315,18 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             return result;
         }
 
-        internal void PreRender()
+        internal void PreRender(IClientResourceController clientResourceController, IPageService pageService)
         {
-            var page = DNNContext.Current.Page;
+            var page = DNNContext.Current?.Page;
 
-            var clientResourcesController = GetClientResourcesController();
             foreach (var stylesheet in this.StyleSheets)
             {
-                clientResourcesController.RegisterStylesheet(stylesheet);
+                clientResourceController.RegisterStylesheet(stylesheet);
             }
 
             foreach (var scriptUrl in this.ScriptUrls)
             {
-                clientResourcesController.RegisterScript(scriptUrl);
+                clientResourceController.RegisterScript(scriptUrl);
             }
 
             foreach (var libraryInfo in this.ScriptLibraries)
@@ -347,18 +347,30 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 }
             }
 
-            foreach (var scriptKey in this.ScriptKeys)
+            if (page != null)
             {
-                var clientScript = page.ClientScript;
-                if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                foreach (var scriptKey in this.ScriptKeys)
                 {
-                    clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                    var clientScript = page.ClientScript;
+                    if (!clientScript.IsClientScriptBlockRegistered(typeof(TemplateDefinition), scriptKey))
+                    {
+                        clientScript.RegisterClientScriptBlock(typeof(TemplateDefinition), scriptKey, this.Scripts[scriptKey], false);
+                    }
                 }
             }
 
             var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? string.Empty : Utilities.CachedFileContent(this.TemplateHeadPath);
             var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
-            page.Header.Controls.Add(new LiteralControl(expandedHead));
+
+            // Default.aspx has already copied the page service head tags into the header by the time controls pre-render.
+            if (page != null)
+            {
+                page.Header.Controls.Add(new LiteralControl(expandedHead));
+            }
+            else
+            {
+                pageService.AddToHead(new PageTag(expandedHead, PagePriority.Module));
+            }
         }
 
         internal void Render(object source, HtmlTextWriter htmlWriter)
@@ -428,12 +440,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             }
 
             return string.Join(" && ", objectsToCheck.ToArray());
-        }
-
-        private static IClientResourceController GetClientResourcesController()
-        {
-            var serviceProvider = Globals.GetCurrentServiceProvider();
-            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

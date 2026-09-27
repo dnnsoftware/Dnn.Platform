@@ -6,24 +6,22 @@
 namespace DotNetNuke.Services.Tokens
 {
     using System;
-    using System.Collections.Generic;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Property Access implementation for javascript registration.</summary>
     public class JavaScriptPropertyAccess : JsonPropertyAccess<JavaScriptDto>
     {
-        private readonly Page page;
-
         /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
         /// <param name="page">The current page.</param>
         public JavaScriptPropertyAccess(Page page)
         {
-            this.page = page;
         }
 
         /// <inheritdoc />
@@ -45,14 +43,19 @@ namespace DotNetNuke.Services.Tokens
             }
             else
             {
-                ClientResourceManager.RegisterScript(
-                    this.page,
-                    model.Path,
-                    model.Priority,
-                    model.Provider ?? string.Empty,
-                    model.JsName ?? string.Empty,
-                    model.Version ?? string.Empty,
-                    model.HtmlAttributes);
+                var script = GetClientResourcesController().CreateScript(model.Path)
+                    .SetPriority(model.Priority)
+                    .SetProvider(model.Provider ?? string.Empty)
+                    .SetNameAndVersion(model.JsName ?? string.Empty, model.Version ?? string.Empty, false);
+                if (model.HtmlAttributes is not null)
+                {
+                    foreach (var attribute in model.HtmlAttributes)
+                    {
+                        script = script.AddAttribute(attribute.Key, attribute.Value);
+                    }
+                }
+
+                script.Register();
             }
 
             return string.Empty;
@@ -87,6 +90,12 @@ namespace DotNetNuke.Services.Tokens
             }
 
             JavaScript.RequestRegistration(model.JsName, version, specific);
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            var serviceProvider = Globals.GetCurrentServiceProvider();
+            return serviceProvider.GetRequiredService<IClientResourceController>();
         }
     }
 }

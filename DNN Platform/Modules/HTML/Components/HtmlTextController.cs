@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
@@ -98,32 +99,19 @@ namespace DotNetNuke.Modules.Html
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <param name="page">The Page Instance.</param>
         /// <returns>The formatted HTML content.</returns>
-        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
-        {
-            // Html decode content
-            content = HttpUtility.HtmlDecode(content);
+        [DnnDeprecated(10, 4, 0, "Please use overload with IClientResourceController")]
+        public static partial string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
+            => FormatHtmlTextCore(moduleId, content, settings, portalSettings, page);
 
-            // token replace
-            if (settings.ReplaceTokens)
-            {
-                var tr = new HtmlTokenReplace(page)
-                {
-                    AccessingUser = UserController.Instance.GetCurrentUserInfo(),
-                    DebugMessages = Personalization.GetUserMode() != PortalSettings.Mode.View,
-                    ModuleId = moduleId,
-                    PortalSettings = portalSettings,
-                };
-                content = tr.ReplaceEnvironmentTokens(content);
-            }
-
-            content = HtmlUtils.SanitizeHtmlIfNeeded(content, portalSettings.AllowJsInHtmlModule);
-
-            // manage relative paths
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src");
-            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background");
-
-            return content;
-        }
+        /// <summary>FormatHtmlText formats HtmlText content for display in the browser.</summary>
+        /// <param name="moduleId">The ModuleID.</param>
+        /// <param name="content">The HtmlText Content.</param>
+        /// <param name="settings">Module Settings.</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <param name="clientResourceController">ClientResourceController.</param>
+        /// <returns>The formatted HTML content.</returns>
+        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, IClientResourceController clientResourceController)
+            => FormatHtmlTextCore(moduleId, content, settings, portalSettings, null);
 
         /// <inheritdoc cref="ManageRelativePaths(string,string,string)"/>
         [DnnDeprecated(9, 11, 0, "Use overload without int")]
@@ -592,6 +580,33 @@ namespace DotNetNuke.Modules.Html
             }
 
             return "Success";
+        }
+
+        private static string FormatHtmlTextCore(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
+        {
+            // Html decode content
+            content = HttpUtility.HtmlDecode(content);
+
+            // token replace
+            if (settings.ReplaceTokens)
+            {
+                var tr = new HtmlTokenReplace(page)
+                {
+                    AccessingUser = UserController.Instance.GetCurrentUserInfo(),
+                    DebugMessages = Personalization.GetUserMode() != PortalSettings.Mode.View,
+                    ModuleId = moduleId,
+                    PortalSettings = portalSettings,
+                };
+                content = tr.ReplaceEnvironmentTokens(content);
+            }
+
+            content = HtmlUtils.SanitizeHtmlIfNeeded(content, portalSettings.AllowJsInHtmlModule);
+
+            // manage relative paths
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "src");
+            content = ManageRelativePaths(content, portalSettings.HomeDirectory, "background");
+
+            return content;
         }
 
         private static void AddHtmlNotification(IHostSettings hostSettings, string subject, string body, UserInfo user)

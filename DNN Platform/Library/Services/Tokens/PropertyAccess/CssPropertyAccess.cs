@@ -6,18 +6,22 @@
 namespace DotNetNuke.Services.Tokens
 {
     using System;
+    using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
     {
         private readonly Page page;
 
         /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
-        /// <param name="page">The page to which the CSS should be registered.</param>
+        /// <param name="page">The page to which the CSS should be registered, or <see langword="null"/> when not rendering a WebForms page.</param>
         public CssPropertyAccess(Page page)
         {
             this.page = page;
@@ -36,16 +40,35 @@ namespace DotNetNuke.Services.Tokens
                 model.Priority = (int)FileOrder.Css.DefaultPriority;
             }
 
-            if (string.IsNullOrEmpty(model.Provider))
+            // ClientResourceManager also skips missing files and strips legacy query strings, which requires a Page.
+            var currentPage = this.page ?? HttpContext.Current?.CurrentHandler as Page;
+            if (currentPage != null)
             {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority);
-            }
-            else
-            {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority, model.Provider);
+                if (string.IsNullOrEmpty(model.Provider))
+                {
+                    ClientResourceManager.RegisterStyleSheet(currentPage, model.Path, model.Priority);
+                }
+                else
+                {
+                    ClientResourceManager.RegisterStyleSheet(currentPage, model.Path, model.Priority, model.Provider);
+                }
+
+                return string.Empty;
             }
 
+            var stylesheet = GetClientResourcesController().CreateStylesheet(model.Path).SetPriority(model.Priority);
+            if (!string.IsNullOrEmpty(model.Provider))
+            {
+                stylesheet = stylesheet.SetProvider(model.Provider);
+            }
+
+            stylesheet.Register();
             return string.Empty;
+        }
+
+        private static IClientResourceController GetClientResourcesController()
+        {
+            return Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
         }
     }
 }
