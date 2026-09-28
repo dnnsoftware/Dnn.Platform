@@ -104,8 +104,8 @@ namespace DotNetNuke.Application
             get
             {
                 var assemblyLocation = Assembly.GetExecutingAssembly().Location;
-                var fileVersion = FileVersionInfo.GetVersionInfo(assemblyLocation).FileVersion;
-                return new Version(fileVersion);
+                var fileVersion = AssemblyVersions.GetAssemblyFileVersion(assemblyLocation);
+                return fileVersion;
             }
         }
 
