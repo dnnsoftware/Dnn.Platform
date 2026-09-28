@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -14,6 +14,7 @@ using DotNetNuke.Common.Extensions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Exceptions;
 
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Identity.Client;
@@ -76,12 +77,22 @@ public class TokenCacheHelper
 
     private string GetAuthenticationData()
     {
-        if (this.portalId == Null.NullInteger)
+        try
         {
-            return this.hostSettingsService.GetEncryptedString(Constants.AuthenticationSettingName, Config.GetDecryptionkey());
-        }
+            if (this.portalId == Null.NullInteger)
+            {
+                return this.hostSettingsService.GetEncryptedString(Constants.AuthenticationSettingName, Config.GetDecryptionkey());
+            }
 
-        return PortalController.GetEncryptedString(this.hostSettings, this.portalController, Constants.AuthenticationSettingName, this.portalId, Config.GetDecryptionkey());
+            return PortalController.GetEncryptedString(this.hostSettings, this.portalController, Constants.AuthenticationSettingName, this.portalId, Config.GetDecryptionkey());
+        }
+        catch (Exception ex) when (ex is CryptographicException || ex is FormatException)
+        {
+            // The stored token cache can't be decrypted (e.g. saved without its algorithm name, see #7483,
+            // or the decryption key changed). Treat as not authorized so the administrator can re-authorize.
+            Exceptions.LogException(ex);
+            return string.Empty;
+        }
     }
 
     private void UpdateAuthenticationData(byte[] data)
