@@ -249,6 +249,9 @@ class LanguageEditor extends Component {
                     onSelect={this.onSettingChange.bind(this, "Code")}
                     enabled={props.id === "add"}
                     getLabelText={(label) => label.props.title}
+                    withSearch={true}
+                    searchPlaceholder={resx.get("languageSearchPlaceholder")}
+                    noResultsText={resx.get("languageSearchNoResults")}
                 />
             </InputGroup>
         </div>;

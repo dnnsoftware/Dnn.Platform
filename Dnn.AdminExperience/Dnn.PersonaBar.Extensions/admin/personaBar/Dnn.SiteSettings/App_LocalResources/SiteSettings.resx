@@ -897,6 +897,12 @@
   <data name="languageLabel.Text" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="languageSearchPlaceholder.Text" xml:space="preserve">
+    <value>Search by name or code (e.g. de-DE)</value>
+  </data>
+  <data name="languageSearchNoResults.Text" xml:space="preserve">
+    <value>No matching languages found.</value>
+  </data>
   <data name="LanguageUpdateSuccess.Text" xml:space="preserve">
     <value>The language has been updated.</value>
   </data>
