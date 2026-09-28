@@ -122,6 +122,6 @@ public class DeployInputTests
         }
 
         var command = new DeployCommand(A.Fake<IDeployer>(), fileSystem);
-        return command.Validate(A.Dummy<CommandContext>(), input);
+        return command.GetValidationResult(A.Dummy<CommandContext>(), input);
     }
 }
