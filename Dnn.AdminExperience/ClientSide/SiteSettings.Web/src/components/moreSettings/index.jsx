@@ -14,6 +14,13 @@ import {
 import util from "../../utils";
 import resx from "../../resources";
 import styles from "./style.module.less";
+import {
+    WhitelistOptions,
+    getInitialCustomWhitelist,
+    getWhitelistForOption,
+    getWhitelistOption,
+    normalizeExtensions,
+} from "./whitelist";
 
 function getError(errors) {
     let hasError = false;
@@ -34,26 +41,26 @@ class MoreSettingsPanelBody extends Component {
             otherSettings: undefined,
             siteBehaviorExtrasRendered: true,
             errorInSave: false,
-            whitelistOption: 0,
+            customWhitelist: "",
         };
         isHost = util.settings.isHost;
+    }
+
+    // The selected whitelist option is kept with the settings (and so in the store),
+    // so it survives the panel being remounted with unsaved changes.
+    applySettings(settings) {
+        const whitelistOption = getWhitelistOption(settings);
+        this.setState({
+            otherSettings: Object.assign({}, settings, { AllowedExtensionsWhitelistOption: whitelistOption }),
+            customWhitelist: getInitialCustomWhitelist(settings),
+        });
     }
 
     loadData() {
         const { props } = this;
         props.dispatch(
             SiteBehaviorActions.getOtherSettings(props.portalId, (data) => {
-                let whitelistOption = 1;
-                if (data.Settings.AllowedExtensionsWhitelist === data.Settings.HostAllowedExtensionsWhitelists) {
-                    whitelistOption = 0;
-                } else if (data.Settings.AllowedExtensionsWhitelist === data.Settings.ImageExtensionsList) {
-                    whitelistOption = 2;
-                }
-                this.setState({
-                    otherSettings: Object.assign({}, data.Settings),
-                    whitelistOption: whitelistOption,
-                    workflows: [...data.Workflows],
-                });
+                this.applySettings(data.Settings);
             })
         );
     }
@@ -61,14 +68,11 @@ class MoreSettingsPanelBody extends Component {
     componentDidMount() {
         const { props } = this;
         if (props.otherSettings) {
-            this.setState({
-                otherSettings: props.otherSettings,
-            });
+            this.applySettings(props.otherSettings);
             return;
         }
         this.setState({
             siteBehaviorExtrasRendered: true,
-            whitelistOption: 0,
         });
         this.loadData();
     }
@@ -91,13 +95,22 @@ class MoreSettingsPanelBody extends Component {
 
         otherSettings[key] = typeof event === "object" ? event.target.value : event;
 
-        this.setState({
-            otherSettings: otherSettings,
-        });
+        const newState = { otherSettings: otherSettings };
+        if (key === "AllowedExtensionsWhitelist") {
+            newState.customWhitelist = otherSettings[key];
+        }
+        this.setState(newState);
 
         props.dispatch(
             SiteBehaviorActions.otherSettingsClientModified(otherSettings)
         );
+    }
+
+    isCustomWhitelistEmpty() {
+        const { otherSettings } = this.state;
+        return !!otherSettings
+            && otherSettings.AllowedExtensionsWhitelistOption === WhitelistOptions.Custom
+            && normalizeExtensions(otherSettings.AllowedExtensionsWhitelist).length === 0;
     }
 
     onUpdate(event) {
@@ -109,11 +122,30 @@ class MoreSettingsPanelBody extends Component {
         props.dispatch(
             SiteBehaviorActions.updateOtherSettings(
                 state.otherSettings,
-                () => { },
-                () => {
-                    this.setState({
-                        errorInSave: true,
-                    });
+                (data) => {
+                    const rejected = (data && data.RejectedExtensions) || [];
+                    if (rejected.length > 0) {
+                        util.utilities.notifyError(
+                            resx.get("AllowedExtensionsRejected") + " " + rejected.join(", ")
+                        );
+                    } else {
+                        util.utilities.notify(resx.get("SettingsUpdateSuccess"));
+                    }
+
+                    // Reload so the form shows what was actually stored (the list may have been restricted by the host).
+                    this.loadData();
+                },
+                (error) => {
+                    let message = resx.get("SettingsError");
+                    try {
+                        const response = JSON.parse(error.responseText);
+                        if (response && response.Message) {
+                            message = response.Message;
+                        }
+                    } catch {
+                        // Not a JSON response, keep the generic message.
+                    }
+                    util.utilities.notifyError(message);
                 }
             )
         );
@@ -127,10 +159,8 @@ class MoreSettingsPanelBody extends Component {
             resx.get("No"),
             () => {
                 props.dispatch(
-                    SiteBehaviorActions.getOtherSettings((data) => {
-                        this.setState({
-                            otherSettings: Object.assign({}, data.Settings),
-                        });
+                    SiteBehaviorActions.getOtherSettings(props.portalId, (data) => {
+                        this.applySettings(data.Settings);
                     })
                 );
                 this.setState(
@@ -210,7 +240,14 @@ class MoreSettingsPanelBody extends Component {
         }
 
         if (this.props.otherSettingsClientModified) {
+            if (this.isCustomWhitelistEmpty()) {
+                util.utilities.notifyError(resx.get("AllowedExtensionsWhitelistEmpty.Error"));
+                return;
+            }
+
+            // The outcome is notified once the request completes.
             this.onUpdate();
+            return;
         }
 
         if (this.state.errorInSave) {
@@ -245,26 +282,26 @@ class MoreSettingsPanelBody extends Component {
 
     getWhiteListOptions() {
         return [
-            { label: resx.get("Default"), value: 0 },
-            { label: resx.get("Custom"), value: 1 },
-            { label: resx.get("OnlyImages"), value: 2 },
+            { label: resx.get("Default"), value: WhitelistOptions.Default },
+            { label: resx.get("Custom"), value: WhitelistOptions.Custom },
+            { label: resx.get("OnlyImages"), value: WhitelistOptions.OnlyImages },
         ];
     }
 
-    onWhitelistOptionChange(e) {
-        let newState = this.state;
-        switch (e.value) {
-            case 0:
-                newState.otherSettings.AllowedExtensionsWhitelist = this.state.otherSettings.HostAllowedExtensionsWhitelists;
-                break;
-            case 2:
-                newState.otherSettings.AllowedExtensionsWhitelist = this.state.otherSettings.ImageExtensionsList;
-                break;
+    onWhitelistOptionChange(option) {
+        const { state, props } = this;
+        if (option.value === state.otherSettings.AllowedExtensionsWhitelistOption) {
+            return;
         }
-        newState.whitelistOption = e.value;
-        this.setState(newState);
-        this.props.dispatch(
-            SiteBehaviorActions.otherSettingsClientModified(newState.otherSettings)
+
+        // Never mutate the current state; build a new settings object instead.
+        const otherSettings = Object.assign({}, state.otherSettings, {
+            AllowedExtensionsWhitelistOption: option.value,
+            AllowedExtensionsWhitelist: getWhitelistForOption(option.value, state.otherSettings, state.customWhitelist),
+        });
+        this.setState({ otherSettings: otherSettings });
+        props.dispatch(
+            SiteBehaviorActions.otherSettingsClientModified(otherSettings)
         );
     }
 
@@ -457,7 +494,7 @@ class MoreSettingsPanelBody extends Component {
                                 />
                                 <Dropdown
                                     options={this.getWhiteListOptions()}
-                                    value={state.whitelistOption}
+                                    value={state.otherSettings.AllowedExtensionsWhitelistOption}
                                     onSelect={(e) => this.onWhitelistOptionChange(e)}
                                 />
                             </InputGroup>
@@ -469,12 +506,14 @@ class MoreSettingsPanelBody extends Component {
                                     label={resx.get("plAllowedExtensionsWhitelist")}
                                 />
                                 <MultiLineInputWithError
-                                    value={state.otherSettings.AllowedExtensionsWhitelist}
+                                    value={state.otherSettings.AllowedExtensionsWhitelist || ""}
                                     onChange={this.onSettingChange.bind(
                                         this,
                                         "AllowedExtensionsWhitelist"
                                     )}
-                                    enabled={state.whitelistOption === 1}
+                                    enabled={state.otherSettings.AllowedExtensionsWhitelistOption === WhitelistOptions.Custom}
+                                    error={this.isCustomWhitelistEmpty()}
+                                    errorMessage={resx.get("AllowedExtensionsWhitelistEmpty.Error")}
                                 />
                             </InputGroup>
                         </div>

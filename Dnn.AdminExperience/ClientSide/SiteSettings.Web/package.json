@@ -11,6 +11,7 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.29.7",
     "@dnnsoftware/dnn-react-common": "10.4.0",
     "@rsbuild/core": "^2.1.10",
     "@rsbuild/plugin-less": "^2.0.1",
