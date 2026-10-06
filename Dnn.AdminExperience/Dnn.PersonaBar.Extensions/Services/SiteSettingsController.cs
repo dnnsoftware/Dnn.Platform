@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.SiteSettings.Services
@@ -3148,13 +3148,19 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 var portal = PortalController.Instance.GetPortal(pid);
                 var portalSettings = new PortalSettings(portal);
 
+                var siteAllowList = portalSettings.AllowedExtensionsWhitelist;
+                var hostDefaultAllowList = this.hostSettings.DefaultEndUserExtensionAllowList;
+                var imageAllowList = Components.AllowedExtensionsHelper.GetImageAllowList(Globals.ImageFileTypes, this.hostSettings.AllowedExtensionAllowList);
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, new
                 {
                     Settings = new
                     {
-                        AllowedExtensionsWhitelist = portalSettings.AllowedExtensionsWhitelist.ToStorageString(),
-                        HostAllowedExtensionsWhitelists = this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString(),
-                        ImageExtensionsList = Globals.ImageFileTypes,
+                        PortalId = pid,
+                        AllowedExtensionsWhitelist = siteAllowList.ToStorageString(),
+                        AllowedExtensionsWhitelistOption = Components.AllowedExtensionsHelper.GetWhitelistOption(siteAllowList, hostDefaultAllowList, imageAllowList),
+                        HostAllowedExtensionsWhitelists = hostDefaultAllowList.ToStorageString(),
+                        ImageExtensionsList = imageAllowList.ToStorageString(),
                         EnablePopups = portalSettings.EnablePopUps,
                         portalSettings.InjectModuleHyperLink,
                         portalSettings.InlineEditorEnabled,
@@ -3188,7 +3194,42 @@ namespace Dnn.PersonaBar.SiteSettings.Services
         {
             try
             {
+                if (request == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Invalid request.");
+                }
+
                 var pid = request.PortalId ?? this.PortalId;
+                if (!this.UserInfo.IsSuperUser && this.PortalId != pid)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, AuthFailureMessage);
+                }
+
+                // Validate the allowed extensions before persisting anything, so an invalid request doesn't partially update the settings.
+                // A null value means the caller doesn't want to change the allowed extensions.
+                string allowedExtensionsToStore = null;
+                var updateAllowedExtensions = request.AllowedExtensionsWhitelist != null;
+                IList<string> rejectedExtensions = new List<string>();
+                if (updateAllowedExtensions)
+                {
+                    var requestedAllowList = new FileExtensionWhitelist(request.AllowedExtensionsWhitelist);
+                    if (!Components.AllowedExtensionsHelper.AreEquivalent(requestedAllowList, this.hostSettings.DefaultEndUserExtensionAllowList))
+                    {
+                        // A site can never allow more than what the host permits.
+                        var effectiveAllowList = requestedAllowList.RestrictBy(this.hostSettings.AllowedExtensionAllowList);
+                        if (!effectiveAllowList.AllowedExtensions.Any())
+                        {
+                            // Storing an empty value deletes the setting, which would silently revert the site to the default list.
+                            return this.Request.CreateErrorResponse(
+                                HttpStatusCode.BadRequest,
+                                Localization.GetString("AllowedExtensionsWhitelistEmpty.Error", Components.Constants.Constants.LocalResourcesFile));
+                        }
+
+                        rejectedExtensions = Components.AllowedExtensionsHelper.GetRejectedExtensions(requestedAllowList, effectiveAllowList);
+                        allowedExtensionsToStore = effectiveAllowList.ToStorageString();
+                    }
+                }
+
                 PortalController.Instance.UpdatePortalSetting(pid, "EnablePopups", request.EnablePopups.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InjectModuleHyperLink", request.InjectModuleHyperLink.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "InlineEditorEnabled", request.InlineEditorEnabled.ToString(), false, null, false);
@@ -3196,15 +3237,10 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleHeaders", request.AllowJsInModuleHeaders.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "AllowJsInModuleFooters", request.AllowJsInModuleFooters.ToString(), false, null, false);
                 PortalController.Instance.UpdatePortalSetting(pid, "ShowQuickModuleAddMenu", request.ShowQuickModuleAddMenu.ToString(), false, null, false);
-                if (request.AllowedExtensionsWhitelist == this.hostSettings.DefaultEndUserExtensionAllowList.ToStorageString())
+                if (updateAllowedExtensions)
                 {
-                    PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", null, false, null, false);
-                }
-                else
-                {
-                    IFileExtensionAllowList allowList = new FileExtensionWhitelist(request.AllowedExtensionsWhitelist);
-                    allowList = allowList.RestrictBy(this.hostSettings.AllowedExtensionAllowList);
-                    PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", allowList.ToStorageString(), false, null, false);
+                    // A null value removes the site setting so the site follows the host's default list.
+                    PortalController.Instance.UpdatePortalSetting(pid, "AllowedExtensionsWhitelist", allowedExtensionsToStore, false, null, false);
                 }
 
                 if (request.EnabledVersioning.HasValue)
@@ -3228,7 +3264,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                 }
 
                 DataCache.ClearCache();
-                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, });
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true, RejectedExtensions = rejectedExtensions, });
             }
             catch (Exception exc)
             {
