@@ -11,8 +11,9 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Entities.Portals;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IReplaceTabModuleStep" />
     internal sealed class ReplaceTabModuleStep : StepBase, IReplaceTabModuleStep, IStepArray
@@ -21,14 +22,13 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly List<IReplacePortalTabModuleStep> steps;
 
         /// <summary>Initializes a new instance of the <see cref="ReplaceTabModuleStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="serviceProvider">An instance of <see cref="IServiceProvider"/>.</param>
-        public ReplaceTabModuleStep(ILoggerSource loggerSource, ILocalizer localizer, IServiceProvider serviceProvider)
-            : base(loggerSource, localizer)
+        public ReplaceTabModuleStep(ILogger<ReplaceTabModuleStep> logger, ILocalizer localizer, IServiceProvider serviceProvider)
+            : base(logger, localizer)
         {
-            this.serviceProvider = serviceProvider ??
-                throw new ArgumentNullException(nameof(serviceProvider));
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
             this.steps = [];
         }

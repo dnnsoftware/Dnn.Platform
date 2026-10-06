@@ -14,13 +14,15 @@ namespace DotNetNuke.Entities.Users
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
 
+    using Microsoft.Extensions.Logging;
+
     using MembershipProvider = DotNetNuke.Security.Membership.MembershipProvider;
 
     /// <summary>The UserOnlineController class provides Business Layer methods for Users Online.</summary>
     [DnnDeprecated(8, 0, 0, "Other solutions exist outside of the DNN Platform", RemovalVersion = 11)]
     public partial class UserOnlineController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserOnlineController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<UserOnlineController>();
         private static readonly MembershipProvider MemberProvider = MembershipProvider.Instance();
         private static readonly object Locker = new object();
         private static readonly string CacheKey = "OnlineUserList";
@@ -132,7 +134,7 @@ namespace DotNetNuke.Entities.Users
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.UserOnlineControllerUpdateUsersOnlineException(exc);
             }
 
             // Remove users that have expired

@@ -125,6 +125,7 @@
       <DependentUpon>EditScript.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="RazorHost.ascx.designer.cs">
       <DependentUpon>RazorHost.ascx</DependentUpon>
     </Compile>

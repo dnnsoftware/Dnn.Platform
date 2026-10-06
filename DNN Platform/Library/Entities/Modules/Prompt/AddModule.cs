@@ -20,11 +20,13 @@ namespace DotNetNuke.Entities.Modules.Prompt
     using DotNetNuke.Security.Permissions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>This is a (Prompt) Console Command. You should not reference this class directly. It is to be used solely through Prompt.</summary>
     [ConsoleCommand("add-module", Constants.CommandCategoryKeys.Modules, "Prompt_AddModule_Description")]
     public class AddModule : ConsoleCommand
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AddModule>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.DefaultPromptResourceFile;
@@ -148,7 +150,7 @@ namespace DotNetNuke.Entities.Modules.Prompt
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.AddModuleRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_AddModuleError"));
             }
         }

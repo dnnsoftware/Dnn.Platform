@@ -15,9 +15,11 @@ namespace DotNetNuke.Entities.Tabs
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
 
+    using Microsoft.Extensions.Logging;
+
     internal class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabWorkflowTracker));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TabWorkflowTracker>();
         private readonly ITabController tabController;
         private readonly IWorkflowEngine workflowEngine;
         private readonly IWorkflowManager workflowManager;
@@ -90,12 +92,12 @@ namespace DotNetNuke.Entities.Tabs
             try
             {
                 var tabInfo = this.tabController.GetTab(tabId, portalId);
-                if (tabInfo != null && !tabInfo.IsDeleted && this.workflowEngine.IsWorkflowCompleted(tabInfo))
+                if (tabInfo is { IsDeleted: false, } && this.workflowEngine.IsWorkflowCompleted(tabInfo))
                 {
                     var workflow = this.GetCurrentOrDefaultWorkflow(tabInfo, portalId);
                     if (workflow == null)
                     {
-                        Logger.Warn("Current Workflow and Default workflow are not found on NotifyWorkflowAboutChanges");
+                        Logger.TabWorkflowTrackerCurrentWorkflowAndDefaultWorkflowAreNotFoundOnNotifyWorkflowAboutChanges();
                         return;
                     }
 

@@ -21,9 +21,11 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.FileSystem.Internal;
 
+    using Microsoft.Extensions.Logging;
+
     public class StandardFolderProvider : FolderProvider
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(StandardFolderProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<StandardFolderProvider>();
 
         private static readonly char[] InvalidFileUrlChars = new char[] { '%', ';', '?', ':', '@', '&', '=', '+', '$', ',' };
 
@@ -138,7 +140,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.StandardFolderProviderGetFileAttributesException(ex);
             }
 
             return fileAttributes;
@@ -244,7 +246,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.StandardFolderProviderGetLastModificationTimeException(ex);
             }
 
             return lastModificationTime;
@@ -437,11 +439,11 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (IOException iex)
             {
-                Logger.Warn(iex.Message);
+                Logger.StandardFolderProviderFileStreamIOException(iex, iex.Message);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.StandardFolderProviderFileStreamGeneralException(ex);
             }
 
             return stream;

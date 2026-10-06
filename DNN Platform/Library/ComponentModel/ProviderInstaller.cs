@@ -11,9 +11,11 @@ namespace DotNetNuke.ComponentModel
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     public class ProviderInstaller : IComponentInstaller
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProviderInstaller));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ProviderInstaller>();
         private readonly ComponentLifeStyleType componentLifeStyle;
         private readonly Type providerInterface;
         private readonly string providerType;
@@ -95,7 +97,7 @@ namespace DotNetNuke.ComponentModel
 
                 if (type == null)
                 {
-                    Logger.Error(new ConfigurationErrorsException($"Could not load provider {provider.Type}"));
+                    Logger.ProviderInstallerCouldNotLoadProvider(new ConfigurationErrorsException($"Could not load provider {provider.Type}"));
                 }
                 else
                 {

@@ -20,14 +20,17 @@ namespace DotNetNuke.UI.Skins.Controls
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.ClientDependency;
     using DotNetNuke.Services.Localization;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A skin/theme object which allows the display of toast messages.</summary>
     public partial class Toast : SkinObjectBase
     {
         private const string MyFileName = "Toast.ascx";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Toast));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Toast>();
         private static readonly string ToastCacheKey = "DNN_Toast_Config";
         private readonly INavigationManager navigationManager;
         private readonly IJavaScriptLibraryHelper javaScript;
@@ -214,7 +217,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ToastInitializeConfigException(ex);
             }
         }
     }

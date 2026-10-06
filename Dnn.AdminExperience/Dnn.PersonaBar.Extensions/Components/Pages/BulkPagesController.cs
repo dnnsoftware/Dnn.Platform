@@ -385,7 +385,7 @@ namespace Dnn.PersonaBar.Pages.Components
                 ////tab.EndDate = objRoot.EndDate;
                 tab.RefreshInterval = objRoot.RefreshInterval;
                 tab.SiteMapPriority = objRoot.SiteMapPriority;
-                tab.PageHeadText = objRoot.PageHeadText;
+                tab.PageHeadText = Null.NullString;
                 tab.IsSecure = objRoot.IsSecure;
                 tab.PermanentRedirect = objRoot.PermanentRedirect;
             }
@@ -396,6 +396,11 @@ namespace Dnn.PersonaBar.Pages.Components
             }
 
             tab.TabID = TabController.Instance.AddTab(tab);
+            if (objRoot != null)
+            {
+                PageHeaderTagInfo.SaveTabItems(tab.TabID, PageHeaderTagInfo.GetTabItems(objRoot.TabID));
+            }
+
             this.ApplyDefaultTabTemplate(tab);
 
             // create localized tabs if content localization is enabled

@@ -16,10 +16,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     using DotNetNuke.Services.Authentication.OAuth;
     using DotNetNuke.Services.Installer.Packages;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class AuthSystemPackageEditor : IPackageEditor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthSystemPackageEditor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AuthSystemPackageEditor>();
 
         private static INavigationManager NavigationManager => Globals.GetCurrentServiceProvider().GetRequiredService<INavigationManager>();
 
@@ -95,7 +96,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.AuthSystemPackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

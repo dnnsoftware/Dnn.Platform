@@ -13,11 +13,13 @@ namespace DotNetNuke.Data.PetaPoco
     using DotNetNuke.Instrumentation;
     using global::PetaPoco;
 
+    using Microsoft.Extensions.Logging;
+
     public static class PetaPocoHelper
     {
         private const string SqlProviderName = "System.Data.SqlClient";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PetaPocoHelper));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(PetaPocoHelper));
 
         public static void ExecuteNonQuery(string connectionString, CommandType type, string sql, params object[] args)
         {
@@ -44,7 +46,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("[1] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
+                    Logger.PetaPocoHelper1ErrorExecutingSql(ex, sql);
                     throw;
                 }
             }
@@ -80,7 +82,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("[2] Error executing SQL: " + cmd.CommandText + Environment.NewLine + ex.Message);
+                    Logger.PetaPocoHelper2ErrorExecutingSql(ex, cmd.CommandText);
                     throw;
                 }
 
@@ -122,9 +124,9 @@ namespace DotNetNuke.Data.PetaPoco
                     {
                         cmd.ExecuteNonQuery();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        Logger.Error("[2] Error executing SQL: " + cmd.CommandText);
+                        Logger.PetaPocoHelper2ErrorExecutingSql(ex, cmd.CommandText);
                         throw;
                     }
 
@@ -161,7 +163,7 @@ namespace DotNetNuke.Data.PetaPoco
                 // very special case for installation
                 if (!sql.EndsWith("GetDatabaseVersion", StringComparison.Ordinal))
                 {
-                    Logger.Error("[3] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
+                    Logger.PetaPocoHelper3ErrorExecutingSql(ex, sql);
                 }
 
                 throw;
@@ -193,7 +195,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("[4] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
+                    Logger.PetaPocoHelper4ErrorExecutingSql(ex, sql);
                     throw;
                 }
             }
@@ -221,7 +223,7 @@ namespace DotNetNuke.Data.PetaPoco
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("[5] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
+                    Logger.PetaPocoHelper5ErrorExecutingSql(ex, sql);
                     throw;
                 }
             }

@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Search;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -44,7 +45,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(?>(?:\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))*)?\\s*/?>";
 
         private const string AttrText = "[\"'](?<text>.*?)[\"']";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InternalSearchControllerImpl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InternalSearchControllerImpl>();
 
         private static readonly string[] HtmlAttributesToRetain = { "alt", "title" };
         private static readonly DataProvider DataProvider = DataProvider.Instance();
@@ -144,7 +145,7 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                     catch (Exception ex)
                     {
-                        Logger.ErrorFormat(CultureInfo.InvariantCulture, "Search Document error: {0}{1}{2}", searchDoc, Environment.NewLine, ex);
+                        Logger.InternalSearchControllerSearchDocumentError(ex, searchDoc);
                     }
                 }
 

@@ -26,18 +26,20 @@ namespace DotNetNuke.UI.WebControls
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     using Image = System.Web.UI.WebControls.Image;
 
     /// <summary>The CaptchaControl control provides a Captcha Challenge control.</summary>
     [ToolboxData("<{0}:CaptchaControl Runat=\"server\" CaptchaHeight=\"100px\" CaptchaWidth=\"300px\" />")]
-    public class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
+    public partial class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
     {
         internal const string KEY = "captcha";
         private const int EXPIRATIONDEFAULT = 120;
         private const int LENGTHDEFAULT = 6;
         private const string RENDERURLDEFAULT = "ImageChallenge.captcha.aspx";
         private const string CHARSDEFAULT = "abcdefghijklmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CaptchaControl>();
         private static readonly string[] FontFamilies =
         {
             "Comic Sans MS",
@@ -620,7 +622,7 @@ namespace DotNetNuke.UI.WebControls
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.CaptchaControlCreateTextException(exc);
             }
 
             return textPath;
@@ -672,7 +674,7 @@ namespace DotNetNuke.UI.WebControls
             }
             catch (ArgumentException exc)
             {
-                Logger.Debug(exc);
+                Logger.CaptchaControlDecryptException(exc);
             }
 
             return decryptedText;
@@ -729,7 +731,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.CaptchaControlGetFontException(exc);
 
                     font = null;
                 }

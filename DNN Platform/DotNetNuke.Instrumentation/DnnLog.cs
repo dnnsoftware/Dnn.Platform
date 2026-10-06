@@ -8,13 +8,17 @@ namespace DotNetNuke.Instrumentation
     using System.Globalization;
     using System.IO;
     using System.Linq;
+#if NET48_OR_GREATER
     using System.Web.Compilation;
+#endif
 
     using DotNetNuke.Internal.SourceGenerators;
     using log4net.Config;
 
-    /// <summary>Provides access to logging methods.  Obsolete, use <see cref="LoggerSource"/> instead.</summary>
-    [DnnDeprecated(7, 0, 1, "Use LoggerSource.Instance", RemovalVersion = 11)]
+    using Microsoft.Extensions.Logging;
+
+    /// <summary>Provides access to logging methods.  Obsolete, use <see cref="ILogger{TCategoryName}"/> instead.</summary>
+    [DnnDeprecated(7, 0, 1, "Use Microsoft.Extensions.Logging.ILogger<T>", RemovalVersion = 11)]
     public static partial class DnnLog
     {
         private const string ConfigFile = "DotNetNuke.log4net.config";
@@ -35,7 +39,12 @@ namespace DotNetNuke.Instrumentation
                 if (stack != null)
                 {
                     Type reflectedType = stack[frameDepth].GetMethod().ReflectedType;
-                    while (reflectedType == BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false) || reflectedType == typeof(DnnLogger) || reflectedType == typeof(DnnLog))
+#if NET48_OR_GREATER
+                    var dnnExceptionType = BuildManager.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
+#else
+                    var dnnExceptionType = Type.GetType("DotNetNuke.Services.Exceptions.Exceptions", false);
+#endif
+                    while (reflectedType == dnnExceptionType || reflectedType == typeof(DnnLogger) || reflectedType == typeof(DnnLog))
                     {
                         frameDepth++;
                         reflectedType = stack[frameDepth].GetMethod().ReflectedType;

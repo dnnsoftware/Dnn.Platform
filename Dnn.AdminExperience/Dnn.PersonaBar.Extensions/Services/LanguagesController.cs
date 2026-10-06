@@ -36,6 +36,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Admin)]
     public class LanguagesController : PersonaBarApiController
     {
@@ -57,7 +59,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
         private const string AuthFailureMessage = "Authorization has been denied for this request.";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LanguagesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LanguagesController>();
 
         private static readonly string[] RootFolders =
         [
@@ -101,7 +103,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerGetTabsForTranslationException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -128,7 +130,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerGetRootResourcesFoldersException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -198,7 +200,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerGetSubRootResourcesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -274,7 +276,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
 
                     if (toBeDeleted.Count > 0)
                     {
-                        Logger.Warn(LocalizeString("Obsolete"));
+                        Logger.LanguagesControllerObsolete(LocalizeString("Obsolete"));
                         foreach (string key in toBeDeleted)
                         {
                             editTable.Remove(key);
@@ -308,7 +310,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerGetResxEntriesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -365,7 +367,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerSaveResxEntriesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -392,7 +394,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerEnableLocalizedContentException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -419,7 +421,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerLocalizedContentException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -435,7 +437,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerGetLocalizationProgressException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -472,7 +474,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerDisableLocalizedContentException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -516,7 +518,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerMarkAllPagesTranslatedException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -550,7 +552,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerActivateLanguageException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -584,7 +586,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerPublishAllPagesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -622,7 +624,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.LanguagesControllerDeleteLanguagePagesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.ToString());
             }
         }
@@ -706,7 +708,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex.Message);
+                Logger.LanguagesControllerLoadResourceException(ex, ex.Message);
                 xmlLoaded = false;
             }
 

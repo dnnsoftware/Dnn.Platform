@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.FileSystem
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Localization = DotNetNuke.Services.Localization.Localization;
 
@@ -44,7 +45,7 @@ namespace DotNetNuke.Services.FileSystem
         : ComponentBase<IFileManager, FileManager>, IFileManager
     {
         private const int BufferSize = 4096;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileManager));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileManager>();
 
         private readonly IFolderManager folderManager = FolderManager.Instance;
         private readonly IFileSecurityController fileSecurityController = fileSecurityController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IFileSecurityController>();
@@ -336,12 +337,12 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (FileLockedException fle)
                 {
-                    Logger.Error(fle);
+                    Logger.FileManagerAddFileLockedException(fle);
                     throw;
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileManagerAddFileGeneralException(ex);
 
                     if (!folderProvider.FileExists(folder, file.FileName))
                     {
@@ -409,7 +410,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileManagerCopyFileException(ex);
                     throw new FolderProviderException(Localization.GetExceptionMessage("CopyFileUnderlyingSystemError", "The underlying system throw an exception. The file has not been copied."), ex);
                 }
 
@@ -521,7 +522,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerFileExistsException(ex);
 
                 throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
@@ -651,7 +652,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.FileManagerGetFileStreamException(ex);
 
                     throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception"), ex);
                 }
@@ -713,7 +714,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerGetFileUrlException(ex);
 
                 throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
@@ -850,7 +851,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerRenameFileException(ex);
 
                 throw new FolderProviderException(Localization.GetExceptionMessage("RenameFileUnderlyingSystemError", "The underlying system threw an exception. The file has not been renamed."), ex);
             }
@@ -885,7 +886,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerSetAttributesException(ex);
                 throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
@@ -1002,7 +1003,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerUpdateSizeAndModificationTimeException(ex);
             }
 
             return this.UpdateFile(file);
@@ -1199,20 +1200,20 @@ namespace DotNetNuke.Services.FileSystem
                     }
                     catch (PermissionsNotMetException exc)
                     {
-                        Logger.Warn(exc);
+                        Logger.FileManagerExtractFilesPermissionsNotMet(exc);
                     }
                     catch (NoSpaceAvailableException exc)
                     {
-                        Logger.Warn(exc);
+                        Logger.FileManagerExtractFilesNoSpaceAvailable(exc);
                     }
                     catch (InvalidFileExtensionException exc)
                     {
                         invalidFiles.Add(zipEntry.FullName);
-                        Logger.Warn(exc);
+                        Logger.FileManagerExtractFilesInvalidFileExtension(exc);
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.FileManagerUpdateExtractFilesGeneralException(exc);
                     }
                 }
             }
@@ -1403,7 +1404,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerWriteToStreamException(ex);
 
                 objResponse.Write("Error : " + ex.Message);
             }
@@ -1437,7 +1438,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerWriteStreamException(ex);
                 objResponse.Write("Error : " + ex.Message);
             }
             finally
@@ -1602,7 +1603,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerDeleteFileException(ex);
                 throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
@@ -1826,7 +1827,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerAddFileException(ex);
                 throw new FolderProviderException(Localization.GetExceptionMessage("UnderlyingSystemError", "The underlying system threw an exception."), ex);
             }
         }
@@ -1865,7 +1866,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.FileManagerRotateFlipImageException(ex);
             }
         }
 

@@ -18,11 +18,13 @@ namespace DotNetNuke.Services.Analytics.Config
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     [Serializable]
     [XmlRoot("AnalyticsConfig")]
     public class AnalyticsConfiguration
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AnalyticsConfiguration>();
         private AnalyticsRuleCollection rules;
         private AnalyticsSettingCollection settings;
 
@@ -56,9 +58,7 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             string cacheKey = analyticsEngineName + "." + PortalSettings.Current.PortalId;
 
-            var config = new AnalyticsConfiguration();
-            config.Rules = new AnalyticsRuleCollection();
-            config.Settings = new AnalyticsSettingCollection();
+            var config = new AnalyticsConfiguration { Rules = [], Settings = [], };
 
             string filePath = string.Empty;
             try
@@ -85,7 +85,6 @@ namespace DotNetNuke.Services.Analytics.Config
                     config.Rules = new AnalyticsRuleCollection();
                     config.Settings = new AnalyticsSettingCollection();
 
-                    var allSettings = new Hashtable();
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Settings/AnalyticsSetting"))
                     {
                         var setting = new AnalyticsSetting();
@@ -124,7 +123,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
-                Logger.Error(ex);
+                Logger.AnalyticsConfigGetConfigException(ex);
             }
 
             return config;
@@ -132,10 +131,10 @@ namespace DotNetNuke.Services.Analytics.Config
 
         public static void SaveConfig(string analyticsEngineName, AnalyticsConfiguration config)
         {
-            string cacheKey = analyticsEngineName + "." + PortalSettings.Current.PortalId;
+            string cacheKey = $"{analyticsEngineName}.{PortalSettings.Current.PortalId}";
             if (config.Settings != null)
             {
-                // Create a new Xml Serializer
+                // Create a new XML Serializer
                 var ser = new XmlSerializer(typeof(AnalyticsConfiguration));
                 string filePath = string.Empty;
 

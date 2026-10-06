@@ -18,7 +18,7 @@ export class DnnRmEditFile {
   */
   @Event() dnnRmFoldersChanged: EventEmitter<void>;
 
-  @Element() el: HTMLDnnRmEditFolderElement;
+  @Element() el: HTMLDnnRmEditFileElement;
   @State() fileDetails: FileDetails;
 
   private itemsClient: ItemsClient;

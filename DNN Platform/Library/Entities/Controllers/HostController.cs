@@ -25,11 +25,12 @@ namespace DotNetNuke.Entities.Controllers
     using DotNetNuke.Web.Client;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IHostSettingsService" />
     public partial class HostController : IHostSettingsService
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<HostController>();
         private static PerformanceSettings performanceSettings = PerformanceSettings.ModerateCaching;
         private readonly IEventLogger eventLogger;
         private readonly Lazy<IPortalController> portalController;
@@ -82,7 +83,7 @@ namespace DotNetNuke.Entities.Controllers
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.HostControllerGetBooleanException(exc);
 
                 // we just want to trap the error as we may not be installed so there will be no Settings
             }

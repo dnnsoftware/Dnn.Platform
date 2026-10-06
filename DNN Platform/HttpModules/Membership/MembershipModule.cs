@@ -35,11 +35,12 @@ namespace DotNetNuke.HttpModules.Membership
     using DotNetNuke.UI.Skins.EventListeners;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Information about membership.</summary>
     public partial class MembershipModule : IHttpModule
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MembershipModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<MembershipModule>();
 
         /// <summary>Initializes a new instance of the <see cref="MembershipModule"/> class.</summary>
         public MembershipModule()
@@ -194,6 +195,9 @@ namespace DotNetNuke.HttpModules.Membership
                     context.Items.Add("UserInfo", user);
                 }
 
+                // Add user id to log context for better logging
+                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("UserId", user?.UserID ?? Null.NullInteger);
+
                 // Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
                 if (user != null && request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
@@ -204,6 +208,7 @@ namespace DotNetNuke.HttpModules.Membership
             if (context.Items["UserInfo"] == null)
             {
                 context.Items.Add("UserInfo", new UserInfo());
+                DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("UserId", Null.NullInteger);
             }
         }
 
@@ -264,7 +269,7 @@ namespace DotNetNuke.HttpModules.Membership
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.MembershipModuleRequireLogoutException(ex);
                 return true;
             }
         }

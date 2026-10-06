@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Icons
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Internal.SourceGenerators;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>IconController provides all operation to icons.</summary>
     /// <remarks>
@@ -30,7 +31,7 @@ namespace DotNetNuke.Entities.Icons
         public const string IconKeyName = "IconKey";
         public const string IconSizeName = "IconSize";
         public const string IconStyleName = "IconStyle";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<IconController>();
 
         private static readonly SharedDictionary<string, bool> IconsStatusOnDisk = new SharedDictionary<string, bool>();
         private static readonly char[] Comma = [',',];
@@ -139,7 +140,7 @@ namespace DotNetNuke.Entities.Icons
                     var iconPhysicalPath = Path.Combine(appStatus.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
                     {
-                        Logger.Warn($"Icon Not Present on Disk {iconPhysicalPath}");
+                        Logger.IconControllerIconNotPresentOnDisk(iconPhysicalPath);
                     }
                 }
             }

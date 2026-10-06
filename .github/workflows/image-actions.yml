@@ -1,3 +1,10 @@
+# Image Actions will run in the following scenarios:
+# - on Pull Requests containing images (not including forks)
+# - on pushing of images to `main` (for forks)
+# - on demand (https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/)
+# - at 11 PM every Sunday in anything gets missed with any of the above scenarios
+# For Pull Requests, the images are added to the PR.
+# For other scenarios, a new PR will be opened if any images are compressed.
 name: "Compress images"
 
 on:
@@ -11,7 +18,13 @@ on:
 
   push:
     branches:
-      - development # merging PRs from other forks (will open a new PR)
+      - "develop" # merging PRs from other forks (will open a new PR)
+    paths:
+      - "**.jpg"
+      - "**.jpeg"
+      - "**.png"
+      - "**.webp"
+      - "**.avif"
 
   workflow_dispatch: # on demand
 
@@ -33,10 +46,11 @@ jobs:
     name: "calibreapp/image-actions"
     runs-on: "ubuntu-latest"
     permissions:
-      contents: "read"
+      contents: "write" # used by calibreapp/image-actions
+      pull-requests: "write" # used by peter-evans/create-pull-request
     steps:
       - name: "Checkout Repo"
-        uses: "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0" # v7.0.0
+        uses: "actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1" # v7.0.1
         with:
           persist-credentials: false
 

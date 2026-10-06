@@ -29,12 +29,13 @@ using DotNetNuke.Services.Social.Messaging.Internal;
 using DotNetNuke.Web.Api;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 /// <summary>A web API for messaging.</summary>
 [DnnAuthorize]
 public class MessagingServiceController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<MessagingServiceController>();
     private readonly IPortalController portalController;
     private readonly IApplicationStatusInfo appStatus;
     private readonly IPortalGroupController portalGroupController;
@@ -68,7 +69,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerWaitTimeForNextMessageException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -120,7 +121,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerCreateException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }
@@ -171,7 +172,7 @@ public class MessagingServiceController : DnnApiController
         }
         catch (Exception exc)
         {
-            Logger.Error(exc);
+            Logger.MessagingServiceControllerSearchException(exc);
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
         }
     }

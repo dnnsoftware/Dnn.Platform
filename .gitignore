@@ -116,6 +116,7 @@ DNN [Pp]latform/[Pp]roviders/*/*/*/[Bb]in/*
 DNN [Pp]latform/Syndication/[Bb]in/*
 DNN [Pp]latform/[Cc]onnectors/*/[Bb]in/*
 DNN [Pp]latform/[Pp]roviders/*/[Bb]in/*
+/DotNetNuke.BulkInstall/*/bin/
 
 DNN [Pp]latform/Modules/ResourceManager/**/scripts/*-bundle.*
 
@@ -151,3 +152,4 @@ yarn-error.log
 
 /DotNetNuke.Internal.SourceGenerators/bin/
 /DNN Platform/Tests/DotNetNuke.Tests.SourceGenerators/Snapshots/*.received.*
+/DNN Platform/Modules/BulkInstall/Scripts/

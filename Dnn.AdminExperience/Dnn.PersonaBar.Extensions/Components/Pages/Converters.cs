@@ -126,6 +126,9 @@ namespace Dnn.PersonaBar.Pages.Components
                 CacheExcludeVaryBy = (string)tab.TabSettings["ExcludeVaryBy"],
                 CacheMaxVaryByCount = MaxVaryByCount(tab),
                 PageHeadText = tab.PageHeadText,
+                PageHeaderTags = PageHeaderTagInfo.GetTabItems(tab.TabID)
+                    .Select(item => new PageHeaderTagItem { Name = item.Name, Content = item.Content })
+                    .ToList(),
                 SiteMapPriority = tab.SiteMapPriority,
                 PermanentRedirect = tab.PermanentRedirect,
                 LinkNewWindow = LinkNewWindow(tab),

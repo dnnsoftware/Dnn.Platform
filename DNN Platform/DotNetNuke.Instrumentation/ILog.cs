@@ -6,8 +6,11 @@ namespace DotNetNuke.Instrumentation
     using System;
     using System.Diagnostics.CodeAnalysis;
 
+    using DotNetNuke.Internal.SourceGenerators;
+
     /// <summary>A contract specifying the ability to log information.</summary>
-    public interface ILog
+    [DnnDeprecated(10, 4, 0, "Use Microsoft.Extensions.Logging.ILogger<T>")]
+    public partial interface ILog
     {
         /// <summary>Gets a value indicating whether the Debug log level is enabled.</summary>
         bool IsDebugEnabled { get; }

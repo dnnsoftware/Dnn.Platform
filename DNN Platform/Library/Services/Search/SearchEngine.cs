@@ -20,12 +20,15 @@ namespace DotNetNuke.Services.Search
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Search.Entities;
     using DotNetNuke.Services.Search.Internals;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     /// <summary>The SearchEngine manages the Indexing of the Portal content.</summary>
     internal partial class SearchEngine
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchEngine));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SearchEngine>();
         private readonly IBusinessControllerProvider businessControllerProvider;
 
         /// <summary>Initializes a new instance of the <see cref="SearchEngine"/> class.</summary>
@@ -180,7 +183,7 @@ namespace DotNetNuke.Services.Search
                 }
                 catch (NotImplementedException exc)
                 {
-                    Logger.Warn("Indexer not implemented", exc);
+                    Logger.SearchEngineIndexerNotImplemented(exc);
                 }
             }
 
@@ -193,7 +196,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (NotImplementedException exc)
             {
-                Logger.Warn("Indexer not implemented", exc);
+                Logger.SearchEngineIndexerNotImplemented(exc);
             }
 
             return indexedCount;

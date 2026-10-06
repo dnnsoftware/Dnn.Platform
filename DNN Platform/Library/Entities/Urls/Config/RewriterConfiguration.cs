@@ -15,11 +15,13 @@ namespace DotNetNuke.Entities.Urls.Config
     using DotNetNuke.Services.Cache;
     using DotNetNuke.Services.Log.EventLog;
 
+    using Microsoft.Extensions.Logging;
+
     [Serializable]
     [XmlRoot("RewriterConfig")]
     public class RewriterConfiguration
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RewriterConfiguration));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<RewriterConfiguration>();
         private static readonly object ThreadLocker = new object();
         private RewriterRuleCollection rules;
 
@@ -88,7 +90,7 @@ namespace DotNetNuke.Entities.Urls.Config
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
-                Logger.Error(log);
+                Logger.RewriterConfigurationGetConfigFailed(log);
             }
 
             return config;

@@ -4,18 +4,18 @@
 
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
-    using System.Globalization;
-
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>DatabaseVerificationStep - Step that performs database verification checks prior to installation.</summary>
-    public class InstallVersionStep : BaseInstallationStep
+    public partial class InstallVersionStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallVersionStep));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InstallVersionStep>();
 
         /// <inheritdoc />
         public override void Execute()
@@ -29,8 +29,8 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 
             if (!string.IsNullOrEmpty(strError))
             {
-                this.Errors.Add(Localization.GetString("InstallVersion", this.LocalInstallResourceFile) + ": " + strError);
-                Logger.TraceFormat(CultureInfo.InvariantCulture, "Adding InstallVersion : {0}", strError);
+                this.Errors.Add($"{Localization.GetString("InstallVersion", this.LocalInstallResourceFile)}: {strError}");
+                Logger.InstallVersionStepAddingInstallVersion(strError);
             }
 
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;

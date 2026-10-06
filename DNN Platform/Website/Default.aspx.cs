@@ -44,7 +44,10 @@ namespace DotNetNuke.Framework
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using DotNetNuke.Web.Client.ResourceManager;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
@@ -53,7 +56,7 @@ namespace DotNetNuke.Framework
     /// <summary>The DNN default page.</summary>
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DefaultPage>();
         private static readonly Regex HeaderTextRegex = new Regex(
             "<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -279,7 +282,7 @@ namespace DotNetNuke.Framework
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error("CSP error", ex);
+                        Logger.DefaultCspError(ex);
                     }
                 }
             }
@@ -606,14 +609,20 @@ namespace DotNetNuke.Framework
                 this.Page.Header.Controls.AddAt(0, new LiteralControl(this.Comment));
             }
 
-            if (this.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
+            var tabHeaderTags = string.Empty;
+            if (!Globals.IsAdminControl())
             {
-                this.Page.Header.Controls.Add(new LiteralControl(this.PortalSettings.ActiveTab.PageHeadText));
+                tabHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetTabItems(this.PortalSettings.ActiveTab.TabID));
+                if (!string.IsNullOrEmpty(tabHeaderTags))
+                {
+                    this.Page.Header.Controls.Add(new LiteralControl(tabHeaderTags));
+                }
             }
 
-            if (!string.IsNullOrEmpty(this.PortalSettings.PageHeadText))
+            var portalHeaderTags = PageHeaderTagInfo.Render(PageHeaderTagInfo.GetPortalItems(this.PortalSettings.PortalId, this.PortalSettings.CultureCode));
+            if (!string.IsNullOrEmpty(portalHeaderTags))
             {
-                this.metaPanel.Controls.Add(new LiteralControl(this.PortalSettings.PageHeadText));
+                this.metaPanel.Controls.Add(new LiteralControl(portalHeaderTags));
             }
 
             // set page title
@@ -630,9 +639,9 @@ namespace DotNetNuke.Framework
                     switch (extension)
                     {
                         case ".mvc":
-                            var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
+                            var segments = slaveModule.ModuleControl.ControlSrc.Split('/');
                             control.LocalResourceFile =
-                                $"~/DesktopModules/MVC/{slaveModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
+                                $"~/DesktopModules/MVC/{slaveModule.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{(segments.Length == 2 ? segments[0] : segments[1])}.resx";
                             break;
                         default:
                             var controlFileName = Path.GetFileName(slaveModule.ModuleControl.ControlSrc);
@@ -732,10 +741,10 @@ namespace DotNetNuke.Framework
             // META generator
             this.Generator = string.Empty;
 
-            // META Robots - hide it inside popups and if PageHeadText of current tab already contains a robots meta tag
+            // META Robots - hide it inside popups and if header tags already contain a robots meta tag
             if (!UrlUtils.InPopUp() &&
-                !(HeaderTextRegex.IsMatch(this.PortalSettings.ActiveTab.PageHeadText) ||
-                  HeaderTextRegex.IsMatch(this.PortalSettings.PageHeadText)))
+                !(HeaderTextRegex.IsMatch(tabHeaderTags) ||
+                  HeaderTextRegex.IsMatch(portalHeaderTags)))
             {
                 this.MetaRobots.Visible = true;
                 var allowIndex = true;

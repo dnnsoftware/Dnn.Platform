@@ -1,0 +1,132 @@
+:host {
+  display: block;
+
+  /* Grid layout */
+  .row {
+    display: block;
+    margin: 0;
+  }
+
+  .col {
+    max-width: 100%;
+  }
+
+  /* Panel styling */
+  .panel {
+    border: 1px solid var(--dnn-color-neutral, #ededee);
+    border-radius: 0.5em;
+  }
+
+  .panel-heading {
+    padding: 0.3em 0.5em;
+    border-bottom: 1px solid var(--dnn-color-neutral, #ededee);
+    background-color: var(--dnn-color-neutral, #ededee);
+    display: flex;
+    dnn-button{
+      margin-left: auto;
+    }
+  }
+
+  .panel-title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 16px;
+  }
+
+  .panel-body {
+  }
+
+  /* Form styling */
+  .form-horizontal {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: fit-content;
+    padding: 1em;
+  }
+
+  label {
+    display: flex;
+    gap: 0.5em;
+    align-items: center;
+  }
+
+  dnn-button {
+    width: fit-content;
+  }
+
+  /* Table styling */
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .table th,
+  .table td {
+    padding: 0.3em 0.5em;
+    text-align: left;
+    border: 1px solid var(--dnn-color-neutral, #ededee);
+  }
+
+  .table th {
+    background-color: var(--dnn-color-neutral-dark, #999999);
+    color: var(--dnn-color-neutral, #ededee);
+  }
+
+  form.create-user {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    h4 {
+      margin: 0;
+      text-align: center;
+    }
+  }
+
+  .credentials {
+    margin: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+
+    h4 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .credentials-warning {
+      margin: 0;
+      padding: 0.5em;
+      border-radius: 0.25em solid var(--dnn-color-warning-dark, #E9AD00);
+      background-color: var(--dnn-color-warning, #FFC107);
+      color: var(--dnn-color-warning-contrast, white);
+    }
+
+    .credential-row {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      flex-wrap: wrap;
+
+      .credential-label {
+        font-weight: bold;
+        min-width: 8em;
+      }
+
+      .credential-value {
+        flex: 1;
+        padding: 0.25em 0.5em;
+        background-color: var(--dnn-color-neutral, #ededee);
+        border-radius: 0.25em;
+        font-family: monospace;
+        word-break: break-all;
+      }
+    }
+  }
+}

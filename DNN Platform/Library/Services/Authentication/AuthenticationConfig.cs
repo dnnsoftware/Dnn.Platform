@@ -9,12 +9,14 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>The AuthenticationConfig class provides a configuration class for the DNN Authentication provider.</summary>
     [Serializable]
     public class AuthenticationConfig : AuthenticationConfigBase
     {
         private const string CACHEKEY = "Authentication.DNN";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AuthenticationConfig>();
 
         /// <summary>Initializes a new instance of the <see cref="AuthenticationConfig"/> class.</summary>
         /// <param name="portalID">The portal ID.</param>
@@ -39,7 +41,7 @@ namespace DotNetNuke.Services.Authentication
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.AuthenticationConfigConstructorException(ex);
             }
         }
 

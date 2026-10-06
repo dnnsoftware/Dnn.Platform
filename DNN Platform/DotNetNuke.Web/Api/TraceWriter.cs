@@ -11,10 +11,12 @@ namespace DotNetNuke.Web.Api
 
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A <see cref="ITraceWriter"/> implementation.</summary>
-    internal sealed class TraceWriter : ITraceWriter
+    internal sealed partial class TraceWriter : ITraceWriter
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<TraceWriter>();
         private readonly bool enabled;
 
         /// <summary>Initializes a new instance of the <see cref="TraceWriter"/> class.</summary>
@@ -40,7 +42,6 @@ namespace DotNetNuke.Web.Api
         private static void Log(TraceRecord rec)
         {
             var message = new StringBuilder();
-
             if (rec.Request != null)
             {
                 if (rec.Request.Method != null)
@@ -64,29 +65,23 @@ namespace DotNetNuke.Web.Api
                 message.Append(' ').Append(rec.Message);
             }
 
-            string output = message.ToString();
-
-            if (!string.IsNullOrEmpty(output))
+            var output = message.ToString();
+            if (string.IsNullOrEmpty(output))
             {
-                switch (rec.Level)
-                {
-                    case TraceLevel.Debug:
-                        Logger.Debug(output);
-                        break;
-                    case TraceLevel.Info:
-                        Logger.Info(output);
-                        break;
-                    case TraceLevel.Warn:
-                        Logger.Warn(output);
-                        break;
-                    case TraceLevel.Error:
-                        Logger.Error(output);
-                        break;
-                    case TraceLevel.Fatal:
-                        Logger.Fatal(output);
-                        break;
-                }
+                return;
             }
+
+            var logLevel = rec.Level switch
+            {
+                TraceLevel.Debug => LogLevel.Debug,
+                TraceLevel.Info => LogLevel.Information,
+                TraceLevel.Warn => LogLevel.Warning,
+                TraceLevel.Error => LogLevel.Error,
+                TraceLevel.Fatal => LogLevel.Critical,
+                _ => LogLevel.None,
+            };
+
+            Logger.TraceWriterLogMessage(logLevel, output);
         }
     }
 }

@@ -13,15 +13,13 @@ export class DnnRmItemsListview {
   /** The list of current items. */
   @Prop() currentItems!: GetFolderContentResponse;
 
-  @Element() el: HTMLDnnRmItemsListviewElement;
+  @Element() el!: HTMLDnnRmItemsListviewElement;
 
   /** Fires when a folder is double-clicked and emits the folder ID into the event.detail */
-  @Event() dnnRmFolderDoubleClicked: EventEmitter<number>;
+  @Event() dnnRmFolderDoubleClicked!: EventEmitter<number>;
 
   /** Fires when a file is double-clicked and emits the file ID into the event.detail */
-  @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
-
-  private contextMenu: HTMLDnnContextMenuElement;
+  @Event() dnnRmFileDoubleClicked!: EventEmitter<string>;
 
   private getLocalDateString(dateString: string) {
     const date = new Date(dateString);
@@ -29,6 +27,11 @@ export class DnnRmItemsListview {
       <span>{date.toLocaleDateString()}</span>
       <span>{date.toLocaleTimeString()}</span>
     </div>
+  }
+
+  private openItemContextMenu(e: MouseEvent): void {
+    const rowMenu = (e.currentTarget as HTMLElement)?.querySelector('dnn-context-menu');
+    rowMenu?.open(e as PointerEvent).catch(console.error);
   }
 
   private handleRowKeyDown(e: KeyboardEvent, item: Item): void {
@@ -83,7 +86,7 @@ export class DnnRmItemsListview {
                   onClick={() => selectionUtilities.toggleItemSelected(item)}
                   onContextMenu={e => {
                     e.preventDefault();
-                    this.contextMenu.open(e as PointerEvent).catch(console.error);
+                    this.openItemContextMenu(e);
                   }}
                   onDblClick={() => this.handleDoubleClick(item)}
                 >
@@ -101,7 +104,6 @@ export class DnnRmItemsListview {
                   <td>{this.getLocalDateString(item.modifiedOn)}</td>
                   <td class="size">{getFileSize(item.fileSize)}</td>
                   <dnn-context-menu
-                    ref={el => this.contextMenu = el}
                     closeOnClick
                   >
                     {item.isFolder

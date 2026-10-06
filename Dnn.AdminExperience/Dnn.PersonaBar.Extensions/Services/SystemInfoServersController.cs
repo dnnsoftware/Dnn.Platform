@@ -16,10 +16,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using Dnn.PersonaBar.Library.Attributes;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SystemInfoServersController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoServersController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SystemInfoServersController>();
 
         [HttpGet]
         public HttpResponseMessage GetServers()
@@ -30,7 +32,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoServersControllerGetServersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -46,7 +48,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoServersControllerDeleteServerException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -64,7 +66,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoServersControllerEditServerUrlException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -83,7 +85,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoServersControllerDeleteNonActiveServersException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

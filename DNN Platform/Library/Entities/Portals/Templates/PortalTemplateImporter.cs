@@ -38,11 +38,13 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     internal class PortalTemplateImporter
     {
         public const string HtmlTextTimeToAutoSave = "HtmlText_TimeToAutoSave";
         public const string HtmlTextAutoSaveEnabled = "HtmlText_AutoSaveEnabled";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalTemplateImporter));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalTemplateImporter>();
         private readonly IPermissionDefinitionService permissionDefinitionService;
         private readonly IBusinessControllerProvider businessControllerProvider;
         private readonly ListController listController;
@@ -260,7 +262,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.PortalTemplateImporterParseTemplateException(ex);
                     }
                 }
 
@@ -653,7 +655,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                 catch (InvalidFileExtensionException ex)
                 {
                     // when the file is not allowed, we should not break parse process, but just log the error.
-                    Logger.Error(ex.Message);
+                    Logger.PortalTemplateImporterParseFilesInvalidFileExtensionException(ex, ex.Message);
                 }
             }
         }
@@ -791,7 +793,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.PortalTemplateImporterGetFolderMappingException(ex);
                             folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                         }
 
@@ -804,7 +806,7 @@ namespace DotNetNuke.Entities.Portals.Templates
                         }
                         catch (Exception ex)
                         {
-                            Logger.Error(ex);
+                            Logger.PortalTemplateImporterAddFolderException(ex);
 
                             // Retry with default folderMapping
                             var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
@@ -962,9 +964,33 @@ namespace DotNetNuke.Entities.Portals.Templates
                 PortalController.UpdatePortalSetting(this.portalController, portalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
 
-            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty)))
+            var pageHeaderTagNodes = nodeSettings.SelectNodes("pageheadertags/pageheadertag");
+            if (pageHeaderTagNodes != null && pageHeaderTagNodes.Count > 0)
             {
-                PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty));
+                var items = new List<PageHeaderTagInfo>();
+                foreach (XmlNode node in pageHeaderTagNodes)
+                {
+                    items.Add(new PageHeaderTagInfo
+                    {
+                        Name = node.Attributes?["name"]?.Value,
+                        Content = node.InnerText,
+                    });
+                }
+
+                PageHeaderTagInfo.SavePortalItems(portalId, items);
+                PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", "false");
+            }
+            else
+            {
+                var legacyHeadText = XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty);
+                if (!string.IsNullOrEmpty(legacyHeadText) && legacyHeadText != "false")
+                {
+                    PageHeaderTagInfo.SavePortalItems(portalId, new List<PageHeaderTagInfo>
+                    {
+                        new PageHeaderTagInfo { Name = "Default", Content = legacyHeadText },
+                    });
+                    PortalController.UpdatePortalSetting(this.portalController, portalId, "PageHeadText", "false");
+                }
             }
 
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty)))

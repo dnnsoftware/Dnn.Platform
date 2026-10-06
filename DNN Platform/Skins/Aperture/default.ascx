@@ -1,3 +1,7 @@
+<%-- 
+	> This is the DNN 10 **default theme** — do not modify the distributed Aperture files directly (Skin/Container folders); they **will be overwritten on upgrade**.
+	> Need a custom version? Copy the **Skin** and **Container** folders and customize the copy instead.
+--%>
 <!--#include file="partials/_registers.ascx" -->
 <!--#include file="partials/_includes.ascx" -->
 

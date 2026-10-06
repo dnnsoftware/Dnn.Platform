@@ -9,26 +9,26 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using System.Xml;
 
     using DotNetNuke.Abstractions.Application;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
-    /// <inheritdoc />
+    using Microsoft.Extensions.Logging;
+
+    /// <inheritdoc cref="IXmlStep" />
     internal abstract class XmlStepBase : StepBase, IXmlStep
     {
         private readonly IApplicationStatusInfo applicationStatusInfo;
 
         /// <summary>Initializes a new instance of the <see cref="XmlStepBase"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         public XmlStepBase(
-            ILoggerSource loggerSource,
+            ILogger logger,
             ILocalizer localizer,
             IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, localizer)
+            : base(logger, localizer)
         {
-            this.applicationStatusInfo = applicationStatusInfo ??
-                throw new ArgumentNullException(nameof(applicationStatusInfo));
+            this.applicationStatusInfo = applicationStatusInfo ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
         }
 
         /// <inheritdoc />

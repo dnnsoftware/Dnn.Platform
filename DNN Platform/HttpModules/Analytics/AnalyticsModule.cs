@@ -19,11 +19,12 @@ namespace DotNetNuke.HttpModules.Analytics
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>This module contains functionality for injecting web analytics scripts into the page.</summary>
     public class AnalyticsModule : IHttpModule
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AnalyticsModule>();
         private readonly IEventLogger eventLogger;
         private readonly IApplicationStatusInfo appStatus;
 
@@ -97,7 +98,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 log.AddProperty("Analytics.AnalyticsModule", "OnPreRequestHandlerExecute");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 this.eventLogger.AddLog(log);
-                Logger.Error(log);
+                Logger.AnalyticsModuleOnPreRequestHandlerExecuteException(ex, log);
             }
         }
 
@@ -191,7 +192,7 @@ namespace DotNetNuke.HttpModules.Analytics
                 log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 this.eventLogger.AddLog(log);
-                Logger.Error(ex);
+                Logger.AnalyticsModuleOnPagePreRenderException(ex);
             }
         }
     }

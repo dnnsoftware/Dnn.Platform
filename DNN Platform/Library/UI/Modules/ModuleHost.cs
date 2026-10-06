@@ -34,16 +34,17 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
 
     /// <summary>ModuleHost hosts a Module Control (or its cached Content).</summary>
-    public sealed class ModuleHost : Panel
+    public sealed partial class ModuleHost : Panel
     {
         private const string DefaultCssProvider = "DnnPageHeaderProvider";
         private const string DefaultJsProvider = "DnnBodyProvider";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ModuleHost>();
 
         private static readonly Regex CdfMatchRegex = new Regex(
             @"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
@@ -248,7 +249,7 @@ namespace DotNetNuke.UI.Modules
             return content;
         }
 
-        /// <summary>LoadModuleControl loads the ModuleControl (PortalModuelBase).</summary>
+        /// <summary>LoadModuleControl loads the ModuleControl (PortalModuleBase).</summary>
         private void LoadModuleControl()
         {
             try
@@ -274,24 +275,21 @@ namespace DotNetNuke.UI.Modules
                     this.control = this.moduleControlPipeline.CreateModuleControl(this.moduleConfiguration);
                 }
 
-                if (this.Skin != null)
-                {
-                    // check for IMC
-                    this.Skin.Communicator.LoadCommunicator(this.control);
-                }
+                // check for IMC
+                this.Skin?.Communicator.LoadCommunicator(this.control);
 
                 // add module settings
                 this.ModuleControl.ModuleContext.Configuration = this.moduleConfiguration;
             }
             catch (ThreadAbortException exc)
             {
-                Logger.Debug(exc);
+                Logger.ModuleHostThreadAbortException(exc);
 
                 Thread.ResetAbort();
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ModuleHostLoadModuleControlException(exc);
 
                 // add module settings
                 this.control = this.moduleControlPipeline.CreateModuleControl(this.moduleConfiguration);

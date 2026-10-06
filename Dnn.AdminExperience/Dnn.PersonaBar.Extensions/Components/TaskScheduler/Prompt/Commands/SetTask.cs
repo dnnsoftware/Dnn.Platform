@@ -17,6 +17,8 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Scheduling;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("set-task", Constants.SchedulerCategory, "Prompt_SetTask_Description")]
     public class SetTask : ConsoleCommandBase
     {
@@ -26,7 +28,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
         [FlagParameter("enabled", "Prompt_SetTask_FlagEnabled", "Boolean", true)]
         private const string FlagEnabled = "enabled";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetTask));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SetTask>();
 
         public override string LocalResourceFile => Constants.LocalResourcesFile;
 
@@ -68,7 +70,7 @@ namespace Dnn.PersonaBar.TaskScheduler.Components.Prompt.Commands
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SetTaskRunException(exc);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_TaskUpdateFailed"));
             }
         }

@@ -29,27 +29,51 @@ namespace DotNetNuke.Web.Mvc
     /// <summary>WebForms control for hosting an MVC module control.</summary>
     public class MvcHostControl : ModuleControlBase, IActionable
     {
-        private ModuleRequestResult result;
-        private string controlKey;
-
         /// <summary>Initializes a new instance of the <see cref="MvcHostControl"/> class.</summary>
         public MvcHostControl()
         {
-            this.controlKey = string.Empty;
+            this.ControlKey = string.Empty;
         }
 
         /// <summary>Initializes a new instance of the <see cref="MvcHostControl"/> class.</summary>
         /// <param name="controlKey">The module control key.</param>
         public MvcHostControl(string controlKey)
         {
-            this.controlKey = controlKey;
+            this.ControlKey = controlKey;
         }
 
         /// <inheritdoc />
-        public ModuleActionCollection ModuleActions { get; private set; }
+        public ModuleActionCollection ModuleActions { get; protected set; }
+
+        protected ModuleRequestResult Result { get; set; }
+
+        protected string ControlKey { get; set; }
 
         /// <summary>Gets or sets a value indicating whether the module controller should execute immediately (i.e. during <see cref="Control.OnInit"/> rather than <see cref="ISettingsControl.LoadSettings"/>).</summary>
         protected bool ExecuteModuleImmediately { get; set; } = true;
+
+        protected static IModuleExecutionEngine GetModuleExecutionEngine()
+        {
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+            if (moduleExecutionEngine == null)
+            {
+                moduleExecutionEngine = new ModuleExecutionEngine();
+                ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
+            }
+
+            return moduleExecutionEngine;
+        }
+
+        protected static MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
+        {
+            using var writer = new StringWriter(CultureInfo.CurrentCulture);
+            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
+
+            moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
+
+            return MvcHtmlString.Create(writer.ToString());
+        }
 
         /// <summary>Runs and renders the MVC action.</summary>
         protected void ExecuteModule()
@@ -60,11 +84,11 @@ namespace DotNetNuke.Web.Mvc
 
                 var moduleExecutionEngine = GetModuleExecutionEngine();
 
-                this.result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
+                this.Result = moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));
 
-                this.ModuleActions = this.LoadActions(this.result);
+                this.ModuleActions = this.LoadActions(this.Result);
 
-                httpContext.SetModuleRequestResult(this.result);
+                httpContext.SetModuleRequestResult(this.Result);
             }
             catch (Exception exc)
             {
@@ -76,7 +100,11 @@ namespace DotNetNuke.Web.Mvc
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
+            this.OnInitInternal(e);
+        }
 
+        protected virtual void OnInitInternal(EventArgs e)
+        {
             if (this.ExecuteModuleImmediately)
             {
                 this.ExecuteModule();
@@ -87,14 +115,19 @@ namespace DotNetNuke.Web.Mvc
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
+            this.OnPreRenderInternal(e);
+        }
+
+        protected virtual void OnPreRenderInternal(EventArgs e)
+        {
             try
             {
-                if (this.result == null)
+                if (this.Result == null)
                 {
                     return;
                 }
 
-                var mvcString = RenderModule(this.result);
+                var mvcString = RenderModule(this.Result);
                 if (!string.IsNullOrEmpty(Convert.ToString(mvcString, CultureInfo.InvariantCulture)))
                 {
                     this.Controls.Add(new LiteralControl(Convert.ToString(mvcString, CultureInfo.InvariantCulture)));
@@ -104,6 +137,78 @@ namespace DotNetNuke.Web.Mvc
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+        }
+
+        protected ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
+        {
+            var module = this.ModuleContext.Configuration;
+
+            // TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
+            var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
+            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(string.Empty, module.ModuleDefID);
+
+            var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
+
+            var moduleApplication = GetModuleApplication(
+                httpContext.GetScope().ServiceProvider.GetRequiredService<IBusinessControllerProvider>(),
+                desktopModule,
+                defaultRouteData);
+
+            RouteData routeData;
+
+            var queryString = httpContext.Request.QueryString;
+
+            if (string.IsNullOrEmpty(this.ControlKey))
+            {
+                this.ControlKey = queryString.GetValueOrDefault("ctl", string.Empty);
+            }
+
+            var moduleId = Null.NullInteger;
+            if (queryString["moduleid"] != null)
+            {
+                if (!int.TryParse(queryString["moduleid"], out moduleId))
+                {
+                    moduleId = Null.NullInteger;
+                }
+            }
+
+            if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this.ControlKey))
+            {
+                // Set default routeData for module that is not the "selected" module
+                routeData = defaultRouteData;
+            }
+            else
+            {
+                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(this.ControlKey, module.ModuleDefID);
+                routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, control);
+            }
+
+            var moduleRequestContext = new ModuleRequestContext
+            {
+                DnnPage = this.Page,
+                HttpContext = httpContext,
+                ModuleContext = this.ModuleContext,
+                ModuleApplication = moduleApplication,
+                RouteData = routeData,
+            };
+
+            return moduleRequestContext;
+        }
+
+        protected ModuleActionCollection LoadActions(ModuleRequestResult requestResult)
+        {
+            var actions = new ModuleActionCollection();
+
+            if (requestResult.ModuleActions != null)
+            {
+                foreach (ModuleAction action in requestResult.ModuleActions)
+                {
+                    action.ID = this.ModuleContext.GetNextActionID();
+                    actions.Add(action);
+                }
+            }
+
+            return actions;
         }
 
         private static ModuleApplication GetModuleApplication(
@@ -133,101 +238,6 @@ namespace DotNetNuke.Web.Mvc
                 ModuleName = desktopModule.ModuleName,
                 FolderPath = desktopModule.FolderName,
             };
-        }
-
-        private static IModuleExecutionEngine GetModuleExecutionEngine()
-        {
-            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
-
-            if (moduleExecutionEngine == null)
-            {
-                moduleExecutionEngine = new ModuleExecutionEngine();
-                ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
-            }
-
-            return moduleExecutionEngine;
-        }
-
-        private static MvcHtmlString RenderModule(ModuleRequestResult moduleResult)
-        {
-            using var writer = new StringWriter(CultureInfo.CurrentCulture);
-            var moduleExecutionEngine = ComponentFactory.GetComponent<IModuleExecutionEngine>();
-
-            moduleExecutionEngine.ExecuteModuleResult(moduleResult, writer);
-
-            return MvcHtmlString.Create(writer.ToString());
-        }
-
-        private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
-        {
-            var module = this.ModuleContext.Configuration;
-
-            // TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
-            var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
-            var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(string.Empty, module.ModuleDefID);
-
-            var defaultRouteData = ModuleRoutingProvider.Instance().GetRouteData(null, defaultControl);
-
-            var moduleApplication = GetModuleApplication(
-                httpContext.GetScope().ServiceProvider.GetRequiredService<IBusinessControllerProvider>(),
-                desktopModule,
-                defaultRouteData);
-
-            RouteData routeData;
-
-            var queryString = httpContext.Request.QueryString;
-
-            if (string.IsNullOrEmpty(this.controlKey))
-            {
-                this.controlKey = queryString.GetValueOrDefault("ctl", string.Empty);
-            }
-
-            var moduleId = Null.NullInteger;
-            if (queryString["moduleid"] != null)
-            {
-                if (!int.TryParse(queryString["moduleid"], out moduleId))
-                {
-                    moduleId = Null.NullInteger;
-                }
-            }
-
-            if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this.controlKey))
-            {
-                // Set default routeData for module that is not the "selected" module
-                routeData = defaultRouteData;
-            }
-            else
-            {
-                var control = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey(this.controlKey, module.ModuleDefID);
-                routeData = ModuleRoutingProvider.Instance().GetRouteData(httpContext, control);
-            }
-
-            var moduleRequestContext = new ModuleRequestContext
-            {
-                DnnPage = this.Page,
-                HttpContext = httpContext,
-                ModuleContext = this.ModuleContext,
-                ModuleApplication = moduleApplication,
-                RouteData = routeData,
-            };
-
-            return moduleRequestContext;
-        }
-
-        private ModuleActionCollection LoadActions(ModuleRequestResult requestResult)
-        {
-            var actions = new ModuleActionCollection();
-
-            if (requestResult.ModuleActions != null)
-            {
-                foreach (ModuleAction action in requestResult.ModuleActions)
-                {
-                    action.ID = this.ModuleContext.GetNextActionID();
-                    actions.Add(action);
-                }
-            }
-
-            return actions;
         }
     }
 }

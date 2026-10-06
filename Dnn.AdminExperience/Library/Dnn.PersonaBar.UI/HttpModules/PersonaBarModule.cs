@@ -16,10 +16,12 @@ namespace Dnn.PersonaBar.UI.HttpModules
     using DotNetNuke.Instrumentation;
     using DotNetNuke.UI.Skins.EventListeners;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>An <see cref="IHttpModule"/> which registers components for the Persona Bar.</summary>
     public class PersonaBarModule : IHttpModule
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PersonaBarModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PersonaBarModule>();
 
         private static readonly object LockAppStarted = new object();
         private static bool hasAppStarted;
@@ -71,12 +73,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.Init threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsInitThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
@@ -91,12 +88,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.Load threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsLoadThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
@@ -111,12 +103,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.PreRender threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsPreRenderThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }
@@ -131,12 +118,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
                 catch (Exception ex)
                 {
-                    Logger.ErrorFormat(
-                        CultureInfo.InvariantCulture,
-                        "{0}.UnLoad threw an exception.  {1}\r\n{2}",
-                        instance.GetType().FullName,
-                        ex.Message,
-                        ex.StackTrace);
+                    Logger.PersonaBarModuleSkinEventsUnLoadThrewAnException(ex, instance.GetType().FullName);
                 }
             });
         }

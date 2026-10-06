@@ -29,11 +29,12 @@ namespace Dnn.PersonaBar.Themes.Services
     using DotNetNuke.Web.Api;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     [MenuPermission(MenuName = Components.Constants.MenuName)]
     public class ThemesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ThemesController>();
         private readonly IThemesController controller;
         private readonly IHostSettings hostSettings;
         private readonly IApplicationStatusInfo appStatus;
@@ -67,7 +68,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerGetCurrentThemeException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -85,7 +86,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerGetThemesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -108,7 +109,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerGetThemeFilesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -125,7 +126,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerApplyThemeException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -158,7 +159,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerApplyDefaultThemeException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -184,7 +185,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerDeleteThemePackageException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -203,7 +204,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerGetEditableTokensException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -238,7 +239,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerGetEditableSettingsException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -287,7 +288,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerGetEditableValuesException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -318,7 +319,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerUpdateThemeException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -352,7 +353,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerParseThemeException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }
@@ -374,7 +375,7 @@ namespace Dnn.PersonaBar.Themes.Services
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ThemesControllerRestoreThemeException(ex);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message);
             }
         }

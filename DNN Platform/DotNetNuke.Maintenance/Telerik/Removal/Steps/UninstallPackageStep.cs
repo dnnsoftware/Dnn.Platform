@@ -9,10 +9,11 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 
     using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common.Utilities;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
     using DotNetNuke.Services.Installer.Packages;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IUninstallPackageStep" />
     internal sealed class UninstallPackageStep : StepBase, IUninstallPackageStep
@@ -22,27 +23,22 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly Func<PackageInfo, string, IInstaller> installerFactory;
 
         /// <summary>Initializes a new instance of the <see cref="UninstallPackageStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="packageController">An instance of <see cref="IPackageController"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         /// <param name="installerFactory">A function that returns an instance of <see cref="IInstaller"/>.</param>
         public UninstallPackageStep(
-            ILoggerSource loggerSource,
+            ILogger<UninstallPackageStep> logger,
             ILocalizer localizer,
             IPackageController packageController,
             IApplicationStatusInfo applicationStatusInfo,
             Func<PackageInfo, string, IInstaller> installerFactory)
-            : base(loggerSource, localizer)
+            : base(logger, localizer)
         {
-            this.packageController = packageController ??
-                throw new ArgumentNullException(nameof(packageController));
-
-            this.applicationStatusInfo = applicationStatusInfo ??
-                throw new ArgumentNullException(nameof(applicationStatusInfo));
-
-            this.installerFactory = installerFactory ??
-                throw new ArgumentNullException(nameof(installerFactory));
+            this.packageController = packageController ?? throw new ArgumentNullException(nameof(packageController));
+            this.applicationStatusInfo = applicationStatusInfo ?? throw new ArgumentNullException(nameof(applicationStatusInfo));
+            this.installerFactory = installerFactory ?? throw new ArgumentNullException(nameof(installerFactory));
         }
 
         /// <inheritdoc />

@@ -39,12 +39,14 @@ namespace Dnn.PersonaBar.Sites.Components
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Mail;
 
+    using Microsoft.Extensions.Logging;
+
     using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
     public class SitesController
     {
         internal static readonly IList<string> ImageExtensions = new List<string>() { ".png", ".jpg", ".jpeg" };
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SitesController>();
         private readonly TabsController tabsController = new TabsController();
 
         [SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic", Justification = "Breaking change")]
@@ -403,7 +405,7 @@ namespace Dnn.PersonaBar.Sites.Components
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.ComponentsSitesControllerCreatePortalException(ex);
 
                     intPortalId = Null.NullInteger;
                     message = ex.Message;
@@ -452,7 +454,7 @@ namespace Dnn.PersonaBar.Sites.Components
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.ComponentsSitesControllerSendMailException(exc);
                         message = string.Format(CultureInfo.CurrentCulture, Localization.GetString("UnknownSendMail.Error", this.LocalResourcesFile), webUrl, closePopUpStr);
                     }
 
@@ -504,7 +506,7 @@ namespace Dnn.PersonaBar.Sites.Components
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ComponentsSitesControllerTryDeleteCreatingPortalException(ex);
             }
         }
 

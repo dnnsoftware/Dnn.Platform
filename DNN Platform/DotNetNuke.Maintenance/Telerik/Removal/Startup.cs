@@ -32,7 +32,6 @@ namespace DotNetNuke.Maintenance.Telerik.Removal
 
             // core
             services.TryAddTransient(provider => LocalizationProvider.Instance);
-            services.TryAddTransient(provider => LoggerSource.Instance);
             services.TryAddTransient(provider => ModuleController.Instance);
             services.TryAddTransient(provider => PackageController.Instance);
             services.TryAddTransient(provider => TabController.Instance);

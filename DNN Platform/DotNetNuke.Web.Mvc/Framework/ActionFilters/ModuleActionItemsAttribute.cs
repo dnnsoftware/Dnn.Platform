@@ -7,6 +7,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     using System;
     using System.Globalization;
     using System.Reflection;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
 
     using DotNetNuke.Entities.Modules.Actions;
@@ -25,6 +26,47 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
             var controller = filterContext.Controller as IDnnController;
+            var result = this.InvokeMethod(filterContext, controller, false);
+            if (result is ModuleActionCollection moduleActions)
+            {
+                controller.ModuleActions = moduleActions;
+            }
+        }
+
+        public async Task OnActionExecutingAsync(ActionExecutingContext filterContext)
+        {
+            var controller = filterContext.Controller as IDnnController;
+            var result = this.InvokeMethod(filterContext, controller, true);
+            if (result is ModuleActionCollection moduleActions)
+            {
+                controller.ModuleActions = moduleActions;
+            }
+            else if (result is Task<ModuleActionCollection> taskResult)
+            {
+                controller.ModuleActions = await taskResult;
+            }
+        }
+
+        private static MethodInfo GetMethod(Type type, string methodName, bool supportsAsync)
+        {
+            var method = type.GetMethod(methodName);
+
+            if (method == null)
+            {
+                throw new NotImplementedException($"The expected method to get the module actions cannot be found. Type: {type.FullName}, Method: {methodName}");
+            }
+
+            var returnType = method.ReturnType;
+            if (returnType == typeof(ModuleActionCollection) || (supportsAsync && returnType == typeof(Task<ModuleActionCollection>)))
+            {
+                return method;
+            }
+
+            throw new InvalidOperationException("The method must return an object of type ModuleActionCollection");
+        }
+
+        private object InvokeMethod(ActionExecutingContext filterContext, IDnnController controller, bool supportsAsync)
+        {
             Type type;
             string methodName;
 
@@ -55,27 +97,9 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                 methodName = this.MethodName;
             }
 
-            var method = GetMethod(type, methodName);
+            var method = GetMethod(type, methodName, supportsAsync);
 
-            controller.ModuleActions = method.Invoke(instance, null) as ModuleActionCollection;
-        }
-
-        private static MethodInfo GetMethod(Type type, string methodName)
-        {
-            var method = type.GetMethod(methodName);
-
-            if (method == null)
-            {
-                throw new NotImplementedException($"The expected method to get the module actions cannot be found. Type: {type.FullName}, Method: {methodName}");
-            }
-
-            var returnType = method.ReturnType.FullName;
-            if (returnType != "DotNetNuke.Entities.Modules.Actions.ModuleActionCollection")
-            {
-                throw new InvalidOperationException("The method must return an object of type ModuleActionCollection");
-            }
-
-            return method;
+            return method.Invoke(instance, null);
         }
     }
 }

@@ -25,12 +25,13 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Instrumentation;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="ILogController" />
-    public class LogController : ServiceLocator<ILogController, LogController>, ILogController
+    public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
         private const int WriterLockTimeout = 10000; // milliseconds
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LogController>();
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
         private readonly IApplicationStatusInfo appStatus;
 
@@ -54,7 +55,7 @@ namespace DotNetNuke.Services.Log.EventLog
             ILogInfo theLogInfo = logInfo;
             if (this.appStatus.Status == UpgradeStatus.Install)
             {
-                Logger.Info(logInfo);
+                Logger.LogControllerLogInfo(logInfo);
             }
             else
             {
@@ -80,7 +81,7 @@ namespace DotNetNuke.Services.Log.EventLog
                             }
                             catch (HttpException exception)
                             {
-                                Logger.Error("Unable to retrieve HttpContext.Request, ignoring LogUserName", exception);
+                                Logger.LogControllerUnableToRetrieveRequestIgnoringLogUserName(exception);
                             }
                         }
                     }
@@ -140,7 +141,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 }
                 catch (Exception exc)
                 {
-                    Logger.Error(exc);
+                    Logger.LogControllerAddLogException(exc);
 
                     AddLogToFile(logInfo);
                 }
@@ -158,7 +159,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             catch (FileNotFoundException exc)
             {
-                Logger.Debug(exc);
+                Logger.LogControllerConfigFileNotFound(exc);
                 using var xmlReader = XmlReader.Create(fallbackConfigFile, new XmlReaderSettings { XmlResolver = null, });
                 xmlDoc.Load(xmlReader);
             }
@@ -358,13 +359,13 @@ namespace DotNetNuke.Services.Log.EventLog
             // ReSharper disable once EmptyGeneralCatchClause
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.LogControllerAddLogToFileException(exc);
             }
         }
 
         private static void RaiseError(string filePath, string header, string message)
         {
-            Logger.ErrorFormat(CultureInfo.InvariantCulture, "filePath={0}, header={1}, message={2}", filePath, header, message);
+            Logger.LogControllerRaiseError(filePath, header, message);
 
             if (HttpContext.Current != null)
             {
@@ -413,7 +414,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
                     catch (IOException exc)
                     {
-                        Logger.Debug(exc);
+                        Logger.LogControllerFailureToWriteToLogFile(exc);
                         Thread.Sleep(1);
                     }
                 }

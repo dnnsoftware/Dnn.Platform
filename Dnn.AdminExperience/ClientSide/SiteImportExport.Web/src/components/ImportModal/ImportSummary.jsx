@@ -24,6 +24,9 @@ class ImportSummary extends Component {
                 {props.importSummary && props.selectedPackage &&
                     <div className="import-summary">
                         <div className="sectionTitle">{Localization.get("ImportSummary")}</div>
+                        {props.importSummary.IsCrossVersionImport &&
+                            <div className="cross-version-warning">{Localization.get("CrossVersionImportWarning")}</div>
+                        }
                         <GridCell className="import-site-container">
                             <div className="left-column">
                                 <GridCell>

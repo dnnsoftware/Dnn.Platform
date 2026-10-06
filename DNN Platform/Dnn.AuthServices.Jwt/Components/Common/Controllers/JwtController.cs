@@ -28,7 +28,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
     using DotNetNuke.Security.Membership;
     using DotNetNuke.Services.Log.EventLog;
     using DotNetNuke.Web.Api;
-
+    using Microsoft.Extensions.Logging;
     using Microsoft.IdentityModel.JsonWebTokens;
     using Microsoft.IdentityModel.Tokens;
 
@@ -44,7 +44,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private const int DefaultRenewalTokenTtlMinutes = 20160; // in minutes = 14 days
         private const string SessionClaimType = "sid";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtController));
+        private static readonly ILogger<JwtController> Logger;
         private static readonly HashAlgorithm Hasher = SHA384.Create();
         private static readonly Encoding TextEncoder = Encoding.UTF8;
         private static object hasherLock = new object();
@@ -60,6 +60,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         /// <summary>Initializes static members of the <see cref="JwtController"/> class.</summary>
         static JwtController()
         {
+            Logger = DnnLoggingController.GetLogger<JwtController>();
             ValidateConfiguration();
         }
 
@@ -115,7 +116,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return null;
             }
 
@@ -128,7 +129,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return false;
             }
 
@@ -142,10 +143,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var sessionId = GetJwtSessionValue(jwt);
             if (string.IsNullOrEmpty(sessionId))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Session ID not found in the claim");
-                }
+                Logger.LogTrace("Session ID not found in the claim");
 
                 return false;
             }
@@ -159,7 +157,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return EmptyWithError("disabled");
             }
 
@@ -167,7 +165,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             IPortalSettings portalSettings = obsoletePortalSettings;
             if (portalSettings == null)
             {
-                Logger.Trace("portalSettings = null");
+                Logger.LogTrace("portalSettings = null");
                 return EmptyWithError("no-portal");
             }
 
@@ -186,7 +184,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             if (userInfo == null)
             {
-                Logger.Trace("user = null");
+                Logger.LogTrace("user = null");
                 return EmptyWithError("bad-credentials");
             }
 
@@ -200,7 +198,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             if (!valid)
             {
-                Logger.Trace("login status = " + status);
+                Logger.LogTrace("login status {status}", status);
                 return EmptyWithError("bad-credentials");
             }
 
@@ -246,7 +244,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!JwtAuthMessageHandler.IsEnabled)
             {
-                Logger.Trace(this.SchemeType + " is not registered/enabled in web.config file");
+                Logger.LogTrace("{SchemeType} is not registered/enabled in web.config file", this.SchemeType);
                 return EmptyWithError("disabled");
             }
 
@@ -265,10 +263,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var sessionId = GetJwtSessionValue(jwt);
             if (string.IsNullOrEmpty(sessionId))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Session ID not found in the claim");
-                }
+                Logger.LogTrace("Session ID {sessionId} not found in the claim", sessionId);
 
                 return EmptyWithError("bad-claims");
             }
@@ -276,40 +271,28 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var persistedToken = this.DataProvider.GetTokenById(sessionId);
             if (persistedToken == null)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Token not found in DB");
-                }
+                Logger.LogTrace("Token not found in DB");
 
                 return EmptyWithError("not-found");
             }
 
             if (persistedToken.RenewalExpiry <= DateTime.UtcNow)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Token can't bwe renewed anymore");
-                }
+                Logger.LogTrace("Token can't be renewed anymore");
 
                 return EmptyWithError("not-more-renewal");
             }
 
             if (persistedToken.RenewalHash != GetHashedStr(renewalToken))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Invalid renewal token");
-                }
+                Logger.LogTrace("Invalid renewal token");
 
                 return EmptyWithError("bad-token");
             }
 
             if (persistedToken.TokenHash != GetHashedStr(rawToken))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Invalid access token");
-                }
+                Logger.LogTrace("Invalid access token");
 
                 return EmptyWithError("bad-token");
             }
@@ -317,20 +300,14 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var userInfo = this.TryGetUser(jwt, false);
             if (userInfo == null)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("User not found in DB");
-                }
+                Logger.LogTrace("User not found in DB");
 
                 return EmptyWithError("not-found");
             }
 
             if (persistedToken.UserId != userInfo.UserID)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Mismatch token and user");
-                }
+                Logger.LogTrace("Mismatch token and user");
 
                 return EmptyWithError("bad-token");
             }
@@ -395,7 +372,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             }
             catch (Exception ex)
             {
-                Logger.Error("Unable to construct JWT object from authorization value. " + ex.Message);
+                Logger.LogError(ex, "Unable to construct JWT object from authorization value.");
                 return null;
             }
 
@@ -404,10 +381,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 var now = DateTime.UtcNow;
                 if (now < jwt.ValidFrom || now > jwt.ValidTo)
                 {
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.Trace("Token is expired");
-                    }
+                    Logger.LogTrace("Token is expired");
 
                     return null;
                 }
@@ -416,10 +390,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var sessionId = GetJwtSessionValue(jwt);
             if (string.IsNullOrEmpty(sessionId))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Invalid session ID claim");
-                }
+                Logger.LogTrace("Invalid session ID {sessionId} claim", sessionId);
 
                 return null;
             }
@@ -477,7 +448,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // Check if session token TTL exceeds renewal token TTL
             if (sessionTtl > renewalTtl)
             {
-                Logger.Warn(
+                Logger.LogWarning(
                     $"JWT Configuration Warning: SessionTokenTtlMinutes ({sessionTtl} minutes) exceeds RenewalTokenTtlMinutes ({renewalTtl} minutes). " +
                     $"Session tokens will be capped at the renewal period. This configuration may cause unexpected behavior. " +
                     $"Please ensure SessionTokenTtlMinutes <= RenewalTokenTtlMinutes in web.config.");
@@ -486,7 +457,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // Warn about very short session tokens (less than 5 minutes)
             if (sessionTtl < 5)
             {
-                Logger.Warn(
+                Logger.LogWarning(
                     $"JWT Configuration Warning: SessionTokenTtlMinutes is set to {sessionTtl} minutes, which is very short. " +
                     $"This may cause frequent re-authentication requests. Recommended minimum: 15 minutes.");
             }
@@ -494,7 +465,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // Warn about very long session tokens (more than 24 hours)
             if (sessionTtl > 1440)
             {
-                Logger.Warn(
+                Logger.LogWarning(
                     $"JWT Configuration Warning: SessionTokenTtlMinutes is set to {sessionTtl} minutes ({sessionTtl / 60} hours), which is very long. " +
                     $"This may pose a security risk. Recommended maximum: 1440 minutes (24 hours).");
             }
@@ -502,7 +473,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // Warn about very short renewal tokens (less than 1 hour)
             if (renewalTtl < 60)
             {
-                Logger.Warn(
+                Logger.LogWarning(
                     $"JWT Configuration Warning: RenewalTokenTtlMinutes is set to {renewalTtl} minutes, which is very short. " +
                     $"Users will need to re-login frequently. Recommended minimum: 1440 minutes (1 day).");
             }
@@ -510,13 +481,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             // Warn about very long renewal tokens (more than 90 days)
             if (renewalTtl > 129600)
             {
-                Logger.Warn(
+                Logger.LogWarning(
                     $"JWT Configuration Warning: RenewalTokenTtlMinutes is set to {renewalTtl} minutes ({renewalTtl / 1440} days), which is very long. " +
                     $"This may pose a security risk. Recommended maximum: 43200 minutes (30 days).");
             }
 
             // Log the current configuration at info level
-            Logger.Info(
+            Logger.LogInformation(
                 $"JWT Token Configuration: SessionTokenTtlMinutes={sessionTtl} ({sessionTtl / 60.0:F1} hours), " +
                 $"RenewalTokenTtlMinutes={renewalTtl} ({renewalTtl / 1440.0:F1} days)");
         }
@@ -558,16 +529,13 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (authHdr == null)
             {
-                ////if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request"); // too verbose; shows in all web requests
+                ////if (Logger.IsTraceEnabled) Logger.LogTrace("Authorization header not present in the request"); // too verbose; shows in all web requests
                 return null;
             }
 
             if (!string.Equals(authHdr.Scheme, AuthScheme, StringComparison.CurrentCultureIgnoreCase))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Authorization header scheme in the request is not equal to " + this.SchemeType);
-                }
+                Logger.LogTrace("Authorization header scheme in the request is not equal to {SchemeType}", this.SchemeType);
 
                 return null;
             }
@@ -575,10 +543,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var authorization = authHdr.Parameter;
             if (string.IsNullOrEmpty(authorization))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Missing authorization header value in the request");
-                }
+                Logger.LogTrace("Missing authorization header value in the request");
 
                 return null;
             }
@@ -591,10 +556,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var parts = authorization.Split('.');
             if (parts.Length < 3)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Token must have [header:claims:signature] parts at least");
-                }
+                Logger.LogTrace("Token must have [header:claims:signature] parts at least");
 
                 return null;
             }
@@ -602,10 +564,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var decoded = DecodeBase64(parts[0]);
             if (decoded.IndexOf("\"" + this.SchemeType + "\"", StringComparison.InvariantCultureIgnoreCase) < 0)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace($"This is not a {this.SchemeType} authentication scheme.");
-                }
+                Logger.LogTrace("This is not a {SchemeType} authentication scheme.", this.SchemeType);
 
                 return null;
             }
@@ -629,10 +588,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (!this.SchemeType.Equals(token.Typ, StringComparison.OrdinalIgnoreCase))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Unsupported authentication scheme type " + token.Typ);
-                }
+                Logger.LogTrace("Unsupported authentication scheme type {Type}", token.Typ);
 
                 return false;
             }
@@ -647,10 +603,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var persistedToken = this.DataProvider.GetTokenById(sessionId);
             if (persistedToken == null)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Token not found in DB");
-                }
+                Logger.LogTrace("Token not found in DB");
 
                 return null;
             }
@@ -660,10 +613,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 var now = DateTime.UtcNow;
                 if (now > persistedToken.TokenExpiry || now > persistedToken.RenewalExpiry)
                 {
-                    if (Logger.IsTraceEnabled)
-                    {
-                        Logger.Trace("DB Token is expired");
-                    }
+                    Logger.LogTrace("DB Token is expired");
 
                     return null;
                 }
@@ -671,10 +621,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             if (persistedToken.TokenHash != GetHashedStr(jwt.EncodedToken))
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Mismatch data in received token");
-                }
+                Logger.LogTrace("Mismatch data in received token");
 
                 return null;
             }
@@ -682,17 +629,14 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
             var portalSettings = PortalController.Instance.GetCurrentSettings();
             if (portalSettings == null)
             {
-                Logger.Trace("Unable to retrieve portal settings");
+                Logger.LogTrace("Unable to retrieve portal settings");
                 return null;
             }
 
             var userInfo = UserController.GetUserById(this.hostSettings, portalSettings.PortalId, persistedToken.UserId);
             if (userInfo == null)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Invalid user");
-                }
+                Logger.LogTrace("Invalid user {userId} for portal {portalId}", persistedToken.UserId, portalSettings.PortalId);
 
                 return null;
             }
@@ -702,30 +646,21 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
             if (!valid)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Inactive user status: " + status);
-                }
+                Logger.LogTrace("Inactive user status {status}", status);
 
                 return null;
             }
 
             if (!userInfo.Membership.Approved)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Non Approved user id: " + userInfo.UserID + " UserName: " + userInfo.Username);
-                }
+                Logger.LogTrace("Non Approved user id {userId} name {userName}", userInfo.UserID, userInfo.Username);
 
                 return null;
             }
 
             if (userInfo.IsDeleted)
             {
-                if (Logger.IsTraceEnabled)
-                {
-                    Logger.Trace("Deleted user id: " + userInfo.UserID + " UserName: " + userInfo.Username);
-                }
+                Logger.LogTrace("Deleted user id {userId} name {userName}", userInfo.UserID, userInfo.Username);
 
                 return null;
             }

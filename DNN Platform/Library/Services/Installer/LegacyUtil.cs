@@ -19,6 +19,9 @@ namespace DotNetNuke.Services.Installer
     using DotNetNuke.Services.Installer.Writers;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Skins;
+
+    using Microsoft.Extensions.Logging;
+
     using Newtonsoft.Json;
 
     /// <summary>
@@ -27,7 +30,7 @@ namespace DotNetNuke.Services.Installer
     /// </summary>
     public class LegacyUtil
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LegacyUtil));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LegacyUtil>();
 
         private static string adminModules =
             "Adsense, MarketShare, Authentication, Banners, FeedExplorer, FileManager, HostSettings, Lists, LogViewer, Newsletters, PortalAliases, Portals, RecycleBin, Scheduler, SearchAdmin, SearchInput, SearchResults, Security, SiteLog, SiteWizard, SQL, Tabs, Vendors,";

@@ -12,15 +12,13 @@ export class DnnRmItemsCardview {
   /** The list of current items. */
   @Prop() currentItems!: GetFolderContentResponse;
 
-  @Element() el: HTMLDnnRmItemsCardviewElement;
+  @Element() el!: HTMLDnnRmItemsCardviewElement;
 
   /** Fires when a folder is double-clicked and emits the folder ID into the event.detail */
-  @Event() dnnRmFolderDoubleClicked: EventEmitter<number>;
+  @Event() dnnRmFolderDoubleClicked!: EventEmitter<number>;
 
   /** Fires when a file is double-clicked and emits the file ID into the event.detail */
-  @Event() dnnRmFileDoubleClicked: EventEmitter<string>;
-
-  private contextMenu: HTMLDnnContextMenuElement;
+  @Event() dnnRmFileDoubleClicked!: EventEmitter<string>;
 
   private handleDoubleClick(item: Item): void {
     if (item.isFolder) {
@@ -28,6 +26,11 @@ export class DnnRmItemsCardview {
     } else {
       this.dnnRmFileDoubleClicked.emit(item.path);
     }
+  }
+
+  private openItemContextMenu(e: MouseEvent): void {
+    const rowMenu = (e.currentTarget as HTMLElement)?.querySelector('dnn-context-menu');
+    rowMenu?.open(e as PointerEvent).catch(console.error);
   }
 
   render() {
@@ -42,7 +45,7 @@ export class DnnRmItemsCardview {
                 onDblClick={() => this.handleDoubleClick(item)}
                 onContextMenu={e => {
                   e.preventDefault();
-                  this.contextMenu.open(e as PointerEvent).catch(console.error);
+                  this.openItemContextMenu(e);
                 }}
               >
                   <div class={selectionUtilities.isItemSelected(item) ? "radio selected" : "radio"}>
@@ -61,7 +64,6 @@ export class DnnRmItemsCardview {
                     {item.itemName}
                   </span>
                   <dnn-context-menu
-                    ref={el => this.contextMenu = el}
                     closeOnClick
                   >
                     {item.isFolder

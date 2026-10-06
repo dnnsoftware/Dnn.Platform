@@ -11,9 +11,11 @@ namespace DotNetNuke.Services.Exceptions
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.UserRequest;
 
+    using Microsoft.Extensions.Logging;
+
     public class SecurityException : BasePortalException
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityException));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SecurityException>();
         private string ip;
         private string querystring;
 
@@ -93,7 +95,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 this.ip = string.Empty;
                 this.querystring = string.Empty;
-                Logger.Error(exc);
+                Logger.SecurityExceptionInitializeProviderVariablesException(exc);
             }
         }
 

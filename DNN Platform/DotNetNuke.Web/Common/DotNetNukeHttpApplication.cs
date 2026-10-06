@@ -41,10 +41,12 @@ namespace DotNetNuke.Web.Common.Internal
     using DotNetNuke.Services.Tokens;
     using DotNetNuke.Services.Url.FriendlyUrl;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>DotNetNuke Http Application. It will handle Start, End, BeginRequest, Error event for whole application.</summary>
-    public class DotNetNukeHttpApplication : HttpApplication
+    public partial class DotNetNukeHttpApplication : HttpApplication
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DotNetNukeHttpApplication>();
 
         private static readonly string[] Endings = [".css", ".gif", ".jpeg", ".jpg", ".js", ".png", "scriptresource.axd", "webresource.axd",];
 
@@ -131,7 +133,7 @@ namespace DotNetNuke.Web.Common.Internal
 
         private void Application_End(object sender, EventArgs eventArgs)
         {
-            Logger.Info("Application Ending");
+            Logger.ApplicationEnding();
 
             try
             {
@@ -139,7 +141,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                Logger.ApplicationLogEndException(e);
             }
 
             try
@@ -148,44 +150,44 @@ namespace DotNetNuke.Web.Common.Internal
             }
             catch (Exception e)
             {
-                Logger.Error(e);
+                Logger.ApplicationStopSchedulerException(e);
             }
 
             // Shutdown Lucene, but not when we are installing
             var appStatus = new ApplicationStatusInfo(new Application());
             if (appStatus.Status != UpgradeStatus.Install)
             {
-                Logger.Trace("Disposing Lucene");
+                Logger.ApplicationDisposingLucene();
                 if (LuceneController.Instance is IDisposable lucene)
                 {
                     lucene.Dispose();
                 }
             }
 
-            Logger.Trace("Dumping all Application Errors");
+            Logger.ApplicationDumpingAllApplicationErrors();
             if (HttpContext.Current != null)
             {
                 if (HttpContext.Current.AllErrors != null)
                 {
                     foreach (Exception exc in HttpContext.Current.AllErrors)
                     {
-                        Logger.Fatal(exc);
+                        Logger.ApplicationLogApplicationError(exc);
                     }
                 }
             }
 
-            Logger.Trace("End Dumping all Application Errors");
-            Logger.Info("Application Ended");
+            Logger.ApplicationEndDumpingAllApplicationErrors();
+            Logger.ApplicationEnded();
         }
 
         private void Application_Start(object sender, EventArgs eventArgs)
         {
-            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.ApplicationStarting(Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
             Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
-            Logger.InfoFormat(CultureInfo.InvariantCulture, "Application Started ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
+            Logger.ApplicationStarted(Globals.ElapsedSinceAppStart); // just to start the timer
             DotNetNukeShutdownOverload.InitializeFcnSettings(new ApplicationStatusInfo(new Application()));
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
@@ -200,13 +202,13 @@ namespace DotNetNuke.Web.Common.Internal
             if (HttpContext.Current != null)
             {
                 // Get the exception object.
-                Logger.Trace("Dumping all Application Errors");
+                Logger.ApplicationDumpingAllApplicationErrors();
                 foreach (Exception exc in HttpContext.Current.AllErrors)
                 {
-                    Logger.Fatal(exc);
+                    Logger.ApplicationLogApplicationError(exc);
                 }
 
-                Logger.Trace("End Dumping all Application Errors");
+                Logger.ApplicationEndDumpingAllApplicationErrors();
             }
         }
 

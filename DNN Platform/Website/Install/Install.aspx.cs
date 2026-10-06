@@ -31,7 +31,10 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals;
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Website;
+
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A page which installs or upgrades DNN.</summary>
     public partial class Install : Page
@@ -42,7 +45,7 @@ namespace DotNetNuke.Services.Install
         // ReSharper disable once InconsistentNaming
         protected static string UpgradeWizardLocalResourceFile = "~/Install/App_LocalResources/UpgradeWizard.aspx.resx";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Install));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Install>();
         private static readonly object InstallLocker = new object();
 
         private readonly IApplicationStatusInfo appStatus;
@@ -301,7 +304,7 @@ namespace DotNetNuke.Services.Install
                         strError += Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
                         if (!string.IsNullOrEmpty(strError))
                         {
-                            Logger.Error(strError);
+                            Logger.InstallAddFcnModeErrorMessage(strError);
                         }
 
                         this.Response.Write("<h2>Installation Complete</h2>");
@@ -437,7 +440,7 @@ namespace DotNetNuke.Services.Install
                     strError += Config.AddFCNMode(this.appStatus, Config.FcnMode.Single);
                     if (!string.IsNullOrEmpty(strError))
                     {
-                        Logger.Error(strError);
+                        Logger.InstallAddFcnModeErrorMessage(strError);
                     }
 
                     HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, "Replacing Digital Assets Manager with the new Resource Manager: ");
@@ -567,7 +570,7 @@ namespace DotNetNuke.Services.Install
                 catch (Exception ex)
                 {
                     // error removing the file
-                    Logger.Error(ex);
+                    Logger.InstallDeletePortalResourcesFileException(ex);
                 }
 
                 this.Response.Write("<h2>Installation Complete</h2>");
@@ -658,7 +661,7 @@ namespace DotNetNuke.Services.Install
                 catch (Exception ex)
                 {
                     // Write out Header
-                    Logger.Error(ex);
+                    Logger.InstallNoUpgradeException(ex);
                     HtmlUtils.WriteHeader(this.Response, "error");
                     this.Response.Write("<h2>Current Assembly Version: " + DotNetNukeContext.Current.Application.Version.ToString(3) + "</h2>");
 

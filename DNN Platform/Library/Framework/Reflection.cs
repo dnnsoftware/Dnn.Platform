@@ -16,11 +16,12 @@ namespace DotNetNuke.Framework
     using DotNetNuke.Services.Exceptions;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Library responsible for reflection.</summary>
     public partial class Reflection
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Reflection));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Reflection>();
 
         /// <summary>Creates an object.</summary>
         /// <param name="objectProviderType">The type of Object to create (data/navigation).</param>
@@ -322,7 +323,7 @@ namespace DotNetNuke.Framework
             }
             catch (InvalidOperationException exception)
             {
-                Logger.Warn($"Unable to create type via service provider: {typeof(T)}", exception);
+                Logger.ReflectionUnableToCreateTypeViaServiceProvider(exception, typeof(T));
                 return Activator.CreateInstance<T>();
             }
         }
@@ -348,7 +349,7 @@ namespace DotNetNuke.Framework
             }
             catch (InvalidOperationException exception)
             {
-                Logger.Warn($"Unable to create type via service provider: {type}", exception);
+                Logger.ReflectionUnableToCreateTypeViaServiceProvider(exception, type);
                 return Activator.CreateInstance(type);
             }
         }
@@ -418,7 +419,7 @@ namespace DotNetNuke.Framework
                 {
                     if (!ignoreErrors)
                     {
-                        Logger.Error(typeName, exc);
+                        Logger.ReflectionCreateTypeException(exc, typeName);
                     }
                 }
             }

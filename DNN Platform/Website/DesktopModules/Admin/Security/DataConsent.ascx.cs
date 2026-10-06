@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 $"document.getElementById({HttpUtility.JavaScriptStringEncode(this.cmdSubmit.ClientID, addDoubleQuotes: true)}).disabled = !this.checked;");
             this.cmdDeleteMe.Attributes.Add(
                 "onclick",
-                $"if (!confirm({HttpUtility.JavaScriptStringEncode(this.DeleteMeConfirmString, addDoubleQuotes: true)})) this.preventDefault();");
+                $"if (!confirm({HttpUtility.JavaScriptStringEncode(this.DeleteMeConfirmString, addDoubleQuotes: true)})) event.preventDefault();");
         }
 
         private void CmdCancel_Click(object sender, EventArgs e)

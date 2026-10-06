@@ -23,11 +23,12 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.UI.Skins;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>An export service for themes.</summary>
     public class ThemesExportService : BasePortableService
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ThemesExportService));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ThemesExportService>();
 
         private readonly IApplicationStatusInfo appStatus;
         private ExportImportJob exportImportJob;
@@ -212,7 +213,7 @@ namespace Dnn.ExportImport.Components.Services
                             catch (Exception ex)
                             {
                                 this.Result.AddLogEntry("Import Theme error", file);
-                                Logger.Error(ex);
+                                Logger.ThemesExportServiceImportThemeFileException(ex);
                             }
                         }
 

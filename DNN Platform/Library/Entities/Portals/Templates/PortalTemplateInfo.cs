@@ -15,9 +15,11 @@ namespace DotNetNuke.Entities.Portals.Templates
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
 
+    using Microsoft.Extensions.Logging;
+
     public class PortalTemplateInfo : IPortalTemplateInfo
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PortalController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<PortalController>();
         private string resourceFilePath;
 
         /// <summary>Initializes a new instance of the <see cref="PortalTemplateInfo"/> class.</summary>
@@ -95,7 +97,7 @@ namespace DotNetNuke.Entities.Portals.Templates
             }
             catch (Exception e)
             {
-                Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
+                Logger.PortalTemplateInfoErrorWhileParsing(e, this.TemplateFilePath);
             }
         }
 
@@ -103,17 +105,15 @@ namespace DotNetNuke.Entities.Portals.Templates
         {
             try
             {
-                using (var reader = PortalTemplateIO.Instance.OpenTextReader(this.LanguageFilePath))
-                {
-                    var xmlDoc = XDocument.Load(reader);
+                using var reader = PortalTemplateIO.Instance.OpenTextReader(this.LanguageFilePath);
+                var xmlDoc = XDocument.Load(reader);
 
-                    this.Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
-                    this.Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
-                }
+                this.Name = ReadLanguageFileValue(xmlDoc, "LocalizedTemplateName.Text");
+                this.Description = ReadLanguageFileValue(xmlDoc, "PortalDescription.Text");
             }
             catch (Exception e)
             {
-                Logger.Error("Error while parsing: " + this.TemplateFilePath, e);
+                Logger.PortalTemplateInfoErrorWhileParsing(e, this.TemplateFilePath);
             }
         }
 

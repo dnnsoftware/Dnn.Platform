@@ -11,8 +11,8 @@ namespace DotNetNuke.Tests.Web.Api.Internals
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Tests.Utilities;
-    using Moq;
     using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using NUnit.Framework;
 
     [TestFixture]

@@ -1694,7 +1694,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Line1,
                 Line2,
-                };
+            };
             const string docKey = "key1";
 
             // Act
@@ -1751,7 +1751,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 Line1,
                 Line2,
-                };
+            };
             const string docKey = "key1";
 
             // Act
@@ -1782,7 +1782,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 "zèbre or panthère",
                 "zebre without accent",
                 "panthere without accent",
-                };
+            };
 
             this.AddLinesAsSearchDocs(lines);
 
@@ -1811,7 +1811,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 "field1_value",
                 "field2_value",
-                };
+            };
 
             this.AddLinesAsSearchDocs(lines);
 
@@ -1840,7 +1840,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 "All team are riding their bikes",
                 "The boy rides his bike to school",
                 "This sentence is missing the bike ri... word",
-                };
+            };
 
             this.AddLinesAsSearchDocs(lines);
 

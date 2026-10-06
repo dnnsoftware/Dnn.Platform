@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Log.EventLog
     using DotNetNuke.Services.Scheduling;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class DBLoggingProvider : LoggingProvider
     {
@@ -34,7 +35,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DBLoggingProvider>();
         private static readonly List<LogQueueItem> LogQueue = [];
         private static readonly ReaderWriterLockSlim LockNotif = new ReaderWriterLockSlim();
         private static readonly ReaderWriterLockSlim LockQueueLog = new ReaderWriterLockSlim();
@@ -472,7 +473,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.DbLoggingProviderFillLogInfoException(exc);
             }
 
             return (LogInfo)obj;
@@ -571,12 +572,12 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             catch (SqlException exc)
             {
-                Logger.Error(exc);
+                Logger.DbLoggingProviderWriteLogSqlException(exc);
                 WriteError(logTypeConfigInfo, exc, "SQL Exception", SqlUtils.TranslateSQLException(exc));
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.DbLoggingProviderWriteLogGeneralException(exc);
                 WriteError(logTypeConfigInfo, exc, "Unhandled Error", exc.Message);
             }
         }

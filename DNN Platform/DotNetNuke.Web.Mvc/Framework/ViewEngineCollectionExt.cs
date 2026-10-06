@@ -49,7 +49,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                 var parameters = new object[]
                 {
                     new Func<IViewEngine, ViewEngineResult>(e => e.FindView(controllerContext, viewName, masterName, false)),
-                    false,
+                    true, // allow SearchedLocations tracking to improve error messages up the stack.
                 };
                 var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default, "Find", viewEngineCollection, parameters);
 
@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.Mvc.Framework
                 var parameters = new object[]
                 {
                     new Func<IViewEngine, ViewEngineResult>(e => e.FindPartialView(controllerContext, partialViewName, false)),
-                    false,
+                    true, // allow SearchedLocations tracking to improve error messages up the stack.
                 };
                 var cacheArg = new CacheItemArgs(cacheKey, 120, CacheItemPriority.Default, "Find", viewEngineCollection, parameters);
 

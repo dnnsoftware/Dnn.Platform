@@ -25,8 +25,10 @@ namespace DotNetNuke.Modules.Admin.Users
     using DotNetNuke.Services.Localization;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Website;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using DataCache = DotNetNuke.Common.Utilities.DataCache;
     using Globals = DotNetNuke.Common.Globals;
@@ -34,7 +36,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// <summary>The User UserModuleBase is used to manage the base parts of a User.</summary>
     public partial class User : UserUserControlBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<User>();
         private readonly IHostSettings hostSettings;
         private readonly IJavaScriptLibraryHelper javaScript;
         private readonly IPortalController portalController;
@@ -601,7 +603,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (Exception exc)
                     {
-                        Logger.Error(exc);
+                        Logger.UserUpdateException(exc);
 
                         var args = new UserUpdateErrorArgs(this.User.UserID, this.User.Username, "EmailError");
                         this.OnUserUpdateError(args);

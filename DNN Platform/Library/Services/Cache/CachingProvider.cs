@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Cache
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>CachingProvider provides basic component of cache system, by default it will use HttpRuntime.Cache.</summary>
     /// <remarks>
@@ -46,7 +47,7 @@ namespace DotNetNuke.Services.Cache
     public abstract class CachingProvider
     {
         private const string CachePrefix = "DNN_";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CachingProvider));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CachingProvider>();
         private static System.Web.Caching.Cache cache;
 
         /// <summary>Initializes a new instance of the <see cref="CachingProvider"/> class.</summary>
@@ -200,7 +201,7 @@ namespace DotNetNuke.Services.Cache
         internal static void DisableCacheExpiration()
         {
             CacheExpirationDisable = true;
-            Logger.Warn("Disable cache expiration.");
+            Logger.CachingProviderDisableCacheExpiration();
         }
 
         /// <summary>
@@ -212,7 +213,7 @@ namespace DotNetNuke.Services.Cache
         {
             CacheExpirationDisable = false;
             DataCache.ClearHostCache(true);
-            Logger.Warn("Enable cache expiration.");
+            Logger.CachingProviderEnableCacheExpiration();
         }
 
         /// <summary>Clears the cache internal.</summary>

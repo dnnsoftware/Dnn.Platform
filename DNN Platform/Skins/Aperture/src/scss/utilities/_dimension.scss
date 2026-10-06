@@ -28,8 +28,15 @@ $sizes: (
                 max-height: $value;
             }
         }
-        @each $breakpoint, $min-width in breakpoints.$breakpoints {
-            @media (min-width: $min-width) {
+    }
+
+    // Breakpoints must be the outer loop so that a larger breakpoint's rules
+    // always come later in the stylesheet than a smaller breakpoint's rules.
+    // Otherwise two !important rules from different breakpoints/sizes that are
+    // simultaneously active fall back to source order, and the wrong one wins.
+    @each $breakpoint, $min-width in breakpoints.$breakpoints {
+        @media (min-width: $min-width) {
+            @each $key, $value in $sizes {
                 .aperture-#{$property}-#{$breakpoint}-#{$key} {
                     @if ($property == 'w') {
                         width: $value !important;

@@ -19,6 +19,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("set-role", Constants.RolesCategory, "Prompt_SetRole_Description")]
     public class SetRole : ConsoleCommandBase
     {
@@ -40,7 +42,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("status", "Prompt_SetRole_FlagStatus", "Boolean")]
         private const string FlagStatus = "status";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SetRole));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SetRole>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -126,12 +128,12 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
             catch (SetRoleException se)
             {
-                Logger.Error(se);
+                Logger.SetRoleRunSetRoleException(se);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleUpdated.SystemRoleError"));
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.SetRoleRunGeneralException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleUpdated.Error"));
             }
         }

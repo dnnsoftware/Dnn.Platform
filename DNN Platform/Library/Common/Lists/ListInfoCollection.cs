@@ -12,12 +12,13 @@ namespace DotNetNuke.Common.Lists
     using DotNetNuke.Instrumentation;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Represents a collection of <see cref="ListInfo"/>.</summary>
     [Serializable]
     public class ListInfoCollection(ListController listController) : GenericCollectionBase<ListInfo>
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListInfoCollection));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ListInfoCollection>();
         private readonly ListController listController = listController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ListController>();
         private readonly Dictionary<string, int> mKeyIndexLookup = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
 
@@ -48,7 +49,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionAddException(exc);
             }
         }
 
@@ -63,7 +64,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionItemIndexException(exc);
                 return null;
             }
         }
@@ -85,7 +86,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionItemKeyException(exc);
                 return null;
             }
         }
@@ -110,7 +111,7 @@ namespace DotNetNuke.Common.Lists
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ListInfoCollectionItemKeyCacheException(exc);
             }
 
             // key will be in format Country.US:Region

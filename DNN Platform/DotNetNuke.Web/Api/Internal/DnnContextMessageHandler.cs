@@ -16,8 +16,10 @@ namespace DotNetNuke.Web.Api.Internal
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Services.Localization.Internal;
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Sets up DNN context information upon a request.</summary>
     public class DnnContextMessageHandler : MessageProcessingHandler
@@ -57,6 +59,7 @@ namespace DotNetNuke.Web.Api.Internal
             var portalSettings = new PortalSettings(tabId, alias);
 
             request.GetHttpContext().Items["PortalSettings"] = portalSettings;
+            DotNetNuke.Common.Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>().AddToLogContext("PortalId", portalSettings.PortalId);
             return portalSettings;
 #pragma warning restore CS0618 // Type or member is obsolete
         }

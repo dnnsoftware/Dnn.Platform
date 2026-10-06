@@ -13,6 +13,9 @@ namespace Dnn.PersonaBar.Security.Components.Checks
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Tabs;
+    using DotNetNuke.Instrumentation;
+
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// A security check for permissions on the User Profile page defined in
@@ -47,25 +50,28 @@ namespace Dnn.PersonaBar.Security.Components.Checks
         /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with IPagesController. Scheduled removal in v12.0.0.")]
         public CheckUserProfilePage()
-            : this(PortalController.Instance, TabController.Instance, PagesController.Instance)
+            : this(PagesController.Instance)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
         /// <param name="pagesController">An instance of the <see cref="IPagesController"/> interface.</param>
         public CheckUserProfilePage(IPagesController pagesController)
-            : this(PortalController.Instance, TabController.Instance, pagesController)
+            : this(DnnLoggingController.GetLogger<CheckUserProfilePage>(), PortalController.Instance, TabController.Instance, pagesController)
         {
         }
 
         /// <summary>Initializes a new instance of the <see cref="CheckUserProfilePage"/> class.</summary>
+        /// <param name="logger">An instance of the <see cref="ILogger{T}"/> interface.</param>
         /// <param name="portalController">An instance of the <see cref="IPortalController"/> interface.</param>
         /// <param name="tabController">An instance of the <see cref="ITabController"/> interface.</param>
         /// <param name="pagesController">An instance of the <see cref="IPagesController"/> interface.</param>
         internal CheckUserProfilePage(
+            ILogger<CheckUserProfilePage> logger,
             IPortalController portalController,
             ITabController tabController,
             IPagesController pagesController)
+            : base(logger ?? throw new ArgumentNullException(nameof(logger)))
         {
             this.tabController = tabController ?? throw new ArgumentNullException(nameof(tabController));
             this.pagesController = pagesController ?? throw new ArgumentNullException(nameof(pagesController));

@@ -17,10 +17,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     using DotNetNuke.Services.Installer.Packages;
     using DotNetNuke.Services.Localization;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     public class ExtensionLanguagePackageEditor : IPackageEditor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<JsLibraryPackageEditor>();
 
         /// <summary>Initializes a new instance of the <see cref="ExtensionLanguagePackageEditor"/> class.</summary>
         public ExtensionLanguagePackageEditor()
@@ -85,7 +86,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ExtensionLanguagePackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

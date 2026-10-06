@@ -27,3 +27,7 @@
 *.jpeg binary
 *.jpg  binary
 *.png  binary
+
+# Verify.SourceGenerators testing library artifacts
+*.verified.txt text eol=lf working-tree-encoding=UTF-8
+*.verified.cs text eol=lf working-tree-encoding=UTF-8

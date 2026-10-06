@@ -97,6 +97,7 @@
     <Compile Include="Components\BaseRemoteStorageProvider.cs" />
     <Compile Include="Components\BusinessController.cs" />
     <Compile Include="Components\IRemoteStorageItem.cs" />
+    <Compile Include="LoggerMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

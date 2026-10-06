@@ -39,8 +39,10 @@ namespace DotNetNuke.Services.Install
     using DotNetNuke.Services.Upgrade.Internals.Steps;
     using DotNetNuke.UI.Utilities;
     using DotNetNuke.Web.UI.WebControls;
+    using DotNetNuke.Website;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Globals = DotNetNuke.Common.Globals;
     using Localization = DotNetNuke.Services.Localization.Localization;
@@ -60,7 +62,7 @@ namespace DotNetNuke.Services.Install
         private static readonly IInstallationStep InstallSiteStep = new InstallSiteStep();
         private static readonly IInstallationStep InstallSuperUserStep = new InstallSuperUserStep();
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallWizard));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<InstallWizard>();
 
         // Ordered List of Steps (and weight in percentage) to be executed
         private static readonly IDictionary<IInstallationStep, int> Steps = new Dictionary<IInstallationStep, int>
@@ -227,18 +229,20 @@ namespace DotNetNuke.Services.Install
         }
 
         /// <summary>Runs the installer.</summary>
+        /// <param name="cultureCode">The culture selected by the user in the wizard UI (from the PageLocale field), used as the source of truth for localization since the static culture field does not survive an AppDomain restart.</param>
         [WebMethod]
-        public static void RunInstall()
+        public static void RunInstall(string cultureCode)
         {
             installerRunning = false;
-            LaunchAutoInstall(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>());
+            LaunchAutoInstall(Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>(), cultureCode);
         }
 
         /// <summary>Gets the installation log.</summary>
         /// <param name="startRow">At which line to start obtaining log lines.</param>
+        /// <param name="cultureCode">The culture selected by the user in the wizard UI (from the PageLocale field), used as the source of truth for localization since the static culture field does not survive an AppDomain restart.</param>
         /// <returns>Log string from the provided line number forward.</returns>
         [WebMethod]
-        public static object GetInstallationLog(int startRow)
+        public static object GetInstallationLog(int startRow, string cultureCode)
         {
             const int maxLines = 500;
             var logFile = InstallController.Instance.InstallerLogName;
@@ -278,7 +282,10 @@ namespace DotNetNuke.Services.Install
 
                 if (!errorLogged)
                 {
-                    return Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");
+                    return Localization.GetString(
+                        "NoErrorsLogged",
+                        "~/Install/App_LocalResources/InstallWizard.aspx.resx",
+                        !string.IsNullOrEmpty(cultureCode) ? cultureCode : culture);
                 }
 
                 return sb.ToString();
@@ -580,6 +587,20 @@ namespace DotNetNuke.Services.Install
             this.txtPassword.CssClass = "password-strength";
 
             var options = new DnnPaswordStrengthOptions();
+
+            // The Install Wizard cannot assume App_GlobalResources/WebControls.resx
+            // (which DnnPaswordStrengthOptions reads by default) has been translated
+            // for the selected culture at install time. Override with this page's
+            // own local resource file, consistent with every other string on this page.
+            options.MinLengthText = this.LocalizeString("PasswordStrengthMinLength");
+            options.WeakText = this.LocalizeString("PasswordStrengthWeak");
+            options.FairText = this.LocalizeString("PasswordStrengthFair");
+            options.StrongText = this.LocalizeString("PasswordStrengthStrong");
+            options.CriteriaAtLeastNCharsText = this.LocalizeString("CriteriaAtLeastNChars");
+            options.CriteriaAtLeastNSpecialCharsText = this.LocalizeString("CriteriaAtLeastNSpecialChars");
+            options.CriteriaValidationExpressionText = this.LocalizeString("CriteriaValidationExpression");
+            options.PasswordRulesHeadText = this.LocalizeString("PasswordRulesHeadText");
+
             var optionsAsJsonString = Json.Serialize(options);
             var script = string.Format(
                 "dnn.initializePasswordStrength('.{0}', {1});{2}",
@@ -597,6 +618,8 @@ namespace DotNetNuke.Services.Install
                 ContainerSelector = ".dnnFormPassword",
                 UnmatchedCssClass = "unmatched",
                 MatchedCssClass = "matched",
+                ConfirmPasswordUnmatchedText = this.LocalizeString("ConfirmPasswordUnmatched"),
+                ConfirmPasswordMatchedText = this.LocalizeString("ConfirmPasswordMatched"),
             };
 
             var confirmOptionsAsJsonString = Json.Serialize(confirmPasswordOptions);
@@ -636,7 +659,7 @@ namespace DotNetNuke.Services.Install
                 try
                 {
                     installerRunning = true;
-                    LaunchAutoInstall(this.appStatus);
+                    LaunchAutoInstall(this.appStatus, culture);
                 }
                 catch (Exception)
                 {
@@ -648,7 +671,7 @@ namespace DotNetNuke.Services.Install
             {
                 if (installerRunning)
                 {
-                    LaunchAutoInstall(this.appStatus);
+                    LaunchAutoInstall(this.appStatus, culture);
                 }
                 else
                 {
@@ -716,7 +739,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        private static void LaunchAutoInstall(IApplicationStatusInfo appStatus)
+        private static void LaunchAutoInstall(IApplicationStatusInfo appStatus, string cultureCode = null)
         {
             if (appStatus.Status == UpgradeStatus.None)
             {
@@ -730,9 +753,12 @@ namespace DotNetNuke.Services.Install
             // Set Script timeout to MAX value
             HttpContext.Current.Server.ScriptTimeout = int.MaxValue;
 
-            if (culture != null)
+            // Prefer the culture passed in explicitly (e.g. from the client's PageLocale field) over the
+            // static culture field, which does not survive an AppDomain restart triggered mid-install.
+            var effectiveCulture = !string.IsNullOrEmpty(cultureCode) ? cultureCode : culture;
+            if (effectiveCulture != null)
             {
-                Thread.CurrentThread.CurrentUICulture = new CultureInfo(culture);
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(effectiveCulture);
             }
 
             Install(appStatus);
@@ -770,7 +796,7 @@ namespace DotNetNuke.Services.Install
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error("WIZARD ERROR:" + ex);
+                    Logger.InstallWizardError(ex);
                     CurrentStepActivity("ERROR:" + ex.Message);
                     installerRunning = false;
                     return;

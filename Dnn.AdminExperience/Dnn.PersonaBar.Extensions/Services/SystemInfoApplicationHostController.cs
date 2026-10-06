@@ -18,10 +18,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Framework.Providers;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SystemInfoApplicationHostController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoApplicationHostController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SystemInfoApplicationHostController>();
 
         public static string FirstCharToUpper(string input)
             => FirstCharToUpper(input, CultureInfo.CurrentCulture);
@@ -61,7 +63,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoApplicationHostControllerGetApplicationInfoException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

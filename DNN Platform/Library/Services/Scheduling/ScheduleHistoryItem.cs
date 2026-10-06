@@ -10,10 +10,13 @@ namespace DotNetNuke.Services.Scheduling
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
+    /// <summary>History about a schedule item.</summary>
     [Serializable]
-    public class ScheduleHistoryItem : ScheduleItem
+    public partial class ScheduleHistoryItem : ScheduleItem
     {
-        private static readonly ILog TracelLogger = LoggerSource.Instance.GetLogger(typeof(ScheduleHistoryItem));
+        private static readonly ILogger TracelLogger = DnnLoggingController.GetLogger<ScheduleHistoryItem>();
 
         private StringBuilder logNotes;
         private int scheduleHistoryID;
@@ -216,9 +219,13 @@ namespace DotNetNuke.Services.Scheduling
             set
             {
                 this.succeeded = value;
-                if (TracelLogger.IsDebugEnabled)
+                if (value)
                 {
-                    TracelLogger.Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {this.FriendlyName}");
+                    TracelLogger.ScheduleHistoryItemSucceededEnd(this.FriendlyName);
+                }
+                else
+                {
+                    TracelLogger.ScheduleHistoryItemSucceededStart(this.FriendlyName);
                 }
             }
         }
@@ -226,9 +233,9 @@ namespace DotNetNuke.Services.Scheduling
         public virtual void AddLogNote(string notes)
         {
             this.logNotes.Append(notes);
-            if (TracelLogger.IsTraceEnabled)
+            if (TracelLogger.IsEnabled(LogLevel.Trace))
             {
-                TracelLogger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
+                TracelLogger.ScheduleHistoryItemLogNote(notes.Replace("<br/>", Environment.NewLine));
             }
         }
 

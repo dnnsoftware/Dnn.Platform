@@ -24,12 +24,13 @@ namespace Dnn.PersonaBar.Servers.Services
     using DotNetNuke.Web.Client;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     [MenuPermission(Scope = ServiceScope.Host)]
     public class ServerSettingsPerformanceController : PersonaBarApiController
     {
         private const string UseSSLKey = "UseSSLForCacheSync";
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServerSettingsPerformanceController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ServerSettingsPerformanceController>();
         private readonly PerformanceController performanceController = new PerformanceController();
         private readonly IHostSettings hostSettings;
         private readonly IHostSettingsService hostSettingsService;
@@ -94,7 +95,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerGetPerformanceSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -115,7 +116,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerIncrementPortalVersionException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -136,7 +137,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerIncrementHostVersionException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -181,7 +182,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.ServerSettingsPerformanceControllerUpdatePerformanceSettingsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

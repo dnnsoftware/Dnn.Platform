@@ -6,6 +6,8 @@ namespace DotNetNuke.Admin.Containers
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Web.Script.Serialization;
     using System.Web.UI;
 
@@ -154,64 +156,14 @@ namespace DotNetNuke.Admin.Containers
                     this.clientResourceController.RegisterScript("~/admin/menus/ModuleActions/dnnQuickSettings.js");
                 }
 
-                if (this.ActionRoot.Visible)
+                if (this.ModuleControl is IAsyncModuleControl)
                 {
-                    // Add Menu Items
-                    foreach (ModuleAction rootAction in this.ActionRoot.Actions)
-                    {
-                        // Process Children
-                        var actions = new List<ModuleAction>();
-                        foreach (ModuleAction action in rootAction.Actions)
-                        {
-                            if (action.Visible)
-                            {
-                                if ((this.EditMode && Globals.IsAdminControl() == false) ||
-                                    (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
-                                {
-                                    if (!action.Icon.Contains("://")
-                                            && !action.Icon.StartsWith("/", StringComparison.Ordinal)
-                                            && !action.Icon.StartsWith("~/", StringComparison.Ordinal))
-                                    {
-                                        action.Icon = "~/images/" + action.Icon;
-                                    }
-
-                                    if (action.Icon.StartsWith("~/", StringComparison.Ordinal))
-                                    {
-                                        action.Icon = Globals.ResolveUrl(action.Icon);
-                                    }
-
-                                    actions.Add(action);
-
-                                    if (string.IsNullOrEmpty(action.Url))
-                                    {
-                                        this.validIDs.Add(action.ID);
-                                    }
-                                }
-                            }
-                        }
-
-                        var oSerializer = new JavaScriptSerializer();
-                        if (rootAction.Title == Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile))
-                        {
-                            this.AdminActionsJSON = oSerializer.Serialize(actions);
-                        }
-                        else
-                        {
-                            if (rootAction.Title == Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile))
-                            {
-                                this.CustomActionsJSON = oSerializer.Serialize(actions);
-                            }
-                            else
-                            {
-                                this.SupportsMove = actions.Count > 0;
-                                this.Panes = oSerializer.Serialize(this.PortalSettings.ActiveTab.Panes);
-                            }
-                        }
-                    }
-
-                    this.IsShared = this.ModuleContext.Configuration.AllTabs
-                        || PortalGroupController.Instance.IsModuleShared(this.ModuleContext.ModuleId, PortalController.Instance.GetPortal(this.PortalSettings.PortalId))
-                        || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
+                    // We need to defer accesing this.Actions as it could only be accesible after the WebForms async point.
+                    this.Page.RegisterAsyncTask(new PageAsyncTask(this.ProcessActionsAsync));
+                }
+                else
+                {
+                    this.ProcessActions();
                 }
             }
             catch (Exception exc)
@@ -220,7 +172,7 @@ namespace DotNetNuke.Admin.Containers
             }
         }
 
-        /// <inheritdoc />
+        /// <inheritdoc/>
         protected override void Render(HtmlTextWriter writer)
         {
             base.Render(writer);
@@ -228,6 +180,84 @@ namespace DotNetNuke.Admin.Containers
             foreach (int id in this.validIDs)
             {
                 this.Page.ClientScript.RegisterForEventValidation(this.actionButton.UniqueID, id.ToString());
+            }
+        }
+
+        private Task ProcessActionsAsync(CancellationToken cancellationToken)
+        {
+            this.ProcessActions();
+            return Task.CompletedTask;
+        }
+
+        private void ProcessActions()
+        {
+            try
+            {
+                if (!this.ActionRoot.Visible)
+                {
+                    return;
+                }
+
+                // Add Menu Items
+                foreach (ModuleAction rootAction in this.ActionRoot.Actions)
+                {
+                    // Process Children
+                    var actions = new List<ModuleAction>();
+                    foreach (ModuleAction action in rootAction.Actions)
+                    {
+                        if (action.Visible)
+                        {
+                            if ((this.EditMode && Globals.IsAdminControl() == false) ||
+                                (action.Secure != SecurityAccessLevel.Anonymous && action.Secure != SecurityAccessLevel.View))
+                            {
+                                if (!action.Icon.Contains("://")
+                                        && !action.Icon.StartsWith("/", StringComparison.Ordinal)
+                                        && !action.Icon.StartsWith("~/", StringComparison.Ordinal))
+                                {
+                                    action.Icon = "~/images/" + action.Icon;
+                                }
+
+                                if (action.Icon.StartsWith("~/", StringComparison.Ordinal))
+                                {
+                                    action.Icon = Globals.ResolveUrl(action.Icon);
+                                }
+
+                                actions.Add(action);
+
+                                if (string.IsNullOrEmpty(action.Url))
+                                {
+                                    this.validIDs.Add(action.ID);
+                                }
+                            }
+                        }
+                    }
+
+                    var oSerializer = new JavaScriptSerializer();
+                    if (rootAction.Title == Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile))
+                    {
+                        this.AdminActionsJSON = oSerializer.Serialize(actions);
+                    }
+                    else
+                    {
+                        if (rootAction.Title == Localization.GetString("ModuleSpecificActions.Action", Localization.GlobalResourceFile))
+                        {
+                            this.CustomActionsJSON = oSerializer.Serialize(actions);
+                        }
+                        else
+                        {
+                            this.SupportsMove = actions.Count > 0;
+                            this.Panes = oSerializer.Serialize(this.PortalSettings.ActiveTab.Panes);
+                        }
+                    }
+                }
+
+                this.IsShared = this.ModuleContext.Configuration.AllTabs
+                    || PortalGroupController.Instance.IsModuleShared(this.ModuleContext.ModuleId, PortalController.Instance.GetPortal(this.PortalSettings.PortalId))
+                    || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
+            }
+            catch (Exception exc)
+            {
+                Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 

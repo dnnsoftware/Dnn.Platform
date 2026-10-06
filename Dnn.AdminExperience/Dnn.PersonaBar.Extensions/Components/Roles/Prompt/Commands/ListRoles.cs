@@ -16,6 +16,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("list-roles", Constants.RolesCategory, "Prompt_ListRoles_Description")]
     public class ListRoles : ConsoleCommandBase
     {
@@ -25,7 +27,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("max", "Prompt_ListRoles_FlagMax", "Integer", "10")]
         private const string FlagMax = "max";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListRoles));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ListRoles>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -75,7 +77,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.ListRolesRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("Prompt_ListRolesFailed"));
             }
         }

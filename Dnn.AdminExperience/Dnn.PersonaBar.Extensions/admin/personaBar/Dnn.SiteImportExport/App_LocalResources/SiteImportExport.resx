@@ -381,6 +381,9 @@
   <data name="FinishImporting.Text" xml:space="preserve">
     <value>To finish importing data to your site, click continue below, or click cancel to abort import.</value>
   </data>
+  <data name="CrossVersionImportWarning.Text" xml:space="preserve">
+    <value>This export was created by a different DNN version. Importing it may succeed, completely fail, or partially work. We do not recommend import/export between different versions.</value>
+  </data>
   <data name="ExportModeComplete.Text" xml:space="preserve">
     <value>Full</value>
   </data>

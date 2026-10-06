@@ -12,18 +12,20 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
+    using Microsoft.Extensions.Logging;
+
     /// <inheritdoc cref="IRemoveTelerikRewriterRulesStep" />
     internal sealed class RemoveTelerikRewriterRulesStep : XmlStepBase, IRemoveTelerikRewriterRulesStep
     {
         /// <summary>Initializes a new instance of the <see cref="RemoveTelerikRewriterRulesStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="applicationStatusInfo">An instance of <see cref="IApplicationStatusInfo"/>.</param>
         public RemoveTelerikRewriterRulesStep(
-            ILoggerSource loggerSource,
+            ILogger<RemoveTelerikRewriterRulesStep> logger,
             ILocalizer localizer,
             IApplicationStatusInfo applicationStatusInfo)
-            : base(loggerSource, localizer, applicationStatusInfo)
+            : base(logger, localizer, applicationStatusInfo)
         {
         }
 

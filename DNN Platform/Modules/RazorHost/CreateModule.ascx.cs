@@ -25,12 +25,13 @@ namespace DotNetNuke.Modules.RazorHost
     using DotNetNuke.UI.Modules;
     using DotNetNuke.UI.Skins.Controls;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Implements the logic for the CreateModule view.</summary>
     [DnnDeprecated(9, 3, 2, "Use Razor Pages instead")]
     public partial class CreateModule : ModuleUserControlBase
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CreateModule));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<CreateModule>();
         private readonly INavigationManager navigationManager;
 
         private string razorScriptFileFormatString = "~/DesktopModules/RazorModules/RazorHost/Scripts/{0}";
@@ -177,13 +178,13 @@ namespace DotNetNuke.Modules.RazorHost
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.CreateModuleDeleteFileException(ex);
             }
 
             // Optionally goto new Page
             if (this.chkAddPage.Checked)
             {
-                string tabName = "Test " + this.txtName.Text + " Page";
+                string tabName = $"Test {this.txtName.Text} Page";
                 string tabPath = Globals.GenerateTabPath(Null.NullInteger, tabName);
                 int tabID = TabController.GetTabByTabPath(this.ModuleContext.PortalId, tabPath, this.ModuleContext.PortalSettings.CultureCode);
 

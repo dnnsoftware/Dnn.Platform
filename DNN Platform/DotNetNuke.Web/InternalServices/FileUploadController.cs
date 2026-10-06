@@ -39,6 +39,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.Api.Internal;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
@@ -46,7 +47,7 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 [DnnAuthorize]
 public class FileUploadController : DnnApiController
 {
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<FileUploadController>();
     private static readonly Regex UserFolderEx = new Regex(@"users/\d+/\d+/(\d+)/", RegexOptions.Compiled | RegexOptions.IgnoreCase);
     private static readonly List<string> ImageExtensions = Globals.ImageFileTypes.Split(',').ToList();
 
@@ -504,7 +505,7 @@ public class FileUploadController : DnnApiController
         }
         catch (Exception ex)
         {
-            Logger.Error(ex);
+            Logger.FileUploadControllerSaveFileException(ex);
             errorMessage = ex.Message;
             return savedFileDto;
         }
@@ -658,7 +659,7 @@ public class FileUploadController : DnnApiController
                     }
                     catch (ArgumentException exc)
                     {
-                        Logger.Warn("Unable to get image dimensions for image file", exc);
+                        Logger.FileUploadControllerUnableToGetImageDimensions(exc);
                         size = new Size(32, 32);
                     }
                 }
@@ -687,7 +688,7 @@ public class FileUploadController : DnnApiController
         }
         catch (Exception exe)
         {
-            Logger.Error(exe);
+            Logger.FileUploadControllerUploadFileException(exe);
             result.Message = exe.Message;
             return result;
         }
@@ -710,10 +711,10 @@ public class FileUploadController : DnnApiController
     private static IPortalInfo[] GetMyPortalGroup()
     {
         return (
-                from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
-                select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
-                where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
-                select portals.Cast<IPortalInfo>().ToArray())
+            from @group in PortalGroupController.Instance.GetPortalGroups().ToArray()
+            select PortalGroupController.Instance.GetPortalsByGroup(@group.PortalGroupId) into portals
+            where portals.Any((IPortalInfo x) => x.PortalId == PortalSettings.Current.PortalId)
+            select portals.Cast<IPortalInfo>().ToArray())
             .FirstOrDefault();
     }
 

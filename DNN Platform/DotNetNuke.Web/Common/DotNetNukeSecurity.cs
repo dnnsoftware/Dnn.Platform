@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Common.Internal
 {
     internal static class DotNetNukeSecurity
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeSecurity));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DotNetNukeSecurity>();
         private static FileSystemWatcher _fileWatcher;
         private static DateTime _lastRead;
         private static Globals.UpgradeStatus _appStatus = Globals.UpgradeStatus.None;

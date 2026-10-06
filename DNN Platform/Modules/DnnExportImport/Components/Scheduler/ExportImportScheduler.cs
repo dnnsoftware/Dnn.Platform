@@ -22,6 +22,7 @@ namespace Dnn.ExportImport.Components.Scheduler
     using DotNetNuke.Services.Scheduling;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Implements a SchedulerClient for the Exporting/Importing of site items.</summary>
     public class ExportImportScheduler : SchedulerClient
@@ -39,7 +40,7 @@ namespace Dnn.ExportImport.Components.Scheduler
         private const int EmergencyHistoryNumber = 1;
         private const int DefaultHistoryNumber = 60;
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportScheduler));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ExportImportScheduler>();
 
         private readonly ExportImportEngine engine;
         private readonly IEntitiesController entitiesController;
@@ -125,7 +126,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                                 SchedulingController.PurgeScheduleHistory();
 
-                                Logger.Error("The Scheduler item stopped because main thread stopped, set schedule into emergency mode so it will start after app restart.");
+                                Logger.ExportImportSchedulerItemStoppedBecauseMainThreadStoppedSetScheduledIntoEmergencyModeSoItWillStartAfterAppRestart();
                                 succeeded = false;
                             }
                             catch (Exception ex)
@@ -182,7 +183,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                     this.ScheduleHistoryItem.AddLogNote(sb.ToString());
                     this.engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
 
-                    Logger.Trace("Site Export/Import: Job Finished");
+                    Logger.ExportImportSchedulerJobFinished();
                 }
 
                 ////SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);

@@ -1,5 +1,5 @@
-export function getFileSize(fileSize: number): string {
-    if (fileSize == undefined || fileSize == undefined){
+export function getFileSize(fileSize?: number): string {
+    if (fileSize == undefined){
         return "";
     }
 

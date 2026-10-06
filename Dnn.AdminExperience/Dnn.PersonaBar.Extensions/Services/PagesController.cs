@@ -41,6 +41,7 @@ using DotNetNuke.Web.Api;
 using DotNetNuke.Web.UI.WebControls;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using Localization = Dnn.PersonaBar.Pages.Components.Localization;
 
@@ -57,16 +58,16 @@ public class PagesController(
     : PersonaBarApiController
 {
     private const string LocalResourceFile = Library.Constants.PersonaBarRelativePath + "Modules/Dnn.Pages/App_LocalResources/Pages.resx";
-    private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PagesController));
+    private static readonly ILogger Logger = DnnLoggingController.GetLogger<PagesController>();
 
     private readonly IPagesController pagesController = pagesController;
     private readonly ITemplateController templateController = templateController;
-    private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
-    private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
-    private readonly ICryptographyProvider cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
 
     private readonly IBulkPagesController bulkPagesController = BulkPagesController.Instance;
+    private readonly IHostSettings hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
+    private readonly IApplicationStatusInfo appStatus = appStatus ?? Globals.GetCurrentServiceProvider().GetRequiredService<IApplicationStatusInfo>();
     private readonly IThemesController themesController = ThemesController.Instance;
+    private readonly ICryptographyProvider cryptographyProvider = cryptographyProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<ICryptographyProvider>();
     private readonly IDefaultPortalThemeController defaultPortalThemeController = DefaultPortalThemeController.Instance;
     private readonly ITabController tabController = TabController.Instance;
     private readonly ILocaleController localeController = LocaleController.Instance;
@@ -478,9 +479,7 @@ public class PagesController(
     [HttpGet]
     public HttpResponseMessage GetCacheProviderList()
     {
-        var providers =
-            from p in OutputCachingProvider.GetProviderList()
-            select p.Key;
+        var providers = from p in OutputCachingProvider.GetProviderList() select p.Key;
         return this.Request.CreateResponse(HttpStatusCode.OK, providers);
     }
 
@@ -644,9 +643,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to make this page neutral, please consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorMakingPageNeutral(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to make this page neutral, please consult the logs for more details.");
         }
     }
 
@@ -680,9 +678,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to make this page translatable.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorMakingPageTranslatable(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to make this page translatable.");
         }
     }
 
@@ -708,9 +705,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to add missing languages to this page, consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorAddingMissingLanguagesToPage(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to add missing languages to this page, consult the logs for more details.");
         }
     }
 
@@ -751,9 +747,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to notify the translators, please consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorNotifyingTranslators(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to notify the translators, please consult the logs for more details.");
         }
     }
 
@@ -786,9 +781,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred trying to get this page localization, consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorGettingPageLocalization(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred trying to get this page localization, consult the logs for more details.");
         }
     }
 
@@ -814,9 +808,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred trying to update the page localization, please consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorUpdatingPageLocalization(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred trying to update the page localization, please consult the logs for more details.");
         }
     }
 
@@ -849,9 +842,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to restore the module onto that page.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorRestoringModuleOntoPage(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to restore the module onto that page.");
         }
     }
 
@@ -884,9 +876,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to delete the module, consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorDeletingModule(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to delete the module, consult the logs for more details.");
         }
     }
 
@@ -907,9 +898,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to find if content localization is enabled";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorGettingContentLocalizationEnabled(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to find if content localization is enabled");
         }
     }
 
@@ -932,9 +922,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred trying to get the cached items count, please consult the logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorGettingCachedItemsCount(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred trying to get the cached items count, please consult the logs for more details.");
         }
     }
 
@@ -960,9 +949,8 @@ public class PagesController(
         }
         catch (Exception ex)
         {
-            const string ErrorMessage = "An unexpected error occurred while trying to clear the cache for this page, see logs for more details.";
-            Logger.Error(ErrorMessage, ex);
-            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ErrorMessage);
+            Logger.PagesControllerUnexpectedErrorClearingCacheForPage(ex);
+            return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "An unexpected error occurred while trying to clear the cache for this page, see logs for more details.");
         }
     }
 

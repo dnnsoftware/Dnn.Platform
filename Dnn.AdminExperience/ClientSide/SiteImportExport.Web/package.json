@@ -1,6 +1,6 @@
 {
   "name": "site-import-export",
-  "version": "10.3.3",
+  "version": "10.4.0",
   "private": true,
   "scripts": {
     "build": "rsbuild build",
@@ -9,16 +9,16 @@
     "lint": "eslint --fix"
   },
   "devDependencies": {
-    "@dnnsoftware/dnn-react-common": "10.3.3",
-    "@rsbuild/core": "^2.1.2",
-    "@rsbuild/plugin-less": "^2.0.0",
+    "@dnnsoftware/dnn-react-common": "10.4.0",
+    "@rsbuild/core": "^2.1.10",
+    "@rsbuild/plugin-less": "^2.0.1",
     "@rsbuild/plugin-react": "^2.1.0",
-    "@rsbuild/plugin-svgr": "^2.0.4",
+    "@rsbuild/plugin-svgr": "^2.0.5",
     "create-react-class": "^15.7.0",
     "eslint": "10.5.0",
     "eslint-plugin-react": "7.37.5",
     "globals": "^17.6.0",
-    "less": "4.6.6",
+    "less": "4.8.1",
     "localization": "^1.0.2",
     "prop-types": "^15.8.1",
     "rc-progress": "^4.0.0",
@@ -37,7 +37,7 @@
     "typescript": "^5.9.3"
   },
   "dependencies": {
-    "dompurify": "^3.4.10",
+    "dompurify": "^3.4.13",
     "html-react-parser": "^6.1.3"
   }
 }

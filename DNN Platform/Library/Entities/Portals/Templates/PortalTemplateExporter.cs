@@ -231,10 +231,19 @@ namespace DotNetNuke.Entities.Portals.Templates
             writer.WriteElementString("userquota", portal.UserQuota.ToString(CultureInfo.InvariantCulture));
             writer.WriteElementString("pagequota", portal.PageQuota.ToString(CultureInfo.InvariantCulture));
 
-            settingsDictionary.TryGetValue("PageHeadText", out setting);
-            if (!string.IsNullOrEmpty(setting))
+            var pageHeaderTags = PageHeaderTagInfo.GetPortalItems(((IPortalInfo)portal).PortalId);
+            if (pageHeaderTags.Count > 0)
             {
-                writer.WriteElementString("pageheadtext", setting);
+                writer.WriteStartElement("pageheadertags");
+                foreach (var item in pageHeaderTags)
+                {
+                    writer.WriteStartElement("pageheadertag");
+                    writer.WriteAttributeString("name", item.Name);
+                    writer.WriteCData(item.Content ?? string.Empty);
+                    writer.WriteEndElement();
+                }
+
+                writer.WriteEndElement();
             }
 
             settingsDictionary.TryGetValue("InjectModuleHyperLink", out setting);

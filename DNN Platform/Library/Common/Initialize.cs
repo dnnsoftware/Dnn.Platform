@@ -26,14 +26,15 @@ namespace DotNetNuke.Common
     using DotNetNuke.Services.Scheduling;
     using DotNetNuke.Services.Upgrade;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Win32;
 
     using SchedulerMode = DotNetNuke.Abstractions.Application.SchedulerMode;
 
     /// <summary>The Object to initialize application.</summary>
-    public class Initialize
+    public partial class Initialize
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Initialize));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<Initialize>();
         private static readonly object InitializeLock = new object();
         private static bool alreadyInitialized;
 
@@ -152,7 +153,7 @@ namespace DotNetNuke.Common
                         null,
                         CultureInfo.InvariantCulture) is not HttpRuntime runtime)
                 {
-                    Logger.InfoFormat(CultureInfo.InvariantCulture, "Application shutting down. Reason: {0}", shutdownDetail);
+                    Logger.InitializeApplicationShuttingDown(shutdownDetail);
                 }
                 else
                 {
@@ -172,9 +173,7 @@ namespace DotNetNuke.Common
                         null,
                         CultureInfo.InvariantCulture) as string;
 
-                    Logger.Info("Application shutting down. Reason: " + shutdownDetail
-                                + Environment.NewLine + "ASP.NET Shutdown Info: " + shutDownMessage
-                                + Environment.NewLine + shutDownStack);
+                    Logger.InitializeApplicationShuttingDownWithInfo(shutdownDetail, shutDownMessage, shutDownStack);
                 }
             }
             catch (Exception exc)
@@ -233,7 +232,7 @@ namespace DotNetNuke.Common
 
                     if (hostSettings.SchedulerMode == SchedulerMode.RequestMethod && SchedulingProvider.ReadyForPoll)
                     {
-                        Logger.Trace("Running Schedule " + hostSettings.SchedulerMode);
+                        Logger.InitializeRunningSchedule(hostSettings.SchedulerMode);
                         var scheduler = SchedulingProvider.Instance();
                         var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true };
                         requestScheduleThread.Start();
@@ -265,7 +264,7 @@ namespace DotNetNuke.Common
             // instantiate APPLICATION_START scheduled jobs
             if (hostSettings.SchedulerMode == SchedulerMode.TimerMethod)
             {
-                Logger.Trace("Running Schedule " + hostSettings.SchedulerMode);
+                Logger.InitializeRunningSchedule(hostSettings.SchedulerMode);
                 var newThread = new Thread(scheduler.Start)
                 {
                     IsBackground = true,
@@ -303,7 +302,7 @@ namespace DotNetNuke.Common
                     {
                         CreateUnderConstructionPage(server);
                         retValue = "~/Install/UnderConstruction.htm";
-                        Logger.Info("UnderConstruction page was shown because application needs to be installed, and both the AutoUpgrade and UseWizard AppSettings in web.config are false. Use /install/install.aspx?mode=install to install application. ");
+                        LoggerMessages.InitializeUnderConstructionPageShownBecauseInstallationNeeded(Logger);
                     }
 
                     break;
@@ -316,7 +315,7 @@ namespace DotNetNuke.Common
                     {
                         CreateUnderConstructionPage(server);
                         retValue = "~/Install/UnderConstruction.htm";
-                        Logger.Info("UnderConstruction page was shown because application needs to be upgraded, and both the AutoUpgrade and UseInstallWizard AppSettings in web.config are false. Use /install/install.aspx?mode=upgrade to upgrade application. ");
+                        LoggerMessages.InitializeUnderConstructionPageShownBecauseUpgradeNeeded(Logger);
                     }
 
                     break;
@@ -331,7 +330,7 @@ namespace DotNetNuke.Common
                         // app has never been installed, and either Wizard or Autoupgrade is configured
                         CreateUnderConstructionPage(server);
                         retValue = "~/Install/UnderConstruction.htm";
-                        Logger.Error("UnderConstruction page was shown because we cannot ascertain the application was ever installed, and there is no working database connection. Check database connectivity before continuing. ");
+                        Logger.InitializeUnderConstructionPageShownBecauseNoWorkingDatabaseConnection();
                     }
                     else
                     {
@@ -340,11 +339,11 @@ namespace DotNetNuke.Common
                         {
                             if (!isInstalled)
                             {
-                                Logger.Error("The connection to the database has failed, the application is not installed yet, and both AutoUpgrade and UseInstallWizard are not set in web.config, a 500 error page will be shown to visitors");
+                                Logger.InitializeConnectionToTheDatabaseHasFailedTheApplicationIsNotInstalledYetA500ErrorPageWillBeShown();
                             }
                             else
                             {
-                                Logger.Error("The connection to the database has failed, however, the application is already completely installed, a 500 error page will be shown to visitors");
+                                Logger.InitializeConnectionToTheDatabaseHasFailedHoweverTheApplicationIsAlreadyCompletelyInstalledA500ErrorPageWillBeShown();
                             }
 
                             string url = "~/ErrorPage.aspx?status=500&error=Site Unavailable&error2=Connection To The Database Failed";
@@ -433,7 +432,7 @@ namespace DotNetNuke.Common
         {
             var request = app.Request;
 
-            Logger.Trace("Request " + request.Url.LocalPath);
+            Logger.InitializeRequest(request.Url.LocalPath);
 
             // Don't process some of the AppStart methods if we are installing
             if (IsUpgradeOrInstallRequest(app.Request))
@@ -453,7 +452,7 @@ namespace DotNetNuke.Common
                 return redirect;
             }
 
-            Logger.Info("Application Initializing");
+            LoggerMessages.InitializeApplicationInitializing(Logger);
 
             // Set globals
             Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
@@ -483,7 +482,7 @@ namespace DotNetNuke.Common
             // Set Flag so we can determine the first Page Request after Application Start
             app.Context.Items.Add("FirstRequest", true);
 
-            Logger.Info("Application Initialized");
+            LoggerMessages.InitializeApplicationInitialized(Logger);
 
             initialized = true;
 

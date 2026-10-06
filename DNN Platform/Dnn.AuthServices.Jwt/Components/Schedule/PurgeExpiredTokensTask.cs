@@ -10,17 +10,19 @@ namespace Dnn.AuthServices.Jwt.Components.Schedule
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Exceptions;
     using DotNetNuke.Services.Scheduling;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Scheduled task to delete tokens that linger in the database after having expired.</summary>
     public class PurgeExpiredTokensTask : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeExpiredTokensTask));
+        private readonly ILogger<PurgeExpiredTokensTask> logger;
 
         /// <summary>Initializes a new instance of the <see cref="PurgeExpiredTokensTask"/> class.</summary>
         /// <param name="objScheduleHistoryItem">The object used to record the results from this task.</param>
         public PurgeExpiredTokensTask(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem;
+            this.logger = DnnLoggingController.GetLogger<PurgeExpiredTokensTask>();
         }
 
         /// <summary>Runs when the task is triggered by DNN.</summary>
@@ -28,9 +30,9 @@ namespace Dnn.AuthServices.Jwt.Components.Schedule
         {
             try
             {
-                Logger.Info("Starting PurgeExpiredTokensTask");
+                this.logger.LogInformation("Starting PurgeExpiredTokensTask");
                 DataService.Instance.DeleteExpiredTokens();
-                Logger.Info("Finished PurgeExpiredTokensTask");
+                this.logger.LogInformation("Finished PurgeExpiredTokensTask");
                 this.ScheduleHistoryItem.Succeeded = true;
             }
             catch (Exception exc)
@@ -38,7 +40,7 @@ namespace Dnn.AuthServices.Jwt.Components.Schedule
                 this.ScheduleHistoryItem.Succeeded = false;
                 this.ScheduleHistoryItem.AddLogNote(string.Format("Purging expired tokens task failed: {0}.", exc.ToString()));
                 this.Errored(ref exc);
-                Logger.ErrorFormat("Error in PurgeExpiredTokensTask: {0}. {1}", exc.Message, exc.StackTrace);
+                this.logger.LogError(exc, "Error in PurgeExpiredTokensTask");
                 Exceptions.LogException(exc);
             }
         }

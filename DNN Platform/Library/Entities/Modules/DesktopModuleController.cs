@@ -33,12 +33,13 @@ namespace DotNetNuke.Entities.Modules
     using DotNetNuke.Services.Upgrade;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>DesktopModuleController provides the Business Layer for Desktop Modules.</summary>
         /// <param name="eventLogger">The event logger.</param>
     public partial class DesktopModuleController(IEventLogger eventLogger)
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DesktopModuleController>();
         private static readonly DataProvider DataProvider = DataProvider.Instance();
         private readonly IEventLogger eventLogger = eventLogger ?? Globals.GetCurrentServiceProvider().GetRequiredService<IEventLogger>();
 
@@ -125,7 +126,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (module == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by module ID. ID:{0} PortalID:{1}", desktopModuleId, portalId);
+                Logger.DesktopModuleControllerUnableToFindModuleByModuleId(desktopModuleId, portalId);
             }
 
             return module;
@@ -152,7 +153,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (desktopModuleByPackageId == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by package ID. ID:{0}", packageId);
+                Logger.DesktopModuleControllerUnableToFindModuleByPackageId(packageId);
             }
 
             return desktopModuleByPackageId;
@@ -186,7 +187,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (desktopModuleByModuleName == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by name. Name:{0} portalId:{1}", moduleName, portalId);
+                Logger.DesktopModuleControllerUnableToFindModuleByName(moduleName, portalId);
             }
 
             return desktopModuleByModuleName;
@@ -228,7 +229,7 @@ namespace DotNetNuke.Entities.Modules
 
             if (module == null)
             {
-                Logger.WarnFormat(CultureInfo.InvariantCulture, "Unable to find module by friendly name. Name:{0}", friendlyName);
+                Logger.DesktopModuleControllerUnableToFindModuleByFriendlyName(friendlyName);
             }
 
             return module;

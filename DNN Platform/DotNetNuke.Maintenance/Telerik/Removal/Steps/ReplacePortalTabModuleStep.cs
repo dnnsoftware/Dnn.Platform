@@ -11,9 +11,10 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Modules;
     using DotNetNuke.Entities.Tabs;
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Shims;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <inheritdoc cref="IReplacePortalTabModuleStep" />
     internal sealed class ReplacePortalTabModuleStep : StepBase, IReplacePortalTabModuleStep
@@ -24,32 +25,25 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         private readonly IModuleDefinitionController moduleDefinitionController;
 
         /// <summary>Initializes a new instance of the <see cref="ReplacePortalTabModuleStep"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
         /// <param name="moduleController">An instance of <see cref="IModuleController"/>.</param>
         /// <param name="tabController">An instance of <see cref="ITabController"/>.</param>
         /// <param name="desktopModuleController">An instance of <see cref="IDesktopModuleController"/>.</param>
         /// <param name="moduleDefinitionController">An instance of <see cref="IModuleDefinitionController"/>.</param>
         public ReplacePortalTabModuleStep(
-            ILoggerSource loggerSource,
+            ILogger<ReplacePortalTabModuleStep> logger,
             ILocalizer localizer,
             IModuleController moduleController,
             ITabController tabController,
             IDesktopModuleController desktopModuleController,
             IModuleDefinitionController moduleDefinitionController)
-            : base(loggerSource, localizer)
+            : base(logger, localizer)
         {
-            this.moduleController = moduleController ??
-                throw new ArgumentNullException(nameof(moduleController));
-
-            this.tabController = tabController ??
-                throw new ArgumentNullException(nameof(tabController));
-
-            this.desktopModuleController = desktopModuleController ??
-                throw new ArgumentNullException(nameof(desktopModuleController));
-
-            this.moduleDefinitionController = moduleDefinitionController ??
-                throw new ArgumentNullException(nameof(moduleDefinitionController));
+            this.moduleController = moduleController ?? throw new ArgumentNullException(nameof(moduleController));
+            this.tabController = tabController ?? throw new ArgumentNullException(nameof(tabController));
+            this.desktopModuleController = desktopModuleController ?? throw new ArgumentNullException(nameof(desktopModuleController));
+            this.moduleDefinitionController = moduleDefinitionController ?? throw new ArgumentNullException(nameof(moduleDefinitionController));
         }
 
         /// <inheritdoc />

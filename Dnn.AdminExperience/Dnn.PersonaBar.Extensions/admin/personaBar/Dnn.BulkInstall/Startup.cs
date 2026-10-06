@@ -1,0 +1,31 @@
+﻿// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+// See the LICENSE file in the project root for more information
+
+namespace Dnn.Modules.BulkInstall;
+
+using Dnn.PersonaBar.Extensions.Components.BulkInstall;
+using Dnn.PersonaBar.Extensions.Components.BulkInstall.DataAccess.DataControllers;
+using Dnn.PersonaBar.Extensions.Components.BulkInstall.Logging;
+using DotNetNuke.DependencyInjection;
+
+using Microsoft.Extensions.DependencyInjection;
+
+/// <summary>Provides startup logic for the Bulk Install module.</summary>
+public class Startup : IDnnStartup
+{
+    /// <inheritdoc />
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddTransient<SettingDataController>();
+        services.AddTransient<SettingManager>();
+        services.AddTransient<SessionDataController>();
+        services.AddTransient<SessionManager>();
+        services.AddTransient<APIUserDataController>();
+        services.AddTransient<APIUserManager>();
+        services.AddTransient<IPSpecDataController>();
+        services.AddTransient<IPSpecManager>();
+        services.AddTransient<EventLogDataController>();
+        services.AddTransient<EventLogManager>();
+    }
+}

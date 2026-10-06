@@ -7,12 +7,12 @@ namespace DotNetNuke.Tests.UI.WatiN.Utilities;
 using System;
 using System.Configuration;
 using System.IO;
-using System.Xml;
-using System.Xml.Linq;
 using System.Linq;
-using System.Xml.XPath;
 using System.Reflection;
 using System.Web.Configuration;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.XPath;
 
 using DotNetNuke.Services.Installer;
 

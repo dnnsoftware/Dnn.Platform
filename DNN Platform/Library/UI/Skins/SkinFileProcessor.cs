@@ -17,6 +17,8 @@ namespace DotNetNuke.UI.Skins
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer;
 
+    using Microsoft.Extensions.Logging;
+
     public enum SkinParser
     {
         /// <summary>Localized parser.</summary>
@@ -29,7 +31,7 @@ namespace DotNetNuke.UI.Skins
     /// <summary>    Handles processing of a list of uploaded skin files into a working skin.</summary>
     public class SkinFileProcessor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SkinFileProcessor>();
         private readonly string dUPLICATEDETAIL = Util.GetLocalizedString("DuplicateSkinObject.Detail");
         private readonly string dUPLICATEERROR = Util.GetLocalizedString("DuplicateSkinObject.Error");
         private readonly string fILESEND = Util.GetLocalizedString("EndSkinFiles");
@@ -56,10 +58,7 @@ namespace DotNetNuke.UI.Skins
             this.ObjectFactory = new ObjectParser(this.controlList);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SkinFileProcessor"/> class.
-        ///     SkinFileProcessor class constructor.
-        /// </summary>
+        /// <summary>Initializes a new instance of the <see cref="SkinFileProcessor"/> class.</summary>
         /// <param name="skinPath">File path to the portals upload directory.</param>
         /// <param name="skinRoot">Specifies type of skin (Skins or Containers).</param>
         /// <param name="skinName">Name of folder in which skin will reside (Zip file name).</param>
@@ -99,7 +98,7 @@ namespace DotNetNuke.UI.Skins
                 catch (Exception ex)
                 {
                     // could not load XML file
-                    Logger.Error(ex);
+                    Logger.SkinFileProcessorLoadXmlFileException(ex);
                     this.Message += SkinController.FormatMessage(string.Format(CultureInfo.CurrentCulture, this.pACKAGELOADERROR, ex.Message), Path.GetFileName(fileName), 2, true);
                 }
             }
@@ -883,7 +882,7 @@ namespace DotNetNuke.UI.Skins
                             catch (Exception exc)
                             {
                                 // could not load XML file
-                                Logger.Error(exc);
+                                Logger.SkinFileLoadXmlFileException(exc);
                                 this.fileAttributes = skinAttributes;
                                 this.messages += SkinController.FormatMessage(this.fileLoadError, fileName, 2, true);
                             }

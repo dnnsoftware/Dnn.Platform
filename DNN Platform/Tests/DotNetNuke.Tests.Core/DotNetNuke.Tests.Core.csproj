@@ -49,6 +49,15 @@
     <None Update="Resources\invalid_a-href.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\Website\Components\Portals\portal.template.xsd" Link="Resources\PortalTemplates\portal.template.xsd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Website\Portals\_default\Blank Website.template" Link="Resources\PortalTemplates\Blank Website.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="..\..\Website\Portals\_default\Default Website.template" Link="Resources\PortalTemplates\Default Website.template">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

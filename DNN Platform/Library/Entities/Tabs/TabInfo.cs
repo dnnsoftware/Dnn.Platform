@@ -544,6 +544,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>Gets or sets the page head text, i.e. content to render in the <c>&lt;head&gt;</c> of the page.</summary>
         [XmlElement("pageheadtext")]
+        [Obsolete("Deprecated in DotNetNuke 10.3.2. Use PageHeaderTagInfo instead. Scheduled removal in v12.0.0.")]
         public string PageHeadText { get; set; }
 
         /// <summary>Gets a list of the names of the panes available to the page.</summary>
@@ -915,7 +916,6 @@ namespace DotNetNuke.Entities.Tabs
                 ContainerPath = this.ContainerPath,
                 IsSuperTab = this.IsSuperTab,
                 RefreshInterval = this.RefreshInterval,
-                PageHeadText = this.PageHeadText,
                 IsSecure = this.IsSecure,
                 PermanentRedirect = this.PermanentRedirect,
                 IsSystem = this.IsSystem,
@@ -978,7 +978,6 @@ namespace DotNetNuke.Entities.Tabs
             this.EndDate = Null.SetNullDateTime(dr["EndDate"], DateTimeKind.Utc);
             this.HasChildren = Null.SetNullBoolean(dr["HasChildren"]);
             this.RefreshInterval = Null.SetNullInteger(dr["RefreshInterval"]);
-            this.PageHeadText = Null.SetNullString(dr["PageHeadText"]);
             this.IsSecure = Null.SetNullBoolean(dr["IsSecure"]);
             this.PermanentRedirect = Null.SetNullBoolean(dr["PermanentRedirect"]);
             this.SiteMapPriority = Null.SetNullSingle(dr["SiteMapPriority"]);

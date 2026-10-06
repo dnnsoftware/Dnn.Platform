@@ -4,6 +4,9 @@
 
 namespace Dnn.PersonaBar.SiteSettings.Services.Dto
 {
+    using System.Collections.Generic;
+
+    using Dnn.PersonaBar.Pages.Services.Dto;
     using Dnn.PersonaBar.Security.Attributes;
 
     public class UpdateDefaultPagesSettingsRequest
@@ -33,6 +36,8 @@ namespace Dnn.PersonaBar.SiteSettings.Services.Dto
         public int PrivacyTabId { get; set; }
 
         public string PageHeadText { get; set; }
+
+        public IList<PageHeaderTagItem> PageHeaderTags { get; set; }
 
         [TabExist]
         public int RedirectAfterLoginTabId { get; set; }

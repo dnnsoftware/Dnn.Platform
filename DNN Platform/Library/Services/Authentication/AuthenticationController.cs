@@ -24,11 +24,12 @@ namespace DotNetNuke.Services.Authentication
     using DotNetNuke.Services.Log.EventLog;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>The AuthenticationController class provides the Business Layer for the Authentication Systems.</summary>
     public partial class AuthenticationController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<AuthenticationController>();
         private static readonly DataProvider Provider = DataProvider.Instance();
 
         /// <summary>AddAuthentication adds a new Authentication System to the Data Store.</summary>
@@ -223,7 +224,7 @@ namespace DotNetNuke.Services.Authentication
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex);
+                    Logger.AuthenticationControllerGetAuthenticationTypeException(ex);
                 }
             }
 

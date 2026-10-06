@@ -117,3 +117,7 @@
         }
     }
 }
+// Possible Fix for the bug #7065 - Password Reset Form Custom Margins
+.dnnPasswordResetContent {
+    margin-top: 4rem;
+}

@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace Dnn.ExportImport.Components.Services
@@ -41,6 +41,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     using Newtonsoft.Json;
 
@@ -57,7 +58,7 @@ namespace Dnn.ExportImport.Components.Services
     public class PagesExportService(IBusinessControllerProvider businessControllerProvider, IPortalAliasService portalAliasService, IApplicationStatusInfo appStatus, IEventLogger eventLogger, IHostSettings hostSettings)
         : BasePortableService
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExportImportEngine));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<ExportImportEngine>();
 
         private readonly IBusinessControllerProvider businessControllerProvider = businessControllerProvider ?? Globals.GetCurrentServiceProvider().GetRequiredService<IBusinessControllerProvider>();
         private readonly IPortalAliasService portalAliasService = portalAliasService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPortalAliasService>();
@@ -261,6 +262,19 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         SetTabData(localTab, otherTab);
+                        var hasNewStylePageHeaderTagSettings = this.HasNewStylePageHeaderTagSettings(otherTab);
+
+                        // Legacy PageHeadText is intentionally read when importing packages created by
+                        // pre-10.3.2 versions so the old value can be migrated to the new PageHeaderTag system.
+#pragma warning disable CS0618
+                        var legacyPageHeadText = otherTab.PageHeadText;
+#pragma warning restore CS0618
+
+                        // Clear legacy PageHeadText after migration; deprecated until v12.
+#pragma warning disable CS0618
+                        localTab.PageHeadText = null;
+#pragma warning restore CS0618
+
                         localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                         var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                         if (parentId == -1 && otherTab.ParentId > 0)
@@ -315,6 +329,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.UpdateTabChangers(localTab.TabID, createdBy, modifiedBy);
                         this.UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                         this.AddTabRelatedItems(localTab, otherTab, false);
+                        this.MigrateLegacyPageHeadText(localTab, legacyPageHeadText, hasNewStylePageHeaderTagSettings);
                         this.TriggerImportEvent(localTab);
                         this.Result.AddLogEntry("Updated Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                         this.totals.TotalTabs++;
@@ -327,6 +342,19 @@ namespace Dnn.ExportImport.Components.Services
             {
                 localTab = new TabInfo { PortalID = portalId };
                 SetTabData(localTab, otherTab);
+                var hasNewStylePageHeaderTagSettings = this.HasNewStylePageHeaderTagSettings(otherTab);
+
+                // Legacy PageHeadText is intentionally read when importing packages created by
+                // pre-10.3.2 versions so the old value can be migrated to the new PageHeaderTag system.
+#pragma warning disable CS0618
+                var legacyPageHeadText = otherTab.PageHeadText;
+#pragma warning restore CS0618
+
+                // Clear legacy PageHeadText after migration; deprecated until v12.
+#pragma warning disable CS0618
+                localTab.PageHeadText = null;
+#pragma warning restore CS0618
+
                 localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                 var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
                 var checkPartial = false;
@@ -390,6 +418,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.totals.TotalTabs++;
                 this.UpdateDefaultLanguageGuid(portalId, localTab, otherTab, exportedTabs);
                 this.AddTabRelatedItems(localTab, otherTab, true);
+                this.MigrateLegacyPageHeadText(localTab, legacyPageHeadText, hasNewStylePageHeaderTagSettings);
                 this.TriggerImportEvent(localTab);
             }
 
@@ -478,7 +507,10 @@ namespace Dnn.ExportImport.Components.Services
             localTab.StartDate = otherTab.StartDate ?? DateTime.MinValue;
             localTab.EndDate = otherTab.EndDate ?? DateTime.MinValue;
             localTab.RefreshInterval = otherTab.RefreshInterval ?? -1;
+
+#pragma warning disable CS0618 // Legacy PageHeadText is copied during import until the property is fully removed in v12
             localTab.PageHeadText = otherTab.PageHeadText;
+#pragma warning restore CS0618
             localTab.IsSecure = otherTab.IsSecure;
             localTab.PermanentRedirect = otherTab.PermanentRedirect;
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
@@ -766,6 +798,27 @@ namespace Dnn.ExportImport.Components.Services
             this.totals.TotalTabPermissions += this.ImportTabPermissions(localTab, otherTab, isNew);
             this.totals.TotalTabUrls += this.ImportTabUrls(localTab, otherTab, isNew);
             this.totals.TotalTabModules += this.ImportTabModulesAndRelatedItems(localTab, otherTab, isNew);
+        }
+
+        private bool HasNewStylePageHeaderTagSettings(ExportTab otherTab)
+        {
+            return this.Repository.GetRelatedItems<ExportTabSetting>(otherTab.Id)
+                .Any(setting => setting.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal));
+        }
+
+        private void MigrateLegacyPageHeadText(TabInfo localTab, string legacyPageHeadText, bool hasNewStylePageHeaderTagSettings)
+        {
+            if (hasNewStylePageHeaderTagSettings || string.IsNullOrWhiteSpace(legacyPageHeadText))
+            {
+                return;
+            }
+
+            var currentSettings = this.tabController.GetTabSettings(localTab.TabID);
+            if (!currentSettings.Contains(PageHeaderTagInfo.SettingPrefix + "Default"))
+            {
+                this.tabController.UpdateTabSetting(localTab.TabID, PageHeaderTagInfo.SettingPrefix + "Default", legacyPageHeadText);
+                this.Result.AddLogEntry("Migrated tab setting", $"PageHeadText -> {PageHeaderTagInfo.SettingPrefix}Default ({localTab.TabPath})");
+            }
         }
 
         private int ImportTabSettings(TabInfo localTab, ExportTab otherTab, bool isNew)
@@ -1137,7 +1190,7 @@ namespace Dnn.ExportImport.Components.Services
                     catch (Exception ex)
                     {
                         this.Result.AddLogEntry("EXCEPTION importing tab module, Module ID=" + local.ModuleID, ex.Message, ReportLevel.Error);
-                        Logger.Error(ex);
+                        Logger.PagesExportServiceImportNewTabModuleException(ex);
                     }
                 }
                 else
@@ -1307,7 +1360,7 @@ namespace Dnn.ExportImport.Components.Services
                         catch (Exception ex)
                         {
                             this.Result.AddLogEntry("EXCEPTION importing tab module, Module ID=" + local.ModuleID, ex.Message, ReportLevel.Error);
-                            Logger.Error(ex);
+                            Logger.PagesExportServiceImportExistingTabModuleException(ex);
                         }
                     }
                 }
@@ -1326,7 +1379,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(new ImportException($"Delete TabModule Failed: {moduleId}", ex));
+                        Logger.PagesExportServiceDeleteTabModuleException(new ImportException($"Delete TabModule Failed: {moduleId}", ex));
                     }
 
                     this.Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);
@@ -1551,17 +1604,8 @@ namespace Dnn.ExportImport.Components.Services
                                 }
                                 catch (Exception ex)
                                 {
-                                    this.Result.AddLogEntry(
-                                        "Error importing module data, Module ID=" + localModule.ModuleID,
-                                        ex.Message,
-                                        ReportLevel.Error);
-                                    Logger.ErrorFormat(
-                                        CultureInfo.InvariantCulture,
-                                        "ModuleContent: (Module ID={0}). Error: {1}{2}{3}",
-                                        localModule.ModuleID,
-                                        ex,
-                                        Environment.NewLine,
-                                        moduleContent.XmlContent);
+                                    this.Result.AddLogEntry($"Error importing module data, Module ID={localModule.ModuleID}", ex.Message, ReportLevel.Error);
+                                    Logger.PagesExportServiceModuleContentError(ex, localModule.ModuleID, moduleContent.XmlContent);
                                 }
                             }
                         }
@@ -1569,14 +1613,14 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (restoreCount > 0)
                 {
-                    this.Result.AddLogEntry("Added/Updated module content inside Tab ID=" + tabId, "Module ID=" + localModule.ModuleID);
+                    this.Result.AddLogEntry($"Added/Updated module content inside Tab ID={tabId}", $"Module ID={localModule.ModuleID}");
                     return restoreCount;
                 }
             }
             catch (Exception ex)
             {
                 this.Result.AddLogEntry("Error creating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
-                Logger.Error("Error creating business class type. " + ex);
+                Logger.PagesExportServiceErrorCreatingBusinessClassType(ex);
             }
 
             return 0;
@@ -1963,7 +2007,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.PagesExportServiceExportModulePackageException(ex);
                         return 0;
                     }
                 }
@@ -2051,7 +2095,7 @@ namespace Dnn.ExportImport.Components.Services
             catch (Exception ex)
             {
                 this.Result.AddLogEntry("Error creating business class type", desktopModuleInfo.BusinessControllerClass, ReportLevel.Error);
-                Logger.Error("Error creating business class type. " + ex);
+                Logger.PagesExportServiceErrorCreatingBusinessClassType(ex);
             }
 
             return 0;
@@ -2079,7 +2123,9 @@ namespace Dnn.ExportImport.Components.Services
                 StartDate = tab.StartDate == DateTime.MinValue ? null : (DateTime?)tab.StartDate,
                 EndDate = tab.EndDate == DateTime.MinValue ? null : (DateTime?)tab.EndDate,
                 RefreshInterval = tab.RefreshInterval <= 0 ? null : (int?)tab.RefreshInterval,
+#pragma warning disable CS0618 // Legacy PageHeadText is exported for backward compatibility until v12
                 PageHeadText = tab.PageHeadText,
+#pragma warning restore CS0618
                 IsSecure = tab.IsSecure,
                 PermanentRedirect = tab.PermanentRedirect,
                 SiteMapPriority = tab.SiteMapPriority,

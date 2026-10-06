@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
 
             if (this.View == null)
             {
-                result = this.ViewEngineCollection.FindView(context, this.ViewName, this.MasterName);
+                result = this.FindView(context);
                 this.View = result.View;
             }
 

@@ -17,6 +17,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("delete-role", Constants.RolesCategory, "Prompt_DeleteRole_Description")]
 
     public class DeleteRole : ConsoleCommandBase
@@ -24,7 +26,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("id", "Prompt_DeleteRole_FlagId", "Integer", true)]
         private const string FlagId = "id";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DeleteRole));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<DeleteRole>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -42,15 +44,14 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         {
             try
             {
-                KeyValuePair<HttpStatusCode, string> message;
-                var roleName = RolesController.Instance.DeleteRole(this.PortalSettings, this.RoleId, out message);
+                var roleName = RolesController.Instance.DeleteRole(this.PortalSettings, this.RoleId, out var message);
                 return !string.IsNullOrEmpty(roleName)
                     ? new ConsoleResultModel($"{this.LocalizeString("DeleteRole.Message")} '{roleName}' ({this.RoleId})") { Records = 1 }
                     : new ConsoleErrorResultModel(message.Value);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.DeleteRoleRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("DeleteRole.Error"));
             }
         }

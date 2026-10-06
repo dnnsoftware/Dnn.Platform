@@ -17,6 +17,7 @@ namespace Dnn.ExportImport.Components.Services
     using DotNetNuke.Abstractions.Logging;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Tabs;
     using DotNetNuke.Services.Localization;
 
     using Microsoft.Extensions.DependencyInjection;
@@ -73,7 +74,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     // Migrate only allowed portal settings.
                     portalSettings =
-                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.OrdinalIgnoreCase))).ToList();
+                        portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.OrdinalIgnoreCase)) || x.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.OrdinalIgnoreCase)).ToList();
 
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? portalSettings.Count : this.CheckPoint.TotalItems;
@@ -191,6 +192,37 @@ namespace Dnn.ExportImport.Components.Services
                 if (this.CheckCancelled(importJob))
                 {
                     return;
+                }
+
+                if (string.Equals(exportPortalSetting.SettingName, "PageHeadText", StringComparison.OrdinalIgnoreCase))
+                {
+                    var hasNewStylePageHeaderTags = portalSettings.Any(s =>
+                        s.SettingName != null &&
+                        s.SettingName.StartsWith(PageHeaderTagInfo.SettingPrefix, StringComparison.Ordinal) &&
+                        (s.CultureCode == exportPortalSetting.CultureCode ||
+                         (string.IsNullOrEmpty(s.CultureCode) && string.IsNullOrEmpty(exportPortalSetting.CultureCode))));
+                    if (!hasNewStylePageHeaderTags &&
+                        !string.IsNullOrEmpty(exportPortalSetting.SettingValue) &&
+                        exportPortalSetting.SettingValue != "false")
+                    {
+                        var createdBy = Util.GetUserIdByName(
+                            importJob,
+                            exportPortalSetting.CreatedByUserId,
+                            exportPortalSetting.CreatedByUserName);
+
+                        DotNetNuke.Data.DataProvider.Instance()
+                            .UpdatePortalSetting(
+                                importJob.PortalId,
+                                PageHeaderTagInfo.SettingPrefix + "Default",
+                                exportPortalSetting.SettingValue,
+                                createdBy,
+                                exportPortalSetting.CultureCode,
+                                exportPortalSetting.IsSecure);
+
+                        this.Result.AddLogEntry("Migrated portal settings", $"PageHeadText -> {PageHeaderTagInfo.SettingPrefix}Default");
+                    }
+
+                    continue;
                 }
 
                 var existingPortalSetting =

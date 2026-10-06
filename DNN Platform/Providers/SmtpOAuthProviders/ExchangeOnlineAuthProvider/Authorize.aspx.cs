@@ -95,9 +95,9 @@ public abstract class Authorize : Page
         }
         else
         {
-            var queryStrings = new Dictionary<string, string>
+            var queryStrings = new Dictionary<string, (string Value, bool IncludeInCacheKey)>
             {
-                { "state", this.Request.QueryString["state"] },
+                { "state", (this.Request.QueryString["state"], false) },
             };
             var msUri = await clientApplication.GetAuthorizationRequestUrl(scopes)
                 .WithExtraQueryParameters(queryStrings)

@@ -12,11 +12,12 @@ namespace DotNetNuke.Web
     using DotNetNuke.Services.DependencyInjection;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
 
     /// <summary>Initializes the Dependency Injection container.</summary>
     public static class DependencyInjectionInitialize
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DependencyInjectionInitialize));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger(typeof(DependencyInjectionInitialize));
 
         /// <summary>Gets the service collection (for logging/diagnostics).</summary>
         internal static IServiceCollection ServiceCollection { get; private set; }
@@ -40,8 +41,7 @@ namespace DotNetNuke.Web
             if (allTypes.LoadExceptions.Any())
             {
                 var messageBuilder = allTypes.LoadExceptions.BuildLoaderExceptionsMessage();
-                messageBuilder.Insert(0, "While loading IDnnStartup types, the following assemblies had types that could not be loaded. This is only an issue if these types contain DNN startup logic that could not be loaded:");
-                Logger.Warn(messageBuilder.ToString());
+                Logger.DependencyInjectionInitializeAssembliesCouldNotBeLoaded(messageBuilder.ToString());
             }
 
             var startupTypes = allTypes.Types
@@ -58,7 +58,7 @@ namespace DotNetNuke.Web
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error($"Unable to configure services for {startup.GetType().FullName}, see exception for details", ex);
+                    Logger.DependencyInjectionInitializeUnableToConfigureServicesFor(ex, startup.GetType().FullName);
                 }
             }
         }
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web
             }
             catch (Exception ex)
             {
-                Logger.Error($"Unable to instantiate startup code for {startupType.FullName}", ex);
+                Logger.DependencyInjectionInitializeUnableToInstantiateStartupCodeFor(ex, startupType.FullName);
                 return null;
             }
         }

@@ -27,10 +27,12 @@ namespace DotNetNuke.Services.Search.Internals
     using Lucene.Net.Search.Vectorhighlight;
     using Lucene.Net.Store;
 
+    using Microsoft.Extensions.Logging;
+
     using Localization = DotNetNuke.Services.Localization.Localization;
 
     /// <summary>  The Impl Controller class for Lucene.</summary>
-    internal class LuceneControllerImpl : ILuceneController, IDisposable
+    internal partial class LuceneControllerImpl : ILuceneController, IDisposable
     {
         private const string DefaultSearchFolder = @"App_Data\Search";
         private const string WriteLockFile = "write.lock";
@@ -43,7 +45,7 @@ namespace DotNetNuke.Services.Search.Internals
         private const string HtmlPreTag = "<b>";
         private const string HtmlPostTag = "</b>";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LuceneControllerImpl));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<LuceneControllerImpl>();
         private static readonly TimeSpan DefaultRereadTimeSpan = TimeSpan.FromSeconds(30);
         private readonly object writerLock = new object();
         private readonly TimeSpan readerTimeSpan;
@@ -185,10 +187,9 @@ namespace DotNetNuke.Services.Search.Internals
                     searcher.Search(searchContext.LuceneQuery.Query, null, searchSecurityTrimmer);
                     luceneResults.TotalHits = searchSecurityTrimmer.TotalHits;
 
-                    if (Logger.IsDebugEnabled)
+                    if (Logger.IsEnabled(LogLevel.Trace))
                     {
-                        var sb = GetSearcResultExplanation(searchContext.LuceneQuery, searchSecurityTrimmer.ScoreDocs, searcher);
-                        Logger.Trace(sb);
+                        Logger.LuceneControllerSearchResultExplanation(searchContext.LuceneQuery.Query, GetSearchResultExplanation(searchContext.LuceneQuery, searchSecurityTrimmer.ScoreDocs, searcher));
                     }
 
                     // Page doesn't exist
@@ -222,8 +223,8 @@ namespace DotNetNuke.Services.Search.Internals
                         throw;
                     }
 
-                    Logger.Error(ex);
-                    Logger.Error($"Search Index Folder Is Not Available: {ex.Message}, Retry {i + 1} time(s).");
+                    Logger.LuceneControllerSearchException(ex);
+                    Logger.LuceneControllerSearchIndexFolderIsNotAvailable(ex, ex.Message, i + 1);
                     Thread.Sleep(100);
                 }
             }
@@ -285,7 +286,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 if (doWait)
                 {
-                    Logger.Debug("Compacting Search Index - started");
+                    Logger.LuceneControllerCompactingSearchIndexStarted();
                 }
 
                 this.CheckDisposed();
@@ -296,7 +297,7 @@ namespace DotNetNuke.Services.Search.Internals
                 if (doWait)
                 {
                     this.Commit();
-                    Logger.Debug("Compacting Search Index - finished");
+                    Logger.LuceneControllerCompactingSearchIndexFinished();
                 }
 
                 return true;
@@ -397,7 +398,7 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                     catch (Exception ex)
                     {
-                        Logger.Error(ex);
+                        Logger.LuceneControllerGetCustomAnalyzerException(ex);
                     }
                 }
             }
@@ -418,10 +419,9 @@ namespace DotNetNuke.Services.Search.Internals
             return this.reader.GetSearcher();
         }
 
-        private static StringBuilder GetSearcResultExplanation(LuceneQuery luceneQuery, IEnumerable<ScoreDoc> scoreDocs, IndexSearcher searcher)
+        private static string GetSearchResultExplanation(LuceneQuery luceneQuery, IEnumerable<ScoreDoc> scoreDocs, IndexSearcher searcher)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("Query: " + luceneQuery.Query.ToString());
             foreach (var match in scoreDocs)
             {
                 var explanation = searcher.Explain(luceneQuery.Query, match.Doc);
@@ -431,7 +431,7 @@ namespace DotNetNuke.Services.Search.Internals
                 sb.AppendLine(explanation.ToString());
             }
 
-            return sb;
+            return sb.ToString();
         }
 
         private static string GetHighlightedText(FastVectorHighlighter highlighter, FieldQuery fieldQuery, IndexSearcher searcher, ScoreDoc match, string tag, int length)

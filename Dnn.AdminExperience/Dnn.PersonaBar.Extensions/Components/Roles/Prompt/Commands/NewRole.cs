@@ -20,6 +20,8 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Security.Roles;
 
+    using Microsoft.Extensions.Logging;
+
     [ConsoleCommand("new-role", Constants.RolesCategory, "Prompt_NewRole_Description")]
     public class NewRole : ConsoleCommandBase
     {
@@ -38,7 +40,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
         [FlagParameter("status", "Prompt_NewRole_FlagStatus", "Boolean", "approved")]
         private const string FlagStatus = "status";
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NewRole));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<NewRole>();
 
         /// <inheritdoc />
         public override string LocalResourceFile => Constants.LocalResourcesFile;
@@ -108,7 +110,7 @@ namespace Dnn.PersonaBar.Roles.Components.Prompt.Commands
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.NewRoleRunException(ex);
                 return new ConsoleErrorResultModel(this.LocalizeString("RoleAdded.Error"));
             }
         }

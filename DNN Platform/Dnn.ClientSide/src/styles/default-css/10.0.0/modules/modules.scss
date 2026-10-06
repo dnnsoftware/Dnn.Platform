@@ -12,13 +12,10 @@ td.SubHead{
     margin-bottom: 0;
 }
 
-/* Set text size in modules */
-.Normal,
+/* Color of Disabled and Deleted */
 .NormalDisabled,
 .NormalDeleted {
     color: var(--dnn-color-foreground, #444);
-    font-size: 1rem;
-    line-height: 1.125rem;
     word-wrap: break-word;
 }
 

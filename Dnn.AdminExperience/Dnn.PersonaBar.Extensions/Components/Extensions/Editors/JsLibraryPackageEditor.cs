@@ -14,9 +14,11 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Services.Installer.Packages;
 
+    using Microsoft.Extensions.Logging;
+
     public class JsLibraryPackageEditor : IPackageEditor
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JsLibraryPackageEditor));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<JsLibraryPackageEditor>();
 
         /// <inheritdoc />
         public PackageInfoDto GetPackageDetail(int portalId, PackageInfo package)
@@ -58,8 +60,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
 
             try
             {
-                string value;
-                if (packageSettings.EditorActions.TryGetValue("customCdn", out value)
+                if (packageSettings.EditorActions.TryGetValue("customCdn", out var value)
                     && !string.IsNullOrEmpty(value))
                 {
                     var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == packageSettings.PackageId);
@@ -70,7 +71,7 @@ namespace Dnn.PersonaBar.Extensions.Components.Editors
             }
             catch (Exception ex)
             {
-                Logger.Error(ex);
+                Logger.JsLibraryPackageEditorSavePackageSettingsException(ex);
                 errorMessage = ex.Message;
                 return false;
             }

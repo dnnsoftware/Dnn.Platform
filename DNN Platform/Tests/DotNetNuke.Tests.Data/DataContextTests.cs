@@ -12,12 +12,10 @@ namespace DotNetNuke.Tests.Data
     using DotNetNuke.Data;
     using DotNetNuke.Data.PetaPoco;
     using DotNetNuke.Tests.Utilities;
-
-    using Moq;
-
     using DotNetNuke.Tests.Utilities.Fakes;
 
     using Microsoft.Extensions.DependencyInjection;
+    using Moq;
     using NUnit.Framework;
     using PetaPoco;
 

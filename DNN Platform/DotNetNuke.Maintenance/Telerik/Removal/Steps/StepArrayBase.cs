@@ -6,17 +6,18 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
 {
     using System.Collections.Generic;
 
-    using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
+
+    using Microsoft.Extensions.Logging;
 
     /// <summary>A base class that implements <see cref="IStepArray"/>.</summary>
     internal abstract class StepArrayBase : StepBase, IStepArray
     {
         /// <summary>Initializes a new instance of the <see cref="StepArrayBase"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
-        public StepArrayBase(ILoggerSource loggerSource, ILocalizer localizer)
-            : base(loggerSource, localizer)
+        public StepArrayBase(ILogger logger, ILocalizer localizer)
+            : base(logger, localizer)
         {
         }
 

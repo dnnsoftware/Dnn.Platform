@@ -15,10 +15,12 @@ namespace Dnn.PersonaBar.Servers.Services
     using Dnn.PersonaBar.Servers.Components.DatabaseServer;
     using DotNetNuke.Instrumentation;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SystemInfoDatabaseController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SystemInfoDatabaseController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SystemInfoDatabaseController>();
         private readonly DatabaseController databaseController = new DatabaseController();
 
         [HttpGet]
@@ -55,7 +57,7 @@ namespace Dnn.PersonaBar.Servers.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SystemInfoDatabaseControllerGetDatabaseServerInfoException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

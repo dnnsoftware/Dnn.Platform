@@ -11,25 +11,20 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
     using DotNetNuke.Instrumentation;
     using DotNetNuke.Maintenance.Telerik.Removal;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>A base class that implements <see cref="IStep"/>.</summary>
     internal abstract class StepBase : IStep
     {
         private readonly ILocalizer localizer;
 
         /// <summary>Initializes a new instance of the <see cref="StepBase"/> class.</summary>
-        /// <param name="loggerSource">An instance of <see cref="ILoggerSource"/>.</param>
+        /// <param name="logger">An instance of <see cref="ILogger"/>.</param>
         /// <param name="localizer">An instance of <see cref="ILocalizer"/>.</param>
-        public StepBase(ILoggerSource loggerSource, ILocalizer localizer)
+        public StepBase(ILogger logger, ILocalizer localizer)
         {
-            if (loggerSource is null)
-            {
-                throw new ArgumentNullException(nameof(loggerSource));
-            }
-
-            this.Log = loggerSource.GetLogger(this.GetType());
-
-            this.localizer = localizer ??
-                throw new ArgumentNullException(nameof(localizer));
+            this.Log = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.localizer = localizer ?? throw new ArgumentNullException(nameof(localizer));
         }
 
         /// <inheritdoc />
@@ -44,8 +39,8 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
         /// <inheritdoc />
         public bool Quiet { get; protected set; }
 
-        /// <summary>Gets an instance of <see cref="ILog"/> specific to steps.</summary>
-        protected ILog Log { get; private set; }
+        /// <summary>Gets an instance of <see cref="ILogger"/> specific to steps.</summary>
+        protected ILogger Log { get; private set; }
 
         /// <inheritdoc />
         public void Execute()
@@ -57,7 +52,7 @@ namespace DotNetNuke.Maintenance.Telerik.Steps
             }
             catch (Exception ex)
             {
-                this.Log.Error(ex);
+                this.Log.StepBaseExecuteException(ex);
                 this.Success = false;
                 this.Notes = this.Localize("UninstallStepInternalError");
             }

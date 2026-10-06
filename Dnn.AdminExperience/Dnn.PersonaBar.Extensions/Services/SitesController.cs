@@ -22,10 +22,12 @@ namespace Dnn.PersonaBar.Sites.Services
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
 
+    using Microsoft.Extensions.Logging;
+
     [MenuPermission(Scope = ServiceScope.Host)]
     public class SitesController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SitesController));
+        private static readonly ILogger Logger = DnnLoggingController.GetLogger<SitesController>();
         private readonly Components.SitesController controller = new Components.SitesController();
 
         /// <summary>Gets list of portals.</summary>
@@ -76,7 +78,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerGetPortalsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -128,7 +130,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerCreatePortalException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -169,7 +171,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerDeletePortalException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -184,9 +186,7 @@ namespace Dnn.PersonaBar.Sites.Services
         {
             try
             {
-                bool success;
-                var message = this.controller.ExportPortalTemplate(request, this.UserInfo, out success);
-
+                var message = this.controller.ExportPortalTemplate(request, this.UserInfo, out var success);
                 if (!success)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
@@ -206,7 +206,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerExportPortalTemplateException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -237,7 +237,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerGetPortalLocalesException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -256,7 +256,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerDeleteExpiredPortalsException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -301,7 +301,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerGetPortalTemplatesException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }
@@ -321,7 +321,7 @@ namespace Dnn.PersonaBar.Sites.Services
             }
             catch (Exception exc)
             {
-                Logger.Error(exc);
+                Logger.SitesControllerRequiresQuestionAndAnswerException(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
         }

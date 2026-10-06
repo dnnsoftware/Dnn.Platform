@@ -23,12 +23,22 @@ namespace DotNetNuke.Web.Mvc
         /// <inheritdoc />
         public override Control CreateControl(TemplateControl containerControl, string controlKey, string controlSrc)
         {
+            if (IsAsyncControl(controlSrc))
+            {
+                return new AsyncMvcHostControl(controlKey);
+            }
+
             return new MvcHostControl(controlKey);
         }
 
         /// <inheritdoc />
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
+            if (IsAsyncControl(moduleConfiguration.ModuleControl.ControlSrc))
+            {
+                return new AsyncMvcHostControl();
+            }
+
             return new MvcHostControl();
         }
 
@@ -37,9 +47,9 @@ namespace DotNetNuke.Web.Mvc
         {
             ModuleControlBase moduleControl = base.CreateModuleControl(moduleConfiguration);
 
-            var segments = moduleConfiguration.ModuleControl.ControlSrc.Replace(".mvc", string.Empty).Split('/');
+            var segments = moduleConfiguration.ModuleControl.ControlSrc.Split('/');
 
-            moduleControl.LocalResourceFile = $"~/DesktopModules/MVC/{moduleConfiguration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{segments[0]}.resx";
+            moduleControl.LocalResourceFile = $"~/DesktopModules/MVC/{moduleConfiguration.DesktopModule.FolderName}/{Localization.LocalResourceDirectory}/{(segments.Length == 2 ? segments[0] : segments[1])}.resx";
 
             return moduleControl;
         }
@@ -47,7 +57,18 @@ namespace DotNetNuke.Web.Mvc
         /// <inheritdoc />
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
+            if (IsAsyncControl(controlSrc))
+            {
+                return new AsyncMvcSettingsControl();
+            }
+
             return new MvcSettingsControl();
+        }
+
+        private static bool IsAsyncControl(string controlSrc)
+        {
+            var segments = controlSrc.Split('/');
+            return segments.Length == 4 && segments[2].Equals("async", System.StringComparison.OrdinalIgnoreCase);
         }
     }
 }
