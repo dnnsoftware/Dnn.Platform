@@ -64,6 +64,25 @@
             .user-as-admin-collapse {
                 clear: both;
             }
+            .password-match-status {
+                font-size: 12px;
+                // Kept rendered (not display: none) while empty so the live region is announced reliably.
+                &.matched, &.unmatched {
+                    // Sit directly under the confirm field, inside the input's bottom margin.
+                    margin-top: -26px;
+                    margin-bottom: 10px;
+                }
+                &.matched {
+                    color: @amazon;
+                }
+                &.unmatched {
+                    color: @alizarinCrimson;
+                }
+                .password-match-icon {
+                    margin-right: 5px;
+                    font-weight: bold;
+                }
+            }
         }
         .site-action-buttons {
             text-align: center;
