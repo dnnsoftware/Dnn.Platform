@@ -393,7 +393,7 @@ namespace Dnn.PersonaBar.SiteSettings.Services
                         RedirectAfterLogoutTabName = this.TabSanitizer(redirectAfterLogoutTabId, pid)?.TabName,
                         RedirectAfterRegistrationTabId = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabID,
                         RedirectAfterRegistrationTabName = this.TabSanitizer(redirectAfterRegistrationTabId, pid)?.TabName,
-                        PageHeadText = localizedPortalSettings["PageHeadText"],
+                        PageHeadText = localizedPortalSettings.TryGetValue("PageHeadText", out var pageHeadText) ? pageHeadText : string.Empty,
                         PageHeaderTags = PageHeaderTagInfo.GetPortalItems(pid, cultureCode)
                             .Select(item => new Dnn.PersonaBar.Pages.Services.Dto.PageHeaderTagItem { Name = item.Name, Content = item.Content })
                             .ToList(),
