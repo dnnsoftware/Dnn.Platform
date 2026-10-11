@@ -407,7 +407,7 @@ class CreatePortal extends Component {
                                             inputId="admin-password-confirm"
                                             type="password"
                                             value={state.newPortal.PasswordConfirm}
-                                            errorMessage={Localization.get("PasswordConfirmRequired.Error")}
+                                            errorMessage={Localization.get(passwordMatch === false ? "ConfirmPasswordUnmatched" : "PasswordConfirmRequired.Error")}
                                             onChange={this.onChange.bind(this, "PasswordConfirm")}
                                             error={state.error.PasswordConfirm && (state.triedToSave || passwordMatch === false) && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
