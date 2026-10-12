@@ -24,7 +24,7 @@
     "eslint-plugin-jest": "^29.16.11",
     "eslint-plugin-react": "7.37.5",
     "globals": "^17.13.0",
-    "jest": "^30.4.2",
+    "jest": "^30.5.2",
     "less": "4.8.1",
     "prop-types": "^15.8.1",
     "react": "^16.14.0",
