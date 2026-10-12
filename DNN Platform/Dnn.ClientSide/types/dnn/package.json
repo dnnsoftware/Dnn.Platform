@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@types/jquery": "^3.5.31",
-    "dayjs": "^1.11.13",
+    "dayjs": "^1.11.23",
     "typescript": "^5.9.3"
   },
   "files": [
