@@ -19,9 +19,9 @@
   },
   "devDependencies": {
     "@dnnsoftware/dnn-react-common": "10.4.0",
-    "@rsbuild/core": "^2.1.10",
+    "@rsbuild/core": "^2.2.12",
     "@rsbuild/plugin-less": "^2.0.1",
-    "@rsbuild/plugin-react": "^2.1.0",
+    "@rsbuild/plugin-react": "^2.1.1",
     "@rsbuild/plugin-svgr": "^2.0.5",
     "@types/knockout": "^3.4.79",
     "@types/redux": "3.6.31",
