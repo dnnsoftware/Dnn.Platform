@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -127,9 +127,12 @@
     <value>Track for Administrators:</value>
   </data>
   <data name="TrackingCodeFormat.ErrorMessage" xml:space="preserve">
-    <value>Container ID Cannot Be Empty</value>
+    <value>Container ID or Google Tag ID Cannot Be Empty</value>
   </data>
   <data name="GtmID.Text" xml:space="preserve">
-    <value>Container ID:</value>
+    <value>Container ID or Google Tag ID:</value>
+  </data>
+  <data name="InvalidTagId.ErrorMessage" xml:space="preserve">
+    <value>Enter a Google Tag Manager container ID (GTM-XXXXXX) or a Google tag ID (G-XXXXXX, AW-XXXXXX, DC-XXXXXX or GT-XXXXXX).</value>
   </data>
 </root>
