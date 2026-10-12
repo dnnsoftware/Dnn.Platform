@@ -1717,7 +1717,7 @@ __metadata:
     eslint-plugin-storybook: "npm:10.6.1"
     html-react-parser: "npm:^6.1.8"
     interact.js: "npm:^1.2.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     nanoid: "npm:^5.1.16"
     prop-types: "npm:^15.8.1"
     raw-loader: "npm:4.0.2"
@@ -6461,7 +6461,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:15.8.1"
     react: "npm:^16.14.0"
     react-click-outside: "npm:^3.0.1"
@@ -8583,7 +8583,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -8606,7 +8606,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -8630,7 +8630,7 @@ __metadata:
     eslint-plugin-import: "npm:^2.32.0"
     eslint-plugin-react: "npm:7.37.5"
     eslint-plugin-spellcheck: "npm:0.0.20"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     localization: "npm:^1.0.2"
     prop-types: "npm:15.8.1"
     react: "npm:^16.14.0"
@@ -10011,7 +10011,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-collapse: "npm:5.1.1"
@@ -10051,7 +10051,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -12462,7 +12462,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"less@npm:4.8.1, less@npm:^4.6.7":
+"less@npm:4.9.1":
+  version: 4.9.1
+  resolution: "less@npm:4.9.1"
+  dependencies:
+    copy-anything: "npm:^3.0.5"
+    errno: "npm:^0.1.1"
+    graceful-fs: "npm:^4.1.2"
+    make-dir: "npm:^5.1.0"
+    mime: "npm:^1.4.1"
+    needle: "npm:^3.1.0"
+    parse-node-version: "npm:^1.0.1"
+    probe-image-size: "npm:^7.2.3"
+    source-map: "npm:~0.6.0"
+  dependenciesMeta:
+    errno:
+      optional: true
+    graceful-fs:
+      optional: true
+    make-dir:
+      optional: true
+    mime:
+      optional: true
+    needle:
+      optional: true
+    probe-image-size:
+      optional: true
+    source-map:
+      optional: true
+  bin:
+    lessc: bin/lessc
+  checksum: 10/644a17be2dc96c8e2a4f9aa6b8bf8c53e46db6ca234229e6d69008a8ff327472fa56a42e4ef284f5c39d6b8c0c586b35f76868c694dcb7b5dadbdf7278b64cf7
+  languageName: node
+  linkType: hard
+
+"less@npm:^4.6.7":
   version: 4.8.1
   resolution: "less@npm:4.8.1"
   dependencies:
@@ -12554,7 +12588,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -14297,7 +14331,7 @@ __metadata:
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
     jest: "npm:^30.5.2"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     lodash: "npm:4.18.1"
     promise: "npm:^8.3.0"
     prop-types: "npm:^15.8.1"
@@ -15206,7 +15240,7 @@ __metadata:
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
     jest: "npm:^30.5.2"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     localization: "npm:^1.0.2"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
@@ -16425,7 +16459,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-click-outside: "npm:^3.0.1"
@@ -16908,7 +16942,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -17014,7 +17048,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -17076,7 +17110,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-custom-scrollbars: "npm:^4.2.1"
@@ -17318,7 +17352,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     localization: "npm:^1.0.2"
     prop-types: "npm:^15.8.1"
     rc-progress: "npm:^4.0.0"
@@ -17358,7 +17392,7 @@ __metadata:
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
     jest: "npm:^30.5.2"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-custom-scrollbars: "npm:4.2.1"
@@ -17385,7 +17419,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -18186,7 +18220,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -18214,7 +18248,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     html-react-parser: "npm:^6.1.8"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     object-path: "npm:0.11.8"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
@@ -18262,7 +18296,7 @@ __metadata:
     eslint: "npm:10.12.0"
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -19014,7 +19048,7 @@ __metadata:
     eslint-plugin-react: "npm:7.37.5"
     globals: "npm:^17.13.0"
     jest: "npm:^30.5.2"
-    less: "npm:4.8.1"
+    less: "npm:4.9.1"
     localization: "npm:^1.0.2"
     prop-types: "npm:^15.8.1"
     react: "npm:^16.14.0"
