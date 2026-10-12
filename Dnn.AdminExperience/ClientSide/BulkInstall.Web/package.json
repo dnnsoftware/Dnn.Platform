@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@dnncommunity/dnn-elements": "^0.29.4",
-    "@stencil/core": "^4.44.1",
+    "@stencil/core": "^4.45.2",
     "@stencil/sass": "^3.3.3",
     "@stencil/store": "^2.2.4"
   },

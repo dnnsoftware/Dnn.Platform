@@ -4761,9 +4761,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/core@npm:^4.44.1":
-  version: 4.44.1
-  resolution: "@stencil/core@npm:4.44.1"
+"@stencil/core@npm:^4.45.2":
+  version: 4.45.2
+  resolution: "@stencil/core@npm:4.45.2"
   dependencies:
     "@rollup/rollup-darwin-arm64": "npm:4.44.0"
     "@rollup/rollup-darwin-x64": "npm:4.44.0"
@@ -4792,11 +4792,11 @@ __metadata:
       optional: true
   bin:
     stencil: bin/stencil
-  checksum: 10/a8ff28d64f3805d15881589e31fa26dd5134b973988c644e56c8f9db9db237b3ff9708bd427a28b22fffada604bd3ab62407fb7ab18db267ab1e1510d7678510
+  checksum: 10/0fd6b59f064d6dc5a07f25dbd6c4e0bda538bf90139fa708b592aa779d4880c347623456e254540c91f61665dc60b43e0a0d1f7cd435687bec19ad6f82174072
   languageName: node
   linkType: hard
 
-"@stencil/eslint-plugin@npm:^1.3.1, @stencil/eslint-plugin@npm:^1.4.0":
+"@stencil/eslint-plugin@npm:^1.4.0":
   version: 1.4.0
   resolution: "@stencil/eslint-plugin@npm:1.4.0"
   dependencies:
@@ -4826,7 +4826,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@stencil/sass@npm:^3.2.3, @stencil/sass@npm:^3.3.3":
+"@stencil/sass@npm:^3.3.3":
   version: 3.3.3
   resolution: "@stencil/sass@npm:3.3.3"
   dependencies:
@@ -8340,7 +8340,7 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.4"
     "@eslint/js": "npm:^10.0.1"
-    "@stencil/core": "npm:^4.44.1"
+    "@stencil/core": "npm:^4.45.2"
     "@stencil/eslint-plugin": "npm:^1.4.0"
     "@stencil/sass": "npm:^3.3.3"
     "@stencil/store": "npm:^2.2.4"
@@ -8365,7 +8365,7 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.4"
     "@eslint/js": "npm:^10.0.1"
-    "@stencil/core": "npm:^4.44.1"
+    "@stencil/core": "npm:^4.45.2"
     "@stencil/eslint-plugin": "npm:^1.4.0"
     "@stencil/sass": "npm:^3.3.3"
     "@stencil/store": "npm:^2.2.4"
@@ -17755,9 +17755,9 @@ __metadata:
   dependencies:
     "@dnncommunity/dnn-elements": "npm:^0.29.4"
     "@dnncommunity/dnn-types": "workspace:*"
-    "@stencil/core": "npm:^4.44.1"
-    "@stencil/eslint-plugin": "npm:^1.3.1"
-    "@stencil/sass": "npm:^3.2.3"
+    "@stencil/core": "npm:^4.45.2"
+    "@stencil/eslint-plugin": "npm:^1.4.0"
+    "@stencil/sass": "npm:^3.3.3"
     "@types/node": "npm:^25.9.2"
     "@typescript-eslint/eslint-plugin": "npm:^8.61.1"
     "@typescript-eslint/parser": "npm:^8.61.1"
