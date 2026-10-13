@@ -17,6 +17,10 @@
     &:disabled {
         background: var(--dnn-color-neutral, @mercury);
         border-color: var(--dnn-color-neutral, @mercury);
+        // Keep read-only text readable against the neutral background (browsers fade disabled text by default).
+        color: var(--dnn-color-neutral-contrast, @thunder);
+        -webkit-text-fill-color: var(--dnn-color-neutral-contrast, @thunder);
+        opacity: 1;
     }
 }
 

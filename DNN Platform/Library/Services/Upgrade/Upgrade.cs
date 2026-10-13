@@ -2126,6 +2126,46 @@ namespace DotNetNuke.Services.Upgrade
             }
         }
 
+        /// <summary>Scans the bin folder and registers every assembly in the database, ignoring whether it is already registered.</summary>
+        internal static void EnsureAssembliesRegistered()
+        {
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
+
+            var binFolder = Path.Combine(Globals.ApplicationMapPath, "bin");
+            if (!Directory.Exists(binFolder))
+            {
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
+                return;
+            }
+
+            foreach (var strAssemblyPath in Directory.GetFiles(binFolder, "*.dll"))
+            {
+                Version version;
+                try
+                {
+                    version = AssemblyVersions.GetAssemblyFileVersion(strAssemblyPath);
+                }
+                catch (Exception)
+                {
+                    // Skip any file that isn't a readable managed assembly.
+                    continue;
+                }
+
+                if (version == null)
+                {
+                    continue;
+                }
+
+                var fileName = Path.GetFileName(strAssemblyPath);
+
+                // Register the assembly regardless of whether it is already registered (ignore the return code).
+                DataProvider.Instance().RegisterAssembly(Null.NullInteger, fileName, version.ToString(3));
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RegisterAssembly:" + fileName + " - " + version.ToString(3));
+            }
+
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
+        }
+
         protected static bool IsLanguageEnabled(int portalid, string code)
         {
             return LocaleController.Instance.GetLocales(portalid).TryGetValue(code, out _);
@@ -2790,46 +2830,6 @@ namespace DotNetNuke.Services.Upgrade
             }
 
             return true;
-        }
-
-        /// <summary>Scans the bin folder and registers every assembly in the database, ignoring whether it is already registered.</summary>
-        private static void EnsureAssembliesRegistered()
-        {
-            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
-
-            var binFolder = Path.Combine(Globals.ApplicationMapPath, "bin");
-            if (!Directory.Exists(binFolder))
-            {
-                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
-                return;
-            }
-
-            foreach (var strAssemblyPath in Directory.GetFiles(binFolder, "*.dll"))
-            {
-                Version version;
-                try
-                {
-                    version = AssemblyVersions.GetAssemblyFileVersion(strAssemblyPath);
-                }
-                catch (Exception)
-                {
-                    // Skip any file that isn't a readable managed assembly.
-                    continue;
-                }
-
-                if (version == null)
-                {
-                    continue;
-                }
-
-                var fileName = Path.GetFileName(strAssemblyPath);
-
-                // Register the assembly regardless of whether it is already registered (ignore the return code).
-                DataProvider.Instance().RegisterAssembly(Null.NullInteger, fileName, version.ToString(3));
-                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RegisterAssembly:" + fileName + " - " + version.ToString(3));
-            }
-
-            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");
         }
     }
 }

@@ -21,6 +21,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         /// <summary>Main method to execute the step.</summary>
         public override void Execute()
         {
+            Upgrade.EnsureAssembliesRegistered();
+
             var packages = Upgrade.GetInstallPackages();
             if (packages.Count == 0)
             {
