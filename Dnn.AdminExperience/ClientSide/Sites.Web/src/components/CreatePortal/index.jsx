@@ -40,6 +40,11 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+// Returns null until the confirmation has a value, then whether both passwords are equal.
+function getPasswordMatch(password, passwordConfirm) {
+    return passwordConfirm === "" ? null : passwordConfirm === password;
+}
+
 function getUniqueId() {
     return Math.random() * Date.now();
 }
@@ -114,11 +119,8 @@ class CreatePortal extends Component {
         }
     }
 
-    resolvePasswordError(value) {
-        if (value !== this.state.newPortal.Password || value === "" || value.length < 7) {
-            return true;
-        }
-        return false;
+    resolvePasswordError(passwordConfirm, password) {
+        return passwordConfirm !== password || passwordConfirm === "" || passwordConfirm.length < 7;
     }
     resolveEmailError(value) {
         return !validateEmail(value);
@@ -133,13 +135,18 @@ class CreatePortal extends Component {
                 break;
             case "PasswordConfirm":
                 newPortal[key] = value;
-                error[key] = this.resolvePasswordError(value);
+                error[key] = this.resolvePasswordError(value, newPortal.Password);
                 break;
             case "Email":
                 newPortal[key] = value;
                 error[key] = this.resolveEmailError(value);
                 break;
             case "Password":
+                newPortal[key] = value;
+                error[key] = (value === "");
+                // Keep the confirmation state in sync when the password changes after it was confirmed.
+                error.PasswordConfirm = this.resolvePasswordError(newPortal.PasswordConfirm, value);
+                break;
             case "Firstname":
             case "Lastname":
             case "Username":
@@ -166,7 +173,7 @@ class CreatePortal extends Component {
                     error.Username = (newPortal.Username === "");
                     error.Email = this.resolveEmailError(newPortal.Email);
                     error.Password = (newPortal.Password === "");
-                    error.PasswordConfirm = this.resolvePasswordError(newPortal.PasswordConfirm);
+                    error.PasswordConfirm = this.resolvePasswordError(newPortal.PasswordConfirm, newPortal.Password);
                 }
                 break;
             default:
@@ -231,8 +238,24 @@ class CreatePortal extends Component {
         this.props.onCancel();
         this.resetNewPortal();
     }
+    renderPasswordMatchStatus(passwordMatch) {
+        let className = "password-match-status";
+        if (passwordMatch !== null) {
+            className += passwordMatch ? " matched" : " unmatched";
+        }
+
+        // The live region stays mounted so screen readers announce changes to its content.
+        return (
+            <div className={className} role="status" aria-live="polite">
+                {passwordMatch === true && <span className="password-match-icon" aria-hidden="true">{"\u2713"}</span>}
+                {passwordMatch !== null && Localization.get(passwordMatch ? "ConfirmPasswordMatched" : "ConfirmPasswordUnmatched")}
+            </div>
+        );
+    }
+
     render() {
         const {props, state} = this;
+        const passwordMatch = getPasswordMatch(state.newPortal.Password, state.newPortal.PasswordConfirm);
 
         const templateOptions = props.portalTemplates.map(template => {
             return {
@@ -384,11 +407,12 @@ class CreatePortal extends Component {
                                             inputId="admin-password-confirm"
                                             type="password"
                                             value={state.newPortal.PasswordConfirm}
-                                            errorMessage={Localization.get("PasswordConfirmRequired.Error")}
+                                            errorMessage={Localization.get(passwordMatch === false ? "ConfirmPasswordUnmatched" : "PasswordConfirmRequired.Error")}
                                             onChange={this.onChange.bind(this, "PasswordConfirm")}
-                                            error={state.error.PasswordConfirm && state.triedToSave && !state.newPortal.UseCurrentUserAsAdmin}
+                                            error={state.error.PasswordConfirm && (state.triedToSave || passwordMatch === false) && !state.newPortal.UseCurrentUserAsAdmin}
                                             autoComplete={getUniqueId()}
                                         />
+                                        {this.renderPasswordMatchStatus(passwordMatch)}
                                     </GridCell>
                                 </GridSystem>
                                 <div style={{clear:"both"}}></div>

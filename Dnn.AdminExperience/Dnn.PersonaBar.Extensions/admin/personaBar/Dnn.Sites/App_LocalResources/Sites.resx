@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -377,6 +377,12 @@
   </data>
   <data name="PasswordConfirmRequired.Error" xml:space="preserve">
     <value>Password confirmation is required.</value>
+  </data>
+  <data name="ConfirmPasswordMatched.Text" xml:space="preserve">
+    <value>Password matched</value>
+  </data>
+  <data name="ConfirmPasswordUnmatched.Text" xml:space="preserve">
+    <value>Password does not match</value>
   </data>
   <data name="PasswordRequired.Error" xml:space="preserve">
     <value>Password is required. Please enter a minimum of 7 characters.</value>
