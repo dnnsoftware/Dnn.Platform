@@ -93,6 +93,9 @@ internal static class SerilogController
                     Path.Combine(applicationMapPath, "Portals\\_default\\Logs\\log.resources"),
                     outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Properties:j}{NewLine}{Exception}",
                     rollingInterval: RollingInterval.Day,
+                    shared: true, // Allow multiple processes to write to the same log file, also allow read access when running
+                    buffered: true, // Enable buffering to improve performance
+                    flushToDiskInterval: TimeSpan.FromSeconds(15),
                     formatProvider: CultureInfo.InvariantCulture)
                 .MinimumLevel.Error();
         }
