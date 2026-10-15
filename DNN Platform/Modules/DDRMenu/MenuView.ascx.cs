@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The tab localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="tabController">The tab controller.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.4.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.5.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public MenuView(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
             : this(localiser, hostSettings, tabController, null, null)
         {
