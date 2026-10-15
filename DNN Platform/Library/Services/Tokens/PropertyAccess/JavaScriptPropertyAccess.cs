@@ -7,12 +7,17 @@ namespace DotNetNuke.Services.Tokens
 {
     using System;
     using System.Collections.Generic;
+    using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework.JavaScriptLibraries;
-    using DotNetNuke.Web.Client;
     using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     /// <summary>Property Access implementation for javascript registration.</summary>
     public class JavaScriptPropertyAccess : JsonPropertyAccess<JavaScriptDto>
@@ -20,7 +25,13 @@ namespace DotNetNuke.Services.Tokens
         private readonly Page page;
 
         /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
+        public JavaScriptPropertyAccess()
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
         /// <param name="page">The current page.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.4.0. Please use the parameterless constructor. Scheduled removal in v12.0.0.")]
         public JavaScriptPropertyAccess(Page page)
         {
             this.page = page;
@@ -45,14 +56,7 @@ namespace DotNetNuke.Services.Tokens
             }
             else
             {
-                ClientResourceManager.RegisterScript(
-                    this.page,
-                    model.Path,
-                    model.Priority,
-                    model.Provider ?? string.Empty,
-                    model.JsName ?? string.Empty,
-                    model.Version ?? string.Empty,
-                    model.HtmlAttributes);
+                this.RegisterScript(model);
             }
 
             return string.Empty;
@@ -87,6 +91,42 @@ namespace DotNetNuke.Services.Tokens
             }
 
             JavaScript.RequestRegistration(model.JsName, version, specific);
+        }
+
+        private void RegisterScript(JavaScriptDto model)
+        {
+            var page = this.page ?? HttpContext.Current?.CurrentHandler as Page;
+            if (page != null)
+            {
+                ClientResourceManager.RegisterScript(
+                    page,
+                    model.Path,
+                    model.Priority,
+                    model.Provider ?? string.Empty,
+                    model.JsName ?? string.Empty,
+                    model.Version ?? string.Empty,
+                    model.HtmlAttributes);
+                return;
+            }
+
+            var controller = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            var script = controller.CreateScript(model.Path)
+                .SetPriority(model.Priority)
+                .SetNameAndVersion(model.JsName ?? string.Empty, model.Version ?? string.Empty, false);
+            if (!string.IsNullOrEmpty(model.Provider))
+            {
+                script = script.SetProvider(model.Provider);
+            }
+
+            if (model.HtmlAttributes is not null)
+            {
+                foreach (var attribute in model.HtmlAttributes)
+                {
+                    script = script.AddAttribute(attribute.Key, attribute.Value);
+                }
+            }
+
+            script.Register();
         }
     }
 }
