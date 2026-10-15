@@ -8,7 +8,6 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     using System.Reflection;
     using System.Security;
     using System.Web;
-    using System.Web.UI;
 
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
@@ -56,8 +55,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 }
                 else
                 {
-                    var hostControl = (Control)HttpContextSource.Current.Items["DDRMenuHostControl"];
-                    var resourceFileRoot = hostControl.ResolveUrl($"~/Admin/Skins/{Localization.LocalResourceDirectory}/User.ascx");
+                    var resourceFileRoot = DNNContext.Current.ResolveUrl($"~/Admin/Skins/{Localization.LocalResourceDirectory}/User.ascx");
                     return Localization.GetString("Register", resourceFileRoot);
                 }
             }

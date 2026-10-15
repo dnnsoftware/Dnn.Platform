@@ -9,6 +9,8 @@ namespace DotNetNuke.Web.DDRMenu
     using System.Web.UI;
 
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Abstractions.Pages;
     using DotNetNuke.Common;
     using DotNetNuke.Common.Extensions;
     using DotNetNuke.Entities.Tabs;
@@ -26,12 +28,14 @@ namespace DotNetNuke.Web.DDRMenu
         private readonly ILocaliser localiser;
         private readonly IHostSettings hostSettings;
         private readonly ITabController tabController;
+        private readonly IClientResourceController clientResourceController;
+        private readonly IPageService pageService;
         private DDRMenuControl menuControl;
 
         /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
         [Obsolete("Deprecated in DotNetNuke 10.0.0. Please use overload with ILocaliser. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider()
-            : this(null, null, null)
+            : this(null, null, null, null, null)
         {
         }
 
@@ -39,7 +43,7 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The localizer.</param>
         [Obsolete("Deprecated in DotNetNuke 10.2.2. Please use overload with IHostSettings. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider(ILocaliser localiser)
-            : this(localiser, null, null)
+            : this(localiser, null, null, null, null)
         {
         }
 
@@ -47,11 +51,25 @@ namespace DotNetNuke.Web.DDRMenu
         /// <param name="localiser">The localizer.</param>
         /// <param name="hostSettings">The host settings.</param>
         /// <param name="tabController">The tab controller.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.4.0. Please use overload with IClientResourceController. Scheduled removal in v12.0.0.")]
         public DDRMenuNavigationProvider(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController)
+            : this(localiser, hostSettings, tabController, null, null)
+        {
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="DDRMenuNavigationProvider"/> class.</summary>
+        /// <param name="localiser">The localizer.</param>
+        /// <param name="hostSettings">The host settings.</param>
+        /// <param name="tabController">The tab controller.</param>
+        /// <param name="clientResourceController">The client resource controller.</param>
+        /// <param name="pageService">The page service.</param>
+        public DDRMenuNavigationProvider(ILocaliser localiser, IHostSettings hostSettings, ITabController tabController, IClientResourceController clientResourceController, IPageService pageService)
         {
             this.localiser = localiser ?? Globals.GetCurrentServiceProvider().GetRequiredService<ILocaliser>();
             this.hostSettings = hostSettings ?? Globals.GetCurrentServiceProvider().GetRequiredService<IHostSettings>();
             this.tabController = tabController ?? Globals.GetCurrentServiceProvider().GetRequiredService<ITabController>();
+            this.clientResourceController = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            this.pageService = pageService ?? Globals.GetCurrentServiceProvider().GetRequiredService<IPageService>();
         }
 
         /// <inheritdoc />
@@ -312,7 +330,12 @@ namespace DotNetNuke.Web.DDRMenu
         /// <inheritdoc />
         public override void Initialize()
         {
-            this.menuControl = new DDRMenuControl(this.localiser, this.hostSettings, this.tabController) { ID = this.ControlID, EnableViewState = false, };
+            this.menuControl = new DDRMenuControl(
+                this.localiser,
+                this.hostSettings,
+                this.tabController,
+                this.clientResourceController,
+                this.pageService) { ID = this.ControlID, EnableViewState = false, };
             this.menuControl.NodeClick += this.RaiseEvent_NodeClick;
         }
 
