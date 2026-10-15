@@ -38,6 +38,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         public DNNContext(Control hostControl)
         {
             this.HostControl = hostControl;
+            this.clientID = hostControl.ClientID;
             this.savedContext = Current;
             Current = this;
         }
@@ -81,7 +82,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         public Control HostControl { get; private set; }
 
         /// <summary>Gets the client ID of the menu.</summary>
-        public string ClientID => this.clientID ?? this.HostControl?.ClientID;
+        public string ClientID => this.clientID;
 
         private static string DataName => dataName ??= "DDRMenu.DNNContext." + ModuleName;
 
