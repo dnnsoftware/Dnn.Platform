@@ -22,8 +22,6 @@ namespace DotNetNuke.Services.Tokens
     /// <summary>Property Access implementation for javascript registration.</summary>
     public class JavaScriptPropertyAccess : JsonPropertyAccess<JavaScriptDto>
     {
-        private readonly Page page;
-
         /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
         public JavaScriptPropertyAccess()
         {
@@ -31,10 +29,9 @@ namespace DotNetNuke.Services.Tokens
 
         /// <summary>Initializes a new instance of the <see cref="JavaScriptPropertyAccess"/> class.</summary>
         /// <param name="page">The current page.</param>
-        [Obsolete("Deprecated in DotNetNuke 10.4.0. Please use the parameterless constructor. Scheduled removal in v12.0.0.")]
+        [Obsolete("Deprecated in DotNetNuke 10.5.0. Please use the parameterless constructor. Scheduled removal in v12.0.0.")]
         public JavaScriptPropertyAccess(Page page)
         {
-            this.page = page;
         }
 
         /// <inheritdoc />
@@ -56,7 +53,7 @@ namespace DotNetNuke.Services.Tokens
             }
             else
             {
-                this.RegisterScript(model);
+                RegisterScript(model);
             }
 
             return string.Empty;
@@ -93,24 +90,10 @@ namespace DotNetNuke.Services.Tokens
             JavaScript.RequestRegistration(model.JsName, version, specific);
         }
 
-        private void RegisterScript(JavaScriptDto model)
+        private static void RegisterScript(JavaScriptDto model)
         {
-            var page = this.page ?? HttpContext.Current?.CurrentHandler as Page;
-            if (page != null)
-            {
-                ClientResourceManager.RegisterScript(
-                    page,
-                    model.Path,
-                    model.Priority,
-                    model.Provider ?? string.Empty,
-                    model.JsName ?? string.Empty,
-                    model.Version ?? string.Empty,
-                    model.HtmlAttributes);
-                return;
-            }
-
-            var controller = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
-            var script = controller.CreateScript(model.Path)
+            var clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            var script = clientResourceController.CreateScript(model.Path)
                 .SetPriority(model.Priority)
                 .SetNameAndVersion(model.JsName ?? string.Empty, model.Version ?? string.Empty, false);
             if (!string.IsNullOrEmpty(model.Provider))
