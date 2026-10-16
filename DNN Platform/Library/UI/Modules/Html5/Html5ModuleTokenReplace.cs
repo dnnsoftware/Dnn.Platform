@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.Modules.Html5
             string html5File,
             ModuleInstanceContext moduleContext,
             ModuleActionCollection moduleActions)
-            : base(page)
+            : base()
         {
             this.AccessingUser = moduleContext.PortalSettings.UserInfo;
             this.DebugMessages = Personalization.GetUserMode() != Entities.Portals.PortalSettings.Mode.View;
