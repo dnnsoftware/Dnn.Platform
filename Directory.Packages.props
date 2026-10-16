@@ -91,6 +91,7 @@
     <PackageVersion Include="Verify.SourceGenerators" Version="2.5.0" />
     <PackageVersion Include="WebFormsMvp" Version="1.4.5" />
     <PackageVersion Include="WindowsAzure.Storage" Version="9.3.3" />
+    <PackageVersion Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.401" />
