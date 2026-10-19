@@ -2159,8 +2159,9 @@ namespace DotNetNuke.Services.Upgrade
                 var fileName = Path.GetFileName(strAssemblyPath);
 
                 // Register the assembly regardless of whether it is already registered (ignore the return code).
-                DataProvider.Instance().RegisterAssembly(Null.NullInteger, fileName, version.ToString(3));
-                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RegisterAssembly:" + fileName + " - " + version.ToString(3));
+                var versionText = AssemblyVersions.ToThreePartString(version);
+                DataProvider.Instance().RegisterAssembly(Null.NullInteger, fileName, versionText);
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RegisterAssembly:" + fileName + " - " + versionText);
             }
 
             DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "CheckAssembliesForRegistration");

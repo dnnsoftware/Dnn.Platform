@@ -96,5 +96,15 @@ namespace DotNetNuke.Common.Utilities
                 Directory.Delete(tempPath, true);
             }
         }
+
+        /// <summary>Formats a version as major.minor.build, treating a missing build component as zero.</summary>
+        /// <remarks>File versions such as "1.0" (for example Owin.dll) parse to a <see cref="Version"/> without a
+        /// build component, and <see cref="Version.ToString(int)"/> throws for those.</remarks>
+        /// <param name="version">The version to format.</param>
+        /// <returns>The version as a three-part string, such as "1.0.0".</returns>
+        internal static string ToThreePartString(Version version)
+        {
+            return new Version(version.Major, version.Minor, Math.Max(version.Build, 0)).ToString(3);
+        }
     }
 }
