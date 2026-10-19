@@ -1,10 +1,11 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace Dnn.EditBar.UI.Services
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Net;
@@ -22,6 +23,10 @@ namespace Dnn.EditBar.UI.Services
     [DnnAuthorize]
     public class LocalizationController : DnnApiController
     {
+        private static readonly HashSet<string> KnownCultureNames = new HashSet<string>(
+            CultureInfo.GetCultures(CultureTypes.AllCultures).Select(c => c.Name).Where(n => !string.IsNullOrEmpty(n)),
+            StringComparer.OrdinalIgnoreCase);
+
         private static object threadLocker = new object();
 
         /// <summary>Retrieve a list of CMX related Localization Keys with its values for the current culture.</summary>
@@ -86,7 +91,7 @@ namespace Dnn.EditBar.UI.Services
             var resourceFiles = GetAllResourceFiles(culture);
 
             var expired = resourceFiles.Select(file => new FileInfo(file))
-                .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime);
+                .Any(resourceFile => resourceFile.LastWriteTime > lastModifiedTime || resourceFile.CreationTime > lastModifiedTime);
             if (!expired)
             {
                 DataCache.SetCache(cacheKey, new CacheDto(), TimeSpan.FromMinutes(5));
@@ -106,12 +111,25 @@ namespace Dnn.EditBar.UI.Services
             var resources = new Dictionary<string, IDictionary<string, string>>();
             var resourceFiles = GetAllResourceFiles(culture);
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
-            foreach (var resourcesFile in resourceFiles)
+            var neutralCulture = GetNeutralCulture(culture);
+            foreach (var resourcesFile in resourceFiles.Where(file => !IsCultureSpecificFile(file)))
             {
+                // Values from the base resx are overridden by the neutral culture file (e.g. Common.tr.resx)
+                // and then by the specific culture file (e.g. Common.tr-TR.resx), when they exist.
                 var key = Path.GetFileNameWithoutExtension(resourcesFile);
-                var filename = Path.GetFileName(resourcesFile);
-                var relativePath = Path.Combine(editBarResourcesPath, filename);
-                var keys = EditBar.UI.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
+                var keys = GetResourceValues(editBarResourcesPath, key + ".resx", culture);
+                foreach (var localizedCulture in new[] { neutralCulture, culture }.Where(c => !string.IsNullOrEmpty(c)).Distinct(StringComparer.OrdinalIgnoreCase))
+                {
+                    var localizedFileName = $"{key}.{localizedCulture}.resx";
+                    if (File.Exists(Path.Combine(Path.GetDirectoryName(resourcesFile), localizedFileName)))
+                    {
+                        foreach (var kvp in GetResourceValues(editBarResourcesPath, localizedFileName, culture))
+                        {
+                            keys[kvp.Key] = kvp.Value;
+                        }
+                    }
+                }
+
                 resources.Add(key, keys);
             }
 
@@ -139,6 +157,32 @@ namespace Dnn.EditBar.UI.Services
             var editBarResourcesPath = Path.Combine(Constants.EditBarRelativePath, "App_LocalResources");
             var physicalPath = HttpContext.Current.Server.MapPath(editBarResourcesPath);
             return Directory.GetFiles(physicalPath, "*.resx");
+        }
+
+        private static Dictionary<string, string> GetResourceValues(string resourcesPath, string fileName, string culture)
+        {
+            var relativePath = Path.Combine(resourcesPath, fileName);
+            return EditBar.UI.Controllers.LocalizationController.Instance.GetLocalizedDictionary(relativePath, culture);
+        }
+
+        private static bool IsCultureSpecificFile(string resourcesFile)
+        {
+            var name = Path.GetFileNameWithoutExtension(resourcesFile);
+            var separatorIndex = name.LastIndexOf('.');
+            return separatorIndex > 0 && KnownCultureNames.Contains(name.Substring(separatorIndex + 1));
+        }
+
+        private static string GetNeutralCulture(string culture)
+        {
+            try
+            {
+                var cultureInfo = CultureInfo.GetCultureInfo(culture);
+                return cultureInfo.IsNeutralCulture ? cultureInfo.Name : cultureInfo.Parent.Name;
+            }
+            catch (CultureNotFoundException)
+            {
+                return null;
+            }
         }
     }
 }
