@@ -296,8 +296,10 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                             });
                             $(document).keyup(function (e) {
                                 if (e.keyCode === 27) {
+                                    // a popup inside the panel (e.g. a row menu) already handled this Escape
+                                    var handledByPopup = e.isDefaultPrevented();
                                     e.preventDefault();
-                                    if (!window.dnn.stopEscapeFromClosingPB) {
+                                    if (!handledByPopup && !window.dnn.stopEscapeFromClosingPB) {
                                         util.closePersonaBar(null, true);
                                     }
                                 }

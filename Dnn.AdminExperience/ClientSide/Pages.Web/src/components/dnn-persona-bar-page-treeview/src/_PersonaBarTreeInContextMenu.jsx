@@ -14,6 +14,7 @@ export class PersonaBarTreeInContextMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {showMenu:false};
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     componentDidMount() {
@@ -22,6 +23,20 @@ export class PersonaBarTreeInContextMenu extends Component {
             this.setState({showMenu: false});
         } else {
             this.setState({showMenu: true});
+        }
+        // Capture phase, so this runs before the Persona Bar's own Escape handler on the document.
+        document.addEventListener("keyup", this.handleKeyUp, true);
+    }
+
+    componentWillUnmount() {
+        document.removeEventListener("keyup", this.handleKeyUp, true);
+    }
+
+    handleKeyUp(event) {
+        if (event.key === "Escape" || event.keyCode === 27) {
+            // Mark the event as handled so the Persona Bar keeps the panel open and only this menu closes.
+            event.preventDefault();
+            this.props.onClose();
         }
     }
 
