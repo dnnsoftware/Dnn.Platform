@@ -622,6 +622,19 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
             return false;
         }
 
+        function removeRequestedPanelFromUrl() {
+            // Keep the address bar clean once the requested panel is open; later reloads restore panels as usual.
+            try {
+                var url = new URL(window.top.location.href);
+                if (url.searchParams.has('personabar')) {
+                    url.searchParams.delete('personabar');
+                    window.top.history.replaceState(window.top.history.state, '', url.toString());
+                }
+            } catch (e) {
+                // Leave the URL as it is.
+            }
+        }
+
         function calculateHoverMenuPosition($menu) {
             if ($menu.length === 0) {
                 return;
@@ -868,6 +881,12 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                                     });
 
                                     $(".btn_panel, .hovermenu > ul > li").click(function handleClickOnHoverMenuItem(evt) {
+                                        // Ctrl/Cmd/Shift-click on an item's link: let the browser open it in a new tab or window.
+                                        if ((evt.ctrlKey || evt.metaKey || evt.shiftKey) && $(evt.target).closest('a.hovermenu-link[href]').length) {
+                                            evt.stopPropagation();
+                                            return;
+                                        }
+
                                         evt.preventDefault();
                                         evt.stopPropagation();
 
@@ -1069,6 +1088,9 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
                                 })();
                             } else {
                                 $(".personabarnav > li.btn_panel, .hovermenu > ul > li").addClass("disabled");
+                                $(".hovermenu a.hovermenu-link").click(function (e) {
+                                    e.preventDefault();
+                                });
                             }
 
                             (function setupEditButton() {
@@ -1176,6 +1198,14 @@ require(['jquery', 'knockout', 'dayjs', '../util', '../sf', '../config', './../e
         function loadPanelFromPersistedSetting() {
             var pageUrl = window.top.location.href.toLowerCase();
             if (pageUrl.indexOf("skinsrc=") > -1 || pageUrl.indexOf("containersrc=") > -1 || pageUrl.indexOf("dnnprintmode=") > -1) {
+                return;
+            }
+
+            // A page opened from a Persona Bar link (?personabar=<identifier>) opens that item.
+            // The server only passes identifiers of panels in the current user's menu.
+            if (config.visible && config.requestedPanel) {
+                util.loadPanel(config.requestedPanel, {});
+                removeRequestedPanelFromUrl();
                 return;
             }
 

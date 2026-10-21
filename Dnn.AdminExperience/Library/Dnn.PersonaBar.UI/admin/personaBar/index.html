@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>PersonaBar</title>
@@ -56,7 +56,6 @@
                             <!-- ko foreach: { data: menuItem.menuItems, as: 'columnItem' } -->
                             <ul data-bind="foreach: { data: columnItem, as: 'subMenuItem' }">
                                 <li data-bind="
-                                            html: subMenuItem.displayName,
                                             attr: {
                                                 'id': subMenuItem.id,
                                                 'data-path': subMenuItem.path,
@@ -67,7 +66,12 @@
                                                 'class': (subMenuItem.css || ''),
                                                 'href': subMenuItem.link,
                                                 'target': subMenuItem.link ? '_blank' : ''
-                                            }"></li>
+                                            }"><a class="hovermenu-link" data-bind="
+                                            html: subMenuItem.displayName,
+                                            attr: {
+                                                'href': subMenuItem.href,
+                                                'target': subMenuItem.link ? '_blank' : '_top'
+                                            }"></a></li>
                             </ul>
                             <!-- /ko -->
                         </div>
