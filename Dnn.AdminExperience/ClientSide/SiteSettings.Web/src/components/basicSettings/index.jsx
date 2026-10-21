@@ -170,6 +170,9 @@ class BasicSettingsPanelBody extends Component {
                         value={state.basicSettings.TimeZone}
                         onSelect={this.onSettingChange.bind(this, "TimeZone") }
                         enabled={canEdit}
+                        withSearch={true}
+                        searchPlaceholder={resx.get("timeZoneSearchPlaceholder")}
+                        noResultsText={resx.get("timeZoneSearchNoResults")}
                     />
                 </InputGroup>
                 <InputGroup>
