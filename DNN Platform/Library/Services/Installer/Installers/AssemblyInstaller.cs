@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Installer.Installers
     using System.Xml;
 
     using DotNetNuke.Common;
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Data;
 
     /// <summary>The AssemblyInstaller installs Assembly Components to a DotNetNuke site.</summary>
@@ -85,7 +86,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
-                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToString(3));
+                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToThreePartString());
                 switch (returnCode)
                 {
                     case 0:

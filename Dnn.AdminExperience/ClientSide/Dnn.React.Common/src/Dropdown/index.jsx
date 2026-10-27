@@ -14,6 +14,7 @@ class Dropdown extends Component {
         this.state = {
             dropDownOpen: false,
             dropdownText: "",
+            searchText: "",
             closestValue: null,
             selectedOption: {}
         };
@@ -25,17 +26,26 @@ class Dropdown extends Component {
         const {props} = this;
         if (props.enabled) {
 
+            const opening = !this.state.dropDownOpen;
+
             //This triggers re-render, showing scrollbar on open.
-            if (!this.state.dropDownOpen) {
-                this.dropdownSearch.focus();
+            if (opening) {
+                if (!props.withSearch) {
+                    this.dropdownSearch.focus();
+                }
             } else {
                 this.setState({
-                    closestValue: null
+                    closestValue: null,
+                    searchText: ""
                 });
             }
 
             this.setState({
-                dropDownOpen: !this.state.dropDownOpen
+                dropDownOpen: opening
+            }, () => {
+                if (opening && props.withSearch && this.searchInput) {
+                    this.searchInput.focus({ preventScroll: true });
+                }
             });
         }
         else {
@@ -77,7 +87,8 @@ class Dropdown extends Component {
             this.setState({
                 dropDownOpen: false,
                 closestValue: null,
-                dropdownText: ""
+                dropdownText: "",
+                searchText: ""
             });
         }
     }
@@ -88,7 +99,8 @@ class Dropdown extends Component {
             this.setState({
                 dropDownOpen: false,
                 closestValue: null,
-                dropdownText: ""
+                dropdownText: "",
+                searchText: ""
             });
             if (props.onSelect) {
                 this.setState({
@@ -247,15 +259,72 @@ class Dropdown extends Component {
         this.scrollToSelectedItem(eventKey);
     }
 
+    matchesSearchText(option) {
+        const { props, state } = this;
+        const searchText = state.searchText.trim().toLowerCase();
+        if (!searchText) {
+            return true;
+        }
+
+        const label = props.getLabelText ? props.getLabelText(option.label) : option.label;
+        return [label, option.searchableValue, option.value].some((candidate) => {
+            return (typeof candidate === "string" || typeof candidate === "number") &&
+                String(candidate).toLowerCase().indexOf(searchText) > -1;
+        });
+    }
+
+    getFilteredOptions() {
+        const { props } = this;
+        if (!props.options) {
+            return props.options;
+        }
+        return props.withSearch ? props.options.filter(this.matchesSearchText, this) : props.options;
+    }
+
+    onSearchChange(event) {
+        this.setState({
+            searchText: event.target.value
+        }, () => {
+            if (this.scrollBar) {
+                this.scrollBar.scrollToTop();
+            }
+        });
+    }
+
+    onSearchKeyDown(event) {
+        switch (event.key) {
+            case "Enter": {
+                event.preventDefault();
+                const filteredOptions = this.getFilteredOptions();
+                if (filteredOptions && filteredOptions.length > 0) {
+                    this.onSelect(filteredOptions[0]);
+                }
+                break;
+            }
+            case "Escape":
+                event.preventDefault();
+                this.setState({
+                    dropDownOpen: false,
+                    closestValue: null,
+                    searchText: ""
+                });
+                break;
+        }
+    }
+
     initOptions() {
         const { props } = this;
         this.optionItems = [];
-        const options = props.options && props.options.map((option, index) => {
+        const filteredOptions = this.getFilteredOptions();
+        const options = filteredOptions && filteredOptions.map((option, index) => {
             this.optionItems.push(option);
             return <li onClick={this.onSelect.bind(this, option)} key={index}
                 ref={this.isSelectedItem(index) ? this.addOptionRef.bind(this) : f => f}
                 className={this.getOptionClassName(option, index)}>{option.label}</li>;
         });
+        if (props.withSearch && options && options.length === 0) {
+            return <li className="dnn-dropdown-no-results">{props.noResultsText}</li>;
+        }
         return options;
     }
 
@@ -314,6 +383,20 @@ class Dropdown extends Component {
                     <Collapse
                         isOpened={state.dropDownOpen}>
                         <div>
+                            {props.withSearch &&
+                                <div className="dnn-dropdown-search">
+                                    <input
+                                        type="text"
+                                        value={state.searchText}
+                                        placeholder={props.searchPlaceholder}
+                                        aria-label={props.searchPlaceholder}
+                                        onChange={this.onSearchChange.bind(this)}
+                                        onKeyDown={this.onSearchKeyDown.bind(this)}
+                                        ref={(input) => this.searchInput = input}
+                                        tabIndex={state.dropDownOpen ? 0 : -1}
+                                    />
+                                </div>
+                            }
                             <Scrollbars
                                 ref={(scrollbar) => this.scrollBar = scrollbar}
                                 autoHide={this.props.autoHide}
@@ -356,7 +439,10 @@ Dropdown.propTypes = {
     isDropDownOpen: PropTypes.bool,
     selectedIndex: PropTypes.number,
     onArrowKey: PropTypes.func,
-    getLabelText: PropTypes.func.isRequired // fn(labelObject):string
+    getLabelText: PropTypes.func.isRequired, // fn(labelObject):string
+    withSearch: PropTypes.bool, // shows a search box on top of the options list to filter them
+    searchPlaceholder: PropTypes.string,
+    noResultsText: PropTypes.string
 };
 
 Dropdown.defaultProps = {
@@ -370,7 +456,10 @@ Dropdown.defaultProps = {
     className: "",
     isDropDownOpen: false,
     selectedIndex: -1,
-    getLabelText:(label) => label
+    getLabelText:(label) => label,
+    withSearch: false,
+    searchPlaceholder: "Search...",
+    noResultsText: "No results found"
 };
 
 export default Dropdown;

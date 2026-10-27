@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Entities.Portals
@@ -972,9 +972,14 @@ namespace DotNetNuke.Entities.Portals
             Requires.NotNullOrEmpty("key", settingName);
             Requires.PropertyNotNull("value", settingValue);
             Requires.NotNullOrEmpty("passPhrase", passPhrase);
+            Requires.NotNullOrEmpty("hashAlgorithm", hashAlgorithm.Name);
 
             var cipherText = Security.FIPSCompliant.EncryptAES(hashAlgorithm, settingValue, passPhrase, hostSettings.Guid);
 
+            // Persist the algorithm name so GetEncryptedString derives the same key (it falls back to SHA1 when missing).
+            // Written first without clearing the cache; the cipher text update below clears it, so readers never see a
+            // new algorithm name paired with the old cipher text.
+            UpdatePortalSetting(portalController, portalId, CryptographyUtils.GetAlgorithmNameSettingKey(settingName), hashAlgorithm.Name, false);
             UpdatePortalSetting(portalController, portalId, settingName, cipherText);
         }
 

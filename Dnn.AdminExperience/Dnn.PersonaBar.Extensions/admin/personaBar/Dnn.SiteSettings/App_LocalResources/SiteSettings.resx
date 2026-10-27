@@ -897,6 +897,12 @@
   <data name="languageLabel.Text" xml:space="preserve">
     <value>Language</value>
   </data>
+  <data name="languageSearchPlaceholder.Text" xml:space="preserve">
+    <value>Search by name or code (e.g. de-DE)</value>
+  </data>
+  <data name="languageSearchNoResults.Text" xml:space="preserve">
+    <value>No matching languages found.</value>
+  </data>
   <data name="LanguageUpdateSuccess.Text" xml:space="preserve">
     <value>The language has been updated.</value>
   </data>
@@ -1481,6 +1487,12 @@
   </data>
   <data name="WhitelistSettings.Text" xml:space="preserve">
     <value>Permitted File Extension List</value>
+  </data>
+  <data name="AllowedExtensionsWhitelistEmpty.Error" xml:space="preserve">
+    <value>The allowed file extensions list must contain at least one extension that is permitted by the host.</value>
+  </data>
+  <data name="AllowedExtensionsRejected.Text" xml:space="preserve">
+    <value>Settings saved, but the following extensions are not permitted by the host's Allowed File Extensions and were removed:</value>
   </data>
   <data name="Redirect_AfterLogin.Help" xml:space="preserve">
     <value>Optionally select the page that users will be redirected to upon successful login.</value>
