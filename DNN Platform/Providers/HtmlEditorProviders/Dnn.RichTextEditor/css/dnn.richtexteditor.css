@@ -1,0 +1,12 @@
+/* Keep DNN form styles (e.g. .dnnFormItem textarea) from constraining the editor. */
+.jodit-container.jodit {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.dnnFormItem .jodit-container textarea,
+.dnnForm .jodit-container textarea {
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+}

@@ -1,0 +1,5 @@
+<h3>Rich Text Editor Provider</h3>
+<ul>
+	<li>New HTML editor provider based on the MIT-licensed Jodit editor (v4.18.10), replacing CKEditor 4 for new installations.</li>
+	<li>Exposes an editor-neutral JavaScript API (<code>dnn.richTextEditor</code>) for modules that need to interact with the editor.</li>
+</ul>

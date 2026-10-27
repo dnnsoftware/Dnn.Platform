@@ -1,0 +1,68 @@
+<dotnetnuke type="Package" version="5.0">
+	<packages>
+		<package name="Dnn.RichTextEditorProvider" type="Provider" version="10.04.00">
+			<friendlyName>Rich Text Editor Provider</friendlyName>
+			<description>HTML editor provider for DNN, based on the MIT-licensed Jodit editor.</description>
+			<iconFile>~/Icons/Sigma/Extensions_32x32_Standard.png</iconFile>
+			<azureCompatible>true</azureCompatible>
+			<owner>
+				<name>.NET Foundation and Contributors</name>
+				<organization>DNN Community</organization>
+				<url>https://dnncommunity.org</url>
+				<email>info@dnncommunity.org</email>
+			</owner>
+			<license src="license.txt" />
+			<releaseNotes src="releaseNotes.txt" />
+			<components>
+				<component type="Assembly">
+					<assemblies>
+						<assembly>
+							<path>bin</path>
+							<name>Dnn.RichTextEditorProvider.dll</name>
+						</assembly>
+					</assemblies>
+				</component>
+				<component type="ResourceFile">
+					<resourceFiles>
+						<basePath>Providers\HtmlEditorProviders\Dnn.RichTextEditor</basePath>
+						<resourceFile>
+							<name>Resources.zip</name>
+						</resourceFile>
+					</resourceFiles>
+				</component>
+				<component type="Config">
+					<config>
+						<configFile>web.config</configFile>
+						<install>
+							<configuration>
+								<nodes>
+									<!-- Registers the provider without changing the default editor; existing sites keep their current editor until they switch. -->
+									<node path="/configuration/dotnetnuke/htmlEditor/providers"
+                                          action="update"
+                                          key="name"
+                                          collision="ignore">
+										<add name="Dnn.RichTextEditor"
+                                             type="Dnn.RichTextEditorProvider.RichTextEditorProvider, Dnn.RichTextEditorProvider"
+                                             providerPath="~/Providers/HtmlEditorProviders/Dnn.RichTextEditor/" />
+									</node>
+								</nodes>
+							</configuration>
+						</install>
+						<uninstall>
+							<configuration>
+								<nodes>
+									<node path="/configuration/dotnetnuke/htmlEditor[@defaultProvider='Dnn.RichTextEditor']"
+                                          action="updateattribute"
+                                          name="defaultProvider"
+                                          value="DNNConnect.CKE" />
+									<node path="/configuration/dotnetnuke/htmlEditor/providers/add[@name='Dnn.RichTextEditor']"
+                                          action="remove" />
+								</nodes>
+							</configuration>
+						</uninstall>
+					</config>
+				</component>
+			</components>
+		</package>
+	</packages>
+</dotnetnuke>
