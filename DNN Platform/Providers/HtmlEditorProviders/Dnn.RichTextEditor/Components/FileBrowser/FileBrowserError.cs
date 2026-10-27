@@ -27,6 +27,9 @@ namespace Dnn.RichTextEditorProvider.Components.FileBrowser
         /// <summary>The file type is not on the host's allowed file extension list.</summary>
         ExtensionNotAllowed,
 
+        /// <summary>The file is larger than the user's upload size limit.</summary>
+        FileTooLarge,
+
         /// <summary>The file could not be saved, for example because the site's disk quota is used up.</summary>
         SaveFailed,
     }

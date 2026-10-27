@@ -15,7 +15,11 @@ namespace Dnn.RichTextEditorProvider.Services
 
     using Dnn.RichTextEditorProvider.Components;
     using Dnn.RichTextEditorProvider.Components.FileBrowser;
+    using Dnn.RichTextEditorProvider.Components.Settings;
+    using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Entities.Portals;
     using DotNetNuke.Framework;
+    using DotNetNuke.Security;
     using DotNetNuke.Services.FileSystem;
     using DotNetNuke.Services.Localization;
     using DotNetNuke.Web.Api;
@@ -32,16 +36,20 @@ namespace Dnn.RichTextEditorProvider.Services
 
         private readonly IFileManager fileManager;
         private readonly FileBrowserService fileBrowser;
+        private readonly EditorSettingsRepository settingsRepository;
 
         /// <summary>Initializes a new instance of the <see cref="FileBrowserController"/> class.</summary>
         /// <param name="folderManager">The folder manager.</param>
         /// <param name="fileManager">The file manager.</param>
         /// <param name="folderMappingController">The folder mapping controller.</param>
         /// <param name="fileContentTypeManager">The file content type manager.</param>
-        public FileBrowserController(IFolderManager folderManager, IFileManager fileManager, IFolderMappingController folderMappingController, IFileContentTypeManager fileContentTypeManager)
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public FileBrowserController(IFolderManager folderManager, IFileManager fileManager, IFolderMappingController folderMappingController, IFileContentTypeManager fileContentTypeManager, IHostSettingsService hostSettingsService, IPortalController portalController)
         {
             this.fileManager = fileManager;
             this.fileBrowser = new FileBrowserService(folderManager, fileManager, folderMappingController, new FolderPermissionChecker(), fileContentTypeManager.GetContentType);
+            this.settingsRepository = new EditorSettingsRepository(new DnnSettingsStore(hostSettingsService, portalController));
         }
 
         /// <summary>Handles the browser's folder and file actions, sent as a form post with an <c>action</c> field.</summary>
@@ -89,7 +97,7 @@ namespace Dnn.RichTextEditorProvider.Services
 
         /// <summary>
         /// Saves uploaded files. The target is the browser's current folder, or for uploads made straight
-        /// from the editor, the provider's <c>uploadFolder</c> (the portal root by default).
+        /// from the editor, the upload folder from the editor settings (the portal root by default).
         /// </summary>
         /// <returns>A <see cref="ConnectorResponse"/> listing the uploaded files' URLs.</returns>
         [HttpPost]
@@ -118,10 +126,12 @@ namespace Dnn.RichTextEditorProvider.Services
                 }
             }
 
+            var settings = this.settingsRepository.GetEffective(this.PortalSettings.PortalId, ProviderSettings.GetAttributes());
+            var maxBytes = settings.ResolveUploadLimitBytes(PortalSecurity.IsInRole);
             var path = fields["path"];
             if (string.IsNullOrEmpty(path))
             {
-                path = ProviderSettings.GetAttributes()["uploadFolder"];
+                path = settings.UploadFolder;
             }
 
             var folder = this.fileBrowser.GetBrowsableFolder(this.PortalSettings.PortalId, path);
@@ -136,7 +146,7 @@ namespace Dnn.RichTextEditorProvider.Services
                 var fileName = upload.Headers.ContentDisposition.FileName.Trim('"');
                 using (var content = await upload.ReadAsStreamAsync())
                 {
-                    var result = this.fileBrowser.AddFile(folder, fileName, content, this.UserInfo.UserID);
+                    var result = this.fileBrowser.AddFile(folder, fileName, content, this.UserInfo.UserID, maxBytes);
                     if (result.Succeeded)
                     {
                         data.Files.Add(this.fileManager.GetUrl(result.Value));

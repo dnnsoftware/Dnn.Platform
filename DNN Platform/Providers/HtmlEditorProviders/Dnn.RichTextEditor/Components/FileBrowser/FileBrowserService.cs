@@ -221,12 +221,18 @@ namespace Dnn.RichTextEditorProvider.Components.FileBrowser
         /// <param name="uploadedName">The name sent by the browser.</param>
         /// <param name="content">The file content.</param>
         /// <param name="userId">The uploading user's ID.</param>
+        /// <param name="maxBytes">The user's upload size limit, or <see langword="null"/> for none.</param>
         /// <returns>The saved file.</returns>
-        public FileBrowserResult<IFileInfo> AddFile(IFolderInfo folder, string uploadedName, Stream content, int userId)
+        public FileBrowserResult<IFileInfo> AddFile(IFolderInfo folder, string uploadedName, Stream content, int userId, long? maxBytes)
         {
             if (!this.permissions.CanAddFiles(folder))
             {
                 return FileBrowserResult<IFileInfo>.Failure(FileBrowserError.PermissionDenied);
+            }
+
+            if (maxBytes.HasValue && content.Length > maxBytes.Value)
+            {
+                return FileBrowserResult<IFileInfo>.Failure(FileBrowserError.FileTooLarge);
             }
 
             var fileName = this.GetAvailableFileName(folder, CleanFileName(uploadedName));

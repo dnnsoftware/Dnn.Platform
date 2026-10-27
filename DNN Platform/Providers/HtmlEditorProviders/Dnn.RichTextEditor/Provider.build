@@ -18,7 +18,8 @@
       <CssFiles Include="css\**\*.css" />
       <JsFiles Include="js\**\*.*" />
       <ResourceFiles Include="App_LocalResources\*.resx" />
-      <Resources Include="@(CssFiles);@(JsFiles);@(ResourceFiles)" />
+      <Views Include="*.ascx" />
+      <Resources Include="@(CssFiles);@(JsFiles);@(ResourceFiles);@(Views)" />
     </ItemGroup>
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -28,5 +29,6 @@
     <Copy SourceFiles="@(CssFiles)" DestinationFolder="$(ProviderFolderName)\css\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(ProviderFolderName)\js\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ProviderFolderName)\App_LocalResources" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(Views)" DestinationFolder="$(ProviderFolderName)" SkipUnchangedFiles="true" />
   </Target>
 </Project>

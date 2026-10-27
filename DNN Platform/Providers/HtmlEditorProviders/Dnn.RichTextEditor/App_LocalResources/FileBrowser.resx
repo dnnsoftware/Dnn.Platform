@@ -30,6 +30,9 @@
   <data name="ExtensionNotAllowed.Text" xml:space="preserve">
     <value>This file type is not allowed.</value>
   </data>
+  <data name="FileTooLarge.Text" xml:space="preserve">
+    <value>The file is larger than you are allowed to upload.</value>
+  </data>
   <data name="SaveFailed.Text" xml:space="preserve">
     <value>The file could not be saved. The site may have run out of storage space.</value>
   </data>

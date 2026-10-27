@@ -30,6 +30,20 @@
 						</resourceFile>
 					</resourceFiles>
 				</component>
+				<component type="Script">
+					<scripts>
+						<basePath>Providers\HtmlEditorProviders\Dnn.RichTextEditor\</basePath>
+						<script type="Install">
+							<path>Install</path>
+							<name>10.04.00.SqlDataProvider</name>
+							<version>10.04.00</version>
+						</script>
+						<script type="UnInstall">
+							<path>Install</path>
+							<name>Uninstall.SqlDataProvider</name>
+						</script>
+					</scripts>
+				</component>
 				<component type="Config">
 					<config>
 						<configFile>web.config</configFile>
@@ -43,7 +57,8 @@
                                           collision="ignore">
 										<add name="Dnn.RichTextEditor"
                                              type="Dnn.RichTextEditorProvider.RichTextEditorProvider, Dnn.RichTextEditorProvider"
-                                             providerPath="~/Providers/HtmlEditorProviders/Dnn.RichTextEditor/" />
+                                             providerPath="~/Providers/HtmlEditorProviders/Dnn.RichTextEditor/"
+                                             settingsControlPath="~/Providers/HtmlEditorProviders/Dnn.RichTextEditor/Settings.ascx" />
 									</node>
 								</nodes>
 							</configuration>

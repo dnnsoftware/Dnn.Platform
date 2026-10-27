@@ -61,6 +61,11 @@
     <Compile Include="Components\PageLinks\PageLinkService.cs" />
     <Compile Include="Components\PageLinks\PageSource.cs" />
     <Compile Include="Components\ProviderSettings.cs" />
+    <Compile Include="Components\Settings\DnnSettingsStore.cs" />
+    <Compile Include="Components\Settings\EditorSettings.cs" />
+    <Compile Include="Components\Settings\EditorSettingsRepository.cs" />
+    <Compile Include="Components\Settings\ISettingsStore.cs" />
+    <Compile Include="Components\Settings\ToolbarPresets.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RichTextEditorProvider.cs" />
     <Compile Include="Services\ConnectorData.cs" />
@@ -71,6 +76,10 @@
     <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Web\EditorControl.cs" />
+    <Compile Include="Web\Settings.ascx.designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web\Settings.cs" />
     <AdditionalFiles Include="..\..\..\..\stylecop.json">
       <Link>stylecop.json</Link>
     </AdditionalFiles>
@@ -78,6 +87,10 @@
     <None Include="Provider.build" />
     <Content Include="App_LocalResources\Editor.resx" />
     <Content Include="App_LocalResources\FileBrowser.resx" />
+    <Content Include="App_LocalResources\Settings.ascx.resx" />
+    <Content Include="Settings.ascx" />
+    <None Include="Install\10.04.00.SqlDataProvider" />
+    <None Include="Install\Uninstall.SqlDataProvider" />
     <Content Include="css\dnn.richtexteditor.css" />
     <Content Include="js\dnn.richtexteditor.js" />
     <Content Include="js\jodit\4.18.10\jodit.min.css" />

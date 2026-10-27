@@ -14,7 +14,9 @@ namespace Dnn.RichTextEditorProvider.Web
     using System.Web.UI.WebControls;
 
     using Dnn.RichTextEditorProvider.Components;
+    using Dnn.RichTextEditorProvider.Components.Settings;
     using Dnn.RichTextEditorProvider.Services;
+    using DotNetNuke.Abstractions.Application;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
@@ -31,6 +33,18 @@ namespace Dnn.RichTextEditorProvider.Web
         private const string ProviderPath = ProviderSettings.ProviderPath;
         private const string ResourceFile = ProviderPath + "App_LocalResources/Editor.resx";
 
+        private readonly IHostSettingsService hostSettingsService;
+        private readonly IPortalController portalController;
+
+        /// <summary>Initializes a new instance of the <see cref="EditorControl"/> class.</summary>
+        /// <param name="hostSettingsService">The host settings service.</param>
+        /// <param name="portalController">The portal controller.</param>
+        public EditorControl(IHostSettingsService hostSettingsService, IPortalController portalController)
+        {
+            this.hostSettingsService = hostSettingsService;
+            this.portalController = portalController;
+        }
+
         /// <summary>Gets or sets the HTML being edited.</summary>
         [DefaultValue("")]
         public string Value
@@ -41,7 +55,7 @@ namespace Dnn.RichTextEditorProvider.Web
 
         /// <summary>
         /// Gets or sets the toolbar preset (<c>basic</c>, <c>standard</c> or <c>full</c>).
-        /// When empty, the preset comes from the provider's <c>toolbar</c> attribute, or else from the current user's roles.
+        /// When empty, the preset comes from the editor settings for the current user's roles.
         /// </summary>
         public string ToolbarPreset { get; set; }
 
@@ -202,16 +216,12 @@ namespace Dnn.RichTextEditorProvider.Web
                 return this.ToolbarPreset;
             }
 
-            if (!string.IsNullOrEmpty(providerAttributes["toolbar"]))
-            {
-                return providerAttributes["toolbar"];
-            }
-
-            // Matches the CKEditor provider's default: the full toolbar for administrators, the basic toolbar for everyone else.
             var portalSettings = PortalSettings.Current;
+            var settings = new EditorSettingsRepository(new DnnSettingsStore(this.hostSettingsService, this.portalController))
+                .GetEffective(portalSettings?.PortalId ?? EditorSettingsRepository.AllSites, providerAttributes);
             var isAdministrator = UserController.Instance.GetCurrentUserInfo().IsSuperUser
                 || (portalSettings != null && PortalSecurity.IsInRole(portalSettings.AdministratorRoleName));
-            return isAdministrator ? "full" : "basic";
+            return settings.ResolveToolbar(PortalSecurity.IsInRole, isAdministrator);
         }
     }
 }

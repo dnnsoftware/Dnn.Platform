@@ -185,7 +185,7 @@ namespace DotNetNuke.Tests.RichTextEditor
         {
             var folder = this.SetUpFolder("Images/");
 
-            var result = this.service.AddFile(folder, "photo.jpg", new MemoryStream(), UserId);
+            var result = this.service.AddFile(folder, "photo.jpg", new MemoryStream(), UserId, null);
 
             Assert.That(result.Error, Is.EqualTo(FileBrowserError.PermissionDenied));
             this.fileManager.Verify(m => m.AddFile(It.IsAny<IFolderInfo>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never);
@@ -201,9 +201,21 @@ namespace DotNetNuke.Tests.RichTextEditor
             this.fileManager.Setup(m => m.FileExists(folder, "photo_1.jpg", true)).Returns(true);
             this.fileManager.Setup(m => m.AddFile(folder, "photo_2.jpg", It.IsAny<Stream>(), false, false, "application/octet-stream", UserId)).Returns(saved);
 
-            var result = this.service.AddFile(folder, @"C:\fakepath\photo.jpg", new MemoryStream(), UserId);
+            var result = this.service.AddFile(folder, @"C:\fakepath\photo.jpg", new MemoryStream(), UserId, null);
 
             Assert.That(result.Value, Is.SameAs(saved));
+        }
+
+        [Test]
+        public void AddFile_RejectsFileOverTheUploadLimit()
+        {
+            var folder = this.SetUpFolder("Images/");
+            this.permissions.Setup(p => p.CanAddFiles(folder)).Returns(true);
+
+            var result = this.service.AddFile(folder, "big.jpg", new MemoryStream(new byte[2049]), UserId, 2048);
+
+            Assert.That(result.Error, Is.EqualTo(FileBrowserError.FileTooLarge));
+            this.fileManager.Verify(m => m.AddFile(It.IsAny<IFolderInfo>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<int>()), Times.Never);
         }
 
         [Test]
@@ -213,7 +225,7 @@ namespace DotNetNuke.Tests.RichTextEditor
             this.permissions.Setup(p => p.CanAddFiles(folder)).Returns(true);
             this.fileManager.Setup(m => m.AddFile(folder, "run.exe", It.IsAny<Stream>(), false, false, It.IsAny<string>(), UserId)).Throws<InvalidFileExtensionException>();
 
-            var result = this.service.AddFile(folder, "run.exe", new MemoryStream(), UserId);
+            var result = this.service.AddFile(folder, "run.exe", new MemoryStream(), UserId, null);
 
             Assert.That(result.Error, Is.EqualTo(FileBrowserError.ExtensionNotAllowed));
         }
