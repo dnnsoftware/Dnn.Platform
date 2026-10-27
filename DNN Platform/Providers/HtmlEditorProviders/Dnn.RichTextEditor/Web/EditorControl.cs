@@ -20,6 +20,7 @@ namespace Dnn.RichTextEditorProvider.Web
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Framework;
     using DotNetNuke.Security;
+    using DotNetNuke.Services.Localization;
 
     /// <summary>Renders a rich text editor for a single HTML value and reads the edited value back on postback.</summary>
     public class EditorControl : WebControl, IPostBackDataHandler
@@ -28,6 +29,7 @@ namespace Dnn.RichTextEditorProvider.Web
         public const string JoditVersion = "4.18.10";
 
         private const string ProviderPath = ProviderSettings.ProviderPath;
+        private const string ResourceFile = ProviderPath + "App_LocalResources/Editor.resx";
 
         /// <summary>Gets or sets the HTML being edited.</summary>
         [DefaultValue("")]
@@ -140,6 +142,11 @@ namespace Dnn.RichTextEditorProvider.Web
             return unit.IsEmpty ? null : unit.ToString(CultureInfo.InvariantCulture);
         }
 
+        private static string GetLocalizedString(string key)
+        {
+            return Localization.GetString(key, ResourceFile);
+        }
+
         private Dictionary<string, object> GetClientOptions(NameValueCollection providerAttributes)
         {
             return new Dictionary<string, object>
@@ -151,13 +158,14 @@ namespace Dnn.RichTextEditorProvider.Web
                 { "height", ToCssSize(this.Height) },
                 { "hidePoweredBy", IsTrue(providerAttributes["hidePoweredBy"]) },
                 { "portalId", PortalSettings.Current?.PortalId ?? -1 },
-                { "fileBrowser", this.GetFileBrowserOptions() },
+                { "fileBrowser", this.GetServiceOptions("FileBrowser") },
+                { "pageLinks", this.GetPageLinkOptions() },
             };
         }
 
-        private Dictionary<string, object> GetFileBrowserOptions()
+        private Dictionary<string, object> GetServiceOptions(string controller)
         {
-            // Browsing and uploading need a signed-in user; the services check folder permissions on every request.
+            // The services need a signed-in user and check permissions on every request.
             if (!this.Context.Request.IsAuthenticated)
             {
                 return null;
@@ -165,8 +173,26 @@ namespace Dnn.RichTextEditorProvider.Web
 
             return new Dictionary<string, object>
             {
-                { "url", $"{ServicesFramework.GetServiceFrameworkRoot()}API/{ServiceRouteMapper.ModuleFolderName}/FileBrowser/" },
+                { "url", $"{ServicesFramework.GetServiceFrameworkRoot()}API/{ServiceRouteMapper.ModuleFolderName}/{controller}/" },
             };
+        }
+
+        private Dictionary<string, object> GetPageLinkOptions()
+        {
+            var options = this.GetServiceOptions("Pages");
+            if (options != null)
+            {
+                options["text"] = new Dictionary<string, string>
+                {
+                    { "button", GetLocalizedString("PageLinkButton") },
+                    { "search", GetLocalizedString("PageLinkSearch") },
+                    { "loading", GetLocalizedString("PageLinkLoading") },
+                    { "empty", GetLocalizedString("PageLinkEmpty") },
+                    { "error", GetLocalizedString("PageLinkError") },
+                };
+            }
+
+            return options;
         }
 
         private string GetToolbarPreset(NameValueCollection providerAttributes)

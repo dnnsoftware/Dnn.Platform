@@ -56,6 +56,10 @@
     <Compile Include="Components\FileBrowser\FileBrowserService.cs" />
     <Compile Include="Components\FileBrowser\FolderPermissionChecker.cs" />
     <Compile Include="Components\FileBrowser\IFolderPermissionChecker.cs" />
+    <Compile Include="Components\PageLinks\IPageSource.cs" />
+    <Compile Include="Components\PageLinks\PageLink.cs" />
+    <Compile Include="Components\PageLinks\PageLinkService.cs" />
+    <Compile Include="Components\PageLinks\PageSource.cs" />
     <Compile Include="Components\ProviderSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RichTextEditorProvider.cs" />
@@ -64,6 +68,7 @@
     <Compile Include="Services\ConnectorResponse.cs" />
     <Compile Include="Services\ConnectorSource.cs" />
     <Compile Include="Services\FileBrowserController.cs" />
+    <Compile Include="Services\PagesController.cs" />
     <Compile Include="Services\ServiceRouteMapper.cs" />
     <Compile Include="Web\EditorControl.cs" />
     <AdditionalFiles Include="..\..\..\..\stylecop.json">
@@ -71,6 +76,7 @@
     </AdditionalFiles>
     <None Include="Dnn.RichTextEditorProvider.dnn" />
     <None Include="Provider.build" />
+    <Content Include="App_LocalResources\Editor.resx" />
     <Content Include="App_LocalResources\FileBrowser.resx" />
     <Content Include="css\dnn.richtexteditor.css" />
     <Content Include="js\dnn.richtexteditor.js" />
