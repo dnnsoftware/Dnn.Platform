@@ -54,6 +54,53 @@
         return available[neutral] ? neutral : 'en';
     }
 
+    function getAntiForgeryHeaders() {
+        var token = document.querySelector('input[name="__RequestVerificationToken"]');
+        return token ? { RequestVerificationToken: token.value } : {};
+    }
+
+    // Points Jodit's file browser and uploader at the DNN FileBrowser service, which enforces folder permissions.
+    function configureFileBrowser(config, fileBrowser) {
+        var headers = getAntiForgeryHeaders();
+        var connectorUrl = fileBrowser.url + 'Connector';
+
+        config.filebrowser = {
+            ajax: {
+                url: connectorUrl,
+                headers: headers,
+            },
+            // Jodit's own permissions defaults would send this one as a GET, so the request settings are repeated here.
+            permissions: {
+                url: connectorUrl,
+                method: 'POST',
+                headers: headers,
+            },
+            // Not supported by the service; hide them regardless of what it reports.
+            permissionsPresets: {
+                allowFileMove: false,
+                allowFileRename: false,
+                allowFileUploadRemote: false,
+                allowFolderMove: false,
+                allowFolderRemove: false,
+                allowFolderRename: false,
+                allowGeneratePdf: false,
+                allowImageCrop: false,
+                allowImageResize: false,
+            },
+            editImage: false,
+            moveFile: false,
+            moveFolder: false,
+            renameFolder: false,
+            deleteFolder: false,
+        };
+
+        config.uploader = {
+            url: fileBrowser.url + 'Upload',
+            headers: headers,
+            insertImageAsBase64URI: false,
+        };
+    }
+
     function createInstance(id, element, editor) {
         return {
             id: id,
@@ -156,6 +203,10 @@
 
         if (options.height) {
             config.height = options.height;
+        }
+
+        if (options.fileBrowser && options.fileBrowser.url) {
+            configureFileBrowser(config, options.fileBrowser);
         }
 
         configureCallbacks.forEach(function (callback) {

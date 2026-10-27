@@ -13,23 +13,21 @@ namespace Dnn.RichTextEditorProvider.Web
     using System.Web.UI;
     using System.Web.UI.WebControls;
 
+    using Dnn.RichTextEditorProvider.Components;
+    using Dnn.RichTextEditorProvider.Services;
     using DotNetNuke.Common;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Framework.Providers;
+    using DotNetNuke.Framework;
     using DotNetNuke.Security;
 
     /// <summary>Renders a rich text editor for a single HTML value and reads the edited value back on postback.</summary>
     public class EditorControl : WebControl, IPostBackDataHandler
     {
-        /// <summary>The virtual path of the provider's files.</summary>
-        public const string ProviderPath = "~/Providers/HtmlEditorProviders/Dnn.RichTextEditor/";
-
         /// <summary>The version of the bundled Jodit editor.</summary>
         public const string JoditVersion = "4.18.10";
 
-        private const string ProviderType = "htmlEditor";
-        private const string ProviderName = "Dnn.RichTextEditor";
+        private const string ProviderPath = ProviderSettings.ProviderPath;
 
         /// <summary>Gets or sets the HTML being edited.</summary>
         [DefaultValue("")]
@@ -69,6 +67,12 @@ namespace Dnn.RichTextEditorProvider.Web
         {
             base.OnInit(e);
             this.Page?.RegisterRequiresPostBack(this);
+
+            if (this.Context.Request.IsAuthenticated)
+            {
+                // The file browser's requests carry the page's anti-forgery token.
+                ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
+            }
         }
 
         /// <inheritdoc/>
@@ -76,7 +80,7 @@ namespace Dnn.RichTextEditorProvider.Web
         {
             base.OnPreRender(e);
 
-            var providerAttributes = GetProviderAttributes();
+            var providerAttributes = ProviderSettings.GetAttributes();
             var type = this.GetType();
 
             // ScriptManager (rather than the client resource manager) is used so that the scripts are also delivered
@@ -126,13 +130,6 @@ namespace Dnn.RichTextEditorProvider.Web
             writer.RenderEndTag();
         }
 
-        private static NameValueCollection GetProviderAttributes()
-        {
-            var providerConfiguration = ProviderConfiguration.GetProviderConfiguration(ProviderType);
-            var provider = (Provider)providerConfiguration?.Providers[ProviderName];
-            return provider?.Attributes ?? new NameValueCollection();
-        }
-
         private static bool IsTrue(string value)
         {
             return bool.TryParse(value, out var result) && result;
@@ -154,6 +151,21 @@ namespace Dnn.RichTextEditorProvider.Web
                 { "height", ToCssSize(this.Height) },
                 { "hidePoweredBy", IsTrue(providerAttributes["hidePoweredBy"]) },
                 { "portalId", PortalSettings.Current?.PortalId ?? -1 },
+                { "fileBrowser", this.GetFileBrowserOptions() },
+            };
+        }
+
+        private Dictionary<string, object> GetFileBrowserOptions()
+        {
+            // Browsing and uploading need a signed-in user; the services check folder permissions on every request.
+            if (!this.Context.Request.IsAuthenticated)
+            {
+                return null;
+            }
+
+            return new Dictionary<string, object>
+            {
+                { "url", $"{ServicesFramework.GetServiceFrameworkRoot()}API/{ServiceRouteMapper.ModuleFolderName}/FileBrowser/" },
             };
         }
 

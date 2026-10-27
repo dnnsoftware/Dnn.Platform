@@ -17,7 +17,8 @@
     <ItemGroup>
       <CssFiles Include="css\**\*.css" />
       <JsFiles Include="js\**\*.*" />
-      <Resources Include="@(CssFiles);@(JsFiles)" />
+      <ResourceFiles Include="App_LocalResources\*.resx" />
+      <Resources Include="@(CssFiles);@(JsFiles);@(ResourceFiles)" />
     </ItemGroup>
   </Target>
   <Target Name="DebugProject" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -26,5 +27,6 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)/bin/$(AssemblyName).xml" DestinationFolder="$(WebsitePath)/bin$(Providers)" />
     <Copy SourceFiles="@(CssFiles)" DestinationFolder="$(ProviderFolderName)\css\%(RecursiveDir)" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(JsFiles)" DestinationFolder="$(ProviderFolderName)\js\%(RecursiveDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(ResourceFiles)" DestinationFolder="$(ProviderFolderName)\App_LocalResources" SkipUnchangedFiles="true" />
   </Target>
 </Project>
