@@ -1,0 +1,9 @@
+<h3>Rich Text Editor Provider</h3>
+<ul>
+	<li>New HTML editor provider based on the MIT-licensed Jodit editor (v4.18.10), replacing CKEditor 4 for new installations.</li>
+	<li>Exposes an editor-neutral JavaScript API (<code>dnn.richTextEditor</code>) for modules that need to interact with the editor.</li>
+	<li>Image and file browsing and uploading through the <code>/API/RichTextEditor/FileBrowser</code> service, which applies the user's DNN folder permissions to every request. Uploads made straight from the editor go to the folder in the provider's <code>uploadFolder</code> attribute (the portal root by default).</li>
+	<li>Settings in the HTML Editor Manager, for all sites or per site: toolbar preset (Basic, Standard, Full) and upload size limit per role, plus the upload folder. Settings are stored in host and portal settings.</li>
+	<li>On installation, the CKEditor provider's role toolbars, role upload limits and upload folders are copied into these settings where they have an equivalent.</li>
+	<li>Insert Page Link toolbar button: a searchable list of the site's pages the user can view (from <code>/API/RichTextEditor/Pages/List</code>), which inserts a link, links the selected text, or updates the link under the cursor.</li>
+</ul>

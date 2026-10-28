@@ -1,0 +1,4 @@
+DNN Platform is licensed under the MIT License by the .NET Foundation and Contributors.
+
+The Rich Text Editor Provider bundles Jodit (https://xdsoft.net/jodit/), Copyright (c) 2013-2026 https://xdsoft.net,
+also licensed under the MIT License. See js/jodit/4.18.10/LICENSE.txt for the full Jodit license text.
