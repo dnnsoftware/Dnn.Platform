@@ -246,11 +246,11 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                 }
 
                 apiToken.TokenKeys = apiToken.Keys.Split(',').ToList();
+                var userInfo = UserController.GetUserById(this.hostSettings, PortalSettings.PortalId, apiToken.CreatedByUserId);
 
                 switch (apiToken.Scope)
                 {
                     case ApiTokenScope.User:
-                        var userInfo = UserController.GetUserById(this.hostSettings, PortalSettings.PortalId, apiToken.CreatedByUserId);
                         if (userInfo == null)
                         {
                             Logger.ApiTokenControllerInvalidUser();
@@ -264,7 +264,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                         if (apiToken.PortalId == PortalSettings.PortalId)
                         {
                             this.apiTokenRepository.SetApiTokenLastUsed(apiToken);
-                            return (apiToken, null);
+                            return (apiToken, userInfo);
                         }
 
                         break;
@@ -272,7 +272,7 @@ namespace DotNetNuke.Web.Api.Auth.ApiTokens
                         if (apiToken.PortalId == -1)
                         {
                             this.apiTokenRepository.SetApiTokenLastUsed(apiToken);
-                            return (apiToken, null);
+                            return (apiToken, userInfo);
                         }
 
                         break;
