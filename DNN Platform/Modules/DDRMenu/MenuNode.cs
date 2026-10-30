@@ -450,9 +450,9 @@ namespace DotNetNuke.Web.DDRMenu
             this.Icon = this.ApplyContextToImagePath(this.Icon, defaultImagePath);
             this.LargeImage = this.ApplyContextToImagePath(this.LargeImage, defaultImagePath);
 
-            if (this.Url != null && this.Url.StartsWith("postback:"))
+            var postbackControl = DNNContext.Current.HostControl;
+            if (this.Url != null && this.Url.StartsWith("postback:") && postbackControl?.Page != null)
             {
-                var postbackControl = DNNContext.Current.HostControl;
                 this.Url = postbackControl.Page.ClientScript.GetPostBackClientHyperlink(postbackControl, this.Url.Substring(9));
             }
 
