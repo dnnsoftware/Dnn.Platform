@@ -1,8 +1,6 @@
 import type { StorybookConfig } from 'storybook-react-rsbuild';
 import { mergeRsbuildConfig } from '@rsbuild/core';
-import {pluginLess} from "@rsbuild/plugin-less";
-import {pluginSvgr} from "@rsbuild/plugin-svgr";
-import {pluginReact} from "@rsbuild/plugin-react";
+import { fileURLToPath } from "node:url";
 
 const config : StorybookConfig = {
     stories: [
@@ -18,6 +16,7 @@ const config : StorybookConfig = {
         options: {
             builder: {
                 lazyCompilation: false,
+                rsbuildConfigPath: fileURLToPath(new URL("./rsbuild.config.ts", import.meta.url)),
             },
         },
     },
@@ -30,25 +29,6 @@ const config : StorybookConfig = {
                     },
                 },
             },
-            plugins: [
-                pluginReact({
-                    swcReactOptions: {
-                        runtime: "classic",
-                    },
-                }),
-                pluginLess({
-                    lessLoaderOptions: {
-                        lessOptions: {
-                            javascriptEnabled: true,
-                        },
-                    },
-                }),
-                pluginSvgr({
-                    svgrOptions: {
-                        exportType: "default"
-                    }
-                }),
-            ],
         });
     },
 };
