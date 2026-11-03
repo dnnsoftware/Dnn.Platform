@@ -6,21 +6,28 @@
 namespace DotNetNuke.Services.Tokens
 {
     using System;
+    using System.Web;
     using System.Web.UI;
 
+    using DotNetNuke.Abstractions.ClientResources;
+    using DotNetNuke.Common;
     using DotNetNuke.Entities.Users;
-    using DotNetNuke.Web.Client;
-    using DotNetNuke.Web.Client.ClientResourceManagement;
+    using DotNetNuke.Web.Client.ResourceManager;
+
+    using Microsoft.Extensions.DependencyInjection;
 
     public class CssPropertyAccess : JsonPropertyAccess<StylesheetDto>
     {
-        private readonly Page page;
+        /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
+        public CssPropertyAccess()
+        {
+        }
 
         /// <summary>Initializes a new instance of the <see cref="CssPropertyAccess"/> class.</summary>
         /// <param name="page">The page to which the CSS should be registered.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.5.0. Please use the parameterless constructor. Scheduled removal in v12.0.0.")]
         public CssPropertyAccess(Page page)
         {
-            this.page = page;
         }
 
         /// <inheritdoc />
@@ -36,13 +43,14 @@ namespace DotNetNuke.Services.Tokens
                 model.Priority = (int)FileOrder.Css.DefaultPriority;
             }
 
+            var clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
             if (string.IsNullOrEmpty(model.Provider))
             {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority);
+                clientResourceController.CreateStylesheet(model.Path).SetPriority(model.Priority).Register();
             }
             else
             {
-                ClientResourceManager.RegisterStyleSheet(this.page, model.Path, model.Priority, model.Provider);
+                clientResourceController.CreateStylesheet(model.Path).SetPriority(model.Priority).SetProvider(model.Provider).Register();
             }
 
             return string.Empty;
