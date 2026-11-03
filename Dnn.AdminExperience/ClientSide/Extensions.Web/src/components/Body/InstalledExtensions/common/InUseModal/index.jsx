@@ -124,7 +124,7 @@ class InUseModal extends Component {
         if (props.tabUrls) {
             return props.tabUrls.map((item, i) => {
                 return (
-                    <div key={i} className="usage-detail-taburl"><Html html={item.TabUrl} /></div>
+                    <div key={i} className="usage-detail-taburl"><Html html={item.TabUrl} openLinksInNewWindow /></div>
                 );
             });
         }

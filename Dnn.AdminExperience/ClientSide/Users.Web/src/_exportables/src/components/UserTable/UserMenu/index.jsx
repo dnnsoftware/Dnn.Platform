@@ -20,6 +20,7 @@ class UserMenu extends Component {
         };
         this.showMenu = false;
         this.handleClick = this.handleClick.bind(this);
+        this.handleKeyUp = this.handleKeyUp.bind(this);
     }
 
     handleClick(event) {
@@ -27,8 +28,17 @@ class UserMenu extends Component {
             this.props.onClose();
         }
     }
+    handleKeyUp(event) {
+        if (event.key === "Escape" || event.keyCode === 27) {
+            // Mark the event as handled so the Persona Bar keeps the panel open and only this menu closes.
+            event.preventDefault();
+            this.props.onClose();
+        }
+    }
     componentDidMount() {
         document.addEventListener("click", this.handleClick, false);
+        // Capture phase, so this runs before the Persona Bar's own Escape handler on the document.
+        document.addEventListener("keyup", this.handleKeyUp, true);
         let {props} = this;
         this.showMenu = false;
         this.getUserDetails(props);
@@ -57,6 +67,7 @@ class UserMenu extends Component {
     }
     componentWillUnmount() {
         document.removeEventListener("click", this.handleClick, false);
+        document.removeEventListener("keyup", this.handleKeyUp, true);
     }
     sort(items, column, order) {
         order = order === undefined ? "asc" : order;

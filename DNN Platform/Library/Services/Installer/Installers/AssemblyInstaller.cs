@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Installer.Installers
             else
             {
                 // Attempt to register assembly this will return False if the assembly exists and true if it does not or is older
-                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, AssemblyVersions.ToThreePartString(file.Version));
+                int returnCode = DataProvider.Instance().RegisterAssembly(this.Package.PackageID, file.Name, file.Version.ToThreePartString());
                 switch (returnCode)
                 {
                     case 0:

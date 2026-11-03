@@ -186,6 +186,12 @@
   <data name="plTimeZone.Help" xml:space="preserve">
     <value>The TimeZone for the location of the site.</value>
   </data>
+  <data name="timeZoneSearchPlaceholder.Text" xml:space="preserve">
+    <value>Search by city, region or offset (e.g. +03:00)</value>
+  </data>
+  <data name="timeZoneSearchNoResults.Text" xml:space="preserve">
+    <value>No matching time zones found.</value>
+  </data>
   <data name="plGUID.Text" xml:space="preserve">
     <value>GUID</value>
   </data>
