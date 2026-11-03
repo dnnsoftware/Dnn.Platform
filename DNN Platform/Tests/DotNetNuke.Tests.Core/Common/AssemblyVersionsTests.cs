@@ -18,7 +18,7 @@ internal class AssemblyVersionsTests
     [TestCase("1.2.3.4", "1.2.3")]
     public void ToThreePartString_PadsMissingBuildComponent(string input, string expected)
     {
-        var result = AssemblyVersions.ToThreePartString(new Version(input));
+        var result = new Version(input).ToThreePartString();
 
         Assert.That(result, Is.EqualTo(expected));
     }

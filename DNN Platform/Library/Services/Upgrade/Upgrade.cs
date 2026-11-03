@@ -1440,7 +1440,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <returns>Exceptions logged or <see cref="string.Empty"/>.</returns>
         public static string UpgradeApplication(string providerPath, Version version, bool writeFeedback)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + ": " + version.ToString(3));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + ": " + version.ToThreePartString());
             string exceptions = string.Empty;
             if (writeFeedback)
             {
@@ -1449,7 +1449,7 @@ namespace DotNetNuke.Services.Upgrade
 
             try
             {
-                switch (version.ToString(3))
+                switch (version.ToThreePartString())
                 {
                     case "10.0.0":
                         UpgradeToVersion10_0_0();
@@ -1464,7 +1464,7 @@ namespace DotNetNuke.Services.Upgrade
                 // log the results
                 if (string.IsNullOrEmpty(exceptions))
                 {
-                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + ": " + version.ToString(3));
+                    DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + Localization.GetString("ApplicationUpgrades", Localization.GlobalResourceFile) + ": " + version.ToThreePartString());
                 }
                 else
                 {
@@ -1521,7 +1521,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpdateConfig(string configFile, Version version, string reason)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToThreePartString());
             var exceptions = string.Empty;
             if (File.Exists(configFile))
             {
@@ -1529,7 +1529,7 @@ namespace DotNetNuke.Services.Upgrade
                 var stream = File.OpenText(configFile);
                 try
                 {
-                    var merge = new XmlMerge(stream, version.ToString(3), reason);
+                    var merge = new XmlMerge(stream, version.ToThreePartString(), reason);
 
                     // Process merge
                     merge.UpdateConfigs();
@@ -1548,7 +1548,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToThreePartString());
             }
             else
             {
@@ -1560,7 +1560,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string UpdateConfig(string providerPath, string configFile, Version version, string reason)
         {
-            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+            DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToThreePartString());
             string exceptions = string.Empty;
             if (File.Exists(configFile))
             {
@@ -1568,7 +1568,7 @@ namespace DotNetNuke.Services.Upgrade
                 var stream = File.OpenText(configFile);
                 try
                 {
-                    var merge = new XmlMerge(stream, version.ToString(3), reason);
+                    var merge = new XmlMerge(stream, version.ToThreePartString(), reason);
 
                     // Process merge
                     merge.UpdateConfigs();
@@ -1599,7 +1599,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (string.IsNullOrEmpty(exceptions))
             {
-                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
+                DnnInstallLogger.InstallLogInfo(Localization.GetString("LogEnd", Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToThreePartString());
             }
             else
             {
@@ -2159,7 +2159,7 @@ namespace DotNetNuke.Services.Upgrade
                 var fileName = Path.GetFileName(strAssemblyPath);
 
                 // Register the assembly regardless of whether it is already registered (ignore the return code).
-                var versionText = AssemblyVersions.ToThreePartString(version);
+                var versionText = version.ToThreePartString();
                 DataProvider.Instance().RegisterAssembly(Null.NullInteger, fileName, versionText);
                 DnnInstallLogger.InstallLogInfo(Localization.GetString("LogStart", Localization.GlobalResourceFile) + "RegisterAssembly:" + fileName + " - " + versionText);
             }
