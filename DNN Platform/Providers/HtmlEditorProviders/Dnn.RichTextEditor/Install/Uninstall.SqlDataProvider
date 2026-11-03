@@ -1,0 +1,9 @@
+/* Removes the Rich Text Editor Provider's settings. */
+
+DELETE FROM {databaseOwner}[{objectQualifier}HostSettings]
+WHERE SettingName LIKE N'RichTextEditor[_]%';
+GO
+
+DELETE FROM {databaseOwner}[{objectQualifier}PortalSettings]
+WHERE SettingName LIKE N'RichTextEditor[_]%';
+GO

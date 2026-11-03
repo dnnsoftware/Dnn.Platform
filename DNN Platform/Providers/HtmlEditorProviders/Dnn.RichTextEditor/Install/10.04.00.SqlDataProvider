@@ -1,0 +1,123 @@
+/************************************************************************************
+ * Copies the CKEditor provider's settings for all sites (host) and for each site
+ * into the Rich Text Editor Provider's settings, when the CKEditor provider's
+ * settings table exists. Settings this provider already has are left alone.
+ *
+ *   CKEditor setting (CKE_Settings)              Rich Text Editor setting
+ *   DNNCKP#{scope}#toolb#{roleId}                RichTextEditor_ToolbarRoles   (JSON: role name -> basic/standard/full)
+ *   DNNCKP#{scope}#{roleId}#uploadfileRoles      RichTextEditor_UploadLimitRoles (JSON: role name -> KB; CKEditor stored bytes)
+ *   DNNCKP#{portalId}#uploadDirId                RichTextEditor_UploadFolder    (folder path; sites only)
+ *
+ * {scope} is -1 for all sites (host settings) or a portal ID (portal settings).
+ * Role ID -1 is CKEditor's entry for unauthenticated users. Custom toolbars, and
+ * settings stored per page or per module, have no equivalent and are not copied.
+ ************************************************************************************/
+
+/* Needed by the FOR XML ... value() calls below, whatever the client's default. */
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF OBJECT_ID(N'{databaseOwner}[{objectQualifier}CKE_Settings]', N'U') IS NOT NULL
+BEGIN
+    DECLARE @Now datetime = GETDATE();
+
+    DECLARE @Scopes TABLE (PortalID int NOT NULL, KeyPrefix nvarchar(50) NOT NULL);
+    INSERT INTO @Scopes (PortalID, KeyPrefix) VALUES (-1, N'DNNCKP#-1#');
+    INSERT INTO @Scopes (PortalID, KeyPrefix)
+        SELECT PortalID, N'DNNCKP#' + CAST(PortalID AS nvarchar(10)) + N'#'
+        FROM {databaseOwner}[{objectQualifier}Portals];
+
+    DECLARE @CkSettings TABLE (PortalID int NOT NULL, Suffix nvarchar(300) NOT NULL, SettingValue nvarchar(max) NULL);
+    INSERT INTO @CkSettings (PortalID, Suffix, SettingValue)
+        SELECT s.PortalID, SUBSTRING(c.SettingName, LEN(s.KeyPrefix) + 1, 300), CAST(c.SettingValue AS nvarchar(max))
+        FROM {databaseOwner}[{objectQualifier}CKE_Settings] c
+            INNER JOIN @Scopes s ON LEFT(c.SettingName, LEN(s.KeyPrefix)) = s.KeyPrefix;
+
+    /* Role settings: one row per scope and role */
+    DECLARE @RoleSettings TABLE (PortalID int NOT NULL, RoleID int NOT NULL, Toolbar nvarchar(20) NULL, LimitKb int NULL);
+
+    INSERT INTO @RoleSettings (PortalID, RoleID, Toolbar)
+        SELECT PortalID, TRY_CAST(SUBSTRING(Suffix, 7, 20) AS int), LOWER(LTRIM(RTRIM(SettingValue)))
+        FROM @CkSettings
+        WHERE Suffix LIKE N'toolb#%'
+            AND LOWER(LTRIM(RTRIM(SettingValue))) IN (N'basic', N'standard', N'full')
+            AND TRY_CAST(SUBSTRING(Suffix, 7, 20) AS int) IS NOT NULL;
+
+    /* CKEditor wrote the unauthenticated users' limit both as "-1#uploadfileRoles" and "-1uploadfileRoles". */
+    INSERT INTO @RoleSettings (PortalID, RoleID, LimitKb)
+        SELECT PortalID, RoleID, MAX(LimitKb)
+        FROM (
+            SELECT PortalID,
+                TRY_CAST(REPLACE(LEFT(Suffix, LEN(Suffix) - LEN(N'uploadfileRoles')), N'#', N'') AS int) AS RoleID,
+                CAST(CEILING(TRY_CAST(SettingValue AS bigint) / 1024.0) AS int) AS LimitKb
+            FROM @CkSettings
+            WHERE Suffix LIKE N'%uploadfileRoles' AND LEN(Suffix) > LEN(N'uploadfileRoles')
+        ) limits
+        WHERE RoleID IS NOT NULL AND LimitKb > 0
+        GROUP BY PortalID, RoleID;
+
+    DECLARE @NamedRoleSettings TABLE (PortalID int NOT NULL, RoleName nvarchar(50) NOT NULL, Toolbar nvarchar(20) NULL, LimitKb int NULL);
+    INSERT INTO @NamedRoleSettings (PortalID, RoleName, Toolbar, LimitKb)
+        SELECT rs.PortalID,
+            CASE WHEN rs.RoleID = -1 THEN N'Unauthenticated Users' ELSE r.RoleName END,
+            rs.Toolbar,
+            rs.LimitKb
+        FROM @RoleSettings rs
+            LEFT JOIN {databaseOwner}[{objectQualifier}Roles] r ON r.RoleID = rs.RoleID
+        WHERE rs.RoleID = -1 OR r.RoleName IS NOT NULL;
+
+    /* New settings, built as JSON objects ("role name": value). Roles of different sites can share a name in
+       the all sites scope, so each name gets the largest toolbar and limit. */
+    DECLARE @NewSettings TABLE (PortalID int NOT NULL, SettingName nvarchar(50) NOT NULL, SettingValue nvarchar(max) NOT NULL);
+
+    INSERT INTO @NewSettings (PortalID, SettingName, SettingValue)
+        SELECT s.PortalID, N'RichTextEditor_ToolbarRoles',
+            N'{' + STUFF((
+                SELECT N',"' + REPLACE(REPLACE(n.RoleName, N'\', N'\\'), N'"', N'\"') + N'":"'
+                    + CASE MAX(CASE n.Toolbar WHEN N'full' THEN 3 WHEN N'standard' THEN 2 ELSE 1 END)
+                        WHEN 3 THEN N'full' WHEN 2 THEN N'standard' ELSE N'basic' END + N'"'
+                FROM @NamedRoleSettings n
+                WHERE n.PortalID = s.PortalID AND n.Toolbar IS NOT NULL
+                GROUP BY n.RoleName
+                ORDER BY n.RoleName
+                FOR XML PATH(''), TYPE).value(N'.', N'nvarchar(max)'), 1, 1, N'') + N'}'
+        FROM @Scopes s
+        WHERE EXISTS (SELECT 1 FROM @NamedRoleSettings n WHERE n.PortalID = s.PortalID AND n.Toolbar IS NOT NULL);
+
+    INSERT INTO @NewSettings (PortalID, SettingName, SettingValue)
+        SELECT s.PortalID, N'RichTextEditor_UploadLimitRoles',
+            N'{' + STUFF((
+                SELECT N',"' + REPLACE(REPLACE(n.RoleName, N'\', N'\\'), N'"', N'\"') + N'":' + CAST(MAX(n.LimitKb) AS nvarchar(10))
+                FROM @NamedRoleSettings n
+                WHERE n.PortalID = s.PortalID AND n.LimitKb IS NOT NULL
+                GROUP BY n.RoleName
+                ORDER BY n.RoleName
+                FOR XML PATH(''), TYPE).value(N'.', N'nvarchar(max)'), 1, 1, N'') + N'}'
+        FROM @Scopes s
+        WHERE EXISTS (SELECT 1 FROM @NamedRoleSettings n WHERE n.PortalID = s.PortalID AND n.LimitKb IS NOT NULL);
+
+    INSERT INTO @NewSettings (PortalID, SettingName, SettingValue)
+        SELECT c.PortalID, N'RichTextEditor_UploadFolder', f.FolderPath
+        FROM @CkSettings c
+            INNER JOIN {databaseOwner}[{objectQualifier}Folders] f
+                ON f.FolderID = TRY_CAST(c.SettingValue AS int) AND f.PortalID = c.PortalID
+        WHERE c.PortalID >= 0 AND c.Suffix = N'uploadDirId' AND f.FolderPath <> N'';
+
+    /* Save, without replacing settings this provider already has */
+    INSERT INTO {databaseOwner}[{objectQualifier}HostSettings]
+        (SettingName, SettingValue, SettingIsSecure, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate)
+        SELECT n.SettingName, n.SettingValue, 0, -1, @Now, -1, @Now
+        FROM @NewSettings n
+        WHERE n.PortalID = -1
+            AND NOT EXISTS (SELECT 1 FROM {databaseOwner}[{objectQualifier}HostSettings] h WHERE h.SettingName = n.SettingName);
+
+    INSERT INTO {databaseOwner}[{objectQualifier}PortalSettings]
+        (PortalID, SettingName, SettingValue, CreatedByUserID, CreatedOnDate, LastModifiedByUserID, LastModifiedOnDate, CultureCode, IsSecure)
+        SELECT n.PortalID, n.SettingName, n.SettingValue, -1, @Now, -1, @Now, NULL, 0
+        FROM @NewSettings n
+        WHERE n.PortalID >= 0
+            AND NOT EXISTS (
+                SELECT 1 FROM {databaseOwner}[{objectQualifier}PortalSettings] p
+                WHERE p.PortalID = n.PortalID AND p.SettingName = n.SettingName);
+END
+GO

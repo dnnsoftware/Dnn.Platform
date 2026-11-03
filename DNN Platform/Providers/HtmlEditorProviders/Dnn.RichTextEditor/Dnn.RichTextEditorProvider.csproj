@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C01F7F15-CDD0-475C-B632-25893EFFC170}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Dnn.RichTextEditorProvider</RootNamespace>
+    <AssemblyName>Dnn.RichTextEditorProvider</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Dnn.RichTextEditorProvider.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Dnn.RichTextEditorProvider.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\..\..\SolutionInfo.cs">
+      <Link>SolutionInfo.cs</Link>
+    </Compile>
+    <Compile Include="Components\FileBrowser\FileBrowserError.cs" />
+    <Compile Include="Components\FileBrowser\FileBrowserResult.cs" />
+    <Compile Include="Components\FileBrowser\FileBrowserService.cs" />
+    <Compile Include="Components\FileBrowser\FolderPermissionChecker.cs" />
+    <Compile Include="Components\FileBrowser\IFolderPermissionChecker.cs" />
+    <Compile Include="Components\PageLinks\IPageSource.cs" />
+    <Compile Include="Components\PageLinks\PageLink.cs" />
+    <Compile Include="Components\PageLinks\PageLinkService.cs" />
+    <Compile Include="Components\PageLinks\PageSource.cs" />
+    <Compile Include="Components\ProviderSettings.cs" />
+    <Compile Include="Components\Settings\DnnSettingsStore.cs" />
+    <Compile Include="Components\Settings\EditorSettings.cs" />
+    <Compile Include="Components\Settings\EditorSettingsRepository.cs" />
+    <Compile Include="Components\Settings\ISettingsStore.cs" />
+    <Compile Include="Components\Settings\ToolbarPresets.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RichTextEditorProvider.cs" />
+    <Compile Include="Services\ConnectorData.cs" />
+    <Compile Include="Services\ConnectorFile.cs" />
+    <Compile Include="Services\ConnectorResponse.cs" />
+    <Compile Include="Services\ConnectorSource.cs" />
+    <Compile Include="Services\FileBrowserController.cs" />
+    <Compile Include="Services\PagesController.cs" />
+    <Compile Include="Services\ServiceRouteMapper.cs" />
+    <Compile Include="Web\EditorControl.cs" />
+    <Compile Include="Web\Settings.ascx.designer.cs">
+      <DependentUpon>Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web\Settings.cs" />
+    <AdditionalFiles Include="..\..\..\..\stylecop.json">
+      <Link>stylecop.json</Link>
+    </AdditionalFiles>
+    <None Include="Dnn.RichTextEditorProvider.dnn" />
+    <None Include="Provider.build" />
+    <Content Include="App_LocalResources\Editor.resx" />
+    <Content Include="App_LocalResources\FileBrowser.resx" />
+    <Content Include="App_LocalResources\Settings.ascx.resx" />
+    <Content Include="Settings.ascx" />
+    <None Include="Install\10.04.00.SqlDataProvider" />
+    <None Include="Install\Uninstall.SqlDataProvider" />
+    <Content Include="css\dnn.richtexteditor.css" />
+    <Content Include="js\dnn.richtexteditor.js" />
+    <Content Include="js\jodit\4.18.10\jodit.min.css" />
+    <Content Include="js\jodit\4.18.10\jodit.min.js" />
+    <Content Include="js\jodit\4.18.10\LICENSE.txt" />
+    <Content Include="license.txt" />
+    <Content Include="releaseNotes.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\DotNetNuke.Abstractions\DotNetNuke.Abstractions.csproj">
+      <Project>{6928a9b1-f88a-4581-a132-d3eb38669bb0}</Project>
+      <Name>DotNetNuke.Abstractions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\DotNetNuke.Web\DotNetNuke.Web.csproj">
+      <Project>{ee1329fe-fd88-4e1a-968c-345e394ef080}</Project>
+      <Name>DotNetNuke.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Library\DotNetNuke.Library.csproj">
+      <Project>{6b29aded-7b56-4484-bea5-c0e09079535b}</Project>
+      <Name>DotNetNuke.Library</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="Provider.build" />
+</Project>
