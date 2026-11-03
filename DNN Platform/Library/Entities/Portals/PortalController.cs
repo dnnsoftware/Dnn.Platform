@@ -2637,13 +2637,23 @@ namespace DotNetNuke.Entities.Portals
                     IPortalInfo portal = obsoletePortal;
                     portal.Description = description;
                     portal.KeyWords = keyWords;
-                    portal.UserTabId = TabController.GetTabByTabPath(portal.PortalId, "//UserProfile", portal.CultureCode);
+
+                    // The template sets these from its usertab/searchtab markers; tab paths are only a fallback,
+                    // since they are built from tab names and do not match localized templates.
                     if (portal.UserTabId == -1)
                     {
-                        portal.UserTabId = TabController.GetTabByTabPath(portal.PortalId, "//ActivityFeed", portal.CultureCode);
+                        portal.UserTabId = TabController.GetTabByTabPath(portal.PortalId, "//UserProfile", portal.CultureCode);
+                        if (portal.UserTabId == -1)
+                        {
+                            portal.UserTabId = TabController.GetTabByTabPath(portal.PortalId, "//ActivityFeed", portal.CultureCode);
+                        }
                     }
 
-                    portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalId, "//SearchResults", portal.CultureCode);
+                    if (portal.SearchTabId == -1)
+                    {
+                        portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalId, "//SearchResults", portal.CultureCode);
+                    }
+
                     this.UpdatePortalInfo(obsoletePortal);
 
                     adminUser.Profile.PreferredLocale = portal.DefaultLanguage;
