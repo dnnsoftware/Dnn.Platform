@@ -26,6 +26,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         private static string dataName;
 
         private readonly DNNContext savedContext;
+        private readonly string clientID;
         private bool isDisposed;
         private Page page;
         private PortalSettings portalSettings;
@@ -37,7 +38,16 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         public DNNContext(Control hostControl)
         {
             this.HostControl = hostControl;
+            this.clientID = hostControl.ClientID;
+            this.savedContext = Current;
+            Current = this;
+        }
 
+        /// <summary>Initializes a new instance of the <see cref="DNNContext"/> class.</summary>
+        /// <param name="clientID">The client ID of the menu when it is not hosted by a WebForms control.</param>
+        public DNNContext(string clientID)
+        {
+            this.clientID = clientID;
             this.savedContext = Current;
             Current = this;
         }
@@ -57,7 +67,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         }
 
         /// <summary>Gets a reference to the page.</summary>
-        public Page Page => this.page ??= this.HostControl.Page;
+        public Page Page => this.page ??= this.HostControl?.Page;
 
         /// <summary>Gets the current portal settings.</summary>
         public PortalSettings PortalSettings => this.portalSettings ??= (PortalSettings)PortalController.Instance.GetCurrentSettings();
@@ -70,6 +80,9 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
         /// <summary>Gets the host control.</summary>
         public Control HostControl { get; private set; }
+
+        /// <summary>Gets the client ID of the menu.</summary>
+        public string ClientID => this.clientID;
 
         private static string DataName => dataName ??= "DDRMenu.DNNContext." + ModuleName;
 
@@ -87,7 +100,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         /// <returns>The converted url.</returns>
         public string ResolveUrl(string relativeUrl)
         {
-            return this.HostControl.ResolveUrl(relativeUrl);
+            return this.HostControl != null ? this.HostControl.ResolveUrl(relativeUrl) : Globals.ResolveUrl(relativeUrl);
         }
 
         /// <inheritdoc />
