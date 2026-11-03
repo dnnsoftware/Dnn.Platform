@@ -745,6 +745,16 @@ span.dnnFormError:after {
     margin-top: 0;
 }
 
+/* Menu item links (for opening items in a new tab) look exactly like the item text. */
+.hovermenu > ul > li > a.hovermenu-link,
+.hovermenu > ul > li > a.hovermenu-link:hover,
+.hovermenu > ul > li > a.hovermenu-link:focus,
+.hovermenu > ul > li > a.hovermenu-link:visited {
+    color: inherit;
+    cursor: inherit;
+    text-decoration: none;
+}
+
 .hovermenu > ul > li.disabled {
     cursor: default;
 }
