@@ -312,8 +312,19 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    var globs = new Matcher(StringComparison.OrdinalIgnoreCase);
-                    globs.AddIncludePatterns(this.glob.Split(';'));
+                    var globs = new Matcher(StringComparison.OrdinalIgnoreCase, true);
+                    foreach (var patternGroup in this.glob.Split([';'], StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        if (patternGroup[0] == '!')
+                        {
+                            globs.AddExclude(patternGroup.Substring(1));
+                        }
+                        else
+                        {
+                            globs.AddInclude(patternGroup);
+                        }
+                    }
+
                     var files = globs.GetResultsInFullPath(Globals.ApplicationMapPath).ToArray();
                     FileSystemUtils.DeleteFiles(files);
                 }
