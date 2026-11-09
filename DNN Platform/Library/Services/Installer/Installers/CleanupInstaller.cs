@@ -312,7 +312,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
                 else
                 {
-                    var globs = new Matcher(StringComparison.InvariantCultureIgnoreCase);
+                    var globs = new Matcher(StringComparison.OrdinalIgnoreCase);
                     globs.AddIncludePatterns(this.glob.Split(';'));
                     var files = globs.GetResultsInFullPath(Globals.ApplicationMapPath).ToArray();
                     FileSystemUtils.DeleteFiles(files);
