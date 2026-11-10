@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.Html
             // token replace
             if (settings.ReplaceTokens)
             {
-                var tr = new HtmlTokenReplace(page)
+                var tr = new HtmlTokenReplace()
                 {
                     AccessingUser = UserController.Instance.GetCurrentUserInfo(),
                     DebugMessages = Personalization.GetUserMode() != PortalSettings.Mode.View,
