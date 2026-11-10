@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -150,13 +150,18 @@ namespace DNN.Connectors.GoogleTagManager
                 }
                 else
                 {
-                    gtmId = values["GtmID"] != null ? values["GtmID"].ToUpperInvariant().Trim() : string.Empty;
+                    gtmId = GoogleTagId.Normalize(values["GtmID"]);
                     trackForAdmin = values["TrackAdministrators"] != null ? values["TrackAdministrators"].ToLowerInvariant().Trim() : string.Empty;
 
                     if (string.IsNullOrEmpty(gtmId))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);
+                    }
+                    else if (GoogleTagId.GetIdType(gtmId) == GoogleTagIdType.Invalid)
+                    {
+                        isValid = false;
+                        customErrorMessage = Localization.GetString("InvalidTagId.ErrorMessage", Constants.LocalResourceFile);
                     }
                 }
 
