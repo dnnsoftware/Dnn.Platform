@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace Dnn.PersonaBar.Library.Containers
@@ -32,6 +32,9 @@ namespace Dnn.PersonaBar.Library.Containers
 
     public class PersonaBarContainer : IPersonaBarContainer
     {
+        /// <summary>The query string key that names a Persona Bar item to open when the page loads.</summary>
+        private const string RequestedPanelQueryKey = "personabar";
+
         private static IPersonaBarContainer instance;
         private readonly IPersonaBarController personaBarController;
         private readonly IHostSettings hostSettings;
@@ -104,6 +107,46 @@ namespace Dnn.PersonaBar.Library.Containers
         {
         }
 
+        /// <summary>
+        /// Gets the identifier of the Persona Bar item requested in the query string (e.g. <c>?personabar=Dnn.Pages</c>),
+        /// only if it is a panel in the current user's menu, so the URL can never open anything the user cannot already open.
+        /// </summary>
+        /// <param name="menu">The current user's menu.</param>
+        /// <returns>The matching menu item identifier, or <see langword="null"/>.</returns>
+        private static string GetRequestedPanel(PersonaBarMenu menu)
+        {
+            var requested = HttpContextSource.Current?.Request.QueryString[RequestedPanelQueryKey];
+            if (string.IsNullOrWhiteSpace(requested))
+            {
+                return null;
+            }
+
+            return FindPanelIdentifier(menu.MenuItems, requested.Trim());
+        }
+
+        private static string FindPanelIdentifier(IEnumerable<MenuItem> menuItems, string identifier)
+        {
+            foreach (var menuItem in menuItems)
+            {
+                // Only items that open a panel: root menus (Content, Manage, ...) have no Path, and items with a Link navigate away instead.
+                if (string.Equals(menuItem.Identifier, identifier, StringComparison.OrdinalIgnoreCase)
+                    && !string.IsNullOrEmpty(menuItem.ModuleName)
+                    && !string.IsNullOrEmpty(menuItem.Path)
+                    && string.IsNullOrEmpty(menuItem.Link))
+                {
+                    return menuItem.Identifier;
+                }
+
+                var childIdentifier = FindPanelIdentifier(menuItem.Children, identifier);
+                if (childIdentifier != null)
+                {
+                    return childIdentifier;
+                }
+            }
+
+            return null;
+        }
+
         private Dictionary<string, object> GetConfiguration(PortalSettings portalSettings)
         {
             var settings = new Dictionary<string, object>();
@@ -123,6 +166,13 @@ namespace Dnn.PersonaBar.Library.Containers
             settings.Add("userMode", Personalization.GetUserMode().ToString());
             settings.Add("userSettings", PersonaBarUserSettingsController.Instance.GetPersonaBarUserSettings());
             settings.Add("menuStructure", JObject.FromObject(menuStructure));
+
+            var requestedPanel = GetRequestedPanel(menuStructure);
+            if (requestedPanel != null)
+            {
+                settings.Add("requestedPanel", requestedPanel);
+            }
+
             settings.Add("sku", DotNetNukeContext.Current.Application.SKU);
             settings.Add("debugMode", HttpContextSource.Current != null && HttpContextSource.Current.IsDebuggingEnabled);
             settings.Add("portalId", portalId);
