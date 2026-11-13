@@ -1,0 +1,61 @@
+/* Keep DNN form styles (e.g. .dnnFormItem textarea) from constraining the editor. */
+.jodit-container.jodit {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.dnn-rte-pagelink {
+    width: 320px;
+    max-width: 90vw;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.dnn-rte-pagelink__search.jodit-input {
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 6px;
+}
+
+.dnn-rte-pagelink__list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.dnn-rte-pagelink__item {
+    display: block;
+    width: 100%;
+    padding: 5px 8px;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.dnn-rte-pagelink__item:hover,
+.dnn-rte-pagelink__item:focus {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+.dnn-rte-pagelink__item_disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.dnn-rte-pagelink__status {
+    padding: 5px 8px;
+    opacity: 0.7;
+}
+
+.dnnFormItem .jodit-container textarea,
+.dnnForm .jodit-container textarea {
+    width: 100%;
+    max-width: none;
+    min-height: 0;
+}

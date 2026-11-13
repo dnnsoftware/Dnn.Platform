@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Intro.Text" xml:space="preserve">
+    <value>Choose which toolbar each role gets in the rich text editor, how large a file each role may upload, and where files dropped or pasted into the editor are saved. Folder permissions still decide where each user can browse and upload.</value>
+  </data>
+  <data name="Scope.Text" xml:space="preserve">
+    <value>Settings for</value>
+  </data>
+  <data name="AllSites.Text" xml:space="preserve">
+    <value>All sites</value>
+  </data>
+  <data name="AllSitesHelp.Text" xml:space="preserve">
+    <value>These settings apply to every site that does not set its own value.</value>
+  </data>
+  <data name="SiteHelp.Text" xml:space="preserve">
+    <value>Values left empty here use the settings for all sites. A site that sets any toolbar or upload limit for a role replaces the whole role list for all sites.</value>
+  </data>
+  <data name="DefaultToolbar.Text" xml:space="preserve">
+    <value>Default toolbar</value>
+  </data>
+  <data name="UploadFolder.Text" xml:space="preserve">
+    <value>Upload folder</value>
+  </data>
+  <data name="DefaultUploadLimit.Text" xml:space="preserve">
+    <value>Default upload limit (KB)</value>
+  </data>
+  <data name="RolesHeading.Text" xml:space="preserve">
+    <value>Roles</value>
+  </data>
+  <data name="RolesHelp.Text" xml:space="preserve">
+    <value>A user in several roles gets the largest toolbar and the largest upload limit of those roles. Users in none of them get the defaults above. If no role has a toolbar, administrators get the full toolbar. Upload folder paths are relative to the site's root folder, for example Images/.</value>
+  </data>
+  <data name="RoleColumn.Text" xml:space="preserve">
+    <value>Role</value>
+  </data>
+  <data name="ToolbarColumn.Text" xml:space="preserve">
+    <value>Toolbar</value>
+  </data>
+  <data name="UploadLimitColumn.Text" xml:space="preserve">
+    <value>Upload limit (KB)</value>
+  </data>
+  <data name="NotSet.Text" xml:space="preserve">
+    <value>(not set)</value>
+  </data>
+  <data name="Inherit.Text" xml:space="preserve">
+    <value>(use all sites setting)</value>
+  </data>
+  <data name="Toolbar_basic.Text" xml:space="preserve">
+    <value>Basic</value>
+  </data>
+  <data name="Toolbar_standard.Text" xml:space="preserve">
+    <value>Standard</value>
+  </data>
+  <data name="Toolbar_full.Text" xml:space="preserve">
+    <value>Full</value>
+  </data>
+  <data name="Save.Text" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Saved.Text" xml:space="preserve">
+    <value>The editor settings have been saved.</value>
+  </data>
+  <data name="InvalidLimit.Text" xml:space="preserve">
+    <value>Upload limits must be whole numbers of KB greater than zero, or empty.</value>
+  </data>
+  <data name="FolderNotFound.Text" xml:space="preserve">
+    <value>The upload folder does not exist in this site.</value>
+  </data>
+  <data name="AccessDenied.Text" xml:space="preserve">
+    <value>Only superusers can change the editor settings.</value>
+  </data>
+</root>

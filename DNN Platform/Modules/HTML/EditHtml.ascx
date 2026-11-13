@@ -163,10 +163,13 @@
         function setupDnnEditHtml() {
             $('#dnnEditHtml').dnnPanels();
             if (window.frameElement && window.frameElement.id == "iPopUp") {
-                var ckeditorid = $(".ehCurrentContent textarea.editor").attr('id');
-                if (ckeditorid) {
+                var editorid = $(".ehCurrentContent textarea.editor").attr('id');
+                if (editorid && window.dnn && window.dnn.richTextEditor) {
+                    window.dnn.richTextEditor.onReady(function () {
+                        resizeDnnEditHtml();
+                    });
+                } else if (editorid && typeof CKEDITOR !== 'undefined') {
                     CKEDITOR.on("instanceReady", function (event) {
-                        editor = event.editor;
                         resizeDnnEditHtml();
                     });
                 } else {
@@ -195,17 +198,18 @@
                         $('.ehCurrentContent').css('overflow', 'hidden');
                     }
                 }
-                // CK Editor
+                // Rich text editor (dnn.richTextEditor API) or CK Editor
                 var editorid = $(".ehCurrentContent textarea.editor").attr('id');
                 if (editorid) {
-                    var ckeditor = CKEDITOR.instances[editorid];
-                    if (ckeditor && ckeditor.status == 'ready') {
+                    var richTextEditor = window.dnn && window.dnn.richTextEditor ? window.dnn.richTextEditor.get(editorid) : null;
+                    var ckeditor = !richTextEditor && typeof CKEDITOR !== 'undefined' ? CKEDITOR.instances[editorid] : null;
+                    if ((richTextEditor && richTextEditor.isReady) || (ckeditor && ckeditor.status == 'ready')) {
                         var newEditorHeight = $('.ehCurrentContent').height();
                         if($('.dnnTextPanelView').length > 0) {newEditorHeight = newEditorHeight - $('.dnnTextPanelView').height()}
                         if($('.divCurrentVersion').length > 0) {newEditorHeight = newEditorHeight - $('.divCurrentVersion').height()}
                         if($('.ehCurrentContent .dnnTextPanel p').length > 0) {newEditorHeight = newEditorHeight - $('.ehCurrentContent .dnnTextPanel p').height()}
                         if($('.ehmContent').length > 0) {newEditorHeight = newEditorHeight - $('.ehmContent').height()}
-                        ckeditor.resize($('.ehCurrentContent').width(), newEditorHeight);
+                        (richTextEditor || ckeditor).resize($('.ehCurrentContent').width(), newEditorHeight);
                         $('.ehCurrentContent').css('overflow', 'hidden');
                         $('.ehCurrentContent .dnnTextPanel p').css('margin-bottom', '0');
                     }
