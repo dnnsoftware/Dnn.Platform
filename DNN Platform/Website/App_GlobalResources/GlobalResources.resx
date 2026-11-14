@@ -664,7 +664,7 @@ Username: [User:UserName]
 
 You can use the following link to complete your verified registration:
 
-[Portal:FULLURL]/default.aspx?ctl=Login&amp;username=[Custom:0]&amp;verificationcode=[Custom:1]
+[Portal:FULLURL]/default.aspx?username=[Custom:0]&amp;verificationcode=[Custom:1]&amp;ctl=Login
 
 Thank you, we appreciate your support...
 
