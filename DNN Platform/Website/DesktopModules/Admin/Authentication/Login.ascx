@@ -11,13 +11,15 @@
         <div class="loginContent">
             <dnn:DNNTabStrip ID="tsLogin" runat="server" TabRenderMode="All" CssTabContainer="LoginTabGroup" CssContentContainer="LoginContainerGroup" DefaultContainerCssClass="LoginContainer" DefaultLabel-CssClass="LoginTab" DefaultLabel-CssClassHover="LoginTabHover" DefaultLabel-CssClassSelected="LoginTabSelected" visible="false" />
             <asp:Panel ID="pnlLoginContainer" runat="server" CssClass="LoginPanel" Visible="false" />
-            <div class="dnnSocialRegistration">
-                <div id="socialControls">
-                    <ul class="buttonList">
-                        <asp:PlaceHolder ID="socialLoginControls" runat="server"/>
-                    </ul>
+            <asp:Panel ID="pnlSocialRegistration" runat="server" Visible="false">
+                <div class="dnnSocialRegistration">
+                    <div id="socialControls">
+                        <ul class="buttonList">
+                            <asp:PlaceHolder ID="socialLoginControls" runat="server"/>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            </asp:Panel>
         </div>
     </asp:panel>
     <asp:Panel ID="pnlAssociate" runat="Server" Visible="false">
