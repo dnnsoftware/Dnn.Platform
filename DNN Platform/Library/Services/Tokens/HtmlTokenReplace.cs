@@ -3,18 +3,30 @@
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Services.Tokens
 {
+    using System;
     using System.Web.UI;
 
     public class HtmlTokenReplace : TokenReplace
     {
         /// <summary>Initializes a new instance of the <see cref="HtmlTokenReplace"/> class.</summary>
+        public HtmlTokenReplace()
+            : base(Scope.DefaultSettings)
+        {
+            this.AddPropertySource("css", new CssPropertyAccess());
+            this.AddPropertySource("js", new JavaScriptPropertyAccess());
+            this.AddPropertySource("javascript", new JavaScriptPropertyAccess());
+            this.AddPropertySource("antiforgerytoken", new AntiForgeryTokenPropertyAccess());
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="HtmlTokenReplace"/> class.</summary>
         /// <param name="page">The page on which the module is rendering.</param>
+        [Obsolete("Deprecated in DotNetNuke 10.5.0. Please use the parameterless constructor. Scheduled removal in v12.0.0.")]
         public HtmlTokenReplace(Page page)
             : base(Scope.DefaultSettings)
         {
-            this.AddPropertySource("css", new CssPropertyAccess(page));
-            this.AddPropertySource("js", new JavaScriptPropertyAccess(page));
-            this.AddPropertySource("javascript", new JavaScriptPropertyAccess(page));
+            this.AddPropertySource("css", new CssPropertyAccess());
+            this.AddPropertySource("js", new JavaScriptPropertyAccess());
+            this.AddPropertySource("javascript", new JavaScriptPropertyAccess());
             this.AddPropertySource("antiforgerytoken", new AntiForgeryTokenPropertyAccess());
         }
     }
