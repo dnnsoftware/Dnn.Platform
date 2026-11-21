@@ -319,6 +319,41 @@ define(['jquery', 'purify.min'], function ($, DOMPurify) {
                 getPanelIdFromPath: function getPanelIdFromPath(path) {
                     return path + '-panel';
                 },
+
+                /**
+                * Builds a URL of the current page that opens the given Persona Bar item when loaded,
+                * so the item can be opened in a new browser tab.
+                *
+                * @method getPanelUrl
+                * @param {String} identifier the menu item identifier, e.g. Dnn.Pages
+                * @return {String} the URL, or null if it cannot be built
+                */
+                getPanelUrl: function getPanelUrl(identifier) {
+                    try {
+                        var url = new URL(window.top.location.href);
+                        url.searchParams.set('personabar', identifier);
+                        url.hash = '';
+                        return url.toString();
+                    } catch (e) {
+                        return null;
+                    }
+                },
+
+                /**
+                * Gets the URL a menu item's link points to: its own Link (resolved like checkMenuLink in main.js),
+                * or a URL of the current page that opens its panel.
+                *
+                * @method getMenuItemUrl
+                * @param {Object} menuItem the menu item from the menu structure
+                * @return {String} the URL, or null if the item has neither a link nor a panel
+                */
+                getMenuItemUrl: function getMenuItemUrl(menuItem) {
+                    if (menuItem.Link) {
+                        return menuItem.Link.indexOf('://') > -1 ? menuItem.Link : config.siteRoot + menuItem.Link;
+                    }
+
+                    return menuItem.ModuleName && menuItem.Path ? this.getPanelUrl(menuItem.Identifier) : null;
+                },
                 parseQueryParameter: function (item) {
                     item.Query = '';
                     var pathInfo;
@@ -378,7 +413,8 @@ define(['jquery', 'purify.min'], function ($, DOMPurify) {
                                     css: menuItem.CssClass,
                                     icon: menuItem.IconFile,
                                     displayName: menuItem.DisplayName,
-                                    settings: menuItem.Settings
+                                    settings: menuItem.Settings,
+                                    href: util.getMenuItemUrl(menuItem)
                                 }
                                 topMenuItem.menuItems.push(subMenuItem);
                             });
