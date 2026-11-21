@@ -1,4 +1,4 @@
-﻿<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Modules.Admin.Users.Register" Codebehind="Register.ascx.cs" %>
+<%@ Control Language="C#" AutoEventWireup="true" Inherits="DotNetNuke.Modules.Admin.Users.Register" Codebehind="Register.ascx.cs" %>
 <%@ Register TagPrefix="dnn" Assembly="DotNetNuke.Web" Namespace="DotNetNuke.Web.UI.WebControls" %>
 <%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.UI.WebControls.Internal" Assembly="DotNetNuke.Web" %>
 <%@ Register TagPrefix="dnn" TagName="Label" Src="~/controls/LabelControl.ascx" %>
@@ -11,13 +11,15 @@
     <br/>
     <div class="dnnFormItem dnnClear">
         <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" EncryptIds="True" />
-        <div class="dnnSocialRegistration">
-            <div id="mainContainer">
-                <ul class="buttonList">
-                    <asp:PlaceHolder ID="socialLoginControls" runat="server"/>
-                </ul>
+        <asp:Panel ID="pnlSocialRegistration" runat="server" Visible="false">
+            <div class="dnnSocialRegistration">
+                <div id="mainContainer">
+                    <ul class="buttonList">
+                        <asp:PlaceHolder ID="socialLoginControls" runat="server"/>
+                    </ul>
+                </div>
             </div>
-        </div>
+        </asp:Panel>
     </div>
     <div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha">
         <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
