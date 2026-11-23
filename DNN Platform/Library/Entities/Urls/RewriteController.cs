@@ -1249,9 +1249,15 @@ namespace DotNetNuke.Entities.Urls
                 // add on the parameter string
                 newUrl += parmString.ToString();
 
-                if (stripLoneParm)
+                if (stripLoneParm || valueField)
                 {
-                    newUrl = UrlParamsRegex.Replace(newUrl, "&");
+                    string strippedUrl = UrlParamsRegex.Replace(newUrl, "&");
+                    if (!string.Equals(strippedUrl, newUrl, StringComparison.Ordinal))
+                    {
+                        result.SetActionWithNoDowngrade(ActionType.CheckFor301);
+                    }
+
+                    newUrl = strippedUrl;
                     if (newUrl.EndsWith("&", StringComparison.Ordinal))
                     {
                         newUrl = newUrl.Substring(0, newUrl.Length - 1);
