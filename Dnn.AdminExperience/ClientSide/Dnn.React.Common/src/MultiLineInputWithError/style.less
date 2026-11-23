@@ -44,7 +44,10 @@
         }
         .input-tooltip-container {
             .dnn-ui-common-multi-line-input {
-                color: var(--dnn-color-neutral, @mountainMist);
+                // The disabled background uses --dnn-color-neutral, so the text must use its contrast color to stay readable.
+                color: var(--dnn-color-neutral-contrast, @thunder);
+                -webkit-text-fill-color: var(--dnn-color-neutral-contrast, @thunder);
+                opacity: 1;
                 cursor: not-allowed;
             }
         }

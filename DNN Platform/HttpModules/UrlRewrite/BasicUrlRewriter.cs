@@ -257,7 +257,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             }
 
             // Add PortalId to the log context for use in any logging that occurs during the request
-            this.serviceProvider.GetRequiredService<LogRequestContext>().AddToLogContext("PortalId", portalId);
+            Globals.GetCurrentServiceProvider().GetRequiredService<LogRequestContext>()?.AddToLogContext("PortalId", portalId);
 
             if (portalId != -1)
             {

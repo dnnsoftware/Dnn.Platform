@@ -4,28 +4,28 @@
 namespace DotNetNuke.Tests.BulkInstall.DeployClient;
 
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 using DotNetNuke.BulkInstall.DeployClient;
 using DotNetNuke.BulkInstall.Encryption;
 
+using NUnit.Framework;
+
 using Shouldly;
 
-using Xunit;
-
+[TestFixture]
 public class EncryptorTests
 {
-    [Fact]
+    [Test]
     public async Task GetEncryptedStream_EncryptsFileContents()
     {
         var deployInput = TestHelpers.CreateDeployInput(encryptionKey: "abcd1234");
         var encryptor = new Encryptor();
 
-        var encryptedStream = await encryptor.GetEncryptedStream(deployInput, new MemoryStream(Encoding.UTF8.GetBytes("ZIP")));
+        var encryptedStream = await encryptor.GetEncryptedStream(deployInput, new MemoryStream([.."ZIP"u8]));
 
         var decryptedStream = Crypto.Decrypt(encryptedStream, deployInput.EncryptionKey);
-        var decryptedContents = await new StreamReader(decryptedStream).ReadToEndAsync(TestContext.Current.CancellationToken);
+        var decryptedContents = await new StreamReader(decryptedStream).ReadToEndAsync();
         decryptedContents.ShouldBe("ZIP");
     }
 }

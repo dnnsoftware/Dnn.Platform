@@ -509,6 +509,13 @@ legend.required:after {
         white-space: pre-line;
     }
 }
+/* A .dnnFormLabel nested in a .dnnLabel wrapper must not re-apply the label column sizing (#7287) */
+.dnnLabel > .dnnFormLabel {
+    float: none;
+    width: auto;
+    padding-right: 0;
+    margin-right: 0;
+}
 .bottomArrow:after
 {
     position: absolute;

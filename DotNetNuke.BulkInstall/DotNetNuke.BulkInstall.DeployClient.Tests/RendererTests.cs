@@ -4,29 +4,32 @@
 namespace DotNetNuke.Tests.BulkInstall.DeployClient;
 
 using DotNetNuke.BulkInstall.DeployClient;
+
+using NUnit.Framework;
+
 using Spectre.Console;
 using Spectre.Console.Rendering;
 using Spectre.Console.Testing;
 
+[TestFixture]
 public class RendererTests
 {
-    public static TheoryData<LogLevel> AllLogLevels()
+    public static LogLevel[] AllLogLevels()
     {
-        return new TheoryData<LogLevel>(Enum.GetValues<LogLevel>());
+        return Enum.GetValues<LogLevel>();
     }
 
-    public static TheoryData<LogLevel> LogLevelsGreaterThanOrEqualTo(LogLevel minimumLevel)
+    public static IEnumerable<LogLevel> LogLevelsGreaterThanOrEqualTo(LogLevel minimumLevel)
     {
-        return new TheoryData<LogLevel>(Enum.GetValues<LogLevel>().Where(logLevel => logLevel >= minimumLevel));
+        return Enum.GetValues<LogLevel>().Where(logLevel => logLevel >= minimumLevel);
     }
 
-    public static TheoryData<LogLevel> LogLevelsLessThanOrEqualTo(LogLevel maximumLevel)
+    public static IEnumerable<LogLevel> LogLevelsLessThanOrEqualTo(LogLevel maximumLevel)
     {
-        return new TheoryData<LogLevel>(Enum.GetValues<LogLevel>().Where(logLevel => logLevel <= maximumLevel));
+        return Enum.GetValues<LogLevel>().Where(logLevel => logLevel <= maximumLevel);
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void Welcome_DisplaysSomething(LogLevel logLevel)
     {
         var console = new TestConsole();
@@ -37,8 +40,7 @@ public class RendererTests
         console.Output.ShouldNotBeNullOrWhiteSpace();
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.Warning, })]
     public void Welcome_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
     {
         var console = new TestConsole();
@@ -49,8 +51,7 @@ public class RendererTests
         console.Output.ShouldBeEmpty();
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderListOfFiles_DisplaysSomething(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -62,8 +63,7 @@ public class RendererTests
         console.Output.ShouldContain("2sxc_12.4.4_Install.zip");
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.Warning, })]
     public void RenderListOfFiles_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -74,7 +74,7 @@ public class RendererTests
         console.Output.ShouldBeEmpty();
     }
 
-    [Fact]
+    [Test]
     public void RenderListOfFiles_DisplaysFilePath()
     {
         var console = new TestConsole().Interactive();
@@ -85,7 +85,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder(onlyOnce: true, @"E:\foo\bar", "OpenContent_4.5.0_Install.zip", "2sxc_12.4.4_Install.zip");
     }
 
-    [Fact]
+    [Test]
     public void RenderListOfFiles_WithTopLevelMultiplePaths_DisplaysFilePathsInTree()
     {
         var console = new TestConsole().Interactive();
@@ -121,7 +121,7 @@ public class RendererTests
             "\n");
     }
 
-    [Fact]
+    [Test]
     public void RenderListOfFiles_WithMultiplePaths_DisplaysFilePathsInTree()
     {
         var console = new TestConsole().Interactive();
@@ -147,8 +147,7 @@ public class RendererTests
             "themezilla.zip");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public async Task RenderFileUploadsAsync_InteractiveWithLogging_RendersSomething(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -160,8 +159,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "100%");
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.Warning, })]
     public async Task RenderFileUploadsAsync_InteractiveWithHighLogLevel_RendersNothing(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -173,8 +171,7 @@ public class RendererTests
         console.Output.ShouldBeEmpty();
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public async Task RenderFileUploadsAsync_NonInteractiveWIthLogging_RendersSomething(LogLevel logLevel)
     {
         var console = new TestConsole();
@@ -186,8 +183,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("OpenContent_4.5.0_Install.zip", "upload", "complete", "\n");
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.Warning, })]
     public async Task RenderFileUploadsAsync_NonInteractiveWithHighLogLevel_RendersNothing(LogLevel logLevel)
     {
         var console = new TestConsole();
@@ -199,8 +195,7 @@ public class RendererTests
         console.Output.ShouldBeEmpty();
     }
 
-    [MemberData(nameof(AllLogLevels))]
-    [Theory]
+    [TestCaseSource(nameof(AllLogLevels))]
     public async Task RenderFileUploadsAsync_Interactive_UploadTaskIsAwaited(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -219,8 +214,7 @@ public class RendererTests
         }
     }
 
-    [MemberData(nameof(AllLogLevels))]
-    [Theory]
+    [TestCaseSource(nameof(AllLogLevels))]
     public async Task RenderFileUploadsAsync_UploadTaskIsAwaited(LogLevel logLevel)
     {
         var console = new TestConsole();
@@ -239,8 +233,7 @@ public class RendererTests
         }
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationOverview_DisplaysTreeOfPackageDetails(LogLevel logLevel)
     {
         var packages = new SortedList<int, SessionResponse?>
@@ -305,8 +298,7 @@ public class RendererTests
             });
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationOverview_DisplaysDnnPlatformVersionDependency(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -332,8 +324,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("Jamestown.zip", "Platform Version", "09.01.02");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationOverview_DisplaysUnknownDependency(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -359,8 +350,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("Jamestown.zip", "⚙", "Unknown Package");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationOverview_WhenDependencyHasNoVersion_DisplaysDependencyName(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -386,8 +376,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder(new[] { "Jamestown.zip", "DNNJWT" });
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.Warning, })]
     public void RenderInstallationOverview_LogLevelAboveInformation_DoesNotRender(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -413,8 +402,7 @@ public class RendererTests
         console.Output.ShouldBeEmpty();
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Trace)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Trace, })]
     public void RenderInstallationStatus_OnlyOutputsAttemptedSessionResponses(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -441,8 +429,7 @@ public class RendererTests
         console.Output.ShouldNotContain("James");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationStatus_OutputsMultipleResponsesOnDifferentLines(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -468,8 +455,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("✅", "Jimmy", "Succeeded", "\n", "✅", "James", "Succeeded", "\n");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationStatus_WhenNotSuccessfulButNoFailures_ShowsThatPackageFailed(LogLevel logLevel)
     {
         var packages = new SortedList<int, SessionResponse?>
@@ -501,8 +487,7 @@ public class RendererTests
             "Failed");
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.Warning)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.Warning, })]
     public void RenderInstallationStatus_ShouldNotRenderWarningOrHigher(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -528,8 +513,7 @@ public class RendererTests
         console.Output.ShouldBeEmpty();
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Trace)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Trace, })]
     public void RenderInstallationStatus_DoesNotOutputDuplicateInformation(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -558,9 +542,8 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder(onlyOnce: true, "✅", "James", "Succeeded", "❌", "George", "Failed", "He hit the tree 🌴");
     }
 
-    [Theory]
-    [InlineData(LogLevel.Warning)]
-    [InlineData(LogLevel.Error)]
+    [TestCase(LogLevel.Warning)]
+    [TestCase(LogLevel.Error)]
     public void RenderInstallationStatus_WhenErrorLevel_DoesNotOutputInformationLevel(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -590,8 +573,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder(onlyOnce: true, "❌", "George", "Failed", "He hit the tree 🌴");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Information)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Information, })]
     public void RenderInstallationStatus_OutputsMessageWhenPackageIsSuccessful(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -612,8 +594,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder(onlyOnce: true, "✅", "James", "Succeeded");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Error)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Error, })]
     public void RenderInstallationStatus_RendersFailures(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -640,8 +621,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("❌", "Jimmy", "Failed", "BAD ZIP", "REALLY FAILED");
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Error)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Error, })]
     public void RenderInstallationStatus_FailuresHaveSpectreMarkup_RendersFailures(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -659,8 +639,7 @@ public class RendererTests
         console.Output.ShouldContainStringsInOrder("❌", "Jimmy", "Failed", "Failed SQL Query", "SELECT [Name] FROM Place");
     }
 
-    [MemberData(nameof(LogLevelsGreaterThanOrEqualTo), LogLevel.None)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsGreaterThanOrEqualTo), new object[] { LogLevel.None, })]
     public void RenderCriticalError_WithHighLogLevel_DisplaysNothing(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -677,8 +656,7 @@ public class RendererTests
         }
     }
 
-    [MemberData(nameof(LogLevelsLessThanOrEqualTo), LogLevel.Critical)]
-    [Theory]
+    [TestCaseSource(nameof(LogLevelsLessThanOrEqualTo), new object[] { LogLevel.Critical, })]
     public void RenderCriticalError(LogLevel logLevel)
     {
         var console = new TestConsole().Interactive();
@@ -699,7 +677,7 @@ public class RendererTests
         }
     }
 
-    [Fact]
+    [Test]
     public void RenderInstallationStatus_WhenUnicodeNotSupported_SuccessRendersWithoutIcon()
     {
         var console = new TestConsole().Interactive();
@@ -719,7 +697,7 @@ public class RendererTests
         console.Output.ShouldNotContain("✅");
     }
 
-    [Fact]
+    [Test]
     public void RenderInstallationStatus_WhenUnicodeNotSupported_FailureRendersWithoutIcon()
     {
         var console = new TestConsole().Interactive();
@@ -740,7 +718,7 @@ public class RendererTests
         console.Output.ShouldNotContain("❌");
     }
 
-    [Fact]
+    [Test]
     public void RenderInstallationOverview_WhenUnicodeNotSupported_UnknownDependencyRendersWithoutIcon()
     {
         var console = new TestConsole().Interactive();

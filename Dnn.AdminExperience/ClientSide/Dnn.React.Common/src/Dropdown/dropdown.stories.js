@@ -34,3 +34,36 @@ class MyDropdown extends Component {
 export const WithContent =  () => (
     <MyDropdown />
 );
+
+class MySearchableDropdown extends Component {
+    constructor() {
+        super();
+        this.state = { option: {} };
+    }
+
+    handleSelect(option) {
+        this.setState( { option: option });
+    }
+
+    render() {
+        return (
+            <Dropdown
+                label="Select a language"
+                withSearch={true}
+                options={[
+                    { label: "English (United States)", value: "en-US" },
+                    { label: "French (France)", value: "fr-FR" },
+                    { label: "German (Germany)", value: "de-DE" },
+                    { label: "Spanish (Spain)", value: "es-ES" },
+                    { label: "Turkish (Turkey)", value: "tr-TR" }
+                ]}
+                value={this.state.option.value}
+                onSelect={this.handleSelect.bind(this)}
+            />
+        );
+    }
+}
+
+export const WithSearch = () => (
+    <MySearchableDropdown />
+);

@@ -28,17 +28,17 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@dnncommunity/dnn-elements": "^0.29.3",
+    "@dnncommunity/dnn-elements": "^0.29.4",
     "@eslint/js": "^10.0.1",
-    "@stencil/core": "^4.44.1",
+    "@stencil/core": "^4.45.2",
     "@stencil/eslint-plugin": "^1.4.0",
     "@stencil/sass": "^3.3.3",
     "@stencil/store": "^2.2.4",
     "@types/node": "^25.9.2",
-    "@typescript-eslint/utils": "^8.61.1",
-    "eslint": "^10.5.0",
+    "@typescript-eslint/utils": "^8.71.1",
+    "eslint": "^10.12.0",
     "jiti": "^2.7.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.61.1"
+    "typescript-eslint": "^8.71.1"
   }
 }

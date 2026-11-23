@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -8,6 +8,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
     using System.Security.Cryptography;
 
     using DotNetNuke.Common.Utilities;
+    using DotNetNuke.Entities.Controllers;
     using DotNetNuke.Entities.Host;
     using DotNetNuke.Entities.Portals;
     using DotNetNuke.Tests.Utilities;
@@ -57,6 +58,41 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
                 Assert.That(result, Is.Not.EqualTo(this._settingValue));
                 Assert.That(this._settingValue, Is.EqualTo(decrypted));
             }
+        }
+
+        [Test]
+        public void UpdateEncryptedString_With_SHA512_RoundTrips_And_Persists_AlgorithmName()
+        {
+            // Arrange
+            var hostSettings = new HostSettings(new HostController());
+
+            // Act
+            PortalController.UpdateEncryptedString(hostSettings, PortalController.Instance, HashAlgorithmName.SHA512, this.PortalId, this._settingName, this._settingValue, Config.GetDecryptionkey());
+            var algorithmName = PortalController.GetPortalSetting(PortalController.Instance, this._settingName + "_algorithmName", this.PortalId, string.Empty);
+            var decrypted = PortalController.GetEncryptedString(hostSettings, PortalController.Instance, this._settingName, this.PortalId, Config.GetDecryptionkey());
+
+            // Assert
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(algorithmName, Is.EqualTo(HashAlgorithmName.SHA512.Name));
+                Assert.That(decrypted, Is.EqualTo(this._settingValue));
+            }
+        }
+
+        [Test]
+        public void UpdateEncryptedString_Switching_From_SHA1_To_SHA512_RoundTrips()
+        {
+            // Arrange
+            var hostSettings = new HostSettings(new HostController());
+            PortalController.UpdateEncryptedString(hostSettings, PortalController.Instance, HashAlgorithmName.SHA1, this.PortalId, this._settingName, this._settingValue, Config.GetDecryptionkey());
+            var newValue = this._settingValue + "_updated";
+
+            // Act
+            PortalController.UpdateEncryptedString(hostSettings, PortalController.Instance, HashAlgorithmName.SHA512, this.PortalId, this._settingName, newValue, Config.GetDecryptionkey());
+            var decrypted = PortalController.GetEncryptedString(hostSettings, PortalController.Instance, this._settingName, this.PortalId, Config.GetDecryptionkey());
+
+            // Assert
+            Assert.That(decrypted, Is.EqualTo(newValue));
         }
     }
 }

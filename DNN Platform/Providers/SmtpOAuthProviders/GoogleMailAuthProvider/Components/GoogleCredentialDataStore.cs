@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 
@@ -15,6 +15,7 @@ using DotNetNuke.Common.Extensions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
+using DotNetNuke.Services.Exceptions;
 
 using Google.Apis.Json;
 using Google.Apis.Util.Store;
@@ -144,13 +145,23 @@ public class GoogleCredentialDataStore : IDataStore
         var settingName = string.Format(Constants.DataStoreSettingName, this.portalId);
         string settingValue;
 
-        if (this.portalId == Null.NullInteger)
+        try
         {
-            settingValue = this.hostSettingsService.GetEncryptedString(settingName, Config.GetDecryptionkey());
+            if (this.portalId == Null.NullInteger)
+            {
+                settingValue = this.hostSettingsService.GetEncryptedString(settingName, Config.GetDecryptionkey());
+            }
+            else
+            {
+                settingValue = PortalController.GetEncryptedString(this.hostSettings, this.portalController, settingName, this.portalId, Config.GetDecryptionkey());
+            }
         }
-        else
+        catch (Exception ex) when (ex is CryptographicException || ex is FormatException)
         {
-            settingValue = PortalController.GetEncryptedString(this.hostSettings, this.portalController, settingName, this.portalId, Config.GetDecryptionkey());
+            // The stored credentials can't be decrypted (e.g. saved without their algorithm name, see #7483,
+            // or the decryption key changed). Treat as not authorized so the administrator can re-authorize.
+            Exceptions.LogException(ex);
+            return new Dictionary<string, string>();
         }
 
         if (string.IsNullOrWhiteSpace(settingValue))

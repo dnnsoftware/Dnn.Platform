@@ -96,6 +96,25 @@
         background-color: var(--dnn-color-background, @white);
         z-index: 1000;
         box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.2);
+        .dnn-dropdown-search {
+            padding: 10px 15px 0 15px;
+            input {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 6px 10px;
+                font-family: inherit;
+                font-size: 13px;
+                color: var(--dnn-color-foreground, @bulgarianRose);
+                background: var(--dnn-color-background, @white);
+                border: 1px solid var(--dnn-color-foreground-light, @alto);
+                border-radius: var(--dnn-controls-radius, 0);
+                outline: none;
+                cursor: text;
+                &:focus {
+                    border-color: var(--dnn-color-primary-light, @curiousBlue);
+                }
+            }
+        }
         ul {
             padding: 15px 0 15px 0;
             li {
@@ -120,6 +139,14 @@
                 &:hover {
                     background-color: var(--dnn-color-neutral-light, @gallery);
                     color: var(--dnn-color-primary, @curiousBlue);
+                }
+                &.dnn-dropdown-no-results {
+                    cursor: default;
+                    font-style: italic;
+                    &:hover {
+                        background-color: transparent;
+                        color: @rollingStone;
+                    }
                 }
             }
         }

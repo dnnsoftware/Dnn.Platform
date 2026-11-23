@@ -7,11 +7,13 @@ using System.IO.Abstractions;
 
 using DotNetNuke.BulkInstall.DeployClient;
 
+using NUnit.Framework;
+
+[TestFixture]
 public class PackageFileSourceTests
 {
-    [InlineData("")]
-    [InlineData("path/to/packages")]
-    [Theory]
+    [TestCase("")]
+    [TestCase("path/to/packages")]
     public void GetPackageFiles_GetsTheZipFilesInTheGivenDirectory(string path)
     {
         var fileSystem = A.Fake<IFileSystem>();
@@ -24,9 +26,8 @@ public class PackageFileSourceTests
         files.ShouldBe(new[] { "package1.zip", "package2.zip" }, ignoreOrder: true);
     }
 
-    [InlineData("")]
-    [InlineData("path/to/packages")]
-    [Theory]
+    [TestCase("")]
+    [TestCase("path/to/packages")]
     public void GetPackageFiles_GetsTheZipFilesInTheGivenDirectoryRecursively(string path)
     {
         var fileSystem = A.Fake<IFileSystem>();
@@ -40,7 +41,7 @@ public class PackageFileSourceTests
         files.ShouldBe(expected, ignoreOrder: true);
     }
 
-    [Fact]
+    [Test]
     public void GetFileStream_ReturnsStream()
     {
         var fileSystem = A.Fake<IFileSystem>();
