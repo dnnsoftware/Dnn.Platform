@@ -90,5 +90,38 @@ namespace DotNetNuke.Common.Utilities
 
             return Regex.Replace(source, Regex.Escape(oldValue), newValue, RegexOptions.IgnoreCase);
         }
+
+        /// <summary>
+        /// Ensures that the <paramref name="source"/> string ends with the specified <paramref name="value"/>.
+        /// If <paramref name="source"/> already ends with <paramref name="value"/> (using <see cref="StringComparison.Ordinal"/>),
+        /// the original <paramref name="source"/> is returned unchanged; otherwise the <paramref name="value"/> is appended and the resulting string is returned.
+        /// </summary>
+        /// <param name="source">The source string to check. Cannot be <see langword="null"/>.</param>
+        /// <param name="value">The string that <paramref name="source"/> must end with. Cannot be <see langword="null"/>.</param>
+        /// <returns>
+        /// The original <paramref name="source"/> if it already ends with <paramref name="value"/>; otherwise
+        /// a new string consisting of <paramref name="source"/> followed by <paramref name="value"/>.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when <paramref name="source"/> or <paramref name="value"/> is <see langword="null"/>.
+        /// </exception>
+        /// <remarks>
+        /// Comparison is performed using <see cref="StringComparison.Ordinal"/> (case-sensitive).
+        /// This method does not trim or alter the input strings other than appending <paramref name="value"/> when necessary.
+        /// </remarks>
+        public static string EnsureEndsWith(this string source, string value)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (value is null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            return source.EndsWith(value, StringComparison.Ordinal) ? source : source + value;
+        }
     }
 }

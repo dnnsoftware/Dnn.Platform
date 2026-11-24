@@ -172,6 +172,7 @@
     <Compile Include="Objects\Toolbar.cs" />
     <Compile Include="Objects\ToolbarRoles.cs" />
     <Compile Include="Utilities\EditorController.cs" />
+    <Compile Include="Utilities\SettingsLoader.cs" />
     <Compile Include="Utilities\SettingsUtil.cs" />
     <Compile Include="Utilities\ToolbarUtil.cs" />
     <Compile Include="Utilities\Utility.cs" />
