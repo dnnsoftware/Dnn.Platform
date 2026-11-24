@@ -16,6 +16,7 @@ namespace DotNetNuke.Modules.Html
 
     using DotNetNuke.Abstractions;
     using DotNetNuke.Abstractions.Application;
+    using DotNetNuke.Abstractions.ClientResources;
     using DotNetNuke.Abstractions.Portals;
     using DotNetNuke.Abstractions.Security.Permissions;
     using DotNetNuke.Common;
@@ -98,8 +99,25 @@ namespace DotNetNuke.Modules.Html
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <param name="page">The Page Instance.</param>
         /// <returns>The formatted HTML content.</returns>
-        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
+        [DnnDeprecated(10, 5, 0, "Please use overload with IClientResourceController")]
+        public static partial string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
         {
+            var clientResourceController = Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+            return FormatHtmlText(moduleId, content, settings, portalSettings, clientResourceController);
+        }
+
+        /// <summary>FormatHtmlText formats HtmlText content for display in the browser.</summary>
+        /// <param name="moduleId">The ModuleID.</param>
+        /// <param name="content">The HtmlText Content.</param>
+        /// <param name="settings">Module Settings.</param>
+        /// <param name="portalSettings">The Portal Settings.</param>
+        /// <param name="clientResourceController">ClientResourceController.</param>
+        /// <returns>The formatted HTML content.</returns>
+        public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, IClientResourceController clientResourceController)
+        {
+            // Resolve for callers that pass null; token registration uses the ambient controller via HtmlTokenReplace.
+            _ = clientResourceController ?? Globals.GetCurrentServiceProvider().GetRequiredService<IClientResourceController>();
+
             // Html decode content
             content = HttpUtility.HtmlDecode(content);
 

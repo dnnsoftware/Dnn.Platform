@@ -4,10 +4,10 @@
 
 namespace DotNetNuke.UI.Modules.Html5
 {
-    using System;
     using System.Globalization;
     using System.Web;
 
+    using DotNetNuke.Common.Utilities;
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Tokens;
 
@@ -15,12 +15,20 @@ namespace DotNetNuke.UI.Modules.Html5
     public class RequestPropertyAccess : IPropertyAccess
     {
         private readonly HttpRequest request;
+        private readonly HttpRequestBase requestBase;
 
         /// <summary>Initializes a new instance of the <see cref="RequestPropertyAccess"/> class.</summary>
         /// <param name="request">The current http request.</param>
         public RequestPropertyAccess(HttpRequest request)
         {
             this.request = request;
+        }
+
+        /// <summary>Initializes a new instance of the <see cref="RequestPropertyAccess"/> class.</summary>
+        /// <param name="requestBase">The current http request.</param>
+        public RequestPropertyAccess(HttpRequestBase requestBase)
+        {
+            this.requestBase = requestBase;
         }
 
         /// <inheritdoc />
@@ -35,14 +43,12 @@ namespace DotNetNuke.UI.Modules.Html5
             switch (propertyName.ToLowerInvariant())
             {
                 case "querystring":
-                    return this.request.QueryString.ToString();
+                    return this.request != null ? this.request.QueryString.ToString() : this.requestBase.QueryString.ToString();
                 case "applicationpath":
-                    return this.request.ApplicationPath;
+                    return this.request != null ? this.request.ApplicationPath : this.requestBase.ApplicationPath;
                 case "relativeapppath":
                     // RelativeAppPath is like ApplicationPath, but will always end with a forward slash (/)
-                    return this.request.ApplicationPath.EndsWith("/", StringComparison.Ordinal)
-                        ? this.request.ApplicationPath
-                        : $"{this.request.ApplicationPath}/";
+                    return this.request != null ? this.request.ApplicationPath.EnsureEndsWith("/") : this.requestBase.ApplicationPath.EnsureEndsWith("/");
             }
 
             propertyNotFound = true;
