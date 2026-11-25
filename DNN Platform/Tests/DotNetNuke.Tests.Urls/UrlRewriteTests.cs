@@ -165,6 +165,43 @@ namespace DotNetNuke.Tests.Urls
         }
 
         [Test]
+        public void AdvancedUrlRewriter_LoneParameterWithUserProfilePage_RedirectsToCanonicalUrl()
+        {
+            var portal = PortalController.Instance.GetPortal(this.PortalId);
+            var userTab = TabController.Instance.GetTabByName(TestPage, this.PortalId);
+            int originalUserTabId = portal.UserTabId;
+
+            try
+            {
+                portal.UserTabId = userTab.TabID;
+                PortalController.Instance.UpdatePortalInfo(portal);
+                CacheController.FlushPageIndexFromCache();
+
+                var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "CanonicalRedirect", this.PortalId);
+                var testFields = new Dictionary<string, string>
+                {
+                    ["Alias"] = this.DefaultAlias,
+                    ["Scheme"] = "http://",
+                    ["Page Name"] = AboutUsPageName,
+                    ["Test Url"] = "http://{alias}/About-Us/invalid-path-12345",
+                    ["Expected Url"] = string.Empty,
+                    ["Status"] = "301",
+                    ["Final Url"] = "http://{alias}/About-Us",
+                    ["RedirectReason"] = RedirectReason.Unfriendly_Url_2.ToString(),
+                };
+
+                this.ExecuteTest(settings, testFields, true);
+            }
+            finally
+            {
+                portal = PortalController.Instance.GetPortal(this.PortalId);
+                portal.UserTabId = originalUserTabId;
+                PortalController.Instance.UpdatePortalInfo(portal);
+                CacheController.FlushPageIndexFromCache();
+            }
+        }
+
+        [Test]
         [TestCaseSource(typeof(UrlTestFactoryClass), nameof(UrlTestFactoryClass.UrlRewrite_DeletedTabHandlingTestCases))]
         public void AdvancedUrlRewriter_DeletedTabHandling(Dictionary<string, string> testFields)
         {
