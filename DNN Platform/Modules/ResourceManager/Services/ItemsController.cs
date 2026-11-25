@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace Dnn.Modules.ResourceManager.Services
@@ -592,19 +592,19 @@ namespace Dnn.Modules.ResourceManager.Services
         {
             var matchedRoles = RoleController.Instance.GetRoles(this.PortalSettings.PortalId)
                 .Where(r => r.Status == RoleStatus.Approved)
-                .Select(r =>
-                {
-                    r.RoleName = Localization.LocalizeRole(r.RoleName);
-                    return r;
-                })
-                .OrderBy(r => r.RoleName)
                 .Select(r => new
                 {
                     IsSystemRole = r.IsSystemRole,
                     RoleGroupId = r.RoleGroupID,
                     RoleId = r.RoleID,
-                    RoleName = r.RoleName,
+
+                    // Display the localized name without mutating r.RoleName: the RoleInfo
+                    // instances are shared across requests from the in-process roles cache and
+                    // renaming them here corrupts that cache, making role lookups by the real
+                    // name fail (see issue #7604).
+                    RoleName = Localization.LocalizeRole(r.RoleName),
                 })
+                .OrderBy(r => r.RoleName)
                 .ToList();
 
             return this.Ok(matchedRoles);

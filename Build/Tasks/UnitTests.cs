@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 namespace DotNetNuke.Build.Tasks
@@ -23,6 +23,10 @@ namespace DotNetNuke.Build.Tasks
             // TODO: address issues to allow these tests to run
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Integration.dll");
             testAssemblies -= context.GetFiles(@"**\DotNetNuke.Tests.Urls.dll");
+
+            // The FileSystemUtilsTest fixture copies the test assembly into a FileSystemUtilsTest
+            // sub-folder of the test output dir; drop those stray copies so each assembly runs once.
+            testAssemblies -= context.GetFiles(@"**\bin\**\FileSystemUtilsTest\**\DotNetNuke.Tests.*.dll");
 
             var vsTestPath = context.GetFiles($"tools/Microsoft.TestPlatform.{Program.MicrosoftTestPlatformVersion}/tools/**/vstest.console.exe")
                 .First();

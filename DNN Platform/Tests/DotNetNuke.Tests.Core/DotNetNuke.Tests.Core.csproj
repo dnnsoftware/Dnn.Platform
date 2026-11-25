@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net48</TargetFramework>
@@ -34,6 +34,7 @@
     <ProjectReference Include="..\..\DotNetNuke.Web.Client.ResourceManager\DotNetNuke.Web.Client.ResourceManager.csproj" />
     <ProjectReference Include="..\..\DotNetNuke.Web.Client\DotNetNuke.Web.Client.csproj" />
     <ProjectReference Include="..\..\Library\DotNetNuke.Library.csproj" />
+    <ProjectReference Include="..\..\Modules\ResourceManager\Dnn.Modules.ResourceManager.csproj" />
     <ProjectReference Include="..\DotNetNuke.Tests.Utilities\DotNetNuke.Tests.Utilities.csproj" />
   </ItemGroup>
 
