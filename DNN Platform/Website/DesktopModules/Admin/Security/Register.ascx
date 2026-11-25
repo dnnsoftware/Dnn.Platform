@@ -11,7 +11,7 @@
     <br/>
     <div class="dnnFormItem dnnClear">
         <dnn:DnnFormEditor id="userForm" runat="Server" FormMode="Short" EncryptIds="True" />
-        <asp:Panel ID="pnlSocialRegistration" runat="server" Visible="false">
+        <asp:PlaceHolder ID="pnlSocialRegistration" runat="server" Visible="false">
             <div class="dnnSocialRegistration">
                 <div id="mainContainer">
                     <ul class="buttonList">
@@ -19,7 +19,7 @@
                     </ul>
                 </div>
             </div>
-        </asp:Panel>
+        </asp:PlaceHolder>
     </div>
     <div id="captchaRow" runat="server" visible="false" class="dnnFormItem dnnCaptcha">
         <dnn:label id="captchaLabel" controlname="ctlCaptcha" runat="server" />
