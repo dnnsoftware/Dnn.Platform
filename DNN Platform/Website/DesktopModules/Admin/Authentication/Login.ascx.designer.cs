@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel pnlSocialRegistration;
+        protected global::System.Web.UI.WebControls.PlaceHolder pnlSocialRegistration;
         /// <summary>socialLoginControls control.</summary>
         /// <remarks>
         /// Auto-generated field.
