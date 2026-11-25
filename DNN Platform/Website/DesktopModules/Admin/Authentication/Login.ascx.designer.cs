@@ -1,4 +1,4 @@
-﻿// 
+// 
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the MIT License. See LICENSE file in the project root for full license information.
 // 
@@ -33,6 +33,12 @@ namespace DotNetNuke.Modules.Admin.Authentication {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlLoginContainer;
+        /// <summary>pnlSocialRegistration control.</summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.PlaceHolder pnlSocialRegistration;
         /// <summary>socialLoginControls control.</summary>
         /// <remarks>
         /// Auto-generated field.
